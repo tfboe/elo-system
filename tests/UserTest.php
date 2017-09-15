@@ -1,6 +1,6 @@
 <?php
 
-class ExampleTest extends TestCase
+class UserTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
   /**
@@ -15,6 +15,12 @@ class ExampleTest extends TestCase
     $this->assertEquals(
       $this->app->version(), $this->response->getContent()
     );
+  }
+
+  public function testAuthenticationError()
+  {
+    $this->json('GET', '/getUserId')->seeJsonEquals(
+      ["status" => 401, "message" => "Not logged in!"]);
   }
 //</editor-fold desc="Public Methods">
 }

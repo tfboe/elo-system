@@ -11,7 +11,13 @@
 |
 */
 
-/** @noinspection PhpUndefinedVariableInspection */
+/** @var \Laravel\Lumen\Routing\Router $router */
 $router->get('/', function () use ($router) {
   return $router->app->version();
+});
+
+$router->group(['middleware' => 'auth:api'], function () use ($router) {
+  $router->get('getUserId', [
+    'as' => 'getUserId', 'uses' => 'UserController@getUserId'
+  ]);
 });
