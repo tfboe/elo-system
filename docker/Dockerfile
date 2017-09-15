@@ -1,4 +1,4 @@
-FROM punkstar/bitbucket-pipelines-php7-mysql
+FROM susa4ostec/bitbucket-pipelines-php7.1-mysql
 
 # install mailcatcher
 RUN \
@@ -9,4 +9,4 @@ RUN \
 # configure php
 RUN \
   sed -i -e 's/;sendmail_path =/sendmail_path = \/usr\/bin\/env catchmail -f catchmail@php.com/g' \
-    /etc/php/7.0/cli/php.ini
+    /etc/php/7.1/cli/php.ini
