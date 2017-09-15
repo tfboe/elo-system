@@ -3,16 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\ExampleEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class ExampleListener
 {
 //<editor-fold desc="Constructor">
   /**
    * Create the event listener.
-   *
-   * @return void
    */
   public function __construct()
   {

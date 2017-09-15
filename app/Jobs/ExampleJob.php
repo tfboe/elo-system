@@ -7,8 +7,6 @@ class ExampleJob extends Job
 //<editor-fold desc="Constructor">
   /**
    * Create a new job instance.
-   *
-   * @return void
    */
   public function __construct()
   {
