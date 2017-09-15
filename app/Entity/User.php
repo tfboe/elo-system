@@ -9,6 +9,7 @@
 namespace App\Entity;
 
 
+use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
