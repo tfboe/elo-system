@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\AuthenticationException;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
@@ -36,11 +37,12 @@ class Authenticate
    * @param  \Closure $next
    * @param  string|null $guard
    * @return mixed
+   * @throws AuthenticationException if request doesn't provide valid authentication token
    */
   public function handle($request, Closure $next, $guard = null)
   {
     if ($this->auth->guard($guard)->guest()) {
-      return response('Unauthorized.', 401);
+      throw new AuthenticationException("Not logged in!");
     }
 
     return $next($request);

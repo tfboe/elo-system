@@ -35,7 +35,33 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $e)
   {
-    return parent::render($request, $e);
+    //this is a only json api!
+    //if ($request->ajax() || $request->wantsJson()) {
+    //don't throw html exceptions always render using json
+    $status_code = $this->getExceptionHTTPStatusCode($e);
+    return response()->json(
+      $this->getJsonMessage($e, $status_code),
+      $this->getExceptionHTTPStatusCode($e)
+    );
+    //}
+    //return parent::render($request, $e);
+  }
+
+  protected function getJsonMessage(Exception $e, $statusCode = null)
+  {
+    // You may add in the code, but it's duplication
+    return [
+      'status' => $statusCode !== null ? $statusCode : "false",
+      'message' => $e->getMessage()
+    ];
+  }
+
+  protected function getExceptionHTTPStatusCode(Exception $e)
+  {
+    // Not all Exceptions have a http status code
+    // We will give Error 500 if none found
+    return method_exists($e, 'getStatusCode') ? $e->getStatusCode() :
+      ($e->getCode() != 0 ? $e->getCode() : 500);
   }
 
   /**
