@@ -1,5 +1,10 @@
 FROM susa4ostec/bitbucket-pipelines-php7.1-mysql
 
+# install xdebug (for code coverage)
+RUN \
+  apt-get update && \
+  apt-get install -y php7.1-xdebug
+
 # install mailcatcher
 RUN \
   apt-get update && \
