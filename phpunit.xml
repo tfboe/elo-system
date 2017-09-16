@@ -9,10 +9,10 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
+    composer dump-autoload
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./bootstrap</directory>
             <directory suffix=".php">./routes</directory>
             <directory suffix=".php">./config</directory>
         </whitelist>

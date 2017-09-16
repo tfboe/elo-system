@@ -2,6 +2,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+if (!function_exists('try_class_alias')) {
+  function try_class_alias($alias, $original)
+  {
+    if (!class_exists($alias)) {
+      class_alias($original, $alias);
+    }
+  }
+}
+
 try {
   (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
@@ -25,6 +34,8 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
+try_class_alias('Hash', \Illuminate\Support\Facades\Hash::class);
+
 // $app->withEloquent();
 
 /*
@@ -41,11 +52,6 @@ $app->withFacades();
 $app->singleton(
   Illuminate\Contracts\Debug\ExceptionHandler::class,
   App\Exceptions\Handler::class
-);
-
-$app->singleton(
-  Illuminate\Contracts\Console\Kernel::class,
-  App\Console\Kernel::class
 );
 
 /*

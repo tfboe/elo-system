@@ -12,9 +12,12 @@
 */
 
 /** @var \Laravel\Lumen\Routing\Router $router */
-$router->get('/', function () use ($router) {
-  return $router->app->version();
-});
+$router->post('register', [
+  'as' => 'register', 'uses' => 'UserController@register'
+]);
+$router->post('login', [
+  'as' => 'login', 'uses' => 'UserController@login'
+]);
 
 $router->group(['middleware' => 'auth:api'], function () use ($router) {
   $router->get('getUserId', [

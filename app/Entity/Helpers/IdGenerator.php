@@ -29,8 +29,13 @@ class IdGenerator extends AbstractIdGenerator
    */
   public function generate(EntityManager $em, $entity): string
   {
-    if (function_exists('com_create_guid') === true) {
-      return strtolower(trim(com_create_guid(), '{}'));
+    return self::create_id_from();
+  }
+
+  public static function create_id_from($creator_function = 'com_create_guid')
+  {
+    if (function_exists($creator_function) === true) {
+      return strtolower(trim($creator_function(), '{}'));
     }
 
     return strtolower(sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
