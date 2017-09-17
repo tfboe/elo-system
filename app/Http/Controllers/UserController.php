@@ -29,7 +29,6 @@ class UserController extends BaseController
   {
     $user_specification = $this->getCredentialSpecification($app);
     $user_specification['email']['validation'] .= '|unique:App\Entity\User,email';
-    $user_specification['repeatedPassword'] = ['validation' => 'required|same:password', 'ignore' => true];
     $user_specification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
 
     $this->validateBySpecification($request, $user_specification);
@@ -79,7 +78,7 @@ class UserController extends BaseController
   /**
    * @return JsonResponse
    */
-  public function getUserId(): JsonResponse
+  public function userId(): JsonResponse
   {
     return response()->json(['id' => \Auth::user()->getId()]);
   }
