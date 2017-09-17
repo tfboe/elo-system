@@ -55,6 +55,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
     $password = $this->newPassword();
     $this->user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
+    $this->refreshApplication();
   }
 //</editor-fold desc="Protected Methods">
 }
