@@ -1,0 +1,6 @@
+{
+  "name": "Elo System",
+  "version": "0.1.0",
+  "description": "An api of an elo system to view elo values of players and to submit new tournaments",
+  "url": "http://tischfussball.wien/elo"
+}

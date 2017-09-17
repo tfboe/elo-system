@@ -9,7 +9,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 //<editor-fold desc="Public Methods">
   public function testAuthenticationError()
   {
-    $this->json('GET', '/getUserId')->seeStatusCode(401)->seeJsonEquals(
+    $this->json('GET', '/userId')->seeStatusCode(401)->seeJsonEquals(
       ["status" => 401, "message" => "Not logged in!"]);
   }
 
@@ -66,7 +66,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'password' => $password
     ])->seeJsonEquals(['id' => $user->getId()])->seeHeader('jwt-token');
     self::assertNotNull($this->response->headers->get('jwt-token'));
-    $this->json('GET', '/getUserId')->seeJson(['id' => $user->getId()]);
+    $this->json('GET', '/userId')->seeJson(['id' => $user->getId()]);
   }
 
   public function testRegisterUser()

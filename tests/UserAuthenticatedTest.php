@@ -11,9 +11,9 @@ declare(strict_types=1);
 class UserAuthenticatedTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testGetUserId()
+  public function testUserId()
   {
-    $this->jsonAuth('GET', '/getUserId')->seeJsonEquals(['id' => $this->user->getId()]);
+    $this->jsonAuth('GET', '/userId')->seeJsonEquals(['id' => $this->user->getId()]);
   }
 //</editor-fold desc="Public Methods">
 }
