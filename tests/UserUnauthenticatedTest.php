@@ -28,7 +28,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'test-guid');
   }
 
-  public function testInvalidPassword()
+  public function testInvalidId()
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
@@ -38,6 +38,20 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
+    ])->seeStatusCode(401);
+    self::assertNull($this->response->headers->get('jwt-token'));
+  }
+
+  public function testInvalidCredentials()
+  {
+    $password = $this->newPassword();
+    /** @var \App\Entity\User $user */
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $property = self::getProperty(\App\Entity\User::class, 'id');
+    $property->setValue($user, "\x84invalid");
+    $this->json('POST', '/login', [
+      'email' => $user->getEmail(),
+      'password' => $password . "wrong-password"
     ])->seeStatusCode(401);
     self::assertNull($this->response->headers->get('jwt-token'));
   }
