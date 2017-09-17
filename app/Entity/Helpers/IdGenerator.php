@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Created by PhpStorm.
@@ -29,10 +30,15 @@ class IdGenerator extends AbstractIdGenerator
    */
   public function generate(EntityManager $em, $entity): string
   {
-    return self::create_id_from();
+    return self::createIdFrom();
   }
 
-  public static function create_id_from($creator_function = 'com_create_guid')
+  /**
+   * creates a new id
+   * @param string $creator_function the id creator function name to use (if existent)
+   * @return string the new id
+   */
+  public static function createIdFrom($creator_function = 'com_create_guid')
   {
     if (function_exists($creator_function) === true) {
       return strtolower(trim($creator_function(), '{}'));

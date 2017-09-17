@@ -1,9 +1,15 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!function_exists('try_class_alias')) {
-  function try_class_alias($alias, $original)
+  /**
+   * @param $alias
+   * @param $original
+   */
+  function try_class_alias($alias, /** @noinspection PhpUnusedParameterInspection */
+                           $original)
   {
     if (!class_exists($alias)) {
       class_alias($original, $alias);
@@ -34,6 +40,7 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
+/** @noinspection PhpUndefinedClassInspection */
 try_class_alias('Hash', \Illuminate\Support\Facades\Hash::class);
 
 // $app->withEloquent();

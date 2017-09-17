@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Class DatabaseTestCase
@@ -13,6 +14,12 @@ abstract class DatabaseTestCase extends TestCase
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
+  /**
+   * DatabaseTestCase constructor.
+   * @param string|null $name test name
+   * @param array $data test data
+   * @param string $dataName test data name
+   */
   public function __construct($name = null, array $data = [], $dataName = '')
   {
     parent::__construct($name, $data, $dataName);
@@ -21,15 +28,6 @@ abstract class DatabaseTestCase extends TestCase
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Protected Methods">
-  protected function authenticate()
-  {
-    if ($this->token !== null) {
-      return $this->token;
-    }
-    $password = $this->newPassword();
-    $this->user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
-    $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
-  }
 
   /**
    * Clears the database by truncating all tables (very time consuming)
@@ -48,17 +46,25 @@ abstract class DatabaseTestCase extends TestCase
     $connection->query(sprintf('SET FOREIGN_KEY_CHECKS = 1;'));
   }
 
+  /**
+   * Creates a new user
+   * @return array containing the password and the user object
+   */
   protected function createUser()
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     return [
       'password' => $password,
       'user' => $user
     ];
   }
 
+  /**
+   * Uses faker to generate a new password
+   * @return string the new password
+   */
   protected function newPassword()
   {
     return $this->faker->password(8, 30);

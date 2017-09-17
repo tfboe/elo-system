@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -6,6 +7,10 @@ use App\Exceptions\AuthenticationException;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
+/**
+ * Class Authenticate
+ * @package App\Http\Middleware
+ */
 class Authenticate
 {
 //<editor-fold desc="Fields">

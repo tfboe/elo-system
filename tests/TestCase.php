@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
 
+/**
+ * Class TestCase
+ */
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -13,6 +17,12 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     return require __DIR__ . '/../bootstrap/app.php';
   }
 
+  /**
+   * Gets a protected or private method and makes it accessible
+   * @param string $class the class name
+   * @param string $name the method name
+   * @return ReflectionMethod the accessible method object
+   */
   protected static function getMethod(string $class, string $name)
   {
     $class = new ReflectionClass($class);
@@ -21,6 +31,12 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     return $method;
   }
 
+  /**
+   * Gets a protected or private property and makes it accessible
+   * @param string $class the class name
+   * @param string $name the method name
+   * @return ReflectionProperty the accessible property object
+   */
   protected static function getProperty(string $class, string $name)
   {
     $class = new ReflectionClass($class);

@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
 
+/**
+ * Class UserUnauthenticatedTest
+ */
 class UserUnauthenticatedTest extends DatabaseTestCase
 {
 //<editor-fold desc="Public Methods">
@@ -11,12 +15,16 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testGenerateId()
   {
+    /**
+     * test function for generating an guid
+     * @return string fixed test string
+     */
     function test_com_create_guid()
     {
       return "{test-guid}";
     }
 
-    $this->assertEquals(\App\Entity\Helpers\IdGenerator::create_id_from('test_com_create_guid'),
+    self::assertEquals(\App\Entity\Helpers\IdGenerator::createIdFrom('test_com_create_guid'),
       'test-guid');
   }
 
@@ -24,26 +32,26 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     $property = self::getProperty(\App\Entity\User::class, 'id');
     $property->setValue($user, "\x84invalid");
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
     ])->seeStatusCode(401);
-    $this->assertNull($this->response->headers->get('jwt-token'));
+    self::assertNull($this->response->headers->get('jwt-token'));
   }
 
   public function testLogin()
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
     ])->seeJsonEquals(['id' => $user->getId()])->seeHeader('jwt-token');
-    $this->assertNotNull($this->response->headers->get('jwt-token'));
+    self::assertNotNull($this->response->headers->get('jwt-token'));
     $this->json('GET', '/getUserId')->seeJson(['id' => $user->getId()]);
   }
 
@@ -56,14 +64,4 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     ])->seeJsonStructure(['id']);
   }
 //</editor-fold desc="Public Methods">
-
-//<editor-fold desc="Private Methods">
-  private function loginUser(\App\Entity\User $user, $password)
-  {
-    $this->json('POST', '/login', [
-      'email' => $user->getEmail(),
-      'password' => $password
-    ])->response->headers->get('jwt-token');
-  }
-//</editor-fold desc="Private Methods">
 }

@@ -1,55 +1,12 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: benedikt
  * Date: 9/17/17
  * Time: 12:33 AM
  */
-
-class TestEntity extends \App\Entity\Helpers\BaseEntity
-{
-//<editor-fold desc="Fields">
-  /** @var mixed $prop */
-  public $prop = null;
-
-  /** @var \App\Entity\User */
-  public $user = null;
-//</editor-fold desc="Fields">
-
-//<editor-fold desc="Public Methods">
-  /**
-   * @return mixed
-   */
-  public function getProp()
-  {
-    return $this->prop;
-  }
-
-  /**
-   * @return \App\Entity\User
-   */
-  public function getUser(): \App\Entity\User
-  {
-    return $this->user;
-  }
-
-  /**
-   * @param mixed $prop
-   */
-  public function setProp($prop)
-  {
-    $this->prop = $prop;
-  }
-
-  /**
-   * @param \App\Entity\User $user
-   */
-  public function setUser(\App\Entity\User $user)
-  {
-    $this->user = $user;
-  }
-//</editor-fold desc="Public Methods">
-}
 
 class BaseControllerTest extends DatabaseTestCase
 {
@@ -63,7 +20,7 @@ class BaseControllerTest extends DatabaseTestCase
     $controller = app(\App\Http\Controllers\UserController::class);
     $method = self::getMethod(\App\Http\Controllers\UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
-    $this->assertEquals($value, $object->getProp());
+    self::assertEquals($value, $object->getProp());
   }
 
   public function testProperty()
@@ -75,21 +32,21 @@ class BaseControllerTest extends DatabaseTestCase
     $method = self::getMethod(\App\Http\Controllers\UserController::class, 'setFromSpecification');
     $value = 'test-value';
     $method->invokeArgs($controller, [$object, $specification, ['attr' => $value]]);
-    $this->assertEquals($object->getProp(), $value);
+    self::assertEquals($object->getProp(), $value);
   }
 
   public function testReference()
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     $specification['user'] = ['reference' => \App\Entity\User::class];
     $object = new TestEntity();
     /** @var \App\Http\Controllers\UserController $controller */
     $controller = app(\App\Http\Controllers\UserController::class);
     $method = self::getMethod(\App\Http\Controllers\UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['user' => $user->getId()]]);
-    $this->assertEquals($user, $object->getUser());
+    self::assertEquals($user, $object->getUser());
   }
 
   public function testTransformByType()
@@ -102,7 +59,19 @@ class BaseControllerTest extends DatabaseTestCase
     $controller = app(\App\Http\Controllers\UserController::class);
     $method = self::getMethod(\App\Http\Controllers\UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
-    $this->assertEquals($datetime, $object->getProp());
+    self::assertEquals($datetime, $object->getProp());
+  }
+
+  public function testDefault()
+  {
+    $value = "test-value";
+    $specification['prop'] = ['default' => $value];
+    $object = new TestEntity();
+    /** @var \App\Http\Controllers\UserController $controller */
+    $controller = app(\App\Http\Controllers\UserController::class);
+    $method = self::getMethod(\App\Http\Controllers\UserController::class, 'setFromSpecification');
+    $method->invokeArgs($controller, [$object, $specification, []]);
+    self::assertEquals($value, $object->getProp());
   }
 //</editor-fold desc="Public Methods">
 }

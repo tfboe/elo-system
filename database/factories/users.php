@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: benedikt
@@ -9,8 +10,8 @@
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
 $factory->define(\App\Entity\User::class, function (\Faker\Generator $faker, array $attributes) {
-  if (array_key_exists('unhashedPassword', $attributes)) {
-    $password = $attributes['unhashedPassword'];
+  if (array_key_exists('originalPassword', $attributes)) {
+    $password = $attributes['originalPassword'];
   } else {
     $password = $faker->password(8, 30);
   }

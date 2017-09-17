@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: benedikt
@@ -14,6 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
+/**
+ * Class BaseController
+ * @package App\Http\Controllers
+ */
 class BaseController extends Controller
 {
 //<editor-fold desc="Fields">
@@ -50,15 +55,15 @@ class BaseController extends Controller
       if (!array_key_exists('ignore', $values) || $values['ignore'] != true) {
         $matches = [];
         preg_match('/[^\.]*$/', $key, $matches);
-        $arrKey = $matches[0];
+        $arr_key = $matches[0];
         if (array_key_exists('property', $values)) {
           $property = $values['property'];
         } else {
-          $property = $arrKey;
+          $property = $arr_key;
         }
         $setter = 'set' . ucfirst($property);
-        if (array_key_exists($arrKey, $inputArray)) {
-          $value = $inputArray[$arrKey];
+        if (array_key_exists($arr_key, $inputArray)) {
+          $value = $inputArray[$arr_key];
           if (array_key_exists('reference', $values)) {
             $value = $this->em->find($values['reference'], $value);
           }

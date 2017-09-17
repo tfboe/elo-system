@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -10,6 +11,10 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Application;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+/**
+ * Class UserController
+ * @package App\Http\Controllers
+ */
 class UserController extends BaseController
 {
   /**
@@ -22,16 +27,16 @@ class UserController extends BaseController
    */
   public function register(Request $request, Application $app): JsonResponse
   {
-    $userSpecification = $this->getCredentialSpecification($app);
-    $userSpecification['email']['validation'] .= '|unique:App\Entity\User,email';
-    $userSpecification['repeatedPassword'] = ['validation' => 'required|same:password', 'ignore' => true];
-    $userSpecification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
+    $user_specification = $this->getCredentialSpecification($app);
+    $user_specification['email']['validation'] .= '|unique:App\Entity\User,email';
+    $user_specification['repeatedPassword'] = ['validation' => 'required|same:password', 'ignore' => true];
+    $user_specification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
 
-    $this->validateBySpecification($request, $userSpecification);
+    $this->validateBySpecification($request, $user_specification);
 
     $input = $request->input();
     /** @var User $user */
-    $user = $this->setFromSpecification(new User(), $userSpecification, $input);
+    $user = $this->setFromSpecification(new User(), $user_specification, $input);
 
     $this->em->persist($user);
     $this->em->flush();
@@ -44,12 +49,13 @@ class UserController extends BaseController
    * @param Request $request the http request
    * @param Application $app
    * @return JsonResponse
+   * @throws AuthenticationException wrong credentials or errors during creating a token
    */
   public function login(Request $request, Application $app): JsonResponse
   {
-    $userSpecification = $this->getCredentialSpecification($app);
-    $userSpecification['email']['validation'] .= '|exists:App\Entity\User,email';
-    $this->validateBySpecification($request, $userSpecification);
+    $user_specification = $this->getCredentialSpecification($app);
+    $user_specification['email']['validation'] .= '|exists:App\Entity\User,email';
+    $this->validateBySpecification($request, $user_specification);
 
 
     // grab credentials from the request
@@ -70,6 +76,9 @@ class UserController extends BaseController
     return response()->json(['id' => $user->getId()], 200, ['jwt-token' => $token]);
   }
 
+  /**
+   * @return JsonResponse
+   */
   public function getUserId(): JsonResponse
   {
     return response()->json(['id' => \Auth::user()->getId()]);

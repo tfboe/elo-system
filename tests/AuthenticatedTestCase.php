@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: benedikt
@@ -23,7 +25,15 @@ class AuthenticatedTestCase extends DatabaseTestCase
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Protected Methods">
-  protected function json_auth(string $method, string $uri, array $data = [], array $headers = [])
+  /**
+   * sends a json request with an authentication token
+   * @param string $method the method to use (GET, POST, ...)
+   * @param string $uri the uri of the request
+   * @param array $data the post data
+   * @param array $headers the request headers
+   * @return $this
+   */
+  protected function jsonAuth(string $method, string $uri, array $data = [], array $headers = [])
   {
     $headers['Authorization'] = 'Bearer ' . $this->token;
     return $this->json($method, $uri, $data, $headers);
@@ -31,6 +41,8 @@ class AuthenticatedTestCase extends DatabaseTestCase
 
   protected function workOnDatabaseDestroy()
   {
+    /** @var \Doctrine\DBAL\Connection $connection */
+    /** @noinspection PhpUndefinedMethodInspection */
     $connection = \LaravelDoctrine\ORM\Facades\EntityManager::getConnection();
     $sql = sprintf('TRUNCATE TABLE %s', "users");
     $connection->query($sql);
@@ -41,7 +53,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
   {
     parent::workOnDatabaseSetUp();
     $password = $this->newPassword();
-    $this->user = entity(\App\Entity\User::class)->create(['unhashedPassword' => $password]);
+    $this->user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
     $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
   }
 //</editor-fold desc="Protected Methods">
