@@ -24,7 +24,7 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
     $user->setJwtVersion(2);
     /** @noinspection PhpUndefinedMethodInspection */
     \LaravelDoctrine\ORM\Facades\EntityManager::flush();
-    $this->jsonAuth('GET', '/getUserId')->seeStatusCode(401);
+    $this->jsonAuth('GET', '/userId')->seeStatusCode(401);
     self::assertNull($this->response->headers->get('jwt-token'));
   }
 //</editor-fold desc="Public Methods">
