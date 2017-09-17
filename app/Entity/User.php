@@ -38,7 +38,23 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @var string
    */
   protected $email;
+
+  /**
+   * @ORM\Column(type="integer")
+   * @var int
+   */
+  protected $jwtVersion;
 //</editor-fold desc="Fields">
+
+//<editor-fold desc="Constructor">
+  /**
+   * User constructor.
+   */
+  public function __construct()
+  {
+    $this->jwtVersion = 1;
+  }
+//</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
   /**
@@ -58,15 +74,16 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   }
 
   /**
-   * @param mixed $email
-   * @return $this|User
+   * Return a key value array, containing any custom claims to be added to the JWT.
+   *
+   * @return array
    */
-  public function setEmail($email)
+  public function getJWTCustomClaims()
   {
-    $this->email = $email;
-    return $this;
+    return [
+      'ver' => $this->jwtVersion
+    ];
   }
-//</editor-fold desc="Public Methods">
 
   /**
    * Get the identifier that will be stored in the subject claim of the JWT.
@@ -79,12 +96,31 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   }
 
   /**
-   * Return a key value array, containing any custom claims to be added to the JWT.
-   *
-   * @return array
+   * @return mixed
    */
-  public function getJWTCustomClaims()
+  public function getJwtVersion()
   {
-    return [];
+    return $this->jwtVersion;
   }
+
+  /**
+   * @param mixed $email
+   * @return $this|User
+   */
+  public function setEmail($email)
+  {
+    $this->email = $email;
+    return $this;
+  }
+
+  /**
+   * @param mixed $jwtVersion
+   * @return $this|User
+   */
+  public function setJwtVersion($jwtVersion)
+  {
+    $this->jwtVersion = $jwtVersion;
+    return $this;
+  }
+//</editor-fold desc="Public Methods">
 }

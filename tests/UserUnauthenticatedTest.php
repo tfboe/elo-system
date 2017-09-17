@@ -66,7 +66,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'password' => $password
     ])->seeJsonEquals(['id' => $user->getId()])->seeHeader('jwt-token');
     self::assertNotNull($this->response->headers->get('jwt-token'));
-    $this->json('GET', '/getUserId')->seeJson(['id' => $user->getId()]);
   }
 
   public function testRegisterUser()

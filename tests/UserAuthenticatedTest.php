@@ -15,5 +15,17 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
   {
     $this->jsonAuth('GET', '/getUserId')->seeJsonEquals(['id' => $this->user->getId()]);
   }
+
+  public function testInvalidateToken()
+  {
+    /** @var \App\Entity\User $user */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $user = \LaravelDoctrine\ORM\Facades\EntityManager::find(\App\Entity\User::class, $this->user->getId());
+    $user->setJwtVersion(2);
+    /** @noinspection PhpUndefinedMethodInspection */
+    \LaravelDoctrine\ORM\Facades\EntityManager::flush();
+    $this->jsonAuth('GET', '/getUserId')->seeStatusCode(401);
+    self::assertNull($this->response->headers->get('jwt-token'));
+  }
 //</editor-fold desc="Public Methods">
 }

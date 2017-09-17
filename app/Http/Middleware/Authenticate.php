@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Entity\User;
 use App\Exceptions\AuthenticationException;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Tymon\JWTAuth\Payload;
 
 /**
  * Class Authenticate
@@ -46,8 +48,17 @@ class Authenticate
    */
   public function handle($request, Closure $next, $guard = null)
   {
-    if ($this->auth->guard($guard)->guest()) {
+    $g = $this->auth->guard($guard);
+    if ($g->guest()) {
       throw new AuthenticationException("Not logged in!");
+    }
+    /** @var Payload $payload */
+    $payload = $g->getPayload();
+    /** @var User $user */
+    $user = $g->getUser();
+    if (!$payload->hasKey('ver') || !($user instanceof User) || $payload->get(['ver'])[0] <
+      $user->getJwtVersion()) {
+      throw new AuthenticationException("Payload version expired!");
     }
 
     return $next($request);
