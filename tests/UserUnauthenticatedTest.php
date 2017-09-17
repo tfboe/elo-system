@@ -9,7 +9,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 //<editor-fold desc="Public Methods">
   public function testAuthenticationError()
   {
-    $this->json('GET', '/getUserId')->seeStatusCode(401)->seeJsonEquals(
+    $this->json('GET', '/userId')->seeStatusCode(401)->seeJsonEquals(
       ["status" => 401, "message" => "Not logged in!"]);
   }
 
