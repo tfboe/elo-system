@@ -59,6 +59,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   public function __construct()
   {
     $this->jwtVersion = 1;
+    $this->lastConfirmedAGBVersion = 0;
   }
 //</editor-fold desc="Constructor">
 
