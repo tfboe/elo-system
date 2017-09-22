@@ -4,11 +4,8 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class Handler
@@ -23,9 +20,6 @@ class Handler extends ExceptionHandler
    * @var array
    */
   protected $dontReport = [
-    AuthorizationException::class,
-    HttpException::class,
-    ModelNotFoundException::class,
     ValidationException::class,
   ];
 //</editor-fold desc="Fields">
@@ -41,16 +35,18 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $e)
   {
-    //this is a only json api!
-    //if ($request->ajax() || $request->wantsJson()) {
+    foreach ($this->dontReport as $class) {
+      if (is_a($e, $class)) {
+        return parent::render($request, $e);
+      }
+    }
     //don't throw html exceptions always render using json
     $status_code = $this->getExceptionHTTPStatusCode($e);
+
     return response()->json(
       $this->getJsonMessage($e, $status_code),
       $this->getExceptionHTTPStatusCode($e)
     );
-    //}
-    //return parent::render($request, $e);
   }
 
   /**

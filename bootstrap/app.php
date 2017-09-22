@@ -119,10 +119,10 @@ try {
 |
 */
 
-/** @noinspection PhpUnusedParameterInspection */
 $app->router->group([
   'namespace' => 'App\Http\Controllers',
-], function ($router) {
+], function (/** @noinspection PhpUnusedParameterInspection */
+  $router) {
   require __DIR__ . '/../routes/web.php';
 });
 

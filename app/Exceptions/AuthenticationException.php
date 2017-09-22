@@ -16,7 +16,7 @@ use Throwable;
  * Class AuthenticationException
  * @package App\Exceptions
  */
-class AuthenticationException extends \Exception
+class AuthenticationException extends AbstractException
 {
 //<editor-fold desc="Constructor">
   /**

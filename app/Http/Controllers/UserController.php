@@ -21,7 +21,6 @@ class UserController extends BaseController
    * register action, registers a new user with email and password
    *
    * @param Request $request the http request
-   *
    * @param Application $app
    * @return JsonResponse
    */
@@ -52,9 +51,7 @@ class UserController extends BaseController
    */
   public function login(Request $request, Application $app): JsonResponse
   {
-    $user_specification = $this->getCredentialSpecification($app);
-    $user_specification['email']['validation'] .= '|exists:App\Entity\User,email';
-    $this->validateBySpecification($request, $user_specification);
+    $this->validateBySpecification($request, $this->getCredentialSpecification($app));
 
 
     // grab credentials from the request
@@ -93,7 +90,7 @@ class UserController extends BaseController
     /** @var Hasher $hasher */
     return [
       'email' => ['validation' => 'required|email'],
-      'password' => ['validation' => 'required|min:8',
+      'password' => ['validation' => 'required|string|min:8',
         'transformer' => function ($x) use ($app) {
           return $app['hash']->make($x);
         }]
