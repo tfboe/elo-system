@@ -44,6 +44,12 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @var int
    */
   protected $jwtVersion;
+
+  /**
+   * @ORM\Column(type="integer")
+   * @var int
+   */
+  protected $lastConfirmedAGBVersion;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -104,6 +110,14 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   }
 
   /**
+   * @return mixed
+   */
+  public function getLastConfirmedAGBVersion()
+  {
+    return $this->lastConfirmedAGBVersion;
+  }
+
+  /**
    * @param mixed $email
    * @return $this|User
    */
@@ -120,6 +134,16 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   public function setJwtVersion($jwtVersion)
   {
     $this->jwtVersion = $jwtVersion;
+    return $this;
+  }
+
+  /**
+   * @param mixed $lastConfirmedAGBVersion
+   * @return $this|User
+   */
+  public function setLastConfirmedAGBVersion($lastConfirmedAGBVersion)
+  {
+    $this->lastConfirmedAGBVersion = $lastConfirmedAGBVersion;
     return $this;
   }
 //</editor-fold desc="Public Methods">
