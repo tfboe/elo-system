@@ -13,6 +13,35 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       ["status" => 401, "message" => "Not logged in!"]);
   }
 
+  public function testCannotRecognizeExistingUsername()
+  {
+    $password = $this->newPassword();
+    /** @var \App\Entity\User $user */
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $this->json('POST', '/login', [
+      'email' => $user->getEmail(),
+      'password' => $password . "wrong-password"
+    ]);
+    $headers1 = $this->response->headers->all();
+    if (array_key_exists("date", $headers1)) {
+      unset($headers1["date"]);
+    }
+    $content1 = $this->response->content();
+
+    $this->json('POST', '/login', [
+      'email' => $user->getEmail() . "wrong-email",
+      'password' => $password . "wrong-password"
+    ]);
+
+    $headers2 = $this->response->headers->all();
+    if (array_key_exists("date", $headers2)) {
+      unset($headers2["date"]);
+    }
+    $content2 = $this->response->content();
+    self::assertEquals(json_encode($headers1), json_encode($headers2));
+    self::assertEquals($content1, $content2);
+  }
+
   public function testDoubleEmail()
   {
     $user = entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
@@ -66,59 +95,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     self::assertNull($this->response->headers->get('jwt-token'));
   }
 
-  public function testWrongPassword()
-  {
-    $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
-    $this->json('POST', '/login', [
-      'email' => $user->getEmail(),
-      'password' => $password . "wrong-password"
-    ])->seeStatusCode(401);
-    self::assertNull($this->response->headers->get('jwt-token'));
-  }
-
-  public function testWrongUsername()
-  {
-    $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
-    $this->json('POST', '/login', [
-      'email' => $user->getEmail() . "wrong-email",
-      'password' => $password
-    ])->seeStatusCode(401);
-    self::assertNull($this->response->headers->get('jwt-token'));
-  }
-
-  public function testCannotRecognizeExistingUsername()
-  {
-    $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
-    $this->json('POST', '/login', [
-      'email' => $user->getEmail(),
-      'password' => $password . "wrong-password"
-    ]);
-    $headers1 = $this->response->headers->all();
-    if (array_key_exists("date", $headers1)) {
-      unset($headers1["date"]);
-    }
-    $content1 = $this->response->content();
-
-    $this->json('POST', '/login', [
-      'email' => $user->getEmail() . "wrong-email",
-      'password' => $password . "wrong-password"
-    ]);
-
-    $headers2 = $this->response->headers->all();
-    if (array_key_exists("date", $headers2)) {
-      unset($headers2["date"]);
-    }
-    $content2 = $this->response->content();
-    self::assertEquals(json_encode($headers1), json_encode($headers2));
-    self::assertEquals($content1, $content2);
-  }
-
   public function testInvalidEmailValidation()
   {
     $this->json('POST', '/register', [
@@ -170,6 +146,17 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'password' => $password
     ])->seeJsonEquals(['id' => $user->getId()])->seeHeader('jwt-token');
     self::assertNotNull($this->response->headers->get('jwt-token'));
+  }
+
+  public function testMultipleValidationErrors()
+  {
+    $this->json('POST', '/register', [
+      'password' => 5
+    ])->seeStatusCode(422)->seeJsonEquals(
+      [
+        "email" => ["The email field is required."],
+        "password" => ["The password must be a string.", "The password must be at least 8 characters."]
+      ]);
   }
 
   public function testNegativeLastConfirmedAGBVersion()
@@ -254,6 +241,30 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'email' => $user->getEmail(),
       'password' => 'short'
     ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password must be at least 8 characters."]]);
+  }
+
+  public function testWrongPassword()
+  {
+    $password = $this->newPassword();
+    /** @var \App\Entity\User $user */
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $this->json('POST', '/login', [
+      'email' => $user->getEmail(),
+      'password' => $password . "wrong-password"
+    ])->seeStatusCode(401);
+    self::assertNull($this->response->headers->get('jwt-token'));
+  }
+
+  public function testWrongUsername()
+  {
+    $password = $this->newPassword();
+    /** @var \App\Entity\User $user */
+    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $this->json('POST', '/login', [
+      'email' => $user->getEmail() . "wrong-email",
+      'password' => $password
+    ])->seeStatusCode(401);
+    self::assertNull($this->response->headers->get('jwt-token'));
   }
 //</editor-fold desc="Public Methods">
 }
