@@ -8,6 +8,12 @@ declare(strict_types=1);
  * Time: 2:04 PM
  */
 
+namespace Tests\Integration;
+
+use App\Entity\User;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+use Tests\Helpers\AuthenticatedTestCase;
+
 class UserAuthenticatedTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
@@ -18,12 +24,12 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
 
   public function testInvalidateToken()
   {
-    /** @var \App\Entity\User $user */
+    /** @var User $user */
     /** @noinspection PhpUndefinedMethodInspection */
-    $user = \LaravelDoctrine\ORM\Facades\EntityManager::find(\App\Entity\User::class, $this->user->getId());
+    $user = EntityManager::find(User::class, $this->user->getId());
     $user->setJwtVersion(2);
     /** @noinspection PhpUndefinedMethodInspection */
-    \LaravelDoctrine\ORM\Facades\EntityManager::flush();
+    EntityManager::flush();
     $this->jsonAuth('GET', '/userId')->seeStatusCode(401);
     self::assertNull($this->response->headers->get('jwt-token'));
   }

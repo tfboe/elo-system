@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+namespace Tests\Integration;
+
+use App\Entity\User;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+use Tests\Helpers\DatabaseTestCase;
+
 /**
  * Class UserUnauthenticatedTest
  */
@@ -17,7 +23,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password . "wrong-password"
@@ -44,7 +50,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testDoubleEmail()
   {
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/register', [
       'email' => $user->getEmail(),
       'password' => 'testPassword2'
@@ -60,33 +66,18 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testEmailRequiredValidationLogin()
   {
-    entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'password' => 'testPassword'
     ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email field is required."]]);
-  }
-
-  public function testGenerateId()
-  {
-    /**
-     * test function for generating an guid
-     * @return string fixed test string
-     */
-    function test_com_create_guid()
-    {
-      return "{test-guid}";
-    }
-
-    self::assertEquals(\App\Entity\Helpers\IdGenerator::createIdFrom('test_com_create_guid'),
-      'test-guid');
   }
 
   public function testInvalidCredentials()
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
-    $property = self::getProperty(\App\Entity\User::class, 'id');
+    $user = entity(User::class)->create(['originalPassword' => $password]);
+    $property = self::getProperty(User::class, 'id');
     $property->setValue($user, "\x84invalid");
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -105,7 +96,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testInvalidEmailValidationLogin()
   {
-    entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => 'invalidEmail',
       'password' => 'testPassword'
@@ -116,8 +107,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
-    $property = self::getProperty(\App\Entity\User::class, 'id');
+    $user = entity(User::class)->create(['originalPassword' => $password]);
+    $property = self::getProperty(User::class, 'id');
     $property->setValue($user, "\x84invalid");
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -140,7 +131,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
@@ -180,7 +171,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testNoStringPasswordLogin()
   {
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 16511233
@@ -197,7 +188,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testPasswordRequiredValidationLogin()
   {
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail()
     ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password field is required."]]);
@@ -221,7 +212,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $result = json_decode($this->response->getContent(), true);
     /** @var \App\Entity\User $user */
     /** @noinspection PhpUndefinedMethodInspection */
-    $user = \LaravelDoctrine\ORM\Facades\EntityManager::find(\App\Entity\User::class, $result['id']);
+    $user = EntityManager::find(User::class, $result['id']);
     self::assertEquals(5, $user->getLastConfirmedAGBVersion());
   }
 
@@ -236,7 +227,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testTooShortPasswordLogin()
   {
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => 'testPassword']);
+    $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 'short'
@@ -247,7 +238,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password . "wrong-password"
@@ -259,7 +250,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail() . "wrong-email",
       'password' => $password

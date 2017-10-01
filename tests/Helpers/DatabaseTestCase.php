@@ -4,6 +4,13 @@ declare(strict_types=1);
 /**
  * Class DatabaseTestCase
  */
+
+namespace Tests\Helpers;
+
+use App\Entity\User;
+use Faker\Factory;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+
 abstract class DatabaseTestCase extends TestCase
 {
 //<editor-fold desc="Fields">
@@ -23,7 +30,7 @@ abstract class DatabaseTestCase extends TestCase
   public function __construct($name = null, array $data = [], $dataName = '')
   {
     parent::__construct($name, $data, $dataName);
-    $this->faker = Faker\Factory::create();
+    $this->faker = Factory::create();
   }
 //</editor-fold desc="Constructor">
 
@@ -36,7 +43,7 @@ abstract class DatabaseTestCase extends TestCase
   {
     /** @var \Doctrine\DBAL\Connection $connection */
     /** @noinspection PhpUndefinedMethodInspection */
-    $connection = \LaravelDoctrine\ORM\Facades\EntityManager::getConnection();
+    $connection = EntityManager::getConnection();
     $connection->query(sprintf('SET FOREIGN_KEY_CHECKS = 0;'));
     $tables = $connection->getSchemaManager()->listTables();
     foreach ($tables as $table) {
@@ -53,8 +60,8 @@ abstract class DatabaseTestCase extends TestCase
   protected function createUser()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
-    $user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    /** @var User $user */
+    $user = entity(User::class)->create(['originalPassword' => $password]);
     return [
       'password' => $password,
       'user' => $user
@@ -85,7 +92,7 @@ abstract class DatabaseTestCase extends TestCase
     } else {
       $this->workOnDatabaseSetUp();
       /** @noinspection PhpUndefinedMethodInspection */
-      LaravelDoctrine\ORM\Facades\EntityManager::beginTransaction();
+      EntityManager::beginTransaction();
     }
 
     $this->beforeApplicationDestroyed(function () use ($clear) {
@@ -94,7 +101,7 @@ abstract class DatabaseTestCase extends TestCase
         $this->clearDatabase();
       } else {
         /** @noinspection PhpUndefinedMethodInspection */
-        LaravelDoctrine\ORM\Facades\EntityManager::rollback();
+        EntityManager::rollback();
         $this->workOnDatabaseDestroy();
       }
     });

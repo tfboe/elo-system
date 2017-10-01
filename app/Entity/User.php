@@ -65,10 +65,11 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
 
 //<editor-fold desc="Public Methods">
   /**
-   * @return mixed
+   * @return string
    */
-  public function getEmail()
+  public function getEmail(): string
   {
+    $this->ensureNotNull("email");
     return $this->email;
   }
 
@@ -77,6 +78,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    */
   public function getId(): string
   {
+    $this->ensureNotNull("id");
     return $this->id;
   }
 
@@ -85,7 +87,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    *
    * @return array
    */
-  public function getJWTCustomClaims()
+  public function getJWTCustomClaims(): array
   {
     return [
       'ver' => $this->jwtVersion
@@ -95,25 +97,25 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   /**
    * Get the identifier that will be stored in the subject claim of the JWT.
    *
-   * @return mixed
+   * @return string
    */
-  public function getJWTIdentifier()
+  public function getJWTIdentifier(): string
   {
     return $this->getId();
   }
 
   /**
-   * @return mixed
+   * @return int
    */
-  public function getJwtVersion()
+  public function getJwtVersion(): int
   {
     return $this->jwtVersion;
   }
 
   /**
-   * @return mixed
+   * @return int
    */
-  public function getLastConfirmedAGBVersion()
+  public function getLastConfirmedAGBVersion(): int
   {
     return $this->lastConfirmedAGBVersion;
   }
@@ -122,7 +124,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @param mixed $email
    * @return $this|User
    */
-  public function setEmail($email)
+  public function setEmail($email): User
   {
     $this->email = $email;
     return $this;
@@ -132,7 +134,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @param mixed $jwtVersion
    * @return $this|User
    */
-  public function setJwtVersion($jwtVersion)
+  public function setJwtVersion($jwtVersion): User
   {
     $this->jwtVersion = $jwtVersion;
     return $this;
@@ -142,7 +144,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @param mixed $lastConfirmedAGBVersion
    * @return $this|User
    */
-  public function setLastConfirmedAGBVersion($lastConfirmedAGBVersion)
+  public function setLastConfirmedAGBVersion($lastConfirmedAGBVersion): User
   {
     $this->lastConfirmedAGBVersion = $lastConfirmedAGBVersion;
     return $this;

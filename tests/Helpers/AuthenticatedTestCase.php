@@ -8,6 +8,12 @@ declare(strict_types=1);
  * Time: 2:04 PM
  */
 
+namespace Tests\Helpers;
+
+use App\Entity\User;
+use Doctrine\DBAL\Connection;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+
 class AuthenticatedTestCase extends DatabaseTestCase
 {
 //<editor-fold desc="Fields">
@@ -41,10 +47,10 @@ class AuthenticatedTestCase extends DatabaseTestCase
 
   protected function workOnDatabaseDestroy()
   {
-    /** @var \Doctrine\DBAL\Connection $connection */
+    /** @var Connection $connection */
     /** @noinspection PhpUndefinedMethodInspection */
-    $connection = \LaravelDoctrine\ORM\Facades\EntityManager::getConnection();
-    $sql = sprintf('TRUNCATE TABLE %s', "users");
+    $connection = EntityManager::getConnection();
+    $sql = sprintf('SET FOREIGN_KEY_CHECKS=0;TRUNCATE TABLE %s;SET FOREIGN_KEY_CHECKS=1;', "users");
     $connection->query($sql);
     parent::workOnDatabaseDestroy();
   }
@@ -53,7 +59,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
   {
     parent::workOnDatabaseSetUp();
     $password = $this->newPassword();
-    $this->user = entity(\App\Entity\User::class)->create(['originalPassword' => $password]);
+    $this->user = entity(User::class)->create(['originalPassword' => $password]);
     $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
     $this->refreshApplication();
   }

@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler
 
     return response()->json(
       $this->getJsonMessage($e, $status_code),
-      $this->getExceptionHTTPStatusCode($e)
+      $status_code
     );
   }
 
@@ -75,19 +75,6 @@ class Handler extends ExceptionHandler
     // We will give Error 500 if none found
     return method_exists($e, 'getStatusCode') ? $e->getStatusCode() :
       ($e->getCode() != 0 ? $e->getCode() : 500);
-  }
-
-  /**
-   * Report or log an exception.
-   *
-   * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-   *
-   * @param  \Exception $e
-   * @return void
-   */
-  public function report(Exception $e)
-  {
-    parent::report($e);
   }
 //</editor-fold desc="Public Methods">
 }

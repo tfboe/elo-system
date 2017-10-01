@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Helpers;
 
+use App\Exceptions\ValueNotSet;
+
 /**
  * Class BaseEntity
  * @package App\Entity\Helpers
@@ -23,5 +25,13 @@ class BaseEntity
   public function methodExists(string $method)
   {
     return method_exists($this, $method);
+  }
+
+  public function ensureNotNull(string $property)
+  {
+    /** @noinspection PhpVariableVariableInspection */
+    if ($this->$property == null) {
+      throw new ValueNotSet(static::class, $property);
+    }
   }
 }

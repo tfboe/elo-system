@@ -75,4 +75,8 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
   $router->get('userId', [
     'as' => 'userId', 'uses' => 'UserController@userId'
   ]);
+
+  $router->post('createOrUpdateTournament', [
+    'as' => 'createOrUpdateTournament', 'uses' => 'TournamentController@createOrUpdateTournament'
+  ]);
 });

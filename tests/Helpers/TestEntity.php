@@ -7,7 +7,13 @@ declare(strict_types=1);
  * Date: 9/17/17
  * Time: 1:44 AM
  */
-class TestEntity extends \App\Entity\Helpers\BaseEntity
+
+namespace Tests\Helpers;
+
+use App\Entity\Helpers\BaseEntity;
+use App\Entity\User;
+
+class TestEntity extends BaseEntity
 {
 //<editor-fold desc="Fields">
   /** @var mixed $prop */
@@ -27,9 +33,9 @@ class TestEntity extends \App\Entity\Helpers\BaseEntity
   }
 
   /**
-   * @return \App\Entity\User
+   * @return User
    */
-  public function getUser(): \App\Entity\User
+  public function getUser(): User
   {
     return $this->user;
   }
@@ -43,9 +49,9 @@ class TestEntity extends \App\Entity\Helpers\BaseEntity
   }
 
   /**
-   * @param \App\Entity\User $user
+   * @param User $user
    */
-  public function setUser(\App\Entity\User $user)
+  public function setUser(User $user)
   {
     $this->user = $user;
   }
