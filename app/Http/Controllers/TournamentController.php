@@ -46,14 +46,20 @@ class TournamentController extends BaseController
     $this->validateBySpecification($request, $specification);
 
     assert(\Auth::user()->getId() != null);
-    /** @var Tournament $tournament */
-    $tournament = $this->setFromSpecification(new Tournament(), $specification, $request->input());
-    $tournament->setCreator(\Auth::user());
-
-    $this->em->persist($tournament);
+    /** @var Tournament|null $tournament */
+    $tournament = $this->em->getRepository(Tournament::class)->findOneBy(
+      ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
+    $type = 'update';
+    if ($tournament == null) {
+      $tournament = new Tournament();
+      $tournament->setCreator(\Auth::user());
+      $this->em->persist($tournament);
+      $type = 'create';
+    }
+    $this->setFromSpecification($tournament, $specification, $request->input());
     $this->em->flush();
 
-    return response()->json(['type' => 'create']);
+    return response()->json(['type' => $type]);
   }
 //</editor-fold desc="Public Methods">
 }

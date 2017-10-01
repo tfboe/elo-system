@@ -75,5 +75,48 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertNull($tournament->getTable());
     self::assertNotEmpty($tournament->getId());
   }
+
+  public function testTournamentUpdate()
+  {
+    /** @var Tournament $tournament */
+    $tournament = entity(Tournament::class)->create([
+      'userIdentifier' => 't1',
+      'creator' => $this->user,
+      'gameMode' => GameMode::CLASSIC
+    ]);
+    $id = $tournament->getId();
+    self::assertEquals('t1', $tournament->getUserIdentifier());
+    self::assertEquals('', $tournament->getTournamentListId());
+    self::assertEquals(GameMode::CLASSIC, $tournament->getGameMode());
+    self::assertNull($tournament->getOrganizingMode());
+    self::assertNull($tournament->getScoreMode());
+    self::assertNull($tournament->getTeamMode());
+    self::assertNull($tournament->getTable());
+    $this->jsonAuth('POST', '/createOrUpdateTournament', [
+      'name' => 'New Name',
+      'userIdentifier' => 't1',
+      'gameMode' => 'OFFICIAL',
+      'table' => 'GARLANDO'
+    ])->seeJsonEquals(['type' => 'update']);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    /** @var Tournament[] $tournaments */
+    $tournaments = $repo->findAll();
+    self::assertEquals(1, count($tournaments));
+    $new_tournament = $tournaments[0];
+    self::assertEquals($id, $new_tournament->getId());
+    self::assertEquals('t1', $new_tournament->getUserIdentifier());
+    self::assertEquals($this->user, $new_tournament->getCreator());
+    self::assertEquals('', $new_tournament->getTournamentListId());
+    self::assertNull($new_tournament->getTeamMode());
+    self::assertNull($new_tournament->getScoreMode());
+    self::assertNull($new_tournament->getOrganizingMode());
+    self::assertEquals(GameMode::OFFICIAL, $new_tournament->getGameMode());
+    self::assertEquals('New Name', $new_tournament->getName());
+    self::assertEquals(Table::GARLANDO, $new_tournament->getTable());
+    self::assertEquals($tournament, $new_tournament);
+  }
 //</editor-fold desc="Public Methods">
 }
