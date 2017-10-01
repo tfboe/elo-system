@@ -13,6 +13,10 @@ use App\Entity\Categories\GameMode;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class GameModeTest
+ * @package Tests\Unit\App\Entity\CategoryTraits
+ */
 class GameModeTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

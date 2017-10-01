@@ -15,6 +15,10 @@ use App\Http\Controllers\UserController;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEntity;
 
+/**
+ * Class BaseControllerTest
+ * @package Tests\Unit\App\Http\Controllers
+ */
 class BaseControllerTest extends TestCase
 {
   //tests also private method disable this tests as soon as all are used in public interfaces

@@ -13,6 +13,10 @@ namespace Tests\Unit\App\Exceptions;
 use App\Exceptions\ValueNotSet;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class ValueNotSetTest
+ * @package Tests\Unit\App\Exceptions
+ */
 class ValueNotSetTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

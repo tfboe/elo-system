@@ -11,6 +11,10 @@ use App\Entity\User;
 use Faker\Factory;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
+/**
+ * Class DatabaseTestCase
+ * @package Tests\Helpers
+ */
 abstract class DatabaseTestCase extends TestCase
 {
 //<editor-fold desc="Fields">

@@ -12,8 +12,13 @@ namespace Tests\Unit\App\Entity;
 use App\Entity\Tournament;
 use App\Entity\User;
 use App\Exceptions\ValueNotSet;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class TournamentTest
+ * @package Tests\Unit\App\Entity
+ */
 class TournamentTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -33,6 +38,14 @@ class TournamentTest extends TestCase
       "can be accessed. Please set the property immediately after you call the constructor" .
       "(Empty Constructor Pattern).");
     $tournament->getCreator();
+  }
+
+  public function testId()
+  {
+    $tournament = $this->tournament();
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($tournament);
+    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $tournament->getId());
   }
 
   public function testIdException()
@@ -87,6 +100,9 @@ class TournamentTest extends TestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+  /**
+   * @return Tournament a new tournament
+   */
   private function tournament(): Tournament
   {
     return new Tournament();

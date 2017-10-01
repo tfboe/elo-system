@@ -19,11 +19,12 @@ class ValueNotValid extends AbstractException
   /**
    * @param mixed $value
    * @param string|null $enum_name the corresponding enum class name or null
+   * @param string $valueFunction the function to call on the enum class to get the list of possible values
    */
-  public function __construct($value, ?string $enum_name = null)
+  public function __construct($value, ?string $enum_name = null, string $valueFunction = "getValues")
   {
     $message = "The following value is not valid: " . json_encode($value);
-    if ($enum_name != null && method_exists($enum_name, "getValues")) {
+    if ($enum_name != null && method_exists($enum_name, $valueFunction)) {
       /** @var mixed[] $values */
       $values = call_user_func([$enum_name, 'getValues']);
       assert(!in_array($value, $values));

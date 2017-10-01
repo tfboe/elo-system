@@ -14,6 +14,10 @@ use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEnum;
 
+/**
+ * Class ValueNotValidTest
+ * @package Tests\Unit\App\Exceptions
+ */
 class ValueNotValidTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

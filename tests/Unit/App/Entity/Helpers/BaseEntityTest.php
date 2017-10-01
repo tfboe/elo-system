@@ -12,6 +12,10 @@ namespace Tests\Unit\App\Entity\Helpers;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEntity;
 
+/**
+ * Class BaseEntityTest
+ * @package Tests\Unit\App\Entity\Helpers
+ */
 class BaseEntityTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

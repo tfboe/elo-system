@@ -13,6 +13,10 @@ namespace Tests\Helpers;
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\User;
 
+/**
+ * Class TestEntity
+ * @package Tests\Helpers
+ */
 class TestEntity extends BaseEntity
 {
 //<editor-fold desc="Fields">

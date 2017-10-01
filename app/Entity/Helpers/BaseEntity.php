@@ -27,6 +27,11 @@ class BaseEntity
     return method_exists($this, $method);
   }
 
+  /**
+   * Ensures that the given property is not null and throws an exception otherwise
+   * @param string $property the property name to check for null
+   * @throws ValueNotSet if the value of the property is null
+   */
   public function ensureNotNull(string $property)
   {
     /** @noinspection PhpVariableVariableInspection */

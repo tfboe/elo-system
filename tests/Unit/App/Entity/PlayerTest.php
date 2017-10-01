@@ -13,6 +13,10 @@ use App\Entity\Player;
 use App\Exceptions\ValueNotSet;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class PlayerTest
+ * @package Tests\Unit\App\Entity
+ */
 class PlayerTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -66,6 +70,9 @@ class PlayerTest extends TestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+  /**
+   * @return Player a new player
+   */
   private function player(): Player
   {
     return new Player();

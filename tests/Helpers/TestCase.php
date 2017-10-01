@@ -7,6 +7,10 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
+/**
+ * Class TestCase
+ * @package Tests\Helpers
+ */
 abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
 {
 //<editor-fold desc="Public Methods">

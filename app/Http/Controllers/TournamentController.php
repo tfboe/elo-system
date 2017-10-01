@@ -31,11 +31,16 @@ class TournamentController extends BaseController
       'userIdentifier' => ['validation' => 'required|string'],
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string'],
-      'gameMode' => ['validation' => 'in:' . implode(",", GameMode::getValues())],
-      'organizingMode' => ['validation' => 'in:' . implode(",", OrganizingMode::getValues())],
-      'scoreMode' => ['validation' => 'in:' . implode(",", ScoreMode::getValues())],
-      'table' => ['validation' => 'in:' . implode(",", Table::getValues())],
-      'teamMode' => ['validation' => 'in:' . implode(",", TeamMode::getValues())],
+      'gameMode' => ['validation' => 'string|in:' . implode(",", GameMode::getNames()),
+        'transformer' => $this->enumTransformer(GameMode::class)],
+      'organizingMode' => ['validation' => 'string|in:' . implode(",", OrganizingMode::getNames()),
+        'transformer' => $this->enumTransformer(OrganizingMode::class)],
+      'scoreMode' => ['validation' => 'string|in:' . implode(",", ScoreMode::getNames()),
+        'transformer' => $this->enumTransformer(ScoreMode::class)],
+      'table' => ['validation' => 'string|in:' . implode(",", Table::getNames()),
+        'transformer' => $this->enumTransformer(Table::class)],
+      'teamMode' => ['validation' => 'string|in:' . implode(",", TeamMode::getNames()),
+        'transformer' => $this->enumTransformer(TeamMode::class)],
     ];
 
     $this->validateBySpecification($request, $specification);

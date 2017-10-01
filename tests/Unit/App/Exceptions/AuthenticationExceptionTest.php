@@ -13,6 +13,10 @@ namespace Tests\Unit\App\Exceptions;
 use App\Exceptions\AuthenticationException;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class AuthenticationExceptionTest
+ * @package Tests\Unit\App\Exceptions
+ */
 class AuthenticationExceptionTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

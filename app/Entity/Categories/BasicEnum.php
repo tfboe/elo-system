@@ -20,14 +20,57 @@ abstract class BasicEnum
 //<editor-fold desc="Fields">
   /** @var null|mixed[][] */
   private static $constCacheArray = NULL;
+
+  /** @var null|string[][] */
+  private static $constCacheArrayCaseMapping = NULL;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
+  /**
+   * Ensures that the given value is valid by throwing an exception if it is not valid
+   * @param mixed $value the value to check for validity
+   * @param bool $strict if yes type checks are performed
+   * @throws ValueNotValid if the value is not valid
+   */
   public static function ensureValidValue($value, bool $strict = true): void
   {
     if (!self::isValidValue($value, $strict)) {
       throw new ValueNotValid($value, get_called_class());
     }
+  }
+
+  /**
+   * Gets a list of all names in this enum
+   * @return mixed[]
+   */
+  public static function getNames(): array
+  {
+    return array_keys(self::getConstants());
+  }
+
+  /**
+   * Gets the value corresponding to the given name
+   * @param string $name the name for which to get the value
+   * @param bool $strict if yes retrieval is done case sensitive and otherwise case insensitive
+   * @return mixed the corresponding value
+   * @throws ValueNotValid if the name is not valid
+   */
+  public static function getValue(string $name, bool $strict = false)
+  {
+    $constants = self::getConstants();
+    if ($strict) {
+      if (array_key_exists($name, $constants)) {
+        return $constants[$name];
+      }
+    } else {
+      $mapping = self::getCaseMapping();
+      $key = strtolower($name);
+      if (array_key_exists($key, $mapping)) {
+        return $constants[$mapping[$key]];
+      }
+    }
+
+    throw new ValueNotValid($name, get_called_class(), "getNames");
   }
 
   /**
@@ -71,6 +114,26 @@ abstract class BasicEnum
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+
+  /**
+   * Gets a case mapping which maps a lower case names to the real enum names
+   * @return mixed[]
+   */
+  private static function getCaseMapping(): array
+  {
+    if (self::$constCacheArrayCaseMapping == NULL) {
+      self::$constCacheArrayCaseMapping = [];
+    }
+    $called_class = get_called_class();
+    if (!array_key_exists($called_class, self::$constCacheArrayCaseMapping)) {
+      self::$constCacheArrayCaseMapping[$called_class] = [];
+      foreach (self::getNames() as $name) {
+        self::$constCacheArrayCaseMapping[$called_class][strtolower($name)] = $name;
+      }
+    }
+    return self::$constCacheArrayCaseMapping[$called_class];
+  }
+
   /**
    * Gets a dictionary of all constants in this enum
    * @return mixed[]

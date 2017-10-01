@@ -13,6 +13,10 @@ use App\Entity\User;
 use App\Exceptions\ValueNotSet;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class UserTest
+ * @package Tests\Unit\App\Entity
+ */
 class UserTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -76,6 +80,9 @@ class UserTest extends TestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+  /**
+   * @return User a new user
+   */
   private function user(): User
   {
     return new User();

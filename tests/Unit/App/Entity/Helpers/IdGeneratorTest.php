@@ -12,6 +12,10 @@ namespace Tests\Unit\App\Entity\Helpers;
 use App\Entity\Helpers\IdGenerator;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class IdGeneratorTest
+ * @package Tests\Unit\App\Entity\Helpers
+ */
 class IdGeneratorTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

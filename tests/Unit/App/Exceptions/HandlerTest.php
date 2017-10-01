@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class HandlerTest
+ * @package Tests\Unit\App\Exceptions
+ */
 class HandlerTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -51,11 +55,17 @@ class HandlerTest extends TestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+  /**
+   * @return Handler a new handler
+   */
   private function handler()
   {
     return new Handler();
   }
 
+  /**
+   * @return Request a new request
+   */
   private function request()
   {
     return new Request();

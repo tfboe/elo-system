@@ -13,6 +13,10 @@ use App\Entity\Categories\ScoreMode;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class ScoreModeTest
+ * @package Tests\Unit\App\Entity\CategoryTraits
+ */
 class ScoreModeTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

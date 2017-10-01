@@ -13,6 +13,10 @@ use App\Entity\Categories\OrganizingMode;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class OrganizingModeTest
+ * @package Tests\Unit\App\Entity\CategoryTraits
+ */
 class OrganizingModeTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

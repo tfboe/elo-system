@@ -13,6 +13,10 @@ use App\Entity\Categories\TeamMode;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class TeamModeTest
+ * @package Tests\Unit\App\Entity\CategoryTraits
+ */
 class TeamModeTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

@@ -14,6 +14,10 @@ use App\Entity\User;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 
+/**
+ * Class UserAuthenticatedTest
+ * @package Tests\Integration
+ */
 class UserAuthenticatedTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">

@@ -13,6 +13,10 @@ use App\Entity\Categories\Table;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 
+/**
+ * Class TableTest
+ * @package Tests\Unit\App\Entity\CategoryTraits
+ */
 class TableTest extends TestCase
 {
 //<editor-fold desc="Public Methods">

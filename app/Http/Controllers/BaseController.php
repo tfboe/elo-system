@@ -99,6 +99,18 @@ class BaseController extends Controller
     $this->validate($request, $arr);
     return $this;
   }
+
+  /**
+   * Gets a transformation function which transforms an enum name into the corresponding value
+   * @param string $enum_name the name of the enum
+   * @return \Closure the function which transforms a name into the enum value
+   */
+  protected function enumTransformer(string $enum_name): \Closure
+  {
+    return function ($x) use ($enum_name) {
+      return call_user_func([$enum_name, "getValue"], $x);
+    };
+  }
 //</editor-fold desc="Protected Methods">
 
 //<editor-fold desc="Private Methods">

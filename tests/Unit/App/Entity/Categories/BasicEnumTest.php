@@ -13,6 +13,10 @@ use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEnum;
 
+/**
+ * Class BasicEnumTest
+ * @package Tests\Unit\App\Entity\Categories
+ */
 class BasicEnumTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
@@ -48,6 +52,26 @@ class BasicEnumTest extends TestCase
 
     self::assertTrue(TestEnum::isValidValue('1', False));
     self::assertFalse(TestEnum::isValidValue('VALUE', False));
+  }
+
+  public function testGetNames()
+  {
+    self::assertEquals(['KEY', 'INT_KEY'], TestEnum::getNames());
+  }
+
+  public function testGetValue()
+  {
+    self::assertEquals("value", TestEnum::getValue('KEY'));
+    self::assertEquals(1, TestEnum::getValue('int_key'));
+    self::assertEquals(1, TestEnum::getValue('INT_KEY', True));
+  }
+
+  public function testGetValueException()
+  {
+    $this->expectException(ValueNotValid::class);
+    $this->expectExceptionMessage('The following value is not valid: "int_key" in Tests\Helpers\TestEnum. Possible ' .
+      'values: "value", 1.');
+    TestEnum::getValue('int_key', True);
   }
 //</editor-fold desc="Public Methods">
 }

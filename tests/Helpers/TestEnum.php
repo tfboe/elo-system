@@ -12,6 +12,10 @@ namespace Tests\Helpers;
 
 use App\Entity\Categories\BasicEnum;
 
+/**
+ * Class TestEnum
+ * @package Tests\Helpers
+ */
 abstract class TestEnum extends BasicEnum
 {
 //<editor-fold desc="Fields">

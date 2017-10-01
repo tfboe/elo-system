@@ -52,19 +52,25 @@ class Tournament extends BaseEntity
    * @var string
    */
   protected $name;
+
   /**
    * @ORM\Column(type="string")
    * @var string
    */
   protected $tournamentListId;
+
   /**
    * @ORM\ManyToOne(targetEntity="User")
    * @var User
    */
   protected $creator;
+
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
+  /**
+   * Tournament constructor.
+   */
   public function __construct()
   {
     $this->tournamentListId = "";

@@ -14,6 +14,10 @@ use App\Entity\User;
 use Doctrine\DBAL\Connection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
+/**
+ * Class AuthenticatedTestCase
+ * @package Tests\Helpers
+ */
 class AuthenticatedTestCase extends DatabaseTestCase
 {
 //<editor-fold desc="Fields">

@@ -19,6 +19,10 @@ use App\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 
+/**
+ * Class TournamentTest
+ * @package Tests\Integration
+ */
 class TournamentTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
@@ -28,11 +32,11 @@ class TournamentTest extends AuthenticatedTestCase
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
       'tournamentListId' => 'testList',
-      'gameMode' => GameMode::SPEEDBALL,
-      'organizingMode' => OrganizingMode::ELIMINATION,
-      'scoreMode' => ScoreMode::BEST_OF_FIVE,
-      'teamMode' => TeamMode::DOUBLE,
-      'table' => Table::ROBERTO_SPORT
+      'gameMode' => 'SPEEDBALL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT'
     ])->seeJsonEquals(['type' => 'create']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
