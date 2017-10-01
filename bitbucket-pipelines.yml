@@ -23,7 +23,7 @@ pipelines:
           - composer config -g github-oauth.github.com bad34b091be5134ead726265da173ccddaba1c2b
           - composer install --no-interaction --no-progress --prefer-dist
           - php artisan doctrine:migrations:refresh
-          - php artisan doctrine:generate-proxies
+          - php artisan doctrine:generate:proxies
           - mv /etc/php/7.1/cli/conf.d/20-xdebug.ini.disabled /etc/php/7.1/cli/conf.d/20-xdebug.ini
           - vendor/bin/phpunit --coverage-clover=coverage.xml
           - if [ $? -eq 0 ]; then bash <(curl -s https://codecov.io/bash); fi
