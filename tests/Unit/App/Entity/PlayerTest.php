@@ -11,6 +11,7 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Player;
 use App\Exceptions\ValueNotSet;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
 /**
@@ -20,6 +21,29 @@ use Tests\Helpers\TestCase;
 class PlayerTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
+
+  public function testId()
+  {
+    $player = $this->player();
+    $player->setFirstName("First");
+    $player->setLastName("Last");
+    $player->setBirthday(new \Datetime());
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($player);
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::flush();
+    self::assertInternalType("int", $player->getId());
+  }
+
+  public function testIdException()
+  {
+    $player = $this->player();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property id of the class " . Player::class . " must be set before it can " .
+      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $player->getId();
+  }
+
   public function testBirthday()
   {
     $player = $this->player();

@@ -22,6 +22,11 @@ abstract class DatabaseTestCase extends TestCase
    * @var \Faker\Generator
    */
   protected $faker;
+
+  /**
+   * @var bool
+   */
+  private $clear;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -30,11 +35,13 @@ abstract class DatabaseTestCase extends TestCase
    * @param string|null $name test name
    * @param array $data test data
    * @param string $dataName test data name
+   * @param bool $clear
    */
-  public function __construct($name = null, array $data = [], $dataName = '')
+  public function __construct($name = null, array $data = [], $dataName = '', $clear = false)
   {
     parent::__construct($name, $data, $dataName);
     $this->faker = Factory::create();
+    $this->clear = $clear;
   }
 //</editor-fold desc="Constructor">
 
@@ -84,11 +91,11 @@ abstract class DatabaseTestCase extends TestCase
   /**
    * Boot the testing helper traits.
    *
-   * @param bool $clear true if clearing the database should be used instead of transactions
    * @return void
    */
-  protected function setUpTraits(bool $clear = false)
+  protected function setUpTraits()
   {
+    $clear = $this->clear;
     parent::setUpTraits();
     if ($clear) {
       $this->clearDatabase();

@@ -24,7 +24,7 @@ class Player extends BaseEntity
 //<editor-fold desc="Fields">
   /**
    * @ORM\Id
-   * @ORM\GeneratedValue(strategy="SEQUENCE")
+   * @ORM\GeneratedValue
    * @ORM\Column(type="integer")
    * @var int
    */
@@ -66,6 +66,15 @@ class Player extends BaseEntity
   {
     $this->ensureNotNull("firstName");
     return $this->firstName;
+  }
+
+  /**
+   * @return int
+   */
+  public function getId(): int
+  {
+    $this->ensureNotNull("id");
+    return $this->id;
   }
 
   /**

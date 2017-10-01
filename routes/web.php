@@ -20,11 +20,11 @@ declare(strict_types=1);
  * @apiName PostRegister
  * @apiGroup User
  *
- * @apiParam {String} email the unique email address of the user
+ * @apiParam {string} email the unique email address of the user
  * @apiParam {string{8..}} password the password
  * @apiParam {integer{>=0}} lastConfirmedAGBVersion last confirmed AGB version
  *
- * @apiSuccess {String} id the id of the newly created user
+ * @apiSuccess {string} id the id of the newly created user
  * @apiError ValidationException The provided email is malformed or does already exist, or the provided password is too
  *                               short
  */
@@ -39,11 +39,11 @@ $router->post('register', [
  * @apiName PostLogin
  * @apiGroup User
  *
- * @apiParam {String} email the email address of the user
+ * @apiParam {string} email the email address of the user
  * @apiParam {string{8..}} password the users password
  *
- * @apiSuccess {String} id the id of the user
- * @apiHeader (Response Headers) {String} jwt-token Authorization Bearer token.
+ * @apiSuccess {string} id the id of the user
+ * @apiHeader (Response Headers) {string} jwt-token Authorization Bearer token.
  * @apiError ValidationException The provided email is malformed or does already exist, or the provided password is too
  *                               short
  */
@@ -56,7 +56,7 @@ $router->post('login', [
  *
  * @apiVersion 0.1.0
  *
- * @apiHeader {String} Authorization Bearer Authorization Token
+ * @apiHeader {string} Authorization Bearer Authorization Token
  * @apiError UnauthorizedException No token given or the given token is invalid
  *
  */
@@ -70,7 +70,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiName GetUserId
    * @apiGroup User
    *
-   * @apiSuccess {String} id the id of the user
+   * @apiSuccess {string} id the id of the user
    */
   $router->get('userId', [
     'as' => 'userId', 'uses' => 'UserController@userId'
@@ -84,32 +84,60 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiName PostCreateOrUpdateTournament
    * @apiGroup Tournament
    *
-   * @apiParam {String} userIdentifier a identifier which identifies the tournament uniquely across all tournaments of
+   * @apiParam {string} userIdentifier a identifier which identifies the tournament uniquely across all tournaments of
    *                                   this user
-   * @apiParam {String} name the name of the tournament
-   * @apiParam {String} [tournamentListId=""] the list id of which the tournament is part of
-   * @apiParam {String=OFFICIAL,SPEEDBALL,CLASSIC} [gameMode] The rule mode of the tournament. All games of the
+   * @apiParam {string} name the name of the tournament
+   * @apiParam {string} [tournamentListId=""] the list id of which the tournament is part of
+   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [gameMode] The rule mode of the tournament. All games of the
    *                                                          tournament which do not specify another game mode will use
    *                                                          this game mode.
-   * @apiParam {String=ELIMINATION,QUALIFICATION} [organizingMode] The organization mode of the tournament. All games of
+   * @apiParam {string=ELIMINATION,QUALIFICATION} [organizingMode] The organization mode of the tournament. All games of
    *                                                               the tournament which do not specify another
    *                                                               organizing mode will use this organizing mode.
-   * @apiParam {String=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [scoreMode] The score mode of the tournament. All games of
+   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [scoreMode] The score mode of the tournament. All games of
    *                                                                   the tournament which do not specify another
    *                                                                   score mode will use this score mode.
-   * @apiParam {String=DOUBLE,SINGLE,DYP} [teamMode] Specifies the team mode of the tournament. If the partners were
+   * @apiParam {string=DOUBLE,SINGLE,DYP} [teamMode] Specifies the team mode of the tournament. If the partners were
    *                                                 chosen randomly at some point the mode should be DYP. All games of
    *                                                 the tournament which do not specify another table will use this
    *                                                 table.
-   * @apiParam {String=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [table]
+   * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [table]
    *           On which sort of table the tournament is played. Multitable should only be used if the table is not known
    *           anymore or if the game was really a multitable game, i.e. multiple sets on at least two different tables.
    *           All games of the tournament which do not specify another table will use this table.
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
-   * @apiSuccess {String} type the type of the successful operation either "create" or "update"
+   * @apiSuccess {string} type the type of the successful operation either "create" or "update"
    */
   $router->post('createOrUpdateTournament', [
     'as' => 'createOrUpdateTournament', 'uses' => 'TournamentController@createOrUpdateTournament'
+  ]);
+
+  /**
+   * @api {get} /searchPlayers Search for players in the database
+   * @apiUse AuthenticatedRequest
+   * @apiVersion 0.1.0
+   * @apiDescription Searches in the database for the given players and returns possible candidates if they exist
+   * @apiName GetSearchPlayers
+   * @apiGroup Player
+   *
+   * @apiParam {Object[]} - list of players to search for
+   * @apiParam {string{2..}} -.firstName the first name of the user to search
+   * @apiParam {string{2..}} -.lastName the last name of the user to search
+   * @apiParam {date} [-.birthday] the birthday of the user to search
+   *
+   * @apiError ValidationException A first name is missing or too short (at least 2 characters) or a last name is
+   *                               missing or too short (at least 2 characters) or a given birthday does not represent
+   *                               a valid date.
+   * @apiSuccess {Object[]} - List of response results
+   * @apiSuccess {array} -.search the original search array (see parameter section)
+   * @apiSuccess {Object[]} -.found list of found players in the database corresponding to the given searched player
+   * @apiSuccess {integer} -.found.id the id of the found player
+   * @apiSuccess {string} -.found.firstName the first name of the found player
+   * @apiSuccess {string} -.found.lastName the last name of the found player
+   * @apiSuccess {date} -.found.birthday the birthday of the found player
+   */
+  $router->get('searchPlayers', [
+    'as' => 'searchPlayers', 'uses' => 'PlayerController@searchPlayers'
   ]);
 });
