@@ -96,6 +96,7 @@ abstract class DatabaseTestCase extends TestCase
    */
   protected function setUpTraits()
   {
+    srand(3); //always use the same faker values to get reproducibility
     $clear = $this->clear;
     parent::setUpTraits();
     if ($clear) {

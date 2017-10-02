@@ -167,9 +167,13 @@ class PlayerTest extends AuthenticatedTestCase
       'birthday' => $this->faker->date()];
     $player2_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
+    $player3_array = ['firstName' => $player_array['firstName'], 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $player4_array = ['firstName' => $player_array['firstName'], 'lastName' => $player_array['lastName'],
+      'birthday' => $this->faker->date()];
 
-    $this->jsonAuth('POST', '/addPlayers', [$player_array, $player2_array, $player_array])
-      ->assertResponseOk();
+    $this->jsonAuth('POST', '/addPlayers', [$player_array, $player2_array, $player3_array, $player4_array,
+      $player_array])->assertResponseOk();
     $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
 
 
@@ -179,7 +183,7 @@ class PlayerTest extends AuthenticatedTestCase
 
     /** @var Player[] $players */
     $players = $repo->findAll();
-    self::assertEquals(2, count($players));
+    self::assertEquals(4, count($players));
     foreach ($players as $player) {
       self::assertInternalType('int', $player->getId());
     }
