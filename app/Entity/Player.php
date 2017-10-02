@@ -17,7 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Player
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="players")
+ * @ORM\Table(name="players",indexes={@ORM\Index(name="unique_names_birthday",
+ *   columns={"first_name","last_name","birthday"})})
  */
 class Player extends BaseEntity
 {

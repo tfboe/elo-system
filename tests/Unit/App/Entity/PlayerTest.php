@@ -11,7 +11,6 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Player;
 use App\Exceptions\ValueNotSet;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
 /**
@@ -25,14 +24,9 @@ class PlayerTest extends TestCase
   public function testId()
   {
     $player = $this->player();
-    $player->setFirstName("First");
-    $player->setLastName("Last");
-    $player->setBirthday(new \Datetime());
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($player);
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::flush();
-    self::assertInternalType("int", $player->getId());
+    $id_property = self::getProperty(Player::class, 'id');
+    $id_property->setValue($player, 0);
+    self::assertEquals(0, $player->getId());
   }
 
   public function testIdException()

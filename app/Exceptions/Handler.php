@@ -58,10 +58,9 @@ class Handler extends ExceptionHandler
   protected function getJsonMessage(Exception $e, $statusCode = null)
   {
     // You may add in the code, but it's duplication
-    return [
-      'status' => $statusCode !== null ? $statusCode : "false",
-      'message' => $e->getMessage()
-    ];
+    return method_exists($e, 'getJsonMessage') ? $e->getJsonMessage() :
+      ['status' => $statusCode !== null ? $statusCode : "false",
+        'message' => $e->getMessage()];
   }
 
   /**

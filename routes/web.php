@@ -122,9 +122,9 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiGroup Player
    *
    * @apiParam {Object[]} - list of players to search for
-   * @apiParam {string{2..}} -.firstName the first name of the user to search
-   * @apiParam {string{2..}} -.lastName the last name of the user to search
-   * @apiParam {date} [-.birthday] the birthday of the user to search
+   * @apiParam {string{2..}} -.firstName the first name of the player to search
+   * @apiParam {string{2..}} -.lastName the last name of the player to search
+   * @apiParam {date} [-.birthday] the birthday of the player to search
    *
    * @apiError ValidationException A first name is missing or too short (at least 2 characters) or a last name is
    *                               missing or too short (at least 2 characters) or a given birthday does not represent
@@ -139,5 +139,35 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    */
   $router->get('searchPlayers', [
     'as' => 'searchPlayers', 'uses' => 'PlayerController@searchPlayers'
+  ]);
+
+  /**
+   * @api {post} /addPlayers Adds new players to the database
+   * @apiUse AuthenticatedRequest
+   * @apiVersion 0.1.0
+   * @apiDescription Adds new players to the database. Checks if the players already exist and if they do returns an
+   *                 error without adding any players.
+   * @apiName PostAddPlayers
+   * @apiGroup Player
+   *
+   * @apiParam {Object[]} - list of players to add
+   * @apiParam {string{2..}} -.firstName the first name of the player to add
+   * @apiParam {string{2..}} -.lastName the last name of the player to add
+   * @apiParam {date} -.birthday the birthday of the player to add
+   *
+   * @apiError ValidationException A first name is missing or too short (at least 2 characters) or a last name is
+   *                               missing or too short (at least 2 characters) or a birthday is missing or does not
+   *                               represent a valid date.
+   * @apiError PlayerAlreadyExists At least one of the given players already exist in the database. No players will be
+   *                               added in this case. Resubmit with only non-existing players.
+   *
+   * @apiSuccess {Object[]} - List of added players
+   * @apiSuccess {integer} -.id the id of the added player
+   * @apiSuccess {string} -.firstName the first name of the added player
+   * @apiSuccess {string} -.lastName the last name of the added player
+   * @apiSuccess {date} -.birthday the birthday of the added player
+   */
+  $router->post('addPlayers', [
+    'as' => 'addPlayers', 'uses' => 'PlayerController@addPlayers'
   ]);
 });

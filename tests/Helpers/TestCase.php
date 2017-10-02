@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
+use Laravel\Lumen\Application;
+
 /**
  * Class TestCase
  * @package Tests\Helpers
@@ -19,7 +21,7 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
    *
    * @return \Laravel\Lumen\Application
    */
-  public function createApplication()
+  public function createApplication(): Application
   {
     return require __DIR__ . '/../../bootstrap/app.php';
   }
@@ -30,7 +32,7 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
    * @param string $name the method name
    * @return \ReflectionMethod the accessible method object
    */
-  protected static function getMethod(string $class, string $name)
+  protected static function getMethod(string $class, string $name): \ReflectionMethod
   {
     $class = new \ReflectionClass($class);
     $method = $class->getMethod($name);
@@ -44,7 +46,7 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
    * @param string $name the method name
    * @return \ReflectionProperty the accessible property object
    */
-  protected static function getProperty(string $class, string $name)
+  protected static function getProperty(string $class, string $name): \ReflectionProperty
   {
     $class = new \ReflectionClass($class);
     $property = $class->getProperty($name);

@@ -5,7 +5,7 @@ namespace Database\Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema as Schema;
 
-class Version20171001195701 extends AbstractMigration
+class Version20171001212413 extends AbstractMigration
 {
 //<editor-fold desc="Public Methods">
   /**
@@ -15,7 +15,7 @@ class Version20171001195701 extends AbstractMigration
   {
     $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-    $this->addSql('ALTER TABLE players CHANGE id id INT NOT NULL');
+    $this->addSql('DROP INDEX unique_names_birthday ON players');
   }
 
   /**
@@ -25,7 +25,7 @@ class Version20171001195701 extends AbstractMigration
   {
     $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-    $this->addSql('ALTER TABLE players CHANGE id id INT AUTO_INCREMENT NOT NULL');
+    $this->addSql('CREATE INDEX unique_names_birthday ON players (first_name, last_name, birthday)');
   }
 //</editor-fold desc="Public Methods">
 }

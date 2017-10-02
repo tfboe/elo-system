@@ -40,6 +40,7 @@ abstract class DatabaseTestCase extends TestCase
   public function __construct($name = null, array $data = [], $dataName = '', $clear = false)
   {
     parent::__construct($name, $data, $dataName);
+    srand(3); //always use the same faker values to get reproducibility
     $this->faker = Factory::create();
     $this->clear = $clear;
   }

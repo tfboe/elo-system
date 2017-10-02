@@ -35,7 +35,7 @@ class BaseEntity
   public function ensureNotNull(string $property)
   {
     /** @noinspection PhpVariableVariableInspection */
-    if ($this->$property == null) {
+    if (!isset($this->$property)) {
       throw new ValueNotSet(static::class, $property);
     }
   }
