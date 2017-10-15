@@ -70,7 +70,7 @@ abstract class BasicEnum
       }
     }
 
-    throw new ValueNotValid($name, get_called_class(), "getNames");
+    throw new ValueNotValid($name, get_called_class(), "getValues");
   }
 
   /**

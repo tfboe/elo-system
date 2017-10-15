@@ -26,8 +26,8 @@ class ValueNotValid extends AbstractException
     $message = "The following value is not valid: " . json_encode($value);
     if ($enum_name != null && method_exists($enum_name, $valueFunction)) {
       /** @var mixed[] $values */
-      $values = call_user_func([$enum_name, 'getValues']);
-      assert(!in_array($value, $values));
+      $values = call_user_func([$enum_name, $valueFunction]);
+      assert(!in_array($value, $values, true));
       $message .= " in " . $enum_name . ". Possible values: " .
         implode(', ', array_map("json_encode", $values)) . ".";
     }
