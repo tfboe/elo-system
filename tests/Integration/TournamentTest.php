@@ -16,7 +16,9 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Team;
 use App\Entity\Tournament;
+use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 
@@ -29,7 +31,8 @@ class TournamentTest extends AuthenticatedTestCase
 //<editor-fold desc="Public Methods">
   public function testCreateTournamentFull()
   {
-    $this->jsonAuth('POST', '/createOrUpdateTournament', [
+    $players = $this->createPlayers(5);
+    $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
       'tournamentListId' => 'testList',
@@ -40,51 +43,127 @@ class TournamentTest extends AuthenticatedTestCase
       'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
-          'name' => 'Test Competition'
+          'name' => 'Test Competition',
+          'gameMode' => 'CLASSIC',
+          'organizingMode' => 'QUALIFICATION',
+          'scoreMode' => 'ONE_SET',
+          'teamMode' => 'SINGLE',
+          'table' => 'MULTITABLE',
+          'teams' => [
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId(),
+              $players[2]->getId()]],
+            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' =>
+              [$players[2]->getId(), $players[3]->getId(), $players[4]->getId()]]
+          ]
+        ],
+        [
+          'name' => 'Another Competition',
+          'gameMode' => 'CLASSIC',
+          'organizingMode' => 'ELIMINATION',
+          'scoreMode' => 'BEST_OF_THREE',
+          'teamMode' => 'DYP',
+          'table' => 'GARLANDO',
+          'teams' => [
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
+            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getId()]]
+          ]
         ],
       ],
-    ])->seeJsonEquals(['type' => 'create']);
+    ];
+
+    $this->jsonAuth('POST', '/createOrUpdateTournament', $request)->seeJsonEquals(['type' => 'create']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
     $repo = EntityManager::getRepository(Tournament::class);
     /** @var Tournament $tournament */
     $tournament = $repo->findOneBy(['creator' => $this->user, 'userIdentifier' => 'id0']);
-    self::assertEquals('Test Tournament', $tournament->getName());
-    self::assertEquals('testList', $tournament->getTournamentListId());
-    self::assertEquals(GameMode::SPEEDBALL, $tournament->getGameMode());
-    self::assertEquals(OrganizingMode::ELIMINATION, $tournament->getOrganizingMode());
-    self::assertEquals(ScoreMode::BEST_OF_FIVE, $tournament->getScoreMode());
-    self::assertEquals(TeamMode::DOUBLE, $tournament->getTeamMode());
-    self::assertEquals(Table::ROBERTO_SPORT, $tournament->getTable());
-    self::assertNotEmpty($tournament->getId());
+
+    $this->assertTournamentInfoByRequest($request, $tournament);
   }
 
   public function testCreateTournamentMin()
   {
-    $this->jsonAuth('POST', '/createOrUpdateTournament', [
+    $players = $this->createPlayers(2);
+    $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
       'competitions' => [
         [
-          'name' => 'Test Competition'
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ]
         ],
       ],
-    ])->seeJsonEquals(['type' => 'create']);
+    ];
+    $this->jsonAuth('POST', '/createOrUpdateTournament', $request)->seeJsonEquals(['type' => 'create']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
     $repo = EntityManager::getRepository(Tournament::class);
     /** @var Tournament $tournament */
     $tournament = $repo->findOneBy(['creator' => $this->user, 'userIdentifier' => 'id0']);
-    self::assertEquals('Test Tournament', $tournament->getName());
-    self::assertEquals('', $tournament->getTournamentListId());
-    self::assertNull($tournament->getGameMode());
-    self::assertNull($tournament->getOrganizingMode());
-    self::assertNull($tournament->getScoreMode());
-    self::assertNull($tournament->getTeamMode());
-    self::assertNull($tournament->getTable());
-    self::assertNotEmpty($tournament->getId());
+
+    $this->assertTournamentInfoByRequest($request, $tournament);
+  }
+
+  public function testDuplicatePlayerInTeam()
+  {
+    $players = $this->createPlayers(2);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
+              'players' => [$players[0]->getId(), $players[0]->getId()]],
+            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ]
+        ]
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrUpdateTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team"]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateStartNumber()
+  {
+    $players = $this->createPlayers(2);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getId()]],
+          ]
+        ]
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrUpdateTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the team list of competition Test Competition"]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
   }
 
   public function testTournamentUpdate()
@@ -95,6 +174,7 @@ class TournamentTest extends AuthenticatedTestCase
       'creator' => $this->user,
       'gameMode' => GameMode::CLASSIC,
     ]);
+    /** @var Competition[] $competitions */
     $competitions = [
       entity(Competition::class)->create(['name' => 'Test Competition']),
       entity(Competition::class)->create(['name' => 'Test Competition 2']),
@@ -103,7 +183,18 @@ class TournamentTest extends AuthenticatedTestCase
     foreach ($competitions as $competition) {
       $competition->setTournament($tournament);
     }
-    $id = $tournament->getId();
+    /** @var Team[][] $teams */
+    $teams = [];
+    $teams[0] = $this->createTeams(4);
+    $teams[1] = $this->createTeams(3, 3);
+    $teams[2] = $this->createTeams(3);
+    $teams[3] = $this->createTeams(3, 2);
+    for ($i = 0; $i < 4; $i++) {
+      foreach ($teams[$i] as $team) {
+        $competitions[$i]->getTeams()->set($team->getStartNumber(), $team);
+      }
+    }
+
     self::assertEquals('t1', $tournament->getUserIdentifier());
     self::assertEquals('', $tournament->getTournamentListId());
     self::assertEquals(4, $tournament->getCompetitions()->count());
@@ -114,23 +205,45 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertNull($tournament->getScoreMode());
     self::assertNull($tournament->getTeamMode());
     self::assertNull($tournament->getTable());
-    $this->jsonAuth('POST', '/createOrUpdateTournament', [
+    $request = [
       'name' => 'New Name',
       'userIdentifier' => 't1',
       'gameMode' => 'OFFICIAL',
       'table' => 'GARLANDO',
       'competitions' => [
         [
-          'name' => 'Test Competition'
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 4, 'startNumber' => 1, 'players' => [$teams[0][0]->getPlayers()->first()->getId()]],
+            ['rank' => 3, 'startNumber' => 2, 'players' => [$teams[0][1]->getPlayers()->first()->getId()]],
+            ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getId()]],
+            ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getId()]],
+          ]
         ],
         [
-          'name' => 'Test Competition 2'
+          'name' => 'Test Competition 2',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [
+              $teams[1][0]->getPlayers()[0]->getId(),
+              $teams[1][0]->getPlayers()[2]->getId(),
+              $teams[1][1]->getPlayers()[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [
+              $teams[1][1]->getPlayers()[1]->getId(),
+              $teams[1][1]->getPlayers()[2]->getId()]
+            ],
+          ]
         ],
         [
-          'name' => 'Test Competition 3'
+          'name' => 'Test Competition 3',
+          'teams' => [
+            ['rank' => 3, 'startNumber' => 1, 'players' => [$teams[2][0]->getPlayers()->first()->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$teams[2][1]->getPlayers()->first()->getId()]],
+            ['rank' => 1, 'startNumber' => 3, 'players' => [$teams[2][2]->getPlayers()->first()->getId()]],
+          ]
         ],
       ],
-    ])->seeJsonEquals(['type' => 'update']);
+    ];
+    $this->jsonAuth('POST', '/createOrUpdateTournament', $request)->seeJsonEquals(['type' => 'update']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
@@ -139,20 +252,65 @@ class TournamentTest extends AuthenticatedTestCase
     $tournaments = $repo->findAll();
     self::assertEquals(1, count($tournaments));
     $new_tournament = $tournaments[0];
-    self::assertEquals($id, $new_tournament->getId());
-    self::assertEquals('t1', $new_tournament->getUserIdentifier());
-    self::assertEquals($this->user, $new_tournament->getCreator());
-    self::assertEquals('', $new_tournament->getTournamentListId());
-    self::assertEquals(3, $tournament->getCompetitions()->count());
-    self::assertEquals(['Test Competition', 'Test Competition 2', 'Test Competition 3'],
-      $tournament->getCompetitions()->getKeys());
-    self::assertNull($new_tournament->getTeamMode());
-    self::assertNull($new_tournament->getScoreMode());
-    self::assertNull($new_tournament->getOrganizingMode());
-    self::assertEquals(GameMode::OFFICIAL, $new_tournament->getGameMode());
-    self::assertEquals('New Name', $new_tournament->getName());
-    self::assertEquals(Table::GARLANDO, $new_tournament->getTable());
     self::assertEquals($tournament, $new_tournament);
+    $this->assertTournamentInfoByRequest($request, $tournament);
   }
 //</editor-fold desc="Public Methods">
+
+//<editor-fold desc="Private Methods">
+  /**
+   * @param mixed[] $data
+   * @param Tournament $tournament
+   */
+  private function assertTournamentInfoByRequest(array $data, Tournament $tournament)
+  {
+    $categories = [
+      'gameMode' => ['default' => null, 'enum' => GameMode::class],
+      'organizingMode' => ['default' => null, 'enum' => OrganizingMode::class],
+      'scoreMode' => ['default' => null, 'enum' => ScoreMode::class],
+      'teamMode' => ['default' => null, 'enum' => TeamMode::class],
+      'table' => ['default' => null, 'enum' => Table::class],
+    ];
+    $this->checkProperties($data, $tournament, [
+      'name' => null,
+      'tournamentListId' => '',
+    ], $categories);
+    self::assertInstanceOf(Collection::class, $tournament->getCompetitions());
+    self::assertEquals(count($data['competitions']), $tournament->getCompetitions()->count());
+    self::assertNotEmpty($tournament->getId());
+
+    foreach ($data['competitions'] as $competition_data) {
+      self::assertTrue($tournament->getCompetitions()->containsKey($competition_data['name']));
+      /** @var Competition $competition */
+      $competition = $tournament->getCompetitions()->get($competition_data['name']);
+      $this->checkProperties($competition_data, $competition, [
+        'name' => null,
+      ], $categories);
+      self::assertInstanceOf(Collection::class, $competition->getTeams());
+      self::assertEquals(count($competition_data['teams']), $competition->getTeams()->count());
+      foreach ($competition_data['teams'] as $team_data) {
+        self::assertTrue($competition->getTeams()->containsKey($team_data['startNumber']));
+        /** @var Team $team */
+        $team = $competition->getTeams()->get($team_data['startNumber']);
+        $this->checkProperties($team_data, $team, [
+          'name' => null,
+          'rank' => null,
+          'startNumber' => null
+        ]);
+        self::assertInstanceOf(Collection::class, $team->getPlayers());
+        self::assertEquals(count($team_data['players']), $team->getPlayers()->count());
+        foreach ($team_data['players'] as $id) {
+          $exists = false;
+          foreach ($team->getPlayers() as $player) {
+            if ($player->getId() == $id) {
+              $exists = true;
+              break;
+            }
+          }
+          self::assertTrue($exists);
+        }
+      }
+    }
+  }
+//</editor-fold desc="Private Methods">
 }

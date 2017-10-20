@@ -28,9 +28,10 @@ class TournamentTest extends TestCase
   {
     $tournament = $this->tournament();
     $competition = new Competition();
-    $tournament->getCompetitions()->add($competition);
+    $competition->setName('comp name');
+    $tournament->getCompetitions()->set($competition->getName(), $competition);
     self::assertEquals(1, $tournament->getCompetitions()->count());
-    self::assertEquals($competition, $tournament->getCompetitions()->first());
+    self::assertEquals($competition, $tournament->getCompetitions()[$competition->getName()]);
   }
 
   public function testConstructor()

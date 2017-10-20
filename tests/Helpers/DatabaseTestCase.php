@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
+use App\Entity\Player;
+use App\Entity\Team;
 use App\Entity\User;
 use Faker\Factory;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -63,6 +65,40 @@ abstract class DatabaseTestCase extends TestCase
       $connection->query($sql);
     }
     $connection->query(sprintf('SET FOREIGN_KEY_CHECKS = 1;'));
+  }
+
+  /**
+   * Creates an array of players.
+   * @param int $number the number of players
+   * @return Player[] the created player array
+   */
+  protected function createPlayers(int $number = 1): array
+  {
+    $result = [];
+    for ($i = 0; $i < $number; $i++) {
+      $result[] = entity(Player::class)->create();
+    }
+    return $result;
+  }
+
+  /**
+   * Creates an array of teams with ranks and start numbers
+   * @param int $number the number of teams to create
+   * @param int $playerPerTeam the number of players per team
+   * @return Team[] the created team array
+   */
+  protected function createTeams(int $number, $playerPerTeam = 1): array
+  {
+    $result = [];
+    for ($i = 0; $i < $number; $i++) {
+      /** @var Team $team */
+      $team = entity(Team::class)->create(['startNumber' => $i + 1, 'rank' => $number - $i]);
+      foreach ($this->createPlayers($playerPerTeam) as $player) {
+        $team->getPlayers()->add($player);
+      }
+      $result[] = $team;
+    }
+    return $result;
   }
 
   /**

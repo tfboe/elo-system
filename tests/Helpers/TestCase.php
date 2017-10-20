@@ -29,6 +29,39 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
 
 //<editor-fold desc="Protected Methods">
   /**
+   * Checks for a given object if the given properties got set correctly by the query data.
+   * @param mixed[] $data the request data
+   * @param mixed $object the object whose properties to check
+   * @param mixed[] $properties the properties to check, property name maps to the default value (if not set in request)
+   * @param mixed[] $enumProperties the enum properties to check, property name maps to an info array, which contains
+   *                                the enum name and the default value
+   */
+  protected function checkProperties(array $data, $object, array $properties, array $enumProperties = [])
+  {
+    foreach ($properties as $property => $default) {
+      $getter = 'get' . ucfirst($property);
+      if (array_key_exists($property, $data)) {
+        self::assertEquals($data[$property], $object->$getter());
+      } else {
+        self::assertEquals($default, $object->$getter());
+      }
+    }
+
+    foreach ($enumProperties as $property => $info) {
+      $enum_class = $info['enum'];
+      $default = $info['default'];
+      $getter = 'get' . ucfirst($property);
+      if (array_key_exists($property, $data)) {
+        $name = $data[$property];
+        /** @noinspection PhpUndefinedMethodInspection */
+        self::assertEquals($enum_class::getValue($name), $object->$getter());
+      } else {
+        self::assertEquals($default, $object->$getter());
+      }
+    }
+  }
+
+  /**
    * Gets a protected or private method and makes it accessible
    * @param string $class the class name
    * @param string $name the method name

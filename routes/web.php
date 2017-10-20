@@ -99,12 +99,39 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *                                                                   score mode will use this score mode.
    * @apiParam {string=DOUBLE,SINGLE,DYP} [teamMode] Specifies the team mode of the tournament. If the partners were
    *                                                 chosen randomly at some point the mode should be DYP. All games of
-   *                                                 the tournament which do not specify another table will use this
-   *                                                 table.
+   *                                                 the tournament which do not specify another team mode will use this
+   *                                                 team mode.
    * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [table]
    *           On which sort of table the tournament is played. Multitable should only be used if the table is not known
    *           anymore or if the game was really a multitable game, i.e. multiple sets on at least two different tables.
    *           All games of the tournament which do not specify another table will use this table.
+   * @apiParam {Object[]} competitions list of competitions, at least one competition must be given
+   * @apiParam {string} competitions.name the name of the competition, must be unique for all competitions in a
+   *                                      tournament
+   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.gameMode]
+   *           The rule mode of the competition. All games of the competition which do not specify another game mode
+   *           will use this game mode.
+   * @apiParam {string=ELIMINATION,QUALIFICATION} [competitions.organizingMode]
+   *           The organization mode of the competition. All games of the competition which do not specify another
+   *           organizing mode will use this organizing mode.
+   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [competitions.scoreMode]
+   *           The score mode of the competition. All games of the competition which do not specify another score mode
+   *           will use this score mode.
+   * @apiParam {string=DOUBLE,SINGLE,DYP} [competitions.teamMode]
+   *           Specifies the team mode of the competition. If the partners were chosen randomly at some point the mode
+   *           should be DYP. All games of the competition which do not specify another team mode will use this team
+   *           mode.
+   * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [competitions.table]
+   *           On which sort of table the competition is played. Multitable should only be used if the table is not
+   *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
+   *           tables. All games of the competition which do not specify another table will use this table.
+   * @apiParam {Object[]} competitions.teams list of teams which attended this competition, at least two teams must be
+   *                                         given
+   * @apiParam {integer{>=1}} competitions.teams.rank the rank of the team
+   * @apiParam {integer{>=1}} competitions.teams.startNumber the start number of the team, this must be unique across
+   *                                                         all teams of a competition
+   * @apiParam {string[]} competitions.teams.players list of player ids of this team
+   * @apiParam {string} [competitions.teams.name] the name of the team
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
    * @apiSuccess {string} type the type of the successful operation either "create" or "update"

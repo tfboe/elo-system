@@ -9,7 +9,10 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Player;
+use App\Entity\Team;
 use App\Entity\Tournament;
+use App\Exceptions\DuplicateException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,7 +22,25 @@ use Illuminate\Http\Request;
  */
 class TournamentController extends BaseController
 {
+//<editor-fold desc="Fields">
+  /**
+   * @var string[]
+   */
+  private $tournamentSpecification;
+
+  /**
+   * @var string[]
+   */
+  private $competitionSpecification;
+
+  /**
+   * @var string[]
+   */
+  private $teamSpecification;
+//</editor-fold desc="Fields">
+
 //<editor-fold desc="Public Methods">
+
   /**
    * creates or updates an existing tournament
    *
@@ -28,63 +49,35 @@ class TournamentController extends BaseController
    */
   public function createOrUpdateTournament(Request $request): JsonResponse
   {
-    $tournament_specification = [
+    $this->tournamentSpecification = [
       'userIdentifier' => ['validation' => 'required|string'],
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string'],
       'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True]
     ];
-    $tournament_specification = array_merge($tournament_specification, $this->categoriesSpecifications(''));
+    $this->tournamentSpecification = array_merge($this->tournamentSpecification, $this->categoriesSpecifications(''));
 
-    $competition_specification = [
-      'competitions.*.name' => ['validation' => 'required|string'],
+    $this->competitionSpecification = [
+      'competitions.*.name' => ['validation' => 'required|string|distinct'],
+      'competitions.*.teams' => ['validation' => 'required|array|min:2', 'ignore' => True],
     ];
-    $competition_specification = array_merge($competition_specification,
+    $this->competitionSpecification = array_merge($this->competitionSpecification,
       $this->categoriesSpecifications('competitions.*.'));
 
+    $this->teamSpecification = [
+      'competitions.*.teams.*.name' => ['validation' => 'string'],
+      'competitions.*.teams.*.rank' => ['validation' => 'required|integer'],
+      'competitions.*.teams.*.startNumber' => ['validation' => 'required|integer'],
+      'competitions.*.teams.*.players' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'competitions.*.teams.*.players.*' => ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
+    ];
+
     $this->validateBySpecification($request, array_merge(
-      $tournament_specification,
-      $competition_specification));
+      $this->tournamentSpecification,
+      $this->competitionSpecification,
+      $this->teamSpecification));
 
-    assert(\Auth::user()->getId() != null);
-    /** @var Tournament|null $tournament */
-    $tournament = $this->em->getRepository(Tournament::class)->findOneBy(
-      ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
-    $type = 'update';
-    if ($tournament == null) {
-      $tournament = new Tournament();
-      $tournament->setCreator(\Auth::user());
-      $this->em->persist($tournament);
-      $type = 'create';
-    }
-    $this->setFromSpecification($tournament, $tournament_specification, $request->input());
-    $old_keys_used = [];
-    foreach ($tournament->getCompetitions() as $competition) {
-      $old_keys_used[$competition->getName()] = false;
-    }
-    foreach ($request->input('competitions') as $competition_values) {
-      $competition = null;
-      if (array_key_exists($competition_values['name'], $old_keys_used)) {
-        $competition = $tournament->getCompetitions()->get($competition_values['name']);
-        $old_keys_used[$competition_values['name']] = true;
-        $this->setFromSpecification($competition, $competition_specification, $competition_values);
-      } else {
-        $competition = new Competition();
-        $this->setFromSpecification($competition, $competition_specification, $competition_values);
-        $competition->setTournament($tournament);
-        $this->em->persist($competition);
-      }
-    }
-    foreach ($old_keys_used as $key => $used) {
-      if (!$used) {
-        $competition = $tournament->getCompetitions()->get($key);
-        $tournament->getCompetitions()->remove($key);
-        $this->em->remove($competition);
-      }
-    }
-    $this->em->flush();
-
-    return response()->json(['type' => $type]);
+    return response()->json(['type' => $this->doCreateOrUpdateTournament($request)]);
   }
 //</editor-fold desc="Public Methods">
 
@@ -108,6 +101,135 @@ class TournamentController extends BaseController
       $prefix . 'teamMode' => ['validation' => 'string|in:' . implode(",", TeamMode::getNames()),
         'transformer' => $this->enumTransformer(TeamMode::class)],
     ];
+  }
+
+  /**
+   * creates or updates the tournament as specified in the request
+   * @param Request $request the http request
+   * @return string the type (either update or create) of the operation
+   */
+  private function doCreateOrUpdateTournament(Request $request): string
+  {
+    assert(\Auth::user()->getId() != null);
+    /** @var Tournament|null $tournament */
+    $tournament = $this->em->getRepository(Tournament::class)->findOneBy(
+      ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
+    $type = 'update';
+    if ($tournament == null) {
+      $tournament = new Tournament();
+      $tournament->setCreator(\Auth::user());
+      $this->em->persist($tournament);
+      $type = 'create';
+    }
+    $this->setFromSpecification($tournament, $this->tournamentSpecification, $request->input());
+    $this->updateCompetitions($request, $tournament);
+    $this->em->flush();
+
+    return $type;
+  }
+
+  /**
+   * Updates the competitions of the given tournament according to the request
+   * @param Request $request the http request
+   * @param Tournament $tournament the tournament to modify
+   */
+  private function updateCompetitions(Request $request, Tournament $tournament)
+  {
+    $competition_names = [];
+    foreach ($tournament->getCompetitions() as $competition) {
+      $competition_names[$competition->getName()] = false;
+    }
+    foreach ($request->input('competitions') as $competition_values) {
+      $competition = null;
+      if (array_key_exists($competition_values['name'], $competition_names)) {
+        $competition = $tournament->getCompetitions()->get($competition_values['name']);
+        $this->setFromSpecification($competition, $this->competitionSpecification, $competition_values);
+      } else {
+        $competition = new Competition();
+        $this->setFromSpecification($competition, $this->competitionSpecification, $competition_values);
+        $competition->setTournament($tournament);
+        $this->em->persist($competition);
+      }
+      $competition_names[$competition_values['name']] = true;
+      $this->updateTeams($competition, $competition_values);
+    }
+    foreach ($competition_names as $key => $used) {
+      if (!$used) {
+        $competition = $tournament->getCompetitions()->get($key);
+        $tournament->getCompetitions()->remove($key);
+        $this->em->remove($competition);
+      }
+    }
+  }
+
+  /**
+   * Updates the players of the given team according to the request
+   * @param Team $team the team to modify
+   * @param mixed[] $team_values the request values for the team
+   * @throws DuplicateException a player is specified twice for this team
+   */
+  private function updateTeamPlayers(Team $team, array $team_values)
+  {
+    $player_ids = [];
+    foreach ($team->getPlayers() as $player) {
+      $player_ids[$player->getId()] = false;
+    }
+    foreach ($team_values['players'] as $player_id) {
+      if (array_key_exists($player_id, $player_ids)) {
+        if ($player_ids[$player_id] == true) {
+          //duplicate player!
+          throw new DuplicateException($player_id, 'player id',
+            'the player list of team ' . $team->getName());
+        }
+      } else {
+        $team->getPlayers()->add($this->em->find(Player::class, $player_id));
+      }
+      $player_ids[$player_id] = true;
+    }
+    foreach ($player_ids as $id => $used) {
+      if (!$used) {
+        $team->getPlayers()->removeElement($this->em->find(Player::class, $id));
+      }
+    }
+  }
+
+  /**
+   * Updates the teams of the given competition according to the request
+   * @param Competition $competition the competition to modify
+   * @param mixed[] $competition_values the request values for the competition
+   * @throws DuplicateException a team start number is occurring twice for this team
+   */
+  private function updateTeams(Competition $competition, array $competition_values)
+  {
+    $old_start_numbers = [];
+    foreach ($competition->getTeams() as $team) {
+      $old_start_numbers[$team->getStartNumber()] = false;
+    }
+    foreach ($competition_values['teams'] as $team_values) {
+      if (array_key_exists($team_values['startNumber'], $old_start_numbers)) {
+        if ($old_start_numbers[$team_values['startNumber']] == true) {
+          //duplicate start number!
+          throw new DuplicateException($team_values['startNumber'], 'start number',
+            'the team list of competition ' . $competition->getName());
+        }
+        $team = $competition->getTeams()->get($team_values['startNumber']);
+        $this->setFromSpecification($team, $this->teamSpecification, $team_values);
+      } else {
+        $team = new Team();
+        $this->setFromSpecification($team, $this->teamSpecification, $team_values);
+        $team->setCompetition($competition);
+        $this->em->persist($team);
+      }
+      $old_start_numbers[$team_values['startNumber']] = true;
+      $this->updateTeamPlayers($team, $team_values);
+    }
+    foreach ($old_start_numbers as $key => $used) {
+      if (!$used) {
+        $team = $competition->getTeams()->get($key);
+        $competition->getTeams()->remove($key);
+        $this->em->remove($team);
+      }
+    }
   }
 //</editor-fold desc="Private Methods">
 }

@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
+use App\Entity\Team;
 use App\Entity\Tournament;
 use App\Exceptions\ValueNotSet;
+use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
@@ -26,6 +28,8 @@ class CompetitionTest extends TestCase
   {
     $competition = $this->competition();
     self::assertInstanceOf(Competition::class, $competition);
+    self::assertInstanceOf(Collection::class, $competition->getTeams());
+    self::assertEquals(0, $competition->getTeams()->count());
   }
 
   public function testId()
@@ -60,6 +64,16 @@ class CompetitionTest extends TestCase
       "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
     );
     $competition->getName();
+  }
+
+  public function testTeams()
+  {
+    $competition = $this->competition();
+    $team = new Team();
+    $team->setStartNumber(1);
+    $competition->getTeams()->set($team->getStartNumber(), $team);
+    self::assertEquals(1, $competition->getTeams()->count());
+    self::assertEquals($team, $competition->getTeams()[1]);
   }
 
   public function testTournament()
