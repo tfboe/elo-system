@@ -21,11 +21,6 @@ use Tests\Helpers\AuthenticatedTestCase;
 class UserAuthenticatedTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testUserId()
-  {
-    $this->jsonAuth('GET', '/userId')->seeJsonEquals(['id' => $this->user->getId()]);
-  }
-
   public function testInvalidateToken()
   {
     /** @var User $user */
@@ -36,6 +31,11 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
     EntityManager::flush();
     $this->jsonAuth('GET', '/userId')->seeStatusCode(401);
     self::assertNull($this->response->headers->get('jwt-token'));
+  }
+
+  public function testUserId()
+  {
+    $this->jsonAuth('GET', '/userId')->seeJsonEquals(['id' => $this->user->getId()]);
   }
 //</editor-fold desc="Public Methods">
 }

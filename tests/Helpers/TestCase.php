@@ -25,7 +25,9 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
   {
     return require __DIR__ . '/../../bootstrap/app.php';
   }
+//</editor-fold desc="Public Methods">
 
+//<editor-fold desc="Protected Methods">
   /**
    * Gets a protected or private method and makes it accessible
    * @param string $class the class name
@@ -53,5 +55,5 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
     $property->setAccessible(true);
     return $property;
   }
-//</editor-fold desc="Public Methods">
+//</editor-fold desc="Protected Methods">
 }

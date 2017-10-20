@@ -22,6 +22,116 @@ class PlayerTest extends AuthenticatedTestCase
 {
 
 //<editor-fold desc="Public Methods">
+  public function testAddAlreadyExistingPlayers()
+  {
+    /** @var Player $player1 */
+    $player1 = entity(Player::class)->create();
+
+    $player_array1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName(),
+      'birthday' => $player1->getBirthday()->format('Y-m-d')];
+    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+
+    $this->jsonAuth('POST', '/addPlayers', [$player_array2, $player_array1])
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Some players do already exist", "players" => [
+        $this->getResultArray($player1)
+      ]]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Player::class);
+
+    /** @var Player[] $players */
+    $players = $repo->findAll();
+    self::assertEquals(1, count($players));
+    $player = $players[0];
+    self::assertEquals($player, $player1);
+  }
+
+  public function testAddMultiplePlayers()
+  {
+    $player_array1 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $this->jsonAuth('POST', '/addPlayers', [$player_array1, $player_array2])->assertResponseOk();
+    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Player::class);
+
+    /** @var Player[] $players */
+    $players = $repo->findAll();
+    self::assertEquals(2, count($players));
+    foreach ($players as $player) {
+      self::assertInternalType('int', $player->getId());
+    }
+  }
+
+  public function testAddNoPlayers()
+  {
+    $this->jsonAuth('POST', '/addPlayers', [])->assertResponseOk();
+    $this->seeJsonEquals([]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Player::class);
+
+    /** @var Player[] $players */
+    $players = $repo->findAll();
+    self::assertEquals(0, count($players));
+  }
+
+  public function testAddPlayer()
+  {
+    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $this->jsonAuth('POST', '/addPlayers', [$player_array])->assertResponseOk();
+    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Player::class);
+
+    /** @var Player[] $players */
+    $players = $repo->findAll();
+    self::assertEquals(1, count($players));
+    $player = $players[0];
+    self::assertEquals($player_array['firstName'], $player->getFirstName());
+    self::assertEquals($player_array['lastName'], $player->getLastName());
+    self::assertEquals(new \DateTime($player_array['birthday']), $player->getBirthday());
+    self::assertInternalType('int', $player->getId());
+  }
+
+  public function testAddPlayerMultipleTimes()
+  {
+    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $player2_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $player3_array = ['firstName' => $player_array['firstName'], 'lastName' => $this->faker->lastName,
+      'birthday' => $this->faker->date()];
+    $player4_array = ['firstName' => $player_array['firstName'], 'lastName' => $player_array['lastName'],
+      'birthday' => $this->faker->date()];
+
+    $this->jsonAuth('POST', '/addPlayers', [$player_array, $player2_array, $player3_array, $player4_array,
+      $player_array])->assertResponseOk();
+    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
+
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Player::class);
+
+    /** @var Player[] $players */
+    $players = $repo->findAll();
+    self::assertEquals(4, count($players));
+    foreach ($players as $player) {
+      self::assertInternalType('int', $player->getId());
+    }
+  }
+
   public function testSearchExistentPlayer()
   {
     /** @var Player $player */
@@ -77,116 +187,6 @@ class PlayerTest extends AuthenticatedTestCase
       ["found" => [], "search" => $search3],
       ["found" => [], "search" => $search4],
       ["found" => [$this->getResultArray($player2)], "search" => $search5]]);
-  }
-
-  public function testAddPlayer()
-  {
-    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $this->jsonAuth('POST', '/addPlayers', [$player_array])->assertResponseOk();
-    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Player::class);
-
-    /** @var Player[] $players */
-    $players = $repo->findAll();
-    self::assertEquals(1, count($players));
-    $player = $players[0];
-    self::assertEquals($player_array['firstName'], $player->getFirstName());
-    self::assertEquals($player_array['lastName'], $player->getLastName());
-    self::assertEquals(new \DateTime($player_array['birthday']), $player->getBirthday());
-    self::assertInternalType('int', $player->getId());
-  }
-
-  public function testAddNoPlayers()
-  {
-    $this->jsonAuth('POST', '/addPlayers', [])->assertResponseOk();
-    $this->seeJsonEquals([]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Player::class);
-
-    /** @var Player[] $players */
-    $players = $repo->findAll();
-    self::assertEquals(0, count($players));
-  }
-
-  public function testAddMultiplePlayers()
-  {
-    $player_array1 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $this->jsonAuth('POST', '/addPlayers', [$player_array1, $player_array2])->assertResponseOk();
-    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Player::class);
-
-    /** @var Player[] $players */
-    $players = $repo->findAll();
-    self::assertEquals(2, count($players));
-    foreach ($players as $player) {
-      self::assertInternalType('int', $player->getId());
-    }
-  }
-
-  public function testAddAlreadyExistingPlayers()
-  {
-    /** @var Player $player1 */
-    $player1 = entity(Player::class)->create();
-
-    $player_array1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName(),
-      'birthday' => $player1->getBirthday()->format('Y-m-d')];
-    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-
-    $this->jsonAuth('POST', '/addPlayers', [$player_array2, $player_array1])
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Some players do already exist", "players" => [
-        $this->getResultArray($player1)
-      ]]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Player::class);
-
-    /** @var Player[] $players */
-    $players = $repo->findAll();
-    self::assertEquals(1, count($players));
-    $player = $players[0];
-    self::assertEquals($player, $player1);
-  }
-
-  public function testAddPlayerMultipleTimes()
-  {
-    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $player2_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $player3_array = ['firstName' => $player_array['firstName'], 'lastName' => $this->faker->lastName,
-      'birthday' => $this->faker->date()];
-    $player4_array = ['firstName' => $player_array['firstName'], 'lastName' => $player_array['lastName'],
-      'birthday' => $this->faker->date()];
-
-    $this->jsonAuth('POST', '/addPlayers', [$player_array, $player2_array, $player3_array, $player4_array,
-      $player_array])->assertResponseOk();
-    $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
-
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Player::class);
-
-    /** @var Player[] $players */
-    $players = $repo->findAll();
-    self::assertEquals(4, count($players));
-    foreach ($players as $player) {
-      self::assertInternalType('int', $player->getId());
-    }
   }
 //</editor-fold desc="Public Methods">
 

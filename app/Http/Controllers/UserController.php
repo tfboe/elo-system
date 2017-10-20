@@ -17,31 +17,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
  */
 class UserController extends BaseController
 {
-  /**
-   * register action, registers a new user with email and password
-   *
-   * @param Request $request the http request
-   * @param Application $app
-   * @return JsonResponse
-   */
-  public function register(Request $request, Application $app): JsonResponse
-  {
-    $user_specification = $this->getCredentialSpecification($app);
-    $user_specification['email']['validation'] .= '|unique:App\Entity\User,email';
-    $user_specification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
-
-    $this->validateBySpecification($request, $user_specification);
-
-    $input = $request->input();
-    /** @var User $user */
-    $user = $this->setFromSpecification(new User(), $user_specification, $input);
-
-    $this->em->persist($user);
-    $this->em->flush();
-
-    return response()->json(['id' => $user->getId()]);
-  }
-
+//<editor-fold desc="Public Methods">
   /**
    * login action, checks credentials and returns token
    * @param Request $request the http request
@@ -73,13 +49,40 @@ class UserController extends BaseController
   }
 
   /**
+   * register action, registers a new user with email and password
+   *
+   * @param Request $request the http request
+   * @param Application $app
+   * @return JsonResponse
+   */
+  public function register(Request $request, Application $app): JsonResponse
+  {
+    $user_specification = $this->getCredentialSpecification($app);
+    $user_specification['email']['validation'] .= '|unique:App\Entity\User,email';
+    $user_specification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
+
+    $this->validateBySpecification($request, $user_specification);
+
+    $input = $request->input();
+    /** @var User $user */
+    $user = $this->setFromSpecification(new User(), $user_specification, $input);
+
+    $this->em->persist($user);
+    $this->em->flush();
+
+    return response()->json(['id' => $user->getId()]);
+  }
+
+  /**
    * @return JsonResponse
    */
   public function userId(): JsonResponse
   {
     return response()->json(['id' => \Auth::user()->getId()]);
   }
+//</editor-fold desc="Public Methods">
 
+//<editor-fold desc="Private Methods">
   /**
    * Gets the specification for the login credentials
    * @param Application $app
@@ -96,4 +99,5 @@ class UserController extends BaseController
         }]
     ];
   }
+//</editor-fold desc="Private Methods">
 }

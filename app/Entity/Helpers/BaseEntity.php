@@ -17,16 +17,7 @@ use App\Exceptions\ValueNotSet;
  */
 class BaseEntity
 {
-  /**
-   * Checks if the given method exists
-   * @param string $method the method to search
-   * @return bool true if it exists and false otherwise
-   */
-  public function methodExists(string $method)
-  {
-    return method_exists($this, $method);
-  }
-
+//<editor-fold desc="Public Methods">
   /**
    * Ensures that the given property is not null and throws an exception otherwise
    * @param string $property the property name to check for null
@@ -39,4 +30,15 @@ class BaseEntity
       throw new ValueNotSet(static::class, $property);
     }
   }
+
+  /**
+   * Checks if the given method exists
+   * @param string $method the method to search
+   * @return bool true if it exists and false otherwise
+   */
+  public function methodExists(string $method)
+  {
+    return method_exists($this, $method);
+  }
+//</editor-fold desc="Public Methods">
 }

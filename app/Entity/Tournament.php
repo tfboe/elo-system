@@ -15,6 +15,8 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,6 +67,11 @@ class Tournament extends BaseEntity
    */
   protected $creator;
 
+  /**
+   * @ORM\OneToMany(targetEntity="Competition", mappedBy="tournament",indexBy="name")
+   * @var Collection|Competition[]
+   */
+  protected $competitions;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -74,10 +81,19 @@ class Tournament extends BaseEntity
   public function __construct()
   {
     $this->tournamentListId = "";
+    $this->competitions = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
+  /**
+   * @return Competition[]|Collection
+   */
+  public function getCompetitions()
+  {
+    return $this->competitions;
+  }
+
   /**
    * @return User
    */

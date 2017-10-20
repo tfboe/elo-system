@@ -11,6 +11,7 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\User;
 use App\Exceptions\ValueNotSet;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
 /**
@@ -20,6 +21,15 @@ use Tests\Helpers\TestCase;
 class UserTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
+  public function testConstructor()
+  {
+    $user = $this->user();
+    self::assertInstanceOf(User::class, $user);
+    self::assertEquals(['ver' => 1], $user->getJWTCustomClaims());
+    self::assertEquals(1, $user->getJwtVersion());
+    self::assertEquals(0, $user->getLastConfirmedAGBVersion());
+  }
+
   public function testEmail()
   {
     $user = $this->user();
@@ -36,21 +46,12 @@ class UserTest extends TestCase
     $user->getEmail();
   }
 
-  public function testGetJWTCustomClaims()
+  public function testId()
   {
     $user = $this->user();
-    self::assertEquals(['ver' => 1], $user->getJWTCustomClaims());
-    $user->setJwtVersion(5);
-    self::assertEquals(['ver' => 5], $user->getJWTCustomClaims());
-  }
-
-  public function testGetJWTIdentifierException()
-  {
-    $user = $this->user();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    $user->getJWTIdentifier();
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($user);
+    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getId());
   }
 
   public function testIdException()
@@ -62,10 +63,34 @@ class UserTest extends TestCase
     $user->getId();
   }
 
+  public function testJWTCustomClaims()
+  {
+    $user = $this->user();
+    $user->setJwtVersion(5);
+    self::assertEquals(['ver' => 5], $user->getJWTCustomClaims());
+  }
+
+  public function testJWTIdentifier()
+  {
+    $user = $this->user();
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($user);
+    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getJWTIdentifier());
+    self::assertEquals($user->getId(), $user->getJWTIdentifier());
+  }
+
+  public function testJWTIdentifierException()
+  {
+    $user = $this->user();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
+      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $user->getJWTIdentifier();
+  }
+
   public function testJwtVersion()
   {
     $user = $this->user();
-    self::assertEquals(1, $user->getJwtVersion());
     $user->setJwtVersion(5);
     self::assertEquals(5, $user->getJwtVersion());
   }
@@ -73,7 +98,6 @@ class UserTest extends TestCase
   public function testLastConfirmedAGBVersion()
   {
     $user = $this->user();
-    self::assertEquals(0, $user->getLastConfirmedAGBVersion());
     $user->setLastConfirmedAGBVersion(5);
     self::assertEquals(5, $user->getLastConfirmedAGBVersion());
   }

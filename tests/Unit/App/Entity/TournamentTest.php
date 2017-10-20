@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity;
 
+use App\Entity\Competition;
 use App\Entity\Tournament;
 use App\Entity\User;
 use App\Exceptions\ValueNotSet;
+use Doctrine\Common\Collections\ArrayCollection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
@@ -22,6 +24,24 @@ use Tests\Helpers\TestCase;
 class TournamentTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
+  public function testCompetitions()
+  {
+    $tournament = $this->tournament();
+    $competition = new Competition();
+    $tournament->getCompetitions()->add($competition);
+    self::assertEquals(1, $tournament->getCompetitions()->count());
+    self::assertEquals($competition, $tournament->getCompetitions()->first());
+  }
+
+  public function testConstructor()
+  {
+    $tournament = $this->tournament();
+    self::assertInstanceOf(Tournament::class, $tournament);
+    self::assertInstanceOf(ArrayCollection::class, $tournament->getCompetitions());
+    self::assertEquals(0, $tournament->getCompetitions()->count());
+    self::assertEquals("", $tournament->getTournamentListId());
+  }
+
   public function testCreator()
   {
     $tournament = $this->tournament();
@@ -76,7 +96,6 @@ class TournamentTest extends TestCase
   public function testTournamentListId()
   {
     $tournament = $this->tournament();
-    self::assertEquals("", $tournament->getTournamentListId());
     $tournament->setTournamentListId("Changed");
     self::assertEquals("Changed", $tournament->getTournamentListId());
   }

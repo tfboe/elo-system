@@ -29,6 +29,10 @@ class ValueNotValidTest extends TestCase
     $exc = new ValueNotValid("val", TestEnum::class);
     self::assertEquals('The following value is not valid: "val" in Tests\Helpers\TestEnum. Possible values:' .
       ' "value", 1.', $exc->getMessage());
+
+    $exc = new ValueNotValid("val", TestEnum::class, "getNames");
+    self::assertEquals('The following value is not valid: "val" in Tests\Helpers\TestEnum. Possible values:' .
+      ' "KEY", "INT_KEY".', $exc->getMessage());
   }
 //</editor-fold desc="Public Methods">
 }

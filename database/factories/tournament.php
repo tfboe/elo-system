@@ -20,5 +20,6 @@ $factory->define(\App\Entity\Tournament::class, function (\Faker\Generator $fake
     'scoreMode' => array_key_exists('scoreMode', $attributes) ? $attributes['scoreMode'] : null,
     'teamMode' => array_key_exists('teamMode', $attributes) ? $attributes['teamMode'] : null,
     'table' => array_key_exists('table', $attributes) ? $attributes['table'] : null,
+    'competitions' => new \Doctrine\Common\Collections\ArrayCollection(),
   ];
 });

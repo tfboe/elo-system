@@ -21,11 +21,18 @@ use Tests\Helpers\TestCase;
 class PlayerAlreadyExistsTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
+  public function testConstructor()
+  {
+    $exc = new PlayerAlreadyExists([]);
+    self::assertEquals($exc->getMessage(), "Some players do already exist!");
+    self::assertEquals(409, $exc->getCode());
+  }
+
+
   public function testJsonMessage()
   {
     $exc = new PlayerAlreadyExists([]);
     self::assertEquals(['message' => 'Some players do already exist', 'players' => []], $exc->getJsonMessage());
-    self::assertEquals(409, $exc->getCode());
 
     $player = new Player();
     $player->setFirstName('first');

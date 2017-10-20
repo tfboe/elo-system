@@ -15,6 +15,7 @@ use App\Entity\Categories\OrganizingMode;
 use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
+use App\Entity\Competition;
 use App\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
@@ -36,7 +37,12 @@ class TournamentTest extends AuthenticatedTestCase
       'organizingMode' => 'ELIMINATION',
       'scoreMode' => 'BEST_OF_FIVE',
       'teamMode' => 'DOUBLE',
-      'table' => 'ROBERTO_SPORT'
+      'table' => 'ROBERTO_SPORT',
+      'competitions' => [
+        [
+          'name' => 'Test Competition'
+        ],
+      ],
     ])->seeJsonEquals(['type' => 'create']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -58,7 +64,12 @@ class TournamentTest extends AuthenticatedTestCase
   {
     $this->jsonAuth('POST', '/createOrUpdateTournament', [
       'name' => 'Test Tournament',
-      'userIdentifier' => 'id0'
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition'
+        ],
+      ],
     ])->seeJsonEquals(['type' => 'create']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -82,11 +93,22 @@ class TournamentTest extends AuthenticatedTestCase
     $tournament = entity(Tournament::class)->create([
       'userIdentifier' => 't1',
       'creator' => $this->user,
-      'gameMode' => GameMode::CLASSIC
+      'gameMode' => GameMode::CLASSIC,
     ]);
+    $competitions = [
+      entity(Competition::class)->create(['name' => 'Test Competition']),
+      entity(Competition::class)->create(['name' => 'Test Competition 2']),
+      entity(Competition::class)->create(['name' => 'Test Competition 4']),
+      entity(Competition::class)->create(['name' => 'Test Competition 5'])];
+    foreach ($competitions as $competition) {
+      $competition->setTournament($tournament);
+    }
     $id = $tournament->getId();
     self::assertEquals('t1', $tournament->getUserIdentifier());
     self::assertEquals('', $tournament->getTournamentListId());
+    self::assertEquals(4, $tournament->getCompetitions()->count());
+    self::assertEquals(['Test Competition', 'Test Competition 2', 'Test Competition 4', 'Test Competition 5'],
+      $tournament->getCompetitions()->getKeys());
     self::assertEquals(GameMode::CLASSIC, $tournament->getGameMode());
     self::assertNull($tournament->getOrganizingMode());
     self::assertNull($tournament->getScoreMode());
@@ -96,7 +118,18 @@ class TournamentTest extends AuthenticatedTestCase
       'name' => 'New Name',
       'userIdentifier' => 't1',
       'gameMode' => 'OFFICIAL',
-      'table' => 'GARLANDO'
+      'table' => 'GARLANDO',
+      'competitions' => [
+        [
+          'name' => 'Test Competition'
+        ],
+        [
+          'name' => 'Test Competition 2'
+        ],
+        [
+          'name' => 'Test Competition 3'
+        ],
+      ],
     ])->seeJsonEquals(['type' => 'update']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -110,6 +143,9 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals('t1', $new_tournament->getUserIdentifier());
     self::assertEquals($this->user, $new_tournament->getCreator());
     self::assertEquals('', $new_tournament->getTournamentListId());
+    self::assertEquals(3, $tournament->getCompetitions()->count());
+    self::assertEquals(['Test Competition', 'Test Competition 2', 'Test Competition 3'],
+      $tournament->getCompetitions()->getKeys());
     self::assertNull($new_tournament->getTeamMode());
     self::assertNull($new_tournament->getScoreMode());
     self::assertNull($new_tournament->getOrganizingMode());

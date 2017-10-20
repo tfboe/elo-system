@@ -20,24 +20,6 @@ use Tests\Helpers\TestCase;
 class PlayerTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
-
-  public function testId()
-  {
-    $player = $this->player();
-    $id_property = self::getProperty(Player::class, 'id');
-    $id_property->setValue($player, 0);
-    self::assertEquals(0, $player->getId());
-  }
-
-  public function testIdException()
-  {
-    $player = $this->player();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Player::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    $player->getId();
-  }
-
   public function testBirthday()
   {
     $player = $this->player();
@@ -54,6 +36,12 @@ class PlayerTest extends TestCase
     $player->getBirthday();
   }
 
+  public function testConstructor()
+  {
+    $player = $this->player();
+    self::assertInstanceOf(Player::class, $player);
+  }
+
   public function testFirstName()
   {
     $player = $this->player();
@@ -68,6 +56,23 @@ class PlayerTest extends TestCase
     $this->expectExceptionMessage("The property firstName of the class App\Entity\Player must be set before it can be" .
       " accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
     $player->getFirstName();
+  }
+
+  public function testId()
+  {
+    $player = $this->player();
+    $id_property = self::getProperty(Player::class, 'id');
+    $id_property->setValue($player, 0);
+    self::assertEquals(0, $player->getId());
+  }
+
+  public function testIdException()
+  {
+    $player = $this->player();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property id of the class " . Player::class . " must be set before it can " .
+      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $player->getId();
   }
 
   public function testLastName()

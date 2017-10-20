@@ -19,6 +19,12 @@ use Tests\Helpers\TestCase;
 class IdGeneratorTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
+  public function testConstructor()
+  {
+    $generator = new IdGenerator();
+    self::assertInstanceOf(IdGenerator::class, $generator);
+  }
+
   public function testCreateIdFrom()
   {
     /**

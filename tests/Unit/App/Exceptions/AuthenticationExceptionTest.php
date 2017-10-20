@@ -22,10 +22,14 @@ class AuthenticationExceptionTest extends TestCase
 //<editor-fold desc="Public Methods">
   public function testConstructor()
   {
-    $exc = new AuthenticationException("message");
+    $prev = new \Exception();
+    $exc = new AuthenticationException("message", $prev);
     self::assertEquals("message", $exc->getMessage());
-    $exc2 = new AuthenticationException("");
-    self::assertEquals("", $exc2->getMessage());
+    self::assertEquals($prev, $exc->getPrevious());
+    $exc2 = new AuthenticationException("message");
+    self::assertEquals("message", $exc2->getMessage());
+    $exc3 = new AuthenticationException();
+    self::assertEquals("", $exc3->getMessage());
   }
 //</editor-fold desc="Public Methods">
 }

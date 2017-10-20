@@ -14,7 +14,7 @@ namespace App\Entity\Categories;
  * Class Table
  * @package App\Entity\Categories
  */
-class Table extends BasicEnum
+abstract class Table extends BasicEnum
 {
   //<editor-fold desc="Fields">
   const BONZINI = 5; // only used if real game table is unknown / forgotten in multi table tournament

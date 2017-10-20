@@ -33,6 +33,7 @@ class TestEntity extends BaseEntity
    */
   public function getProp()
   {
+    $this->ensureNotNull('prop');
     return $this->prop;
   }
 

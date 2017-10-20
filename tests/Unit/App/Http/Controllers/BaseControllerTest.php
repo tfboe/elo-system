@@ -23,6 +23,18 @@ class BaseControllerTest extends TestCase
 {
   //tests also private method disable this tests as soon as all are used in public interfaces
 //<editor-fold desc="Public Methods">
+  public function testDefault()
+  {
+    $value = "test-value";
+    $specification['prop'] = ['default' => $value];
+    $object = new TestEntity();
+    /** @var UserController $controller */
+    $controller = app(UserController::class);
+    $method = self::getMethod(UserController::class, 'setFromSpecification');
+    $method->invokeArgs($controller, [$object, $specification, []]);
+    self::assertEquals($value, $object->getProp());
+  }
+
   public function testDefaultTransformByType()
   {
     $value = "2005-02-28 16:35:01";
@@ -72,18 +84,6 @@ class BaseControllerTest extends TestCase
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
     self::assertEquals($datetime, $object->getProp());
-  }
-
-  public function testDefault()
-  {
-    $value = "test-value";
-    $specification['prop'] = ['default' => $value];
-    $object = new TestEntity();
-    /** @var UserController $controller */
-    $controller = app(UserController::class);
-    $method = self::getMethod(UserController::class, 'setFromSpecification');
-    $method->invokeArgs($controller, [$object, $specification, []]);
-    self::assertEquals($value, $object->getProp());
   }
 //</editor-fold desc="Public Methods">
 }
