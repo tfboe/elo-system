@@ -83,6 +83,8 @@ class CompetitionTest extends TestCase
     $competition->setName('test competition');
     $competition->setTournament($tournament);
     self::assertEquals($tournament, $competition->getTournament());
+    self::assertEquals(1, $competition->getTournament()->getCompetitions()->count());
+    self::assertEquals($competition, $competition->getTournament()->getCompetitions()[$competition->getName()]);
   }
 
   public function testTournamentException()
