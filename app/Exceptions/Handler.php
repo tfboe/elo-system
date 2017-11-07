@@ -35,11 +35,6 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $e)
   {
-    foreach ($this->dontReport as $class) {
-      if (is_a($e, $class)) {
-        return parent::render($request, $e);
-      }
-    }
     //don't throw html exceptions always render using json
     $status_code = $this->getExceptionHTTPStatusCode($e);
 
@@ -60,6 +55,9 @@ class Handler extends ExceptionHandler
   {
     // Not all Exceptions have a http status code
     // We will give Error 500 if none found
+    if ($e instanceof ValidationException) {
+      return $e->getResponse()->getStatusCode();
+    }
     return method_exists($e, 'getStatusCode') ? $e->getStatusCode() :
       ($e->getCode() != 0 ? $e->getCode() : 500);
   }
@@ -72,10 +70,44 @@ class Handler extends ExceptionHandler
    */
   protected function getJsonMessage(Exception $e, $statusCode = null)
   {
-    // You may add in the code, but it's duplication
-    return method_exists($e, 'getJsonMessage') ? $e->getJsonMessage() :
-      ['status' => $statusCode !== null ? $statusCode : "false",
-        'message' => $e->getMessage()];
+
+    $result = method_exists($e, 'getJsonMessage') ? $e->getJsonMessage() : ['message' => $e->getMessage()];
+
+    if ($e instanceof ValidationException) {
+      $result["errors"] = $e->errors();
+    }
+
+    if (!array_key_exists('status', $result)) {
+      $result['status'] = $statusCode !== null ? $statusCode : "false";
+    }
+
+    if (!array_key_exists('name', $result)) {
+      $result['name'] = $this->getExceptionName($e);
+    }
+
+    return $result;
+  }
+
+  /**
+   * Gets the exception name of an exception which is used by clients to identify the type of the error.
+   * @param Exception $e the exception whose name we want
+   * @return string the exception name
+   */
+  protected function getExceptionName(Exception $e): string
+  {
+    if ($e instanceof AuthenticationException) {
+      return ExceptionNames::AUTHENTICATION_EXCEPTION;
+    }
+    if ($e instanceof DuplicateException) {
+      return ExceptionNames::DUPLICATE_EXCEPTION;
+    }
+    if ($e instanceof PlayerAlreadyExists) {
+      return ExceptionNames::PLAYER_ALREADY_EXISTS_EXCEPTION;
+    }
+    if ($e instanceof ValidationException) {
+      return ExceptionNames::VALIDATION_EXCEPTION;
+    }
+    return ExceptionNames::INTERNAL_EXCEPTION;
   }
 //</editor-fold desc="Protected Methods">
 }

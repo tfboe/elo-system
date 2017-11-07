@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 10:24 PM
  */
 
-namespace App\Entity\Categories;
+namespace App\Helpers;
 
 use App\Exceptions\ValueNotValid;
 

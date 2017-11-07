@@ -16,7 +16,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testAuthenticationError()
   {
     $this->json('GET', '/userId')->seeStatusCode(401)->seeJsonEquals(
-      ["status" => 401, "message" => "Not logged in!"]);
+      ["status" => 401, "message" => "Not logged in!",
+        "name" => "AuthenticationException"]);
   }
 
   public function testCannotRecognizeExistingUsername()
@@ -54,14 +55,16 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => $user->getEmail(),
       'password' => 'testPassword2'
-    ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email has already been taken."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["email" => ["The email has already been taken."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testEmailRequiredValidation()
   {
     $this->json('POST', '/register', [
       'password' => 'testPassword'
-    ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email field is required."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["email" => ["The email field is required."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testEmailRequiredValidationLogin()
@@ -69,7 +72,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'password' => 'testPassword'
-    ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email field is required."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["email" => ["The email field is required."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testInvalidCredentials()
@@ -91,7 +95,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'invalidEmail',
       'password' => 'testPassword'
-    ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email must be a valid email address."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["email" => ["The email must be a valid email address."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testInvalidEmailValidationLogin()
@@ -100,7 +105,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/login', [
       'email' => 'invalidEmail',
       'password' => 'testPassword'
-    ])->seeStatusCode(422)->seeJsonEquals(["email" => ["The email must be a valid email address."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["email" => ["The email must be a valid email address."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testInvalidId()
@@ -123,8 +129,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'email' => 'test@user1.com',
       'password' => 'testPassword',
       'lastConfirmedAGBVersion' => 'noInt',
-    ])->seeStatusCode(422)->seeJsonEquals(["lastConfirmedAGBVersion" =>
-      ["The last confirmed a g b version must be an integer."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["lastConfirmedAGBVersion" =>
+      ["The last confirmed a g b version must be an integer."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testLogin()
@@ -144,10 +151,10 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'password' => 5
     ])->seeStatusCode(422)->seeJsonEquals(
-      [
+      ["errors" => [
         "email" => ["The email field is required."],
         "password" => ["The password must be a string.", "The password must be at least 8 characters."]
-      ]);
+      ], "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testNegativeLastConfirmedAGBVersion()
@@ -156,8 +163,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'email' => 'test@user1.com',
       'password' => 'testPassword',
       'lastConfirmedAGBVersion' => -1,
-    ])->seeStatusCode(422)->seeJsonEquals(["lastConfirmedAGBVersion" =>
-      ["The last confirmed a g b version must be at least 0."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["lastConfirmedAGBVersion" =>
+      ["The last confirmed a g b version must be at least 0."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testNoStringPassword()
@@ -165,7 +173,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'test@user1.com',
       'password' => 16511233
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password must be a string."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["password" => ["The password must be a string."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testNoStringPasswordLogin()
@@ -175,14 +184,16 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 16511233
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password must be a string."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["password" => ["The password must be a string."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testPasswordRequiredValidation()
   {
     $this->json('POST', '/register', [
       'email' => 'test@user1.com'
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password field is required."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["password" => ["The password field is required."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testPasswordRequiredValidationLogin()
@@ -191,7 +202,8 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail()
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password field is required."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["password" => ["The password field is required."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testRegisterUser()
@@ -221,7 +233,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'test@user1.com',
       'password' => 'short'
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password must be at least 8 characters."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" =>
+      ["password" => ["The password must be at least 8 characters."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testTooShortPasswordLogin()
@@ -231,7 +245,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 'short'
-    ])->seeStatusCode(422)->seeJsonEquals(["password" => ["The password must be at least 8 characters."]]);
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => [
+      "password" => ["The password must be at least 8 characters."]],
+      "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
   public function testWrongPassword()

@@ -35,7 +35,7 @@ class PlayerTest extends AuthenticatedTestCase
     $this->jsonAuth('POST', '/addPlayers', [$player_array2, $player_array1])
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Some players do already exist", "players" => [
         $this->getResultArray($player1)
-      ]]);
+      ], "name" => "PlayerAlreadyExistsException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */

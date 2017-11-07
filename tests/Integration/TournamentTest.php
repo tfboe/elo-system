@@ -131,7 +131,8 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrUpdateTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team"]);
+        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team",
+        "name" => "DuplicateException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
@@ -158,7 +159,8 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrUpdateTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the team list of competition Test Competition"]);
+        "arrayName" => "the team list of competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */

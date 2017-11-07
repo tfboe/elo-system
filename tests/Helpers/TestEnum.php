@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Tests\Helpers;
 
 
-use App\Entity\Categories\BasicEnum;
+use App\Helpers\BasicEnum;
 
 /**
  * Class TestEnum
