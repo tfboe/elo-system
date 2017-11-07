@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Phase
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="phase")
+ * @ORM\Table(name="phases")
  */
 class Phase extends BaseEntity
 {
