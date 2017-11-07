@@ -132,6 +132,26 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *                                                         all teams of a competition
    * @apiParam {string[]} competitions.teams.players list of player ids of this team
    * @apiParam {string} [competitions.teams.name] the name of the team
+   * @apiParam {Object[]} competitions.phases list of phases of this competition
+   * @apiParam {integer{>=1}} competitions.phases.phaseNumber the number of the phase
+   * @apiParam {string} [competitions.phases.name] the name of the phase
+   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.gameMode]
+   *           The rule mode of the phase. All games of the phase which do not specify another game mode
+   *           will use this game mode.
+   * @apiParam {string=ELIMINATION,QUALIFICATION} [competitions.phases.organizingMode]
+   *           The organization mode of the phase. All games of the phase which do not specify another
+   *           organizing mode will use this organizing mode.
+   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [competitions.phases.scoreMode]
+   *           The score mode of the phase. All games of the phase which do not specify another score mode
+   *           will use this score mode.
+   * @apiParam {string=DOUBLE,SINGLE,DYP} [competitions.phases.teamMode]
+   *           Specifies the team mode of the phase. If the partners were chosen randomly at some point the mode
+   *           should be DYP. All games of the phase which do not specify another team mode will use this team
+   *           mode.
+   * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [competitions.phases.table]
+   *           On which sort of table the phase is played. Multitable should only be used if the table is not
+   *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
+   *           tables. All games of the phase which do not specify another table will use this table.
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
    * @apiSuccess {string} type the type of the successful operation either "create" or "update"

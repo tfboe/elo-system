@@ -16,6 +16,7 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Phase;
 use App\Entity\Team;
 use App\Entity\Tournament;
 use Doctrine\Common\Collections\Collection;
@@ -55,6 +56,11 @@ class TournamentTest extends AuthenticatedTestCase
               $players[2]->getId()]],
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' =>
               [$players[2]->getId(), $players[3]->getId(), $players[4]->getId()]]
+          ],
+          'phases' => [
+            ['name' => 'Phase 1', 'phaseNumber' => 1],
+            ['name' => 'Phase 2', 'phaseNumber' => 2],
+            ['name' => 'Phase 3', 'phaseNumber' => 3],
           ]
         ],
         [
@@ -68,6 +74,9 @@ class TournamentTest extends AuthenticatedTestCase
             ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
             ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getId()]]
+          ],
+          'phases' => [
+            ['name' => 'Phase 1', 'phaseNumber' => 1],
           ]
         ],
       ],
@@ -96,6 +105,9 @@ class TournamentTest extends AuthenticatedTestCase
           'teams' => [
             ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
             ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1],
           ]
         ],
       ],
@@ -124,6 +136,9 @@ class TournamentTest extends AuthenticatedTestCase
             ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
               'players' => [$players[0]->getId(), $players[0]->getId()]],
             ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1],
           ]
         ]
       ],
@@ -152,6 +167,9 @@ class TournamentTest extends AuthenticatedTestCase
           'teams' => [
             ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
             ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1],
           ]
         ]
       ],
@@ -185,15 +203,27 @@ class TournamentTest extends AuthenticatedTestCase
     foreach ($competitions as $competition) {
       $competition->setTournament($tournament);
     }
+
     /** @var Team[][] $teams */
     $teams = [];
     $teams[0] = $this->createTeams(4);
     $teams[1] = $this->createTeams(3, 3);
     $teams[2] = $this->createTeams(3);
     $teams[3] = $this->createTeams(3, 2);
+
+    /** @var Phase[][] $phases */
+    $phases = [];
+    $phases[0] = $this->createPhases(1, ['Main Phase']);
+    $phases[1] = $this->createPhases(3, ['P1', 'P2', 'P3']);
+    $phases[2] = $this->createPhases(2);
+    $phases[3] = $this->createPhases(2);
+
     for ($i = 0; $i < 4; $i++) {
       foreach ($teams[$i] as $team) {
         $competitions[$i]->getTeams()->set($team->getStartNumber(), $team);
+      }
+      foreach ($phases[$i] as $phase) {
+        $competitions[$i]->getPhases()->set($phase->getPhaseNumber(), $phase);
       }
     }
 
@@ -220,6 +250,10 @@ class TournamentTest extends AuthenticatedTestCase
             ['rank' => 3, 'startNumber' => 2, 'players' => [$teams[0][1]->getPlayers()->first()->getId()]],
             ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getId()]],
             ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getId()]],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1, 'name' => 'Ph1'],
+            ['phaseNumber' => 2, 'name' => 'Ph2'],
           ]
         ],
         [
@@ -233,6 +267,11 @@ class TournamentTest extends AuthenticatedTestCase
               $teams[1][1]->getPlayers()[1]->getId(),
               $teams[1][1]->getPlayers()[2]->getId()]
             ],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1, 'name' => 'P1'],
+            ['phaseNumber' => 2, 'name' => 'Ph2'],
+            ['phaseNumber' => 4, 'name' => 'P4'],
           ]
         ],
         [
@@ -241,6 +280,9 @@ class TournamentTest extends AuthenticatedTestCase
             ['rank' => 3, 'startNumber' => 1, 'players' => [$teams[2][0]->getPlayers()->first()->getId()]],
             ['rank' => 2, 'startNumber' => 2, 'players' => [$teams[2][1]->getPlayers()->first()->getId()]],
             ['rank' => 1, 'startNumber' => 3, 'players' => [$teams[2][2]->getPlayers()->first()->getId()]],
+          ],
+          'phases' => [
+            ['phaseNumber' => 1],
           ]
         ],
       ],
@@ -313,6 +355,25 @@ class TournamentTest extends AuthenticatedTestCase
         }
       }
     }
+  }
+
+  /**
+   * Creates a list of phases
+   * @param int $number the number of phases
+   * @param string[] $names a list of optional phase names
+   * @return Phase[] the list of created phases
+   */
+  private function createPhases(int $number, array $names = []): array
+  {
+    $phases = [];
+    for ($i = 0; $i < $number; $i++) {
+      $phase = entity(Phase::class)->create(['phaseNumber' => $i + 1]);
+      if (count($names) > $i) {
+        $phase->setName($names[$i]);
+      }
+      $phases[] = $phase;
+    }
+    return $phases;
   }
 //</editor-fold desc="Private Methods">
 }

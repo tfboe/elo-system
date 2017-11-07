@@ -9,6 +9,7 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Entity\Tournament;
@@ -37,6 +38,11 @@ class TournamentController extends BaseController
    * @var string[]
    */
   private $teamSpecification;
+
+  /**
+   * @var string[]
+   */
+  private $phaseSpecification;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
@@ -60,6 +66,7 @@ class TournamentController extends BaseController
     $this->competitionSpecification = [
       'competitions.*.name' => ['validation' => 'required|string|distinct'],
       'competitions.*.teams' => ['validation' => 'required|array|min:2', 'ignore' => True],
+      'competitions.*.phases' => ['validation' => 'required|array|min:1', 'ignore' => True],
     ];
     $this->competitionSpecification = array_merge($this->competitionSpecification,
       $this->categoriesSpecifications('competitions.*.'));
@@ -72,10 +79,18 @@ class TournamentController extends BaseController
       'competitions.*.teams.*.players.*' => ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
     ];
 
+    $this->phaseSpecification = [
+      'competitions.*.phases.*.name' => ['validation' => 'string'],
+      'competitions.*.phases.*.phaseNumber' => ['validation' => 'required|integer'],
+    ];
+    $this->phaseSpecification = array_merge($this->phaseSpecification,
+      $this->categoriesSpecifications('competitions.*.teams.*.'));
+
     $this->validateBySpecification($request, array_merge(
       $this->tournamentSpecification,
       $this->competitionSpecification,
-      $this->teamSpecification));
+      $this->teamSpecification,
+      $this->phaseSpecification));
 
     return response()->json(['type' => $this->doCreateOrUpdateTournament($request)]);
   }
@@ -151,7 +166,8 @@ class TournamentController extends BaseController
         $this->em->persist($competition);
       }
       $competition_names[$competition_values['name']] = true;
-      $this->updateTeams($competition, $competition_values);
+      $this->updateTeams($competition, $competition_values['teams']);
+      $this->updatePhases($competition, $competition_values['phases']);
     }
     foreach ($competition_names as $key => $used) {
       if (!$used) {
@@ -196,16 +212,16 @@ class TournamentController extends BaseController
   /**
    * Updates the teams of the given competition according to the request
    * @param Competition $competition the competition to modify
-   * @param mixed[] $competition_values the request values for the competition
+   * @param mixed[] $values the request values for the teams
    * @throws DuplicateException a team start number is occurring twice for this team
    */
-  private function updateTeams(Competition $competition, array $competition_values)
+  private function updateTeams(Competition $competition, array $values)
   {
     $old_start_numbers = [];
     foreach ($competition->getTeams() as $team) {
       $old_start_numbers[$team->getStartNumber()] = false;
     }
-    foreach ($competition_values['teams'] as $team_values) {
+    foreach ($values as $team_values) {
       if (array_key_exists($team_values['startNumber'], $old_start_numbers)) {
         if ($old_start_numbers[$team_values['startNumber']] == true) {
           //duplicate start number!
@@ -228,6 +244,39 @@ class TournamentController extends BaseController
         $team = $competition->getTeams()->get($key);
         $competition->getTeams()->remove($key);
         $this->em->remove($team);
+      }
+    }
+  }
+
+  /**
+   * Updates the phases of the given competition according to the request
+   * @param Competition $competition the competition to modify
+   * @param mixed[] $values the request values for the phases
+   */
+  private function updatePhases(Competition $competition, array $values)
+  {
+    $phase_numbers = [];
+    foreach ($competition->getPhases() as $phase) {
+      $phase_numbers[$phase->getPhaseNumber()] = false;
+    }
+    foreach ($values as $phase_values) {
+      $phase = null;
+      if (array_key_exists($phase_values['phaseNumber'], $phase_numbers)) {
+        $phase = $competition->getPhases()->get($phase_values['phaseNumber']);
+        $this->setFromSpecification($phase, $this->phaseSpecification, $phase_values);
+      } else {
+        $phase = new Phase();
+        $this->setFromSpecification($phase, $this->phaseSpecification, $phase_values);
+        $phase->setCompetition($competition);
+        $this->em->persist($phase);
+      }
+      $phase_numbers[$phase_values['phaseNumber']] = true;
+    }
+    foreach ($phase_numbers as $key => $used) {
+      if (!$used) {
+        $phase = $competition->getPhases()->get($key);
+        $competition->getPhases()->remove($key);
+        $this->em->remove($phase);
       }
     }
   }

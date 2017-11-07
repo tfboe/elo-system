@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
+use App\Entity\Phase;
 use App\Entity\Team;
 use App\Entity\Tournament;
 use App\Exceptions\ValueNotSet;
@@ -29,7 +30,9 @@ class CompetitionTest extends TestCase
     $competition = $this->competition();
     self::assertInstanceOf(Competition::class, $competition);
     self::assertInstanceOf(Collection::class, $competition->getTeams());
+    self::assertInstanceOf(Collection::class, $competition->getPhases());
     self::assertEquals(0, $competition->getTeams()->count());
+    self::assertEquals(0, $competition->getPhases()->count());
   }
 
   public function testId()
@@ -74,6 +77,16 @@ class CompetitionTest extends TestCase
     $competition->getTeams()->set($team->getStartNumber(), $team);
     self::assertEquals(1, $competition->getTeams()->count());
     self::assertEquals($team, $competition->getTeams()[1]);
+  }
+
+  public function testPhases()
+  {
+    $competition = $this->competition();
+    $phase = new Phase();
+    $phase->setPhaseNumber(1);
+    $competition->getPhases()->set($phase->getPhaseNumber(), $phase);
+    self::assertEquals(1, $competition->getPhases()->count());
+    self::assertEquals($phase, $competition->getPhases()[1]);
   }
 
   public function testTournament()

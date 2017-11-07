@@ -9,24 +9,21 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-
 use App\Entity\CategoryTraits\GameMode;
 use App\Entity\CategoryTraits\OrganizingMode;
 use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Competition
+ * Class Phase
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="competitions",indexes={@ORM\Index(name="unique_name_idx", columns={"tournament_id","name"})})
+ * @ORM\Table(name="phase")
  */
-class Competition extends BaseEntity
+class Phase extends BaseEntity
 {
   use GameMode;
   use TeamMode;
@@ -45,28 +42,22 @@ class Competition extends BaseEntity
   protected $id;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="competitions")
-   * @var Tournament
+   * @ORM\ManyToOne(targetEntity="Competition", inversedBy="phases")
+   * @var Competition
    */
-  protected $tournament;
+  protected $competition;
+
+  /**
+   * @ORM\Column(type="integer")
+   * @var int
+   */
+  protected $phaseNumber;
 
   /**
    * @ORM\Column(type="string")
    * @var string
    */
   protected $name;
-
-  /**
-   * @ORM\OneToMany(targetEntity="Team", mappedBy="competition", indexBy="startNumber")
-   * @var Collection|Team[]
-   */
-  protected $teams;
-
-  /**
-   * @ORM\OneToMany(targetEntity="Phase", mappedBy="competition", indexBy="phaseNumber")
-   * @var Collection|Phase[]
-   */
-  protected $phases;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -75,12 +66,19 @@ class Competition extends BaseEntity
    */
   public function __construct()
   {
-    $this->teams = new ArrayCollection();
-    $this->phases = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
+  /**
+   * @return Competition
+   */
+  public function getCompetition(): Competition
+  {
+    $this->ensureNotNull('competition');
+    return $this->competition;
+  }
+
   /**
    * @return string
    */
@@ -100,48 +98,45 @@ class Competition extends BaseEntity
   }
 
   /**
-   * @return Phase[]|Collection
+   * @return int
    */
-  public function getPhases()
+  public function getPhaseNumber(): int
   {
-    return $this->phases;
+    $this->ensureNotNull('phaseNumber');
+    return $this->phaseNumber;
   }
 
   /**
-   * @return Team[]|Collection
+   * @param Competition $competition
+   * @return $this|Phase
    */
-  public function getTeams()
+  public function setCompetition(Competition $competition): Phase
   {
-    return $this->teams;
-  }
-
-  /**
-   * @return Tournament
-   */
-  public function getTournament(): Tournament
-  {
-    $this->ensureNotNull('tournament');
-    return $this->tournament;
+    $this->competition = $competition;
+    $competition->getPhases()->set($this->getPhaseNumber(), $this);
+    return $this;
   }
 
   /**
    * @param string $name
-   * @return $this|Competition
+   * @return $this|Phase
    */
-  public function setName(string $name): Competition
+  public function setName(string $name): Phase
   {
     $this->name = $name;
     return $this;
   }
 
   /**
-   * @param Tournament $tournament
-   * @return $this|Competition
+   * @param int $phaseNumber
+   * @return $this|Phase
    */
-  public function setTournament(Tournament $tournament): Competition
+  public function setPhaseNumber(int $phaseNumber): Phase
   {
-    $this->tournament = $tournament;
-    $tournament->getCompetitions()->set($this->getName(), $this);
+    $this->phaseNumber = $phaseNumber;
+    if (!isset($this->name)) {
+      $this->setName("Phase " . $phaseNumber);
+    }
     return $this;
   }
 //</editor-fold desc="Public Methods">
