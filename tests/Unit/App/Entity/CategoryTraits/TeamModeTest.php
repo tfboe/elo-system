@@ -26,6 +26,8 @@ class TeamModeTest extends TestCase
     self::assertNull($mock->getTeamMode());
     $mock->setTeamMode(TeamMode::DOUBLE);
     self::assertEquals(TeamMode::DOUBLE, $mock->getTeamMode());
+    $mock->setTeamMode(null);
+    self::assertNull($mock->getTeamMode());
   }
 
   public function testPropertyException()

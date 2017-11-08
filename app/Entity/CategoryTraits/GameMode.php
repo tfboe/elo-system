@@ -42,7 +42,9 @@ trait GameMode
    */
   public function setGameMode(?int $gameMode)
   {
-    \App\Entity\Categories\GameMode::ensureValidValue($gameMode);
+    if ($gameMode !== null) {
+      \App\Entity\Categories\GameMode::ensureValidValue($gameMode);
+    }
     $this->gameMode = $gameMode;
     return $this;
   }

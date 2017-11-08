@@ -26,6 +26,8 @@ class ScoreModeTest extends TestCase
     self::assertNull($mock->getScoreMode());
     $mock->setScoreMode(ScoreMode::BEST_OF_FIVE);
     self::assertEquals(ScoreMode::BEST_OF_FIVE, $mock->getScoreMode());
+    $mock->setScoreMode(null);
+    self::assertNull($mock->getScoreMode());
   }
 
   public function testPropertyException()

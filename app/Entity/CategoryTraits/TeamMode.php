@@ -41,7 +41,9 @@ trait TeamMode
    */
   public function setTeamMode(?int $teamMode)
   {
-    \App\Entity\Categories\TeamMode::ensureValidValue($teamMode);
+    if ($teamMode !== null) {
+      \App\Entity\Categories\TeamMode::ensureValidValue($teamMode);
+    }
     $this->teamMode = $teamMode;
     return $this;
   }

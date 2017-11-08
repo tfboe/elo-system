@@ -42,7 +42,9 @@ trait ScoreMode
    */
   public function setScoreMode(?int $scoreMode)
   {
-    \App\Entity\Categories\ScoreMode::ensureValidValue($scoreMode);
+    if ($scoreMode !== null) {
+      \App\Entity\Categories\ScoreMode::ensureValidValue($scoreMode);
+    }
     $this->scoreMode = $scoreMode;
     return $this;
   }

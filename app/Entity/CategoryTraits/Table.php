@@ -42,7 +42,9 @@ trait Table
    */
   public function setTable(?int $table)
   {
-    \App\Entity\Categories\Table::ensureValidValue($table);
+    if ($table !== null) {
+      \App\Entity\Categories\Table::ensureValidValue($table);
+    }
     $this->table = $table;
     return $this;
   }

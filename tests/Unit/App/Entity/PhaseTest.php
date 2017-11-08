@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
+use App\Entity\Group;
 use App\Entity\Phase;
 use App\Exceptions\ValueNotSet;
+use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
@@ -47,6 +49,9 @@ class PhaseTest extends TestCase
   {
     $phase = $this->phase();
     self::assertInstanceOf(Phase::class, $phase);
+    self::assertEquals('', $phase->getName());
+    self::assertInstanceOf(Collection::class, $phase->getGroups());
+    self::assertEquals(0, $phase->getGroups()->count());
   }
 
   public function testId()
@@ -66,6 +71,23 @@ class PhaseTest extends TestCase
     $phase->getId();
   }
 
+  public function testPhaseNumber()
+  {
+    $phase = $this->phase();
+    $phase->setPhaseNumber(5);
+    self::assertEquals(5, $phase->getPhaseNumber());
+  }
+
+  public function testPhaseNumberException()
+  {
+    $phase = $this->phase();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
+    $phase->getPhaseNumber();
+  }
+
   public function testName()
   {
     $phase = $this->phase();
@@ -73,14 +95,14 @@ class PhaseTest extends TestCase
     self::assertEquals("Name", $phase->getName());
   }
 
-  public function testNameException()
+  public function testGroups()
   {
     $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property name of the class " . Phase::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
-    );
-    $phase->getName();
+    $group = new Group();
+    $group->setGroupNumber(1);
+    $phase->getGroups()->set($group->getGroupNumber(), $group);
+    self::assertEquals(1, $phase->getGroups()->count());
+    self::assertEquals($group, $phase->getGroups()[1]);
   }
 //</editor-fold desc="Public Methods">
 

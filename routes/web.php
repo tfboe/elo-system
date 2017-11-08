@@ -77,17 +77,17 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
   ]);
 
   /**
-   * @api {post} /createOrUpdateTournament Create or Update a Tournament
+   * @api {post} /createOrReplaceTournament Create or Replace a Tournament
    * @apiUse AuthenticatedRequest
    * @apiVersion 0.1.0
-   * @apiDescription Creates a new tournament or if the tournament already exists updates it
-   * @apiName PostCreateOrUpdateTournament
+   * @apiDescription Creates a new tournament or if the tournament already exists replaces it
+   * @apiName PostCreateOrReplaceTournament
    * @apiGroup Tournament
    *
    * @apiParam {string} userIdentifier a identifier which identifies the tournament uniquely across all tournaments of
    *                                   this user
    * @apiParam {string} name the name of the tournament
-   * @apiParam {string} [tournamentListId=""] the list id of which the tournament is part of
+   * @apiParam {string} [tournamentListId="''"] the list id of which the tournament is part of
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [gameMode] The rule mode of the tournament. All games of the
    *                                                          tournament which do not specify another game mode will use
    *                                                          this game mode.
@@ -131,10 +131,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {integer{>=1}} competitions.teams.startNumber the start number of the team, this must be unique across
    *                                                         all teams of a competition
    * @apiParam {string[]} competitions.teams.players list of player ids of this team
-   * @apiParam {string} [competitions.teams.name] the name of the team
+   * @apiParam {string} [competitions.teams.name="''"] the name of the team
    * @apiParam {Object[]} competitions.phases list of phases of this competition
    * @apiParam {integer{>=1}} competitions.phases.phaseNumber the number of the phase
-   * @apiParam {string} [competitions.phases.name] the name of the phase
+   * @apiParam {string} [competitions.phases.name="''"] the name of the phase
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.gameMode]
    *           The rule mode of the phase. All games of the phase which do not specify another game mode
    *           will use this game mode.
@@ -152,12 +152,32 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *           On which sort of table the phase is played. Multitable should only be used if the table is not
    *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
    *           tables. All games of the phase which do not specify another table will use this table.
+   * @apiParam {Object[]} competitions.phases.groups list of groups of the phase
+   * @apiParam {integer{>=1}} competitions.phases.groups.groupNumber the number of the group
+   * @apiParam {string} [competitions.phases.groups.name="''"] the name of the group
+   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.groups.gameMode]
+   *           The rule mode of the group. All games of the group which do not specify another game mode
+   *           will use this game mode.
+   * @apiParam {string=ELIMINATION,QUALIFICATION} [competitions.phases.groups.organizingMode]
+   *           The organization mode of the group. All games of the group which do not specify another
+   *           organizing mode will use this organizing mode.
+   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [competitions.phases.groups.scoreMode]
+   *           The score mode of the group. All games of the group which do not specify another score mode
+   *           will use this score mode.
+   * @apiParam {string=DOUBLE,SINGLE,DYP} [competitions.phases.groups.teamMode]
+   *           Specifies the team mode of the group. If the partners were chosen randomly at some point the mode
+   *           should be DYP. All games of the group which do not specify another team mode will use this team
+   *           mode.
+   * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [competitions.phases.groups.table]
+   *           On which sort of table the group is played. Multitable should only be used if the table is not
+   *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
+   *           tables. All games of the group which do not specify another table will use this table.
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
-   * @apiSuccess {string} type the type of the successful operation either "create" or "update"
+   * @apiSuccess {string} type the type of the successful operation either "create" or "replace"
    */
-  $router->post('createOrUpdateTournament', [
-    'as' => 'createOrUpdateTournament', 'uses' => 'TournamentController@createOrUpdateTournament'
+  $router->post('createOrReplaceTournament', [
+    'as' => 'createOrReplaceTournament', 'uses' => 'TournamentController@createOrReplaceTournament'
   ]);
 
   /**

@@ -15,17 +15,15 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Phase
+ * Class Group
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="phases")
+ * @ORM\Table(name="groups")
  */
-class Phase extends BaseEntity
+class Group extends BaseEntity
 {
   use GameMode;
   use TeamMode;
@@ -44,28 +42,22 @@ class Phase extends BaseEntity
   protected $id;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Competition", inversedBy="phases")
-   * @var Competition
+   * @ORM\ManyToOne(targetEntity="Phase", inversedBy="groups")
+   * @var Phase
    */
-  protected $competition;
+  protected $phase;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $phaseNumber;
+  protected $groupNumber;
 
   /**
    * @ORM\Column(type="string")
    * @var string
    */
   protected $name;
-
-  /**
-   * @ORM\OneToMany(targetEntity="Group", mappedBy="phase", indexBy="groupNumber")
-   * @var Collection|Group[]
-   */
-  protected $groups;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -74,27 +66,18 @@ class Phase extends BaseEntity
    */
   public function __construct()
   {
-    $this->groups = new ArrayCollection();
     $this->name = '';
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
   /**
-   * @return Competition
+   * @return int
    */
-  public function getCompetition(): Competition
+  public function getGroupNumber(): int
   {
-    $this->ensureNotNull('competition');
-    return $this->competition;
-  }
-
-  /**
-   * @return Group[]|Collection
-   */
-  public function getGroups()
-  {
-    return $this->groups;
+    $this->ensureNotNull('groupNumber');
+    return $this->groupNumber;
   }
 
   /**
@@ -115,42 +98,42 @@ class Phase extends BaseEntity
   }
 
   /**
-   * @return int
+   * @return Phase
    */
-  public function getPhaseNumber(): int
+  public function getPhase(): Phase
   {
-    $this->ensureNotNull('phaseNumber');
-    return $this->phaseNumber;
+    $this->ensureNotNull('phase');
+    return $this->phase;
   }
 
   /**
-   * @param Competition $competition
-   * @return $this|Phase
+   * @param int $groupNumber
+   * @return $this|Group
    */
-  public function setCompetition(Competition $competition): Phase
+  public function setGroupNumber(int $groupNumber): Group
   {
-    $this->competition = $competition;
-    $competition->getPhases()->set($this->getPhaseNumber(), $this);
+    $this->groupNumber = $groupNumber;
     return $this;
   }
 
   /**
    * @param string $name
-   * @return $this|Phase
+   * @return $this|Group
    */
-  public function setName(string $name): Phase
+  public function setName(string $name): Group
   {
     $this->name = $name;
     return $this;
   }
 
   /**
-   * @param int $phaseNumber
-   * @return $this|Phase
+   * @param Phase $phase
+   * @return $this|Group
    */
-  public function setPhaseNumber(int $phaseNumber): Phase
+  public function setPhase(Phase $phase): Group
   {
-    $this->phaseNumber = $phaseNumber;
+    $this->phase = $phase;
+    $phase->getGroups()->set($this->getGroupNumber(), $this);
     return $this;
   }
 //</editor-fold desc="Public Methods">

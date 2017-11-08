@@ -42,7 +42,9 @@ trait OrganizingMode
    */
   public function setOrganizingMode(?int $organizingMode)
   {
-    \App\Entity\Categories\OrganizingMode::ensureValidValue($organizingMode);
+    if ($organizingMode !== null) {
+      \App\Entity\Categories\OrganizingMode::ensureValidValue($organizingMode);
+    }
     $this->organizingMode = $organizingMode;
     return $this;
   }

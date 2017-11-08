@@ -26,6 +26,8 @@ class OrganizingModeTest extends TestCase
     self::assertNull($mock->getOrganizingMode());
     $mock->setOrganizingMode(OrganizingMode::ELIMINATION);
     self::assertEquals(OrganizingMode::ELIMINATION, $mock->getOrganizingMode());
+    $mock->setOrganizingMode(null);
+    self::assertNull($mock->getOrganizingMode());
   }
 
   public function testPropertyException()

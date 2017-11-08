@@ -26,6 +26,8 @@ class TableTest extends TestCase
     self::assertNull($mock->getTable());
     $mock->setTable(Table::ROBERTO_SPORT);
     self::assertEquals(Table::ROBERTO_SPORT, $mock->getTable());
+    $mock->setTable(null);
+    self::assertNull($mock->getTable());
   }
 
   public function testPropertyException()

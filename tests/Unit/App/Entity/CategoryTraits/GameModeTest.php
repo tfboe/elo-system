@@ -26,6 +26,8 @@ class GameModeTest extends TestCase
     self::assertNull($mock->getGameMode());
     $mock->setGameMode(GameMode::SPEEDBALL);
     self::assertEquals(GameMode::SPEEDBALL, $mock->getGameMode());
+    $mock->setGameMode(null);
+    self::assertNull($mock->getGameMode());
   }
 
   public function testPropertyException()
