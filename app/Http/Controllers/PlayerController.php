@@ -84,6 +84,7 @@ class PlayerController extends BaseController
     }, $players));
   }
 
+  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Searches for players by name and birthday and returns the found results in a json format.
    *
@@ -110,6 +111,8 @@ class PlayerController extends BaseController
       $result = $this->em->getRepository(Player::class)->findBy($criteria);
       $found = [];
       foreach ($result as $p) {
+        /** @noinspection PhpUnhandledExceptionInspection */ //all values must be set since we used them in the
+        // criteria (findBy)
         $found[] = ['id' => $p->getId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
           'birthday' => $p->getBirthday()->format('Y-m-d')];
       }

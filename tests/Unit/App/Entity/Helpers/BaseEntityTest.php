@@ -24,6 +24,7 @@ class BaseEntityTest extends TestCase
   {
     $e = new TestEntity();
     $e->setProp(5);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(5, $e->getProp());
   }
 
@@ -33,6 +34,7 @@ class BaseEntityTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property prop of the class " . TestEntity::class . " must be set before it can" .
       " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $e->getProp();
   }
 

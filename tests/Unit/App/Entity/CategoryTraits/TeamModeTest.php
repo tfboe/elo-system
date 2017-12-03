@@ -24,8 +24,10 @@ class TeamModeTest extends TestCase
   {
     $mock = $this->mock();
     self::assertNull($mock->getTeamMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTeamMode(TeamMode::DOUBLE);
     self::assertEquals(TeamMode::DOUBLE, $mock->getTeamMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTeamMode(null);
     self::assertNull($mock->getTeamMode());
   }
@@ -36,6 +38,7 @@ class TeamModeTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: 100 in App\Entity\Categories\TeamMode. Possible values: 0, 1, 2.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTeamMode(100);
   }
 //</editor-fold desc="Public Methods">

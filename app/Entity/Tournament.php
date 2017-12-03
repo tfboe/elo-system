@@ -96,6 +96,7 @@ class Tournament extends BaseEntity
 
   /**
    * @return User
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getCreator(): User
   {
@@ -105,6 +106,7 @@ class Tournament extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): string
   {
@@ -114,6 +116,7 @@ class Tournament extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getName(): string
   {
@@ -131,6 +134,7 @@ class Tournament extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getUserIdentifier(): string
   {

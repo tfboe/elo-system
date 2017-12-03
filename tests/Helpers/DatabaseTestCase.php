@@ -52,6 +52,7 @@ abstract class DatabaseTestCase extends TestCase
 
   /**
    * Clears the database by truncating all tables (very time consuming)
+   * @throws \Doctrine\DBAL\DBALException
    */
   protected function clearDatabase()
   {
@@ -129,6 +130,7 @@ abstract class DatabaseTestCase extends TestCase
    * Boot the testing helper traits.
    *
    * @return void
+   * @throws \Doctrine\DBAL\DBALException
    */
   protected function setUpTraits()
   {

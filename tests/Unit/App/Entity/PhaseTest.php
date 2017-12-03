@@ -29,9 +29,14 @@ class PhaseTest extends TestCase
     $phase = $this->phase();
     $competition = new Competition();
     $phase->setPhaseNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setCompetition($competition);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $phase->getCompetition());
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
   }
 
@@ -42,6 +47,7 @@ class PhaseTest extends TestCase
     $this->expectExceptionMessage("The property competition of the class " . Phase::class . " must be set before" .
       " it can be accessed. Please set the property immediately after you call the constructor(Empty Constructor " .
       "Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getCompetition();
   }
 
@@ -59,6 +65,7 @@ class PhaseTest extends TestCase
     $phase = $this->phase();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($phase);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $phase->getId());
   }
 
@@ -68,6 +75,7 @@ class PhaseTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class " . Phase::class . " must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getId();
   }
 
@@ -75,6 +83,7 @@ class PhaseTest extends TestCase
   {
     $phase = $this->phase();
     $phase->setPhaseNumber(5);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(5, $phase->getPhaseNumber());
   }
 
@@ -85,6 +94,7 @@ class PhaseTest extends TestCase
     $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
       "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
     );
+    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getPhaseNumber();
   }
 
@@ -100,6 +110,7 @@ class PhaseTest extends TestCase
     $phase = $this->phase();
     $group = new Group();
     $group->setGroupNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getGroups()->set($group->getGroupNumber(), $group);
     self::assertEquals(1, $phase->getGroups()->count());
     self::assertEquals($group, $phase->getGroups()[1]);

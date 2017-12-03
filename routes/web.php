@@ -172,6 +172,12 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *           On which sort of table the group is played. Multitable should only be used if the table is not
    *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
    *           tables. All games of the group which do not specify another table will use this table.
+   * @apiParam {Object[]{>=2}} competitions.phases.groups.rankings list of rankings of the group
+   * @apiParam {integer{>=1}} competitions.phases.groups.rankings.rank the rank of the ranking
+   * @apiParam {integer{>=1}} competitions.phases.groups.rankings.uniqueRank the unique rank of the ranking
+   * @apiParam {integer[]} competitions.phases.groups.rankings.teamStartNumbers list of the start numbers of the teams
+   *                                                                            corresponding to this ranking
+   * @apiParam {string} [competitions.phases.groups.rankings.name] the name of the ranking
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
    * @apiSuccess {string} type the type of the successful operation either "create" or "replace"

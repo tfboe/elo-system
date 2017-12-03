@@ -25,6 +25,7 @@ class BasicEnumTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: "1" in Tests\Helpers\TestEnum. Possible values: "value", 1.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     TestEnum::ensureValidValue('1');
   }
 
@@ -35,8 +36,11 @@ class BasicEnumTest extends TestCase
 
   public function testGetValue()
   {
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("value", TestEnum::getValue('KEY'));
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, TestEnum::getValue('int_key'));
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, TestEnum::getValue('INT_KEY', True));
   }
 
@@ -45,6 +49,7 @@ class BasicEnumTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage('The following value is not valid: "int_key" in Tests\Helpers\TestEnum. Possible ' .
       'values: "value", 1.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     TestEnum::getValue('int_key', True);
   }
 

@@ -32,6 +32,7 @@ class BaseControllerTest extends TestCase
     $controller = app(UserController::class);
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, []]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($value, $object->getProp());
   }
 
@@ -44,6 +45,7 @@ class BaseControllerTest extends TestCase
     $controller = app(UserController::class);
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($value, $object->getProp());
   }
 
@@ -56,6 +58,7 @@ class BaseControllerTest extends TestCase
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $value = 'test-value';
     $method->invokeArgs($controller, [$object, $specification, ['attr' => $value]]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($object->getProp(), $value);
   }
 
@@ -69,6 +72,7 @@ class BaseControllerTest extends TestCase
     /** @var UserController $controller */
     $controller = app(UserController::class);
     $method = self::getMethod(UserController::class, 'setFromSpecification');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method->invokeArgs($controller, [$object, $specification, ['user' => $user->getId()]]);
     self::assertEquals($user, $object->getUser());
   }
@@ -83,6 +87,7 @@ class BaseControllerTest extends TestCase
     $controller = app(UserController::class);
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($datetime, $object->getProp());
   }
 //</editor-fold desc="Public Methods">

@@ -55,6 +55,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
     /** @noinspection PhpUndefinedMethodInspection */
     $connection = EntityManager::getConnection();
     $sql = sprintf('SET FOREIGN_KEY_CHECKS=0;TRUNCATE TABLE %s;SET FOREIGN_KEY_CHECKS=1;', "users");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $connection->query($sql);
     parent::workOnDatabaseDestroy();
   }
@@ -64,9 +65,11 @@ class AuthenticatedTestCase extends DatabaseTestCase
     parent::workOnDatabaseSetUp();
     $password = $this->newPassword();
     $this->user = entity(User::class)->create(['originalPassword' => $password]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
     $this->refreshApplication();
     /** @noinspection PhpUndefinedMethodInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     $this->user = EntityManager::find(User::class, $this->user->getId());
   }
 //</editor-fold desc="Protected Methods">

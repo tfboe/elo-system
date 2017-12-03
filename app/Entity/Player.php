@@ -53,6 +53,7 @@ class Player extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return \DateTime
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getBirthday(): \DateTime
   {
@@ -62,6 +63,7 @@ class Player extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getFirstName(): string
   {
@@ -71,6 +73,7 @@ class Player extends BaseEntity
 
   /**
    * @return int
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): int
   {
@@ -80,6 +83,7 @@ class Player extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getLastName(): string
   {

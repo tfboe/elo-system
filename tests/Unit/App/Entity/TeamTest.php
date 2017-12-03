@@ -29,9 +29,14 @@ class TeamTest extends TestCase
     $team = $this->team();
     $competition = new Competition();
     $team->setStartNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
     $team->setCompetition($competition);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $team->getCompetition());
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $team->getCompetition()->getTeams()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($team, $team->getCompetition()->getTeams()[$team->getStartNumber()]);
   }
 
@@ -42,6 +47,7 @@ class TeamTest extends TestCase
     $this->expectExceptionMessage("The property competition of the class " . Team::class . " must be set before it " .
       "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
     );
+    /** @noinspection PhpUnhandledExceptionInspection */
     $team->getCompetition();
   }
 
@@ -59,6 +65,7 @@ class TeamTest extends TestCase
     $team = $this->team();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($team);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $team->getId());
   }
 
@@ -68,6 +75,7 @@ class TeamTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class " . Team::class . " must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $team->getId();
   }
 
@@ -91,6 +99,7 @@ class TeamTest extends TestCase
   {
     $team = $this->team();
     $team->setRank(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $team->getRank());
   }
 
@@ -101,6 +110,7 @@ class TeamTest extends TestCase
     $this->expectExceptionMessage("The property rank of the class " . Team::class . " must be set before it " .
       "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
     );
+    /** @noinspection PhpUnhandledExceptionInspection */
     $team->getRank();
   }
 
@@ -108,6 +118,7 @@ class TeamTest extends TestCase
   {
     $team = $this->team();
     $team->setStartNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $team->getStartNumber());
   }
 
@@ -118,6 +129,7 @@ class TeamTest extends TestCase
     $this->expectExceptionMessage("The property startNumber of the class " . Team::class . " must be set before it " .
       "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
     );
+    /** @noinspection PhpUnhandledExceptionInspection */
     $team->getStartNumber();
   }
 

@@ -48,6 +48,7 @@ class UserController extends BaseController
     return response()->json(['id' => $user->getId()], 200, ['jwt-token' => $token]);
   }
 
+  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * register action, registers a new user with email and password
    *
@@ -67,17 +68,20 @@ class UserController extends BaseController
     /** @var User $user */
     $user = $this->setFromSpecification(new User(), $user_specification, $input);
 
-    $this->em->persist($user);
+    $this->em->persist($user); //sets the user id
     $this->em->flush();
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     return response()->json(['id' => $user->getId()]);
   }
 
+  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * @return JsonResponse
    */
   public function userId(): JsonResponse
   {
+    /** @noinspection PhpUnhandledExceptionInspection */
     return response()->json(['id' => \Auth::user()->getId()]);
   }
 //</editor-fold desc="Public Methods">

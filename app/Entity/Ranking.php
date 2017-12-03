@@ -10,17 +10,18 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Helpers\BaseEntity;
+use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Team
+ * Class Ranking
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="teams")
+ * @ORM\Table(name="rankings")
  */
-class Team extends BaseEntity
+class Ranking extends BaseEntity
 {
 //<editor-fold desc="Fields">
   /**
@@ -33,17 +34,17 @@ class Team extends BaseEntity
   protected $id;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Player")
-   * @ORM\JoinTable(name="relation__team_players")
-   * @var Collection|Player[]
+   * @ORM\ManyToMany(targetEntity="Team", indexBy="startNumber")
+   * @ORM\JoinTable(name="relation__ranking_teams")
+   * @var Collection|Team[]
    */
-  protected $players;
+  protected $teams;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Competition", inversedBy="teams")
-   * @var Competition
+   * @ORM\ManyToOne(targetEntity="Group", inversedBy="rankings")
+   * @var Group
    */
-  protected $competition;
+  protected $group;
 
   /**
    * @ORM\Column(type="integer")
@@ -55,7 +56,7 @@ class Team extends BaseEntity
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $startNumber;
+  protected $uniqueRank;
 
   /**
    * @ORM\Column(type="string")
@@ -70,25 +71,25 @@ class Team extends BaseEntity
    */
   public function __construct()
   {
-    $this->players = new ArrayCollection();
+    $this->teams = new ArrayCollection();
     $this->name = "";
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
   /**
-   * @return Competition
-   * @throws \App\Exceptions\ValueNotSet
+   * @return Group
+   * @throws ValueNotSet
    */
-  public function getCompetition(): Competition
+  public function getGroup(): Group
   {
-    $this->ensureNotNull("competition");
-    return $this->competition;
+    $this->ensureNotNull("group");
+    return $this->group;
   }
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
+   * @throws ValueNotSet
    */
   public function getId(): string
   {
@@ -105,16 +106,8 @@ class Team extends BaseEntity
   }
 
   /**
-   * @return Player[]|Collection
-   */
-  public function getPlayers()
-  {
-    return $this->players;
-  }
-
-  /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
+   * @throws ValueNotSet
    */
   public function getRank(): int
   {
@@ -123,32 +116,40 @@ class Team extends BaseEntity
   }
 
   /**
-   * @return int
-   * @throws \App\Exceptions\ValueNotSet
+   * @return Team[]|Collection
    */
-  public function getStartNumber(): int
+  public function getTeams()
   {
-    $this->ensureNotNull("startNumber");
-    return $this->startNumber;
+    return $this->teams;
   }
 
   /**
-   * @param Competition $competition
-   * @return $this|Team
-   * @throws \App\Exceptions\ValueNotSet if the start number is not set
+   * @return int
+   * @throws ValueNotSet
    */
-  public function setCompetition(Competition $competition): Team
+  public function getUniqueRank(): int
   {
-    $this->competition = $competition;
-    $this->competition->getTeams()->set($this->getStartNumber(), $this);
+    $this->ensureNotNull("uniqueRank");
+    return $this->uniqueRank;
+  }
+
+  /**
+   * @param Group $group
+   * @return $this|Ranking
+   * @throws ValueNotSet if the unique rank is not set
+   */
+  public function setGroup(Group $group): Ranking
+  {
+    $this->group = $group;
+    $group->getRankings()->set($this->getUniqueRank(), $this);
     return $this;
   }
 
   /**
    * @param string $name
-   * @return $this|Team
+   * @return $this|Ranking
    */
-  public function setName(string $name): Team
+  public function setName(string $name): Ranking
   {
     $this->name = $name;
     return $this;
@@ -156,22 +157,24 @@ class Team extends BaseEntity
 
   /**
    * @param int $rank
-   * @return $this|Team
+   * @return $this|Ranking
    */
-  public function setRank(int $rank): Team
+  public function setRank(int $rank): Ranking
   {
     $this->rank = $rank;
     return $this;
   }
 
   /**
-   * @param int $startNumber
-   * @return $this|Team
+   * @param int $uniqueRank
+   * @return $this|Ranking
    */
-  public function setStartNumber(int $startNumber): Team
+  public function setUniqueRank(int $uniqueRank): Ranking
   {
-    $this->startNumber = $startNumber;
+    $this->uniqueRank = $uniqueRank;
     return $this;
   }
 //</editor-fold desc="Public Methods">
+
+
 }

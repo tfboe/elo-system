@@ -24,8 +24,10 @@ class GameModeTest extends TestCase
   {
     $mock = $this->mock();
     self::assertNull($mock->getGameMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setGameMode(GameMode::SPEEDBALL);
     self::assertEquals(GameMode::SPEEDBALL, $mock->getGameMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setGameMode(null);
     self::assertNull($mock->getGameMode());
   }
@@ -36,6 +38,7 @@ class GameModeTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: 100 in App\Entity\Categories\GameMode. Possible values: 0, 1, 2.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setGameMode(100);
   }
 //</editor-fold desc="Public Methods">

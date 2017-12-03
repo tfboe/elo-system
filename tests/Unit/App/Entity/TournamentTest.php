@@ -29,8 +29,10 @@ class TournamentTest extends TestCase
     $tournament = $this->tournament();
     $competition = new Competition();
     $competition->setName('comp name');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getCompetitions()->set($competition->getName(), $competition);
     self::assertEquals(1, $tournament->getCompetitions()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $tournament->getCompetitions()[$competition->getName()]);
   }
 
@@ -48,6 +50,7 @@ class TournamentTest extends TestCase
     $tournament = $this->tournament();
     $creator = new User();
     $tournament->setCreator($creator);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($creator, $tournament->getCreator());
   }
 
@@ -58,6 +61,7 @@ class TournamentTest extends TestCase
     $this->expectExceptionMessage("The property creator of the class " . Tournament::class . " must be set before it " .
       "can be accessed. Please set the property immediately after you call the constructor" .
       "(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getCreator();
   }
 
@@ -66,6 +70,7 @@ class TournamentTest extends TestCase
     $tournament = $this->tournament();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($tournament);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $tournament->getId());
   }
 
@@ -75,6 +80,7 @@ class TournamentTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class " . Tournament::class . " must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getId();
   }
 
@@ -82,6 +88,7 @@ class TournamentTest extends TestCase
   {
     $tournament = $this->tournament();
     $tournament->setName("Name");
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("Name", $tournament->getName());
   }
 
@@ -91,6 +98,7 @@ class TournamentTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property name of the class " . Tournament::class . " must be set before it can" .
       " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getName();
   }
 
@@ -105,6 +113,7 @@ class TournamentTest extends TestCase
   {
     $tournament = $this->tournament();
     $tournament->setUserIdentifier("UserIdentifier");
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("UserIdentifier", $tournament->getUserIdentifier());
   }
 
@@ -115,6 +124,7 @@ class TournamentTest extends TestCase
     $this->expectExceptionMessage("The property userIdentifier of the class " . Tournament::class . " must be set " .
       "before it can be accessed. Please set the property immediately after you call the constructor" .
       "(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getUserIdentifier();
   }
 //</editor-fold desc="Public Methods">

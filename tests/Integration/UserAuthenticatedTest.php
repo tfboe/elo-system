@@ -25,6 +25,7 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
   {
     /** @var User $user */
     /** @noinspection PhpUndefinedMethodInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     $user = EntityManager::find(User::class, $this->user->getId());
     $user->setJwtVersion(2);
     /** @noinspection PhpUndefinedMethodInspection */
@@ -35,6 +36,7 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
 
   public function testUserId()
   {
+    /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('GET', '/userId')->seeJsonEquals(['id' => $this->user->getId()]);
   }
 //</editor-fold desc="Public Methods">

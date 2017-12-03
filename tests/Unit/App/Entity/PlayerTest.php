@@ -24,6 +24,7 @@ class PlayerTest extends TestCase
   {
     $player = $this->player();
     $player->setBirthday(new \DateTime('1992-02-02 02:02:02'));
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(new \DateTime('1992-02-02 02:02:02'), $player->getBirthday());
   }
 
@@ -33,6 +34,7 @@ class PlayerTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property birthday of the class App\Entity\Player must be set before it can be" .
       " accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $player->getBirthday();
   }
 
@@ -46,6 +48,7 @@ class PlayerTest extends TestCase
   {
     $player = $this->player();
     $player->setFirstName("First");
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("First", $player->getFirstName());
   }
 
@@ -55,6 +58,7 @@ class PlayerTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property firstName of the class App\Entity\Player must be set before it can be" .
       " accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $player->getFirstName();
   }
 
@@ -63,6 +67,7 @@ class PlayerTest extends TestCase
     $player = $this->player();
     $id_property = self::getProperty(Player::class, 'id');
     $id_property->setValue($player, 0);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(0, $player->getId());
   }
 
@@ -72,6 +77,7 @@ class PlayerTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class " . Player::class . " must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $player->getId();
   }
 
@@ -79,6 +85,7 @@ class PlayerTest extends TestCase
   {
     $player = $this->player();
     $player->setLastName("Last");
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("Last", $player->getLastName());
   }
 
@@ -88,6 +95,7 @@ class PlayerTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property lastName of the class App\Entity\Player must be set before it can be" .
       " accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $player->getLastName();
   }
 //</editor-fold desc="Public Methods">

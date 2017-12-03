@@ -83,6 +83,7 @@ class Competition extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): string
   {
@@ -92,6 +93,7 @@ class Competition extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getName(): string
   {
@@ -117,6 +119,7 @@ class Competition extends BaseEntity
 
   /**
    * @return Tournament
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getTournament(): Tournament
   {
@@ -137,6 +140,7 @@ class Competition extends BaseEntity
   /**
    * @param Tournament $tournament
    * @return $this|Competition
+   * @throws \App\Exceptions\ValueNotSet if the name is not set
    */
   public function setTournament(Tournament $tournament): Competition
   {

@@ -82,6 +82,7 @@ class Phase extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return Competition
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getCompetition(): Competition
   {
@@ -99,6 +100,7 @@ class Phase extends BaseEntity
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): string
   {
@@ -116,6 +118,7 @@ class Phase extends BaseEntity
 
   /**
    * @return int
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPhaseNumber(): int
   {
@@ -126,6 +129,7 @@ class Phase extends BaseEntity
   /**
    * @param Competition $competition
    * @return $this|Phase
+   * @throws \App\Exceptions\ValueNotSet if the phase number is not set
    */
   public function setCompetition(Competition $competition): Phase
   {

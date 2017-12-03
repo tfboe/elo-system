@@ -24,8 +24,10 @@ class OrganizingModeTest extends TestCase
   {
     $mock = $this->mock();
     self::assertNull($mock->getOrganizingMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setOrganizingMode(OrganizingMode::ELIMINATION);
     self::assertEquals(OrganizingMode::ELIMINATION, $mock->getOrganizingMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setOrganizingMode(null);
     self::assertNull($mock->getOrganizingMode());
   }
@@ -36,6 +38,7 @@ class OrganizingModeTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: 100 in App\Entity\Categories\OrganizingMode. Possible values: 0, 1.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setOrganizingMode(100);
   }
 //</editor-fold desc="Public Methods">

@@ -34,6 +34,7 @@ class UserTest extends TestCase
   {
     $user = $this->user();
     $user->setEmail("test@a1.net");
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("test@a1.net", $user->getEmail());
   }
 
@@ -43,6 +44,7 @@ class UserTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property email of the class App\Entity\User must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $user->getEmail();
   }
 
@@ -51,6 +53,7 @@ class UserTest extends TestCase
     $user = $this->user();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($user);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getId());
   }
 
@@ -60,6 +63,7 @@ class UserTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $user->getId();
   }
 
@@ -75,7 +79,10 @@ class UserTest extends TestCase
     $user = $this->user();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($user);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getJWTIdentifier());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($user->getId(), $user->getJWTIdentifier());
   }
 
@@ -85,6 +92,7 @@ class UserTest extends TestCase
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
       "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
     $user->getJWTIdentifier();
   }
 

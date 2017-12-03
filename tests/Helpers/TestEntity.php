@@ -30,6 +30,7 @@ class TestEntity extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return mixed
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getProp()
   {

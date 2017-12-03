@@ -15,6 +15,9 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use App\Exceptions\ValueNotSet;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,6 +61,12 @@ class Group extends BaseEntity
    * @var string
    */
   protected $name;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Ranking", mappedBy="group", indexBy="uniqueRank")
+   * @var Collection|Ranking[]
+   */
+  protected $rankings;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -67,12 +76,14 @@ class Group extends BaseEntity
   public function __construct()
   {
     $this->name = '';
+    $this->rankings = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return int
+   * @throws ValueNotSet
    */
   public function getGroupNumber(): int
   {
@@ -82,6 +93,7 @@ class Group extends BaseEntity
 
   /**
    * @return string
+   * @throws ValueNotSet
    */
   public function getId(): string
   {
@@ -99,11 +111,20 @@ class Group extends BaseEntity
 
   /**
    * @return Phase
+   * @throws ValueNotSet
    */
   public function getPhase(): Phase
   {
     $this->ensureNotNull('phase');
     return $this->phase;
+  }
+
+  /**
+   * @return Ranking[]|Collection
+   */
+  public function getRankings()
+  {
+    return $this->rankings;
   }
 
   /**
@@ -129,6 +150,7 @@ class Group extends BaseEntity
   /**
    * @param Phase $phase
    * @return $this|Group
+   * @throws ValueNotSet if the group number is not set
    */
   public function setPhase(Phase $phase): Group
   {

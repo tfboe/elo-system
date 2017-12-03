@@ -24,8 +24,10 @@ class ScoreModeTest extends TestCase
   {
     $mock = $this->mock();
     self::assertNull($mock->getScoreMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setScoreMode(ScoreMode::BEST_OF_FIVE);
     self::assertEquals(ScoreMode::BEST_OF_FIVE, $mock->getScoreMode());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setScoreMode(null);
     self::assertNull($mock->getScoreMode());
   }
@@ -36,6 +38,7 @@ class ScoreModeTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: 100 in App\Entity\Categories\ScoreMode. Possible values: 0, 1, 2.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setScoreMode(100);
   }
 //</editor-fold desc="Public Methods">

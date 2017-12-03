@@ -24,8 +24,10 @@ class TableTest extends TestCase
   {
     $mock = $this->mock();
     self::assertNull($mock->getTable());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTable(Table::ROBERTO_SPORT);
     self::assertEquals(Table::ROBERTO_SPORT, $mock->getTable());
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTable(null);
     self::assertNull($mock->getTable());
   }
@@ -36,6 +38,7 @@ class TableTest extends TestCase
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: 100 in App\Entity\Categories\Table. Possible values: 0, 1, 2, 3, 4, 5.');
+    /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTable(100);
   }
 //</editor-fold desc="Public Methods">

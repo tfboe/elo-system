@@ -66,6 +66,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
 //<editor-fold desc="Public Methods">
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getEmail(): string
   {
@@ -75,6 +76,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
 
   /**
    * @return string
+   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): string
   {
@@ -98,6 +100,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * Get the identifier that will be stored in the subject claim of the JWT.
    *
    * @return string
+   * @throws \App\Exceptions\ValueNotSet if the id is not set
    */
   public function getJWTIdentifier(): string
   {
