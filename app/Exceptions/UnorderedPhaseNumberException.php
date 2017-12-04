@@ -33,8 +33,8 @@ class UnorderedPhaseNumberException extends AbstractException
     $this->previousPhaseNumber = $previousPhaseNumber;
     $this->nextPhaseNumber = $nextPhaseNumber;
 
-    $message = "The previous phase with number $previousPhaseNumber has a higher phase number than the next phase " .
-      "with number $nextPhaseNumber";
+    $message = "The previous phase with number $previousPhaseNumber has a higher phase number than the next phase ";
+    $message .= "with number $nextPhaseNumber";
     parent::__construct($message, 409);
   }
 //</editor-fold desc="Constructor">
