@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity;
 
-use App\Entity\Group;
+use App\Entity\Phase;
 use App\Entity\Ranking;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
@@ -33,30 +33,42 @@ class RankingTest extends TestCase
     self::assertEquals(0, $ranking->getTeams()->count());
   }
 
-  public function testGroup()
+  public function testPhase()
   {
     $ranking = $this->ranking();
-    $group = new Group();
+    $phase = new Phase();
     $ranking->setUniqueRank(1);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $ranking->setGroup($group);
+    $ranking->setPhase($phase);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($group, $ranking->getGroup());
+    self::assertEquals($phase, $ranking->getPhase());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $ranking->getGroup()->getRankings()->count());
+    self::assertEquals(1, $ranking->getPhase()->getRankings()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($ranking, $ranking->getGroup()->getRankings()[$ranking->getUniqueRank()]);
+    self::assertEquals($ranking, $ranking->getPhase()->getRankings()[$ranking->getUniqueRank()]);
+
+    $phase2 = new Phase();
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $ranking->setPhase($phase2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($phase2, $ranking->getPhase());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(1, $ranking->getPhase()->getRankings()->count());
+    self::assertEquals(0, $phase->getRankings()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($ranking, $ranking->getPhase()->getRankings()[$ranking->getUniqueRank()]);
   }
 
-  public function testGroupException()
+  public function testPhaseException()
   {
     $ranking = $this->ranking();
     $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property group of the class " . Ranking::class . " must be set before" .
+    $this->expectExceptionMessage("The property phase of the class " . Ranking::class . " must be set before" .
       " it can be accessed. Please set the property immediately after you call the constructor(Empty Constructor " .
       "Pattern).");
     /** @noinspection PhpUnhandledExceptionInspection */
-    $ranking->getGroup();
+    $ranking->getPhase();
   }
 
   public function testId()

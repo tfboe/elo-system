@@ -14,6 +14,8 @@ use App\Exceptions\AuthenticationException;
 use App\Exceptions\DuplicateException;
 use App\Exceptions\Handler;
 use App\Exceptions\PlayerAlreadyExists;
+use App\Exceptions\ReferenceException;
+use App\Exceptions\UnorderedPhaseNumberException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -58,6 +60,21 @@ class HandlerTest extends TestCase
     /** @var JsonResponse $res */
     self::assertEquals(['status' => 409, 'message' => 'Duplicate Exception',
       'name' => 'DuplicateException', 'duplicateValue' => 'value', 'arrayName' => 'array'], $res->getData(true));
+
+    $exception = new ReferenceException('value', 'name');
+    $res = $handler->render($this->request(), $exception);
+    self::assertInstanceOf(JsonResponse::class, $res);
+    /** @var JsonResponse $res */
+    self::assertEquals(['status' => 409, 'message' => 'Reference Exception',
+      'name' => 'ReferenceException', 'referenceValue' => 'value', 'referenceName' => 'name'], $res->getData(true));
+
+    $exception = new UnorderedPhaseNumberException(2, 1);
+    $res = $handler->render($this->request(), $exception);
+    self::assertInstanceOf(JsonResponse::class, $res);
+    /** @var JsonResponse $res */
+    self::assertEquals(['status' => 409, 'message' => 'Unordered Phase Number Exception',
+      'name' => 'UnorderedPhaseNumberException', 'previousPhaseNumber' => 2, 'nextPhaseNumber' => 1],
+      $res->getData(true));
 
     $exception = new PlayerAlreadyExists([]);
     $res = $handler->render($this->request(), $exception);

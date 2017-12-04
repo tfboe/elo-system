@@ -101,6 +101,12 @@ class Handler extends ExceptionHandler
     if ($e instanceof DuplicateException) {
       return ExceptionNames::DUPLICATE_EXCEPTION;
     }
+    if ($e instanceof UnorderedPhaseNumberException) {
+      return ExceptionNames::UNORDERED_PHASE_NUMBER_EXCEPTION;
+    }
+    if ($e instanceof ReferenceException) {
+      return ExceptionNames::REFERENCE_EXCEPTION;
+    }
     if ($e instanceof PlayerAlreadyExists) {
       return ExceptionNames::PLAYER_ALREADY_EXISTS_EXCEPTION;
     }

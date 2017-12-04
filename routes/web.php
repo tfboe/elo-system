@@ -135,6 +135,8 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {Object[]} competitions.phases list of phases of this competition
    * @apiParam {integer{>=1}} competitions.phases.phaseNumber the number of the phase
    * @apiParam {string} [competitions.phases.name="''"] the name of the phase
+   * @apiParam {string[]} [competitions.phases.nextPhaseNumbers=[]] the list of next phase numbers (direct successor
+   *                                                                phases)
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.gameMode]
    *           The rule mode of the phase. All games of the phase which do not specify another game mode
    *           will use this game mode.
@@ -152,34 +154,21 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *           On which sort of table the phase is played. Multitable should only be used if the table is not
    *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
    *           tables. All games of the phase which do not specify another table will use this table.
-   * @apiParam {Object[]} competitions.phases.groups list of groups of the phase
-   * @apiParam {integer{>=1}} competitions.phases.groups.groupNumber the number of the group
-   * @apiParam {string} [competitions.phases.groups.name="''"] the name of the group
-   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.groups.gameMode]
-   *           The rule mode of the group. All games of the group which do not specify another game mode
-   *           will use this game mode.
-   * @apiParam {string=ELIMINATION,QUALIFICATION} [competitions.phases.groups.organizingMode]
-   *           The organization mode of the group. All games of the group which do not specify another
-   *           organizing mode will use this organizing mode.
-   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [competitions.phases.groups.scoreMode]
-   *           The score mode of the group. All games of the group which do not specify another score mode
-   *           will use this score mode.
-   * @apiParam {string=DOUBLE,SINGLE,DYP} [competitions.phases.groups.teamMode]
-   *           Specifies the team mode of the group. If the partners were chosen randomly at some point the mode
-   *           should be DYP. All games of the group which do not specify another team mode will use this team
-   *           mode.
-   * @apiParam {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [competitions.phases.groups.table]
-   *           On which sort of table the group is played. Multitable should only be used if the table is not
-   *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
-   *           tables. All games of the group which do not specify another table will use this table.
-   * @apiParam {Object[]{>=2}} competitions.phases.groups.rankings list of rankings of the group
-   * @apiParam {integer{>=1}} competitions.phases.groups.rankings.rank the rank of the ranking
-   * @apiParam {integer{>=1}} competitions.phases.groups.rankings.uniqueRank the unique rank of the ranking
-   * @apiParam {integer[]} competitions.phases.groups.rankings.teamStartNumbers list of the start numbers of the teams
+   * @apiParam {Object[]{>=2}} competitions.phases.rankings list of rankings of the group
+   * @apiParam {integer{>=1}} competitions.phases.rankings.rank the rank of the ranking
+   * @apiParam {integer{>=1}} competitions.phases.rankings.uniqueRank the unique rank of the ranking
+   * @apiParam {integer[]} competitions.phases.rankings.teamStartNumbers list of the start numbers of the teams
    *                                                                            corresponding to this ranking
-   * @apiParam {string} [competitions.phases.groups.rankings.name] the name of the ranking
+   * @apiParam {string} [competitions.phases.rankings.name] the name of the ranking
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
+   * @apiError DuplicateException Two competitions have the same name or a team start number is occurring twice or
+   *                              a player is specified twice for a team or two phases of a competition have the same
+   *                              phase number or a unique rank is occurring twice or
+   *                              a team start number is specified twice for a ranking
+   * @apiError ReferenceException A referenced phase number in the next phases array does not exist or a referenced team
+   *                              start number in the team values does not exist.
+   * @apiError UnorderedPhaseNumberException A successor phase has a higher phase number than a predecessor phase
    * @apiSuccess {string} type the type of the successful operation either "create" or "replace"
    */
   $router->post('createOrReplaceTournament', [

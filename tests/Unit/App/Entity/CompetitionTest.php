@@ -107,6 +107,18 @@ class CompetitionTest extends TestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $competition->getTournament()->getCompetitions()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($competition, $competition->getTournament()->getCompetitions()[$competition->getName()]);
+
+    $tournament2 = new Tournament();
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $competition->setTournament($tournament2);
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($tournament2, $competition->getTournament());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(1, $competition->getTournament()->getCompetitions()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(0, $tournament->getCompetitions()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $competition->getTournament()->getCompetitions()[$competition->getName()]);
   }

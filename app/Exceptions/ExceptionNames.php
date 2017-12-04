@@ -24,5 +24,7 @@ abstract class ExceptionNames extends BasicEnum
   const INTERNAL_EXCEPTION = "InternalException";
   const PLAYER_ALREADY_EXISTS_EXCEPTION = "PlayerAlreadyExistsException";
   const VALIDATION_EXCEPTION = "ValidationException";
+  const UNORDERED_PHASE_NUMBER_EXCEPTION = "UnorderedPhaseNumberException";
+  const REFERENCE_EXCEPTION = "ReferenceException";
 //</editor-fold desc="Fields">
 }

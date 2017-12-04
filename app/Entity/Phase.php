@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Class Phase
  * @package App\Entity
@@ -62,10 +63,22 @@ class Phase extends BaseEntity
   protected $name;
 
   /**
-   * @ORM\OneToMany(targetEntity="Group", mappedBy="phase", indexBy="groupNumber")
-   * @var Collection|Group[]
+   * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="nextPhase")
+   * @var Collection|QualificationSystem[]
    */
-  protected $groups;
+  protected $previousQualificationSystems;
+
+  /**
+   * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="previousPhase")
+   * @var Collection|QualificationSystem[]
+   */
+  protected $nextQualificationSystems;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Ranking", mappedBy="group", indexBy="uniqueRank")
+   * @var Collection|Ranking[]
+   */
+  protected $rankings;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -74,8 +87,10 @@ class Phase extends BaseEntity
    */
   public function __construct()
   {
-    $this->groups = new ArrayCollection();
+    $this->previousQualificationSystems = new ArrayCollection();
+    $this->nextQualificationSystems = new ArrayCollection();
     $this->name = '';
+    $this->rankings = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -88,14 +103,6 @@ class Phase extends BaseEntity
   {
     $this->ensureNotNull('competition');
     return $this->competition;
-  }
-
-  /**
-   * @return Group[]|Collection
-   */
-  public function getGroups()
-  {
-    return $this->groups;
   }
 
   /**
@@ -133,6 +140,9 @@ class Phase extends BaseEntity
    */
   public function setCompetition(Competition $competition): Phase
   {
+    if ($this->competition !== null) {
+      $this->competition->getPhases()->remove($this->getPhaseNumber());
+    }
     $this->competition = $competition;
     $competition->getPhases()->set($this->getPhaseNumber(), $this);
     return $this;
@@ -156,6 +166,30 @@ class Phase extends BaseEntity
   {
     $this->phaseNumber = $phaseNumber;
     return $this;
+  }
+
+  /**
+   * @return QualificationSystem[]|Collection
+   */
+  public function getPreviousQualificationSystems(): Collection
+  {
+    return $this->previousQualificationSystems;
+  }
+
+  /**
+   * @return QualificationSystem[]|Collection
+   */
+  public function getNextQualificationSystems(): Collection
+  {
+    return $this->nextQualificationSystems;
+  }
+
+  /**
+   * @return Ranking[]|Collection
+   */
+  public function getRankings()
+  {
+    return $this->rankings;
   }
 //</editor-fold desc="Public Methods">
 }

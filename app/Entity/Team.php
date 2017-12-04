@@ -139,6 +139,9 @@ class Team extends BaseEntity
    */
   public function setCompetition(Competition $competition): Team
   {
+    if ($this->competition !== null) {
+      $this->competition->getTeams()->remove($this->getStartNumber());
+    }
     $this->competition = $competition;
     $this->competition->getTeams()->set($this->getStartNumber(), $this);
     return $this;

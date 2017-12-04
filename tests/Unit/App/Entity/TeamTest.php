@@ -36,6 +36,17 @@ class TeamTest extends TestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $team->getCompetition()->getTeams()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($team, $team->getCompetition()->getTeams()[$team->getStartNumber()]);
+
+    $competition2 = new Competition();
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $team->setCompetition($competition2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($competition2, $team->getCompetition());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(1, $team->getCompetition()->getTeams()->count());
+    self::assertEquals(0, $competition->getTeams()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($team, $team->getCompetition()->getTeams()[$team->getStartNumber()]);
   }

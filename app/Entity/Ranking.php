@@ -41,10 +41,10 @@ class Ranking extends BaseEntity
   protected $teams;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Group", inversedBy="rankings")
-   * @var Group
+   * @ORM\ManyToOne(targetEntity="Phase", inversedBy="rankings")
+   * @var Phase
    */
-  protected $group;
+  protected $phase;
 
   /**
    * @ORM\Column(type="integer")
@@ -78,13 +78,13 @@ class Ranking extends BaseEntity
 
 //<editor-fold desc="Public Methods">
   /**
-   * @return Group
+   * @return Phase
    * @throws ValueNotSet
    */
-  public function getGroup(): Group
+  public function getPhase(): Phase
   {
-    $this->ensureNotNull("group");
-    return $this->group;
+    $this->ensureNotNull("phase");
+    return $this->phase;
   }
 
   /**
@@ -118,7 +118,7 @@ class Ranking extends BaseEntity
   /**
    * @return Team[]|Collection
    */
-  public function getTeams()
+  public function getTeams(): Collection
   {
     return $this->teams;
   }
@@ -134,14 +134,17 @@ class Ranking extends BaseEntity
   }
 
   /**
-   * @param Group $group
+   * @param Phase $phase
    * @return $this|Ranking
    * @throws ValueNotSet if the unique rank is not set
    */
-  public function setGroup(Group $group): Ranking
+  public function setPhase(Phase $phase): Ranking
   {
-    $this->group = $group;
-    $group->getRankings()->set($this->getUniqueRank(), $this);
+    if ($this->phase !== null) {
+      $this->phase->getRankings()->remove($this->getUniqueRank());
+    }
+    $this->phase = $phase;
+    $phase->getRankings()->set($this->getUniqueRank(), $this);
     return $this;
   }
 

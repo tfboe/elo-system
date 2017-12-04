@@ -144,6 +144,9 @@ class Competition extends BaseEntity
    */
   public function setTournament(Tournament $tournament): Competition
   {
+    if ($this->tournament !== null) {
+      $this->tournament->getCompetitions()->remove($this->getName());
+    }
     $this->tournament = $tournament;
     $tournament->getCompetitions()->set($this->getName(), $this);
     return $this;

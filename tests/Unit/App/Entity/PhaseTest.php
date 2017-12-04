@@ -10,8 +10,9 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
-use App\Entity\Group;
 use App\Entity\Phase;
+use App\Entity\QualificationSystem;
+use App\Entity\Ranking;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -36,6 +37,17 @@ class PhaseTest extends TestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
+
+    $competition2 = new Competition();
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $phase->setCompetition($competition2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($competition2, $phase->getCompetition());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
+    self::assertEquals(0, $competition->getPhases()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
   }
@@ -56,8 +68,12 @@ class PhaseTest extends TestCase
     $phase = $this->phase();
     self::assertInstanceOf(Phase::class, $phase);
     self::assertEquals('', $phase->getName());
-    self::assertInstanceOf(Collection::class, $phase->getGroups());
-    self::assertEquals(0, $phase->getGroups()->count());
+    self::assertInstanceOf(Collection::class, $phase->getNextQualificationSystems());
+    self::assertEquals(0, $phase->getNextQualificationSystems()->count());
+    self::assertInstanceOf(Collection::class, $phase->getPreviousQualificationSystems());
+    self::assertEquals(0, $phase->getPreviousQualificationSystems()->count());
+    self::assertInstanceOf(Collection::class, $phase->getRankings());
+    self::assertEquals(0, $phase->getRankings()->count());
   }
 
   public function testId()
@@ -105,15 +121,33 @@ class PhaseTest extends TestCase
     self::assertEquals("Name", $phase->getName());
   }
 
-  public function testGroups()
+  public function testPreviousQualificationSystems()
   {
     $phase = $this->phase();
-    $group = new Group();
-    $group->setGroupNumber(1);
+    $qualification_system = new QualificationSystem();
+    $qualification_system->setNextPhase($phase);
+    self::assertEquals(1, $phase->getPreviousQualificationSystems()->count());
+    self::assertEquals($qualification_system, $phase->getPreviousQualificationSystems()[0]);
+  }
+
+  public function testNextQualificationSystems()
+  {
+    $phase = $this->phase();
+    $qualification_system = new QualificationSystem();
+    $qualification_system->setPreviousPhase($phase);
+    self::assertEquals(1, $phase->getNextQualificationSystems()->count());
+    self::assertEquals($qualification_system, $phase->getNextQualificationSystems()[0]);
+  }
+
+  public function testRankings()
+  {
+    $phase = $this->phase();
+    $ranking = new Ranking();
+    $ranking->setUniqueRank(1);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getGroups()->set($group->getGroupNumber(), $group);
-    self::assertEquals(1, $phase->getGroups()->count());
-    self::assertEquals($group, $phase->getGroups()[1]);
+    $phase->getRankings()->set($ranking->getUniqueRank(), $ranking);
+    self::assertEquals(1, $phase->getRankings()->count());
+    self::assertEquals($ranking, $phase->getRankings()[1]);
   }
 //</editor-fold desc="Public Methods">
 
