@@ -11,6 +11,7 @@ namespace App\Entity;
 
 
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -22,6 +23,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends BaseEntity implements Authenticatable, JWTSubject
 {
   use \LaravelDoctrine\ORM\Auth\Authenticatable;
+  use TimestampableEntity;
 
 //<editor-fold desc="Fields">
   /**

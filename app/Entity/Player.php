@@ -11,6 +11,7 @@ namespace App\Entity;
 
 
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Player extends BaseEntity
 {
+  use TimestampableEntity;
 //<editor-fold desc="Fields">
   /**
    * @ORM\Id

@@ -100,6 +100,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(\Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
 $app->register(LaravelDoctrine\ORM\DoctrineServiceProvider::class);
+$app->register(LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class);
 try {
   //optional service providers
   $app->register(LaravelDoctrine\Migrations\MigrationsServiceProvider::class);
