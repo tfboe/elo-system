@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity\Helpers;
 
+
 use App\Exceptions\ValueNotSet;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEntity;
@@ -17,7 +18,7 @@ use Tests\Helpers\TestEntity;
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class BaseEntityTest extends TestCase
+class UnsetPropertyTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
   public function testEnsureNotNull()

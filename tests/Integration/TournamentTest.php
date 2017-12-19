@@ -16,6 +16,8 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Helpers\Result;
+use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
@@ -74,6 +76,38 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [3], 'uniqueRank' => 2],
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 3],
               ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna'
+                ],
+                [
+                  'matchNumber' => 2,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [3],
+                  'resultA' => 0,
+                  'resultB' => 1,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => true,
+                  'startTime' => '2017-12-19 16:00:00 Europe/Vienna',
+                ],
+                [
+                  'matchNumber' => 3,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [3],
+                  'resultA' => 1,
+                  'resultB' => 1,
+                  'result' => 'DRAW',
+                  'played' => true,
+                ]
+              ],
               'nextPhaseNumbers' => [2],
             ],
             [
@@ -87,6 +121,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 0,
+                  'resultB' => 0,
+                  'result' => 'NULLED',
+                  'played' => true
+                ]
               ],
               'nextPhaseNumbers' => [3, 4],
             ],
@@ -103,6 +148,17 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1, 3],
+                  'resultA' => 7,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => false
+                ]
+              ],
               'nextPhaseNumbers' => [5, 6],
             ],
             [
@@ -117,6 +173,17 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 3, 'teamStartNumbers' => [3], 'uniqueRank' => 1], //is this allowed???
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1, 3],
+                  'resultA' => 0,
+                  'resultB' => 0,
+                  'result' => 'DRAW',
+                  'played' => false
+                ]
               ],
               'nextPhaseNumbers' => [5],
             ],
@@ -133,6 +200,17 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1, 3],
+                  'resultA' => 0,
+                  'resultB' => 0,
+                  'result' => 'NULLED',
+                  'played' => false
+                ]
+              ],
               'nextPhaseNumbers' => [6],
             ],
             [
@@ -147,6 +225,19 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 3, 'teamStartNumbers' => [3], 'uniqueRank' => 1], //is this allowed???
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1, 3],
+                  'resultA' => 5,
+                  'resultB' => 5,
+                  'result' => 'DRAW',
+                  'played' => true,
+                  'startTime' => '2017-12-19 17:00:05 Europe/Vienna', //is this allowed???
+                  'endTime' => '2017-12-19 16:00:00 Europe/Vienna'
+                ]
               ],
               'nextPhaseNumbers' => [],
             ],
@@ -177,6 +268,17 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
                 ['rank' => 2, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1, 3],
+                  'resultA' => 0,
+                  'resultB' => 0,
+                  'result' => 'NULLED',
+                  'played' => false
+                ]
               ],
               'nextPhaseNumbers' => [],
             ],
@@ -216,6 +318,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 2]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ]
           ]
@@ -254,6 +367,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ],
           ]
@@ -294,6 +418,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ],
           ]
@@ -332,6 +467,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ],
             [
@@ -339,6 +485,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
                 ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ]
           ]
@@ -378,13 +535,35 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
               ],
-              'nextPhaseNumbers' => [1]
+              'nextPhaseNumbers' => [1],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
+              ]
             ],
             [
               'phaseNumber' => 1,
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
                 ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ]
           ]
@@ -424,13 +603,35 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
               ],
-              'nextPhaseNumbers' => [2, 2]
+              'nextPhaseNumbers' => [2, 2],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
+              ]
             ],
             [
               'phaseNumber' => 2,
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
                 ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ]
           ]
@@ -470,7 +671,18 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
               ],
-              'nextPhaseNumbers' => [2]
+              'nextPhaseNumbers' => [2],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
+              ]
             ]
           ]
         ],
@@ -508,6 +720,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ]
           ]
@@ -546,6 +769,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ],
           ]
@@ -584,6 +818,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1, 1], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
               ]
             ],
           ]
@@ -595,6 +840,211 @@ class TournamentTest extends AuthenticatedTestCase
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
         "arrayName" => "the team list of ranking (Unique rank 1) of the phase 1 of the competition Test Competition",
         "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateMatchNumber()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ],
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 5,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the match list of phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankInMatchRankingsAAndB()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ],
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the rankings A and ranking B lists of the match with match number 1 of the phase 1 of the " .
+          "competition Test Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankInMatchRankingsA()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1, 1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ],
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the rankings A list of the match with match number 1 of the phase 1 of the competition Test " .
+          "Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testMatchRankingReferenceException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [3],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 3,
+        "referenceName" => "unique rank in phase 1 of the competition Test Competition",
+        "name" => "ReferenceException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
@@ -673,6 +1123,32 @@ class TournamentTest extends AuthenticatedTestCase
       $this->createRanking([$teams[3][2]], 2, 3),
     ]];
 
+    /** @var Match[][][] $matches */
+    $matches = [];
+    $matches[0] = [[
+      $this->createMatch([$rankings[0][0][0]], [$rankings[0][0][1]], 1, 7, 5,
+        Result::TEAM_A_WINS, true, new \DateTime('2017-12-31 15:00', new \DateTimeZone('Europe/Vienna')),
+        new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'))),
+      $this->createMatch([$rankings[0][0][2]], [$rankings[0][0][3]], 2)
+    ]];
+    $matches[1] = [
+      [$this->createMatch([$rankings[1][0][0]], [$rankings[1][0][1]], 1)],
+      [
+        $this->createMatch([$rankings[1][1][0]], [$rankings[1][1][1]], 1),
+        $this->createMatch([$rankings[1][1][2]], [$rankings[1][1][3]], 2)
+      ],
+      [$this->createMatch([$rankings[1][2][0]], [$rankings[1][2][1]], 1)],
+      [$this->createMatch([$rankings[1][3][0]], [$rankings[1][3][1]], 1)]
+    ];
+    $matches[2] = [[
+      $this->createMatch([$rankings[2][0][0]], [$rankings[2][0][1]], 1),
+      $this->createMatch([$rankings[2][0][1]], [$rankings[2][0][0]], 2)
+    ]];
+    $matches[3] = [[
+      $this->createMatch([$rankings[3][0][0]], [$rankings[3][0][1]], 1),
+      $this->createMatch([$rankings[3][0][0]], [$rankings[3][0][1]], 2)
+    ]];
+
 
     for ($i = 0; $i < count($phases); $i++) {
       foreach ($teams[$i] as $team) {
@@ -686,6 +1162,10 @@ class TournamentTest extends AuthenticatedTestCase
         for ($k = 0; $k < count($rankings[$i][$j]); $k++) {
           /** @noinspection PhpUnhandledExceptionInspection */
           $rankings[$i][$j][$k]->setPhase($phase);
+        }
+        for ($k = 0; $k < count($matches[$i][$j]); $k++) {
+          /** @noinspection PhpUnhandledExceptionInspection */
+          $matches[$i][$j][$k]->setPhase($phase);
         }
       }
     }
@@ -724,6 +1204,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 2, 'teamStartNumbers' => [2]]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
               ]
             ],
             [
@@ -732,6 +1223,26 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [4]]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ],
+                [
+                  'matchNumber' => 2,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 5,
+                  'resultB' => 5,
+                  'result' => 'DRAW',
+                  'played' => true,
+                ]
               ]
             ],
           ]
@@ -759,6 +1270,17 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [3]]
               ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
+              ],
               'nextPhaseNumbers' => [2, 5]
             ],
             [
@@ -767,6 +1289,17 @@ class TournamentTest extends AuthenticatedTestCase
               'rankings' => [
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [3]]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
               ],
               'nextPhaseNumbers' => [5]
             ],
@@ -777,7 +1310,18 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [3]],
                 ['rank' => 3, 'uniqueRank' => 3, 'teamStartNumbers' => [2]]
-              ]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
+              ],
             ],
             [
               'phaseNumber' => 5,
@@ -786,7 +1330,18 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [3]],
                 ['rank' => 3, 'uniqueRank' => 3, 'teamStartNumbers' => [2]]
-              ]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
+              ],
             ],
           ]
         ],
@@ -804,7 +1359,18 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'uniqueRank' => 2, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [3]],
                 ['rank' => 3, 'uniqueRank' => 3, 'teamStartNumbers' => [2]]
-              ]
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 2,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                ]
+              ],
             ],
           ]
         ],
@@ -924,15 +1490,44 @@ class TournamentTest extends AuthenticatedTestCase
           self::assertInstanceOf(Collection::class, $ranking->getTeams());
           self::assertEquals(count($ranking_data['teamStartNumbers']), $ranking->getTeams()->count());
           foreach ($ranking_data['teamStartNumbers'] as $start_number) {
-            $exists = false;
-            foreach ($competition->getTeams() as $team) {
+            self::assertTrue($competition->getTeams()->containsKey($start_number));
+            /** @noinspection PhpUnhandledExceptionInspection */
+            self::assertTrue($competition->getTeams()[$start_number]->getStartNumber() == $start_number);
+          }
+        }
+
+        self::assertInstanceOf(Collection::class, $phase->getMatches());
+        self::assertEquals(count($phase_data['matches']), $phase->getMatches()->count());
+        foreach ($phase_data['matches'] as $match_data) {
+          self::assertTrue($phase->getMatches()->containsKey($match_data['matchNumber']));
+          /** @var Match $match */
+          $match = $phase->getMatches()->get($match_data['matchNumber']);
+
+
+          $datetimetz_transformer = function ($x) {
+            return \DateTime::createFromFormat('Y-m-d H:i:s e', $x);
+          };
+          $this->checkProperties($match_data, $match, [
+            'matchNumber' => null,
+            'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+            'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+            'resultA' => null,
+            'resultB' => null,
+            'played' => null,
+          ], array_merge($categories, ['result' => ['default' => null, 'enum' => Result::class]]));
+
+          foreach (['A', 'B'] as $letter) {
+            $method = 'getRankings' . $letter;
+            /** @var Collection|Ranking[] $rankings */
+            $rankings = $match->$method();
+            $rankings_data = $match_data['rankings' . $letter . 'UniqueRanks'];
+            self::assertInstanceOf(Collection::class, $rankings);
+            self::assertEquals(count($rankings_data), $rankings->count());
+            foreach ($rankings_data as $unique_rank) {
+              self::assertTrue($rankings->containsKey($unique_rank));
               /** @noinspection PhpUnhandledExceptionInspection */
-              if ($team->getStartNumber() == $start_number) {
-                $exists = true;
-                break;
-              }
+              self::assertTrue($rankings[$unique_rank]->getUniqueRank() == $unique_rank);
             }
-            self::assertTrue($exists);
           }
         }
       }
@@ -957,6 +1552,46 @@ class TournamentTest extends AuthenticatedTestCase
       $ranking->getTeams()->set($team->getStartNumber(), $team);
     }
     return $ranking;
+  }
+
+  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpTooManyParametersInspection */
+  /**
+   * Creates a match
+   * @param Ranking[] $rankingsA the rankings A
+   * @param Ranking[] $rankingsB the rankings B
+   * @param int $matchNumber the match number
+   * @param int $resultA the result A
+   * @param int $resultB the result B
+   * @param int $result the result of the match
+   * @param bool $played true if played and false if it didn't get played
+   * @param \DateTime|null $startTime the start time
+   * @param \DateTime|null $endTime the end time
+   * @return Match
+   */
+  private function createMatch(array $rankingsA, array $rankingsB, int $matchNumber, int $resultA = 1, int $resultB = 0,
+                               int $result = Result::TEAM_A_WINS, bool $played = true, ?\DateTime $startTime = null,
+                               ?\DateTime $endTime = null)
+  {
+    /** @var Match $match */
+    $match = entity(Match::class)->create([
+      'matchNumber' => $matchNumber,
+      'resultA' => $resultA,
+      'resultB' => $resultB,
+      'result' => $result,
+      'played' => $played,
+      'startTime' => $startTime,
+      'endTime' => $endTime]);
+    foreach ($rankingsA as $ranking) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $match->getRankingsA()->set($ranking->getUniqueRank(), $ranking);
+    }
+
+    foreach ($rankingsB as $ranking) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $match->getRankingsB()->set($ranking->getUniqueRank(), $ranking);
+    }
+    return $match;
   }
 
   /**

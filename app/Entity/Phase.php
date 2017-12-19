@@ -79,6 +79,12 @@ class Phase extends BaseEntity
    * @var Collection|Ranking[]
    */
   protected $rankings;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Match", mappedBy="phase", indexBy="matchNumber")
+   * @var Collection|Match[]
+   */
+  protected $matches;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -91,6 +97,7 @@ class Phase extends BaseEntity
     $this->nextQualificationSystems = new ArrayCollection();
     $this->name = '';
     $this->rankings = new ArrayCollection();
+    $this->matches = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -116,11 +123,27 @@ class Phase extends BaseEntity
   }
 
   /**
+   * @return Match[]|Collection
+   */
+  public function getMatches()
+  {
+    return $this->matches;
+  }
+
+  /**
    * @return string
    */
   public function getName(): string
   {
     return $this->name;
+  }
+
+  /**
+   * @return QualificationSystem[]|Collection
+   */
+  public function getNextQualificationSystems(): Collection
+  {
+    return $this->nextQualificationSystems;
   }
 
   /**
@@ -131,6 +154,22 @@ class Phase extends BaseEntity
   {
     $this->ensureNotNull('phaseNumber');
     return $this->phaseNumber;
+  }
+
+  /**
+   * @return QualificationSystem[]|Collection
+   */
+  public function getPreviousQualificationSystems(): Collection
+  {
+    return $this->previousQualificationSystems;
+  }
+
+  /**
+   * @return Ranking[]|Collection
+   */
+  public function getRankings()
+  {
+    return $this->rankings;
   }
 
   /**
@@ -166,30 +205,6 @@ class Phase extends BaseEntity
   {
     $this->phaseNumber = $phaseNumber;
     return $this;
-  }
-
-  /**
-   * @return QualificationSystem[]|Collection
-   */
-  public function getPreviousQualificationSystems(): Collection
-  {
-    return $this->previousQualificationSystems;
-  }
-
-  /**
-   * @return QualificationSystem[]|Collection
-   */
-  public function getNextQualificationSystems(): Collection
-  {
-    return $this->nextQualificationSystems;
-  }
-
-  /**
-   * @return Ranking[]|Collection
-   */
-  public function getRankings()
-  {
-    return $this->rankings;
   }
 //</editor-fold desc="Public Methods">
 }

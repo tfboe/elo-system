@@ -40,8 +40,20 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
   {
     foreach ($properties as $property => $default) {
       $getter = 'get' . ucfirst($property);
+      if (!method_exists($object, $getter)) {
+        $getter = 'is' . ucfirst($property);
+      }
+      $transformer = null;
+      if (is_array($default) && array_key_exists('transformer', $default)) {
+        $transformer = $default['transformer'];
+        $default = $default['default'];
+      }
       if (array_key_exists($property, $data)) {
-        self::assertEquals($data[$property], $object->$getter());
+        $value = $data[$property];
+        if ($transformer != null) {
+          $value = $transformer($value);
+        }
+        self::assertEquals($value, $object->$getter());
       } else {
         self::assertEquals($default, $object->$getter());
       }

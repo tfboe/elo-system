@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
+use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
@@ -148,6 +149,17 @@ class PhaseTest extends TestCase
     $phase->getRankings()->set($ranking->getUniqueRank(), $ranking);
     self::assertEquals(1, $phase->getRankings()->count());
     self::assertEquals($ranking, $phase->getRankings()[1]);
+  }
+
+  public function testMatches()
+  {
+    $phase = $this->phase();
+    $match = new Match();
+    $match->setMatchNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $phase->getMatches()->set($match->getMatchNumber(), $match);
+    self::assertEquals(1, $phase->getMatches()->count());
+    self::assertEquals($match, $phase->getMatches()[1]);
   }
 //</editor-fold desc="Public Methods">
 

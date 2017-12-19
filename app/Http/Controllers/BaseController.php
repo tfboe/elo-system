@@ -26,6 +26,11 @@ abstract class BaseController extends Controller
    * @var EntityManagerInterface
    */
   protected $em;
+
+  /**
+   * @var string
+   */
+  protected $datetimetzFormat = 'Y-m-d H:i:s e';
 //</editor-fold desc="Fields">
 //</editor-fold desc="Fields">
 
@@ -51,6 +56,17 @@ abstract class BaseController extends Controller
   {
     return function ($x) use ($enum_name) {
       return call_user_func([$enum_name, "getValue"], $x);
+    };
+  }
+
+  /**
+   * Gets a transformation function which transforms a string in datetime format into a datetime with the given timezone
+   * @return \Closure the function which transforms a string into a datetime
+   */
+  protected function datetimetzTransformer(): \Closure
+  {
+    return function ($x) {
+      return \DateTime::createFromFormat($this->datetimetzFormat, $x);
     };
   }
 
