@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity;
 
+use App\Entity\Game;
 use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\Ranking;
@@ -30,8 +31,10 @@ class MatchTest extends TestCase
     self::assertInstanceOf(Match::class, $match);
     self::assertInstanceOf(Collection::class, $match->getRankingsA());
     self::assertInstanceOf(Collection::class, $match->getRankingsB());
+    self::assertInstanceOf(Collection::class, $match->getGames());
     self::assertEquals(0, $match->getRankingsA()->count());
     self::assertEquals(0, $match->getRankingsB()->count());
+    self::assertEquals(0, $match->getGames()->count());
     self::assertNull($match->getStartTime());
     self::assertNull($match->getEndTime());
   }
@@ -149,6 +152,17 @@ class MatchTest extends TestCase
     $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
     $match->setStartTime($time);
     self::assertEquals($time, $match->getStartTime());
+  }
+
+  public function testGames()
+  {
+    $match = $this->match();
+    $game = new Game();
+    $game->setGameNumber(1);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $match->getGames()->set($game->getGameNumber(), $game);
+    self::assertEquals(1, $match->getGames()->count());
+    self::assertEquals($game, $match->getGames()[1]);
   }
 //</editor-fold desc="Public Methods">
 

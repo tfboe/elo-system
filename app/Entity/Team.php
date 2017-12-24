@@ -33,7 +33,7 @@ class Team extends BaseEntity
   protected $id;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Player")
+   * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
    * @ORM\JoinTable(name="relation__team_players")
    * @var Collection|Player[]
    */

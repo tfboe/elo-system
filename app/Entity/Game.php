@@ -24,9 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Phase
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="matches")
+ * @ORM\Table(name="games")
  */
-class Match extends BaseEntity
+class Game extends BaseEntity
 {
   use GameMode;
   use TeamMode;
@@ -46,10 +46,10 @@ class Match extends BaseEntity
   protected $id;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Phase", inversedBy="matches")
-   * @var Phase
+   * @ORM\ManyToOne(targetEntity="Match", inversedBy="games")
+   * @var Match
    */
-  protected $phase;
+  protected $match;
 
   /**
    * @ORM\Column(type="datetimetz", nullable=true)
@@ -64,30 +64,24 @@ class Match extends BaseEntity
   protected $endTime;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Ranking", indexBy="uniqueRank")
-   * @ORM\JoinTable(name="relation__match_rankingA")
-   * @var Collection|Ranking
+   * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
+   * @ORM\JoinTable(name="relation__game_playersA")
+   * @var Collection|Player
    */
-  protected $rankingsA;
+  protected $playersA;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Ranking", indexBy="uniqueRank")
-   * @ORM\JoinTable(name="relation__match_rankingB")
-   * @var Collection|Ranking
+   * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
+   * @ORM\JoinTable(name="relation__game_playersB")
+   * @var Collection|Player
    */
-  protected $rankingsB;
+  protected $playersB;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $matchNumber;
-
-  /**
-   * @ORM\OneToMany(targetEntity="Game", mappedBy="match", indexBy="gameNumber")
-   * @var Collection|Game[]
-   */
-  protected $games;
+  protected $gameNumber;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -96,9 +90,8 @@ class Match extends BaseEntity
    */
   public function __construct()
   {
-    $this->rankingsA = new ArrayCollection();
-    $this->rankingsB = new ArrayCollection();
-    $this->games = new ArrayCollection();
+    $this->playersA = new ArrayCollection();
+    $this->playersB = new ArrayCollection();
     $this->endTime = null;
     $this->startTime = null;
   }
@@ -114,11 +107,13 @@ class Match extends BaseEntity
   }
 
   /**
-   * @return Game[]|Collection
+   * @return int
+   * @throws \App\Exceptions\ValueNotSet
    */
-  public function getGames()
+  public function getGameNumber(): int
   {
-    return $this->games;
+    $this->ensureNotNull('gameNumber');
+    return $this->gameNumber;
   }
 
   /**
@@ -132,39 +127,29 @@ class Match extends BaseEntity
   }
 
   /**
-   * @return int
+   * @return Match
    * @throws \App\Exceptions\ValueNotSet
    */
-  public function getMatchNumber(): int
+  public function getMatch(): Match
   {
-    $this->ensureNotNull('matchNumber');
-    return $this->matchNumber;
+    $this->ensureNotNull('match');
+    return $this->match;
   }
 
   /**
-   * @return Phase
-   * @throws \App\Exceptions\ValueNotSet
+   * @return Player|Collection
    */
-  public function getPhase(): Phase
+  public function getPlayersA()
   {
-    $this->ensureNotNull('phase');
-    return $this->phase;
+    return $this->playersA;
   }
 
   /**
-   * @return Ranking|Collection
+   * @return Player|Collection
    */
-  public function getRankingsA()
+  public function getPlayersB()
   {
-    return $this->rankingsA;
-  }
-
-  /**
-   * @return Ranking|Collection
-   */
-  public function getRankingsB()
-  {
-    return $this->rankingsB;
+    return $this->playersB;
   }
 
   /**
@@ -186,35 +171,35 @@ class Match extends BaseEntity
   }
 
   /**
-   * @param int $matchNumber
-   * @return $this|Match
+   * @param int $gameNumber
+   * @return $this|Game
    */
-  public function setMatchNumber(int $matchNumber): Match
+  public function setGameNumber(int $gameNumber): Game
   {
-    $this->matchNumber = $matchNumber;
+    $this->gameNumber = $gameNumber;
     return $this;
   }
 
   /**
-   * @param Phase $phase
-   * @return $this|Match
-   * @throws \App\Exceptions\ValueNotSet the match number is not yet set
+   * @param Match $match
+   * @return $this|Game
+   * @throws \App\Exceptions\ValueNotSet the game number is not yet set
    */
-  public function setPhase(Phase $phase): Match
+  public function setMatch(Match $match): Game
   {
-    if ($this->phase !== null) {
-      $this->phase->getMatches()->remove($this->getMatchNumber());
+    if ($this->match !== null) {
+      $this->match->getGames()->remove($this->getGameNumber());
     }
-    $this->phase = $phase;
-    $phase->getMatches()->set($this->getMatchNumber(), $this);
+    $this->match = $match;
+    $match->getGames()->set($this->getGameNumber(), $this);
     return $this;
   }
 
   /**
    * @param mixed $startTime
-   * @return $this|Match
+   * @return $this|Game
    */
-  public function setStartTime($startTime): Match
+  public function setStartTime($startTime): Game
   {
     $this->startTime = $startTime;
     return $this;

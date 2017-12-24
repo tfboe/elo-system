@@ -76,6 +76,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'as' => 'userId', 'uses' => 'UserController@userId'
   ]);
 
+
   /**
    * @api {post} /createOrReplaceTournament Create or Replace a Tournament
    * @apiUse AuthenticatedRequest
@@ -168,6 +169,11 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {integer[]{>=1}} competitions.phases.matches.rankingsBUniqueRanks list of the unique ranks for each
    *                                                                             ranking playing for team B in this
    *                                                                             match
+   * @apiParam {integer{>=0}} competitions.phases.matches.resultA the points of team A for this match
+   * @apiParam {integer{>=0}} competitions.phases.matches.resultB the points of team B for this match
+   * @apiParam {string=TEAM_A_WINS,TEAM_B_WINS,DRAW,NOT_YET_FINISHED,NULLED} competitions.phases.matches.result
+   *           the result of the match
+   * @apiParam {boolean} competitions.phases.matches.played indicates if this match was played or forfeit
    * @apiParam {string} [competitions.phases.matches.startTime] the start time of the match in the format
    *                                                            'YYYY-MM-DD HH:MM:SS e' where e is a timezone
    *                                                            (for example Europe/Vienna)
@@ -191,6 +197,37 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *           On which sort of table the match is played. Multitable should only be used if the table is not
    *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
    *           tables. All games of the match which do not specify another table will use this table.
+   * @apiParam {Object[]{>=1}} competitions.phases.matches.games list of games of the match
+   * @apiParam {integer{>=1}} competitions.phases.matches.games.gameNumber game number which is unique in this match
+   * @apiParam {integer[]{>=1}} competitions.phases.matches.games.playersA list of the player ids for each player
+   *                                                                       playing for team A in this game
+   * @apiParam {integer[]{>=1}} competitions.phases.matches.games.playersB list of the player ids for each player
+   *                                                                       playing for team A in this game
+   * @apiParam {integer{>=0}} competitions.phases.matches.games.resultA the points of team A for this game
+   * @apiParam {integer{>=0}} competitions.phases.matches.games.resultB the points of team B for this game
+   * @apiParam {string=TEAM_A_WINS,TEAM_B_WINS,DRAW,NOT_YET_FINISHED,NULLED} competitions.phases.matches.games.result
+   *           the result of the game
+   * @apiParam {boolean} competitions.phases.matches.games.played indicates if this game was played or forfeit
+   * @apiParam {string} [competitions.phases.matches.games.startTime] the start time of the game in the format
+   *                                                                  'YYYY-MM-DD HH:MM:SS e' where e is a timezone
+   *                                                                  (for example Europe/Vienna)
+   * @apiParam {string} [competitions.phases.matches.games.endTime] the end time of the game in the format
+   *                                                                'YYYY-MM-DD HH:MM:SS e' where e is a timezone
+   *                                                                (for example Europe/Vienna)
+   * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.matches.games.gameMode]
+   *           The rule mode of the game.
+   * @apiParam {string=ELIMINATION,QUALIFICATION} [competitions.phases.matches.games.organizingMode]
+   *           The organization mode of the game.
+   * @apiParam {string=ONE_SET,BEST_OF_THREE,BEST_OF_FIVE} [competitions.phases.matches.games.scoreMode]
+   *           The score mode of the game.
+   * @apiParam {string=DOUBLE,SINGLE,DYP} [competitions.phases.matches.games.teamMode]
+   *           Specifies the team mode of the game. If the partners were chosen randomly at some point the mode
+   *           should be DYP.
+   * @apiParam
+   * {string=MULTITABLE,GARLANDO,LEONHART,TORNADO,ROBERTO_SPORT,BONZINI} [competitions.phases.matches.games.table]
+   *           On which sort of table the game is played. Multitable should only be used if the table is not
+   *           known anymore or if the game was really a multitable game, i.e. multiple sets on at least two different
+   *           tables.
    * @apiError ValidationException The userIdentifier or the name of the tournament are missing or one of the modes or
    *                               the given table is not in the list of valid options.
    * @apiError DuplicateException Two competitions have the same name or a team start number is occurring twice or
@@ -198,10 +235,12 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *                              phase number or a unique rank is occurring twice or
    *                              a team start number is specified twice for a ranking or a match number is occurring
    *                              twice in a phase or a unique rank is specified twice for the two teams in a match in a
-   *                              phase
+   *                              phase or a game number is occurring twice or a player id is specified twice for the
+   *                              players of a game.
    * @apiError ReferenceException A referenced phase number in the next phases array does not exist or a referenced team
    *                              start number in the team values does not exist or a referenced unique rank in the
-   *                              rankings lists of a match does not exist in the rankings of the corresponding phase.
+   *                              rankings lists of a match does not exist in the rankings of the corresponding phase or
+   *                              a player of a team is not in the players lists of this team.
    * @apiError UnorderedPhaseNumberException A successor phase has a higher phase number than a predecessor phase
    * @apiSuccess {string} type the type of the successful operation either "create" or "replace"
    */

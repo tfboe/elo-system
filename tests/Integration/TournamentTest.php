@@ -16,9 +16,11 @@ use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Competition;
+use App\Entity\Game;
 use App\Entity\Helpers\Result;
 use App\Entity\Match;
 use App\Entity\Phase;
+use App\Entity\Player;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
 use App\Entity\Team;
@@ -86,7 +88,46 @@ class TournamentTest extends AuthenticatedTestCase
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
                   'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
-                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna'
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ],
                 [
                   'matchNumber' => 2,
@@ -97,6 +138,46 @@ class TournamentTest extends AuthenticatedTestCase
                   'result' => 'TEAM_B_WINS',
                   'played' => true,
                   'startTime' => '2017-12-19 16:00:00 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[4]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[3]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ],
                 [
                   'matchNumber' => 3,
@@ -106,6 +187,47 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 1,
                   'result' => 'DRAW',
                   'played' => true,
+                  'startTime' => '2017-12-19 16:00:00 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[4]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [2],
@@ -130,7 +252,48 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultA' => 0,
                   'resultB' => 0,
                   'result' => 'NULLED',
-                  'played' => true
+                  'played' => true,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [3, 4],
@@ -156,7 +319,48 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultA' => 7,
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
-                  'played' => false
+                  'played' => false,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [5, 6],
@@ -182,7 +386,48 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultA' => 0,
                   'resultB' => 0,
                   'result' => 'DRAW',
-                  'played' => false
+                  'played' => false,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [5],
@@ -208,7 +453,48 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultA' => 0,
                   'resultB' => 0,
                   'result' => 'NULLED',
-                  'played' => false
+                  'played' => false,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [6],
@@ -236,7 +522,46 @@ class TournamentTest extends AuthenticatedTestCase
                   'result' => 'DRAW',
                   'played' => true,
                   'startTime' => '2017-12-19 17:00:05 Europe/Vienna', //is this allowed???
-                  'endTime' => '2017-12-19 16:00:00 Europe/Vienna'
+                  'endTime' => '2017-12-19 16:00:00 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [],
@@ -277,7 +602,48 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultA' => 0,
                   'resultB' => 0,
                   'result' => 'NULLED',
-                  'played' => false
+                  'played' => false,
+                  'startTime' => '2017-12-19 15:00:31 Europe/Vienna',
+                  'endTime' => '2017-12-19 16:01:59 Europe/Vienna',
+                  'gameMode' => 'SPEEDBALL',
+                  'organizingMode' => 'QUALIFICATION',
+                  'scoreMode' => 'BEST_OF_FIVE',
+                  'teamMode' => 'DOUBLE',
+                  'table' => 'GARLANDO',
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ],
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 1,
+                      'result' => 'DRAW',
+                      'played' => false,
+                      'gameMode' => 'SPEEDBALL',
+                      'organizingMode' => 'QUALIFICATION',
+                      'scoreMode' => 'BEST_OF_FIVE',
+                      'teamMode' => 'DOUBLE',
+                      'table' => 'GARLANDO',
+                      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+                      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [],
@@ -317,7 +683,7 @@ class TournamentTest extends AuthenticatedTestCase
               'phaseNumber' => 1,
               'rankings' => [
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 2]
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2]
               ],
               'matches' => [
                 [
@@ -328,6 +694,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -377,6 +754,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -428,6 +816,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -477,6 +876,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -495,6 +905,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -545,6 +966,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -563,6 +995,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -613,6 +1056,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -631,6 +1085,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -681,6 +1146,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -730,6 +1206,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -779,6 +1266,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -828,6 +1326,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -877,6 +1386,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ],
                 [
                   'matchNumber' => 1,
@@ -886,6 +1406,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
             ],
@@ -935,6 +1466,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ],
               ],
             ],
@@ -984,6 +1526,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ],
               ],
             ],
@@ -1033,6 +1586,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 0,
                   'result' => 'TEAM_A_WINS',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -1051,6 +1615,324 @@ class TournamentTest extends AuthenticatedTestCase
     $repo = EntityManager::getRepository(Tournament::class);
     self::assertEquals(0, count($repo->findAll()));
   }
+
+  public function testDuplicateGameNumberException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ],
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the game list of match 1 of phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicatePlayerIdInGamePlayersA()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId(), $players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(),
+        "arrayName" => "the players A list of the game with game number 1 of the match with match number 1 of the " .
+          "phase 1 of the competition Test Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicatePlayerIdInGamePlayersAAndB()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[0]->getId(), $players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(), "status" => 409,
+        "arrayName" => "the players A and players B lists of the game with game number 1 of the match with match " .
+          "number 1 of the phase 1 of the competition Test Competition", "name" => "DuplicateException"]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateTeamStartNumbersInRankings()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the team start number lists of the ranking of the phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testPlayerIdReferenceException()
+  {
+    $players = $this->createPlayers(3);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception",
+        "referenceValue" => $players[2]->getId(),
+        "referenceName" => "player id in players B in game 1 of match 1 of phase 1 of competition Test Competition, " .
+          "which is not in the players lists of the teams of team B", "name" => "ReferenceException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
 
   public function testTournamentUpdate()
   {
@@ -1149,6 +2031,35 @@ class TournamentTest extends AuthenticatedTestCase
       $this->createMatch([$rankings[3][0][0]], [$rankings[3][0][1]], 2)
     ]];
 
+    /** @var Game[][][][] $games */
+    $games = [];
+    $games[0] = [[
+      [$this->createGame([$teams[0][0]->getPlayers()->first()], [$teams[0][1]->getPlayers()->first()], 1, 7, 5,
+        Result::TEAM_A_WINS, true, new \DateTime('2017-12-31 15:00', new \DateTimeZone('Europe/Vienna')),
+        new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna')))],
+      [$this->createGame([$teams[0][0]->getPlayers()->first()], [$teams[0][1]->getPlayers()->first()], 1)]
+    ]];
+    $games[1] = [
+      [[$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)]],
+      [
+        [$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)],
+        [$this->createGame([$teams[1][2]->getPlayers()->first()], [$teams[1][3]->getPlayers()->first()], 1)]
+      ],
+      [[
+        $this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1),
+        $this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 2),
+      ]],
+      [[$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)]]
+    ];
+    $games[2] = [[
+      [$this->createGame([$teams[2][0]->getPlayers()->first()], [$teams[2][1]->getPlayers()->first()], 1)],
+      [$this->createGame([$teams[2][1]->getPlayers()->first()], [$teams[2][0]->getPlayers()->first()], 1)]
+    ]];
+    $games[3] = [[
+      [$this->createGame([$teams[3][0]->getPlayers()->first()], [$teams[3][1]->getPlayers()->first()], 1)],
+      [$this->createGame([$teams[3][0]->getPlayers()->first()], [$teams[3][1]->getPlayers()->first()], 1)]
+    ]];
+
 
     for ($i = 0; $i < count($phases); $i++) {
       foreach ($teams[$i] as $team) {
@@ -1166,6 +2077,10 @@ class TournamentTest extends AuthenticatedTestCase
         for ($k = 0; $k < count($matches[$i][$j]); $k++) {
           /** @noinspection PhpUnhandledExceptionInspection */
           $matches[$i][$j][$k]->setPhase($phase);
+          for ($l = 0; $l < count($games[$i][$j][$k]); $l++) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $games[$i][$j][$k][$l]->setMatch($matches[$i][$j][$k]);
+          }
         }
       }
     }
@@ -1214,6 +2129,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$teams[0][1]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[0][0]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -1233,6 +2159,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[0][3]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[0][0]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ],
                 [
                   'matchNumber' => 2,
@@ -1242,6 +2179,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 5,
                   'result' => 'DRAW',
                   'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[0][0]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[0][3]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ]
             ],
@@ -1279,6 +2227,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[1][0]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [2, 5]
@@ -1299,6 +2258,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[1][0]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
               'nextPhaseNumbers' => [5]
@@ -1320,6 +2290,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[1][1]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
             ],
@@ -1340,6 +2321,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[1][1]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
             ],
@@ -1369,6 +2361,17 @@ class TournamentTest extends AuthenticatedTestCase
                   'resultB' => 7,
                   'result' => 'TEAM_B_WINS',
                   'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 2,
+                      'playersA' => [$teams[2][2]->getPlayers()->first()->getId()],
+                      'playersB' => [$teams[2][0]->getPlayers()->first()->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
                 ]
               ],
             ],
@@ -1529,6 +2532,36 @@ class TournamentTest extends AuthenticatedTestCase
               self::assertTrue($rankings[$unique_rank]->getUniqueRank() == $unique_rank);
             }
           }
+
+          self::assertInstanceOf(Collection::class, $match->getGames());
+          self::assertEquals(count($match_data['games']), $match->getGames()->count());
+          foreach ($match_data['games'] as $game_data) {
+            self::assertTrue($match->getGames()->containsKey($game_data['gameNumber']));
+            /** @var Match $match */
+            $game = $match->getGames()->get($game_data['gameNumber']);
+            $this->checkProperties($game_data, $game, [
+              'gameNumber' => null,
+              'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+              'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+              'resultA' => null,
+              'resultB' => null,
+              'played' => null,
+            ], array_merge($categories, ['result' => ['default' => null, 'enum' => Result::class]]));
+
+            foreach (['A', 'B'] as $letter) {
+              $method = 'getPlayers' . $letter;
+              /** @var Collection|Player[] $players */
+              $players = $game->$method();
+              $players_data = $game_data['players' . $letter];
+              self::assertInstanceOf(Collection::class, $players);
+              self::assertEquals(count($players_data), $players->count());
+              foreach ($players_data as $id) {
+                self::assertTrue($players->containsKey($id));
+                /** @noinspection PhpUnhandledExceptionInspection */
+                self::assertTrue($players[$id]->getId() == $id);
+              }
+            }
+          }
         }
       }
     }
@@ -1592,6 +2625,47 @@ class TournamentTest extends AuthenticatedTestCase
       $match->getRankingsB()->set($ranking->getUniqueRank(), $ranking);
     }
     return $match;
+  }
+
+  /** @noinspection PhpTooManyParametersInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */
+  /**
+   * Creates a game
+   * @param Player[] $playersA the players A
+   * @param Player[] $playersB the players B
+   * @param int $gameNumber the game number
+   * @param int $resultA the result A
+   * @param int $resultB the result B
+   * @param int $result the result of the game
+   * @param bool $played true if played and false if it didn't get played
+   * @param \DateTime|null $startTime the start time
+   * @param \DateTime|null $endTime the end time
+   * @return Game
+   */
+  private function createGame(array $playersA, array $playersB, int $gameNumber, int $resultA = 1, int $resultB = 0,
+                              int $result = Result::TEAM_A_WINS, bool $played = true, ?\DateTime $startTime = null,
+                              ?\DateTime $endTime = null)
+  {
+    /** @var Game $game */
+    $game = entity(Game::class)->create([
+      'gameNumber' => $gameNumber,
+      'resultA' => $resultA,
+      'resultB' => $resultB,
+      'result' => $result,
+      'played' => $played,
+      'startTime' => $startTime,
+      'endTime' => $endTime]);
+    foreach ($playersA as $player) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $game->getPlayersA()->set($player->getId(), $player);
+    }
+
+    foreach ($playersB as $player) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $game->getPlayersB()->set($player->getId(), $player);
+    }
+
+    return $game;
   }
 
   /**

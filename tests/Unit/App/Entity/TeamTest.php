@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
-use App\Entity\Player;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
+use Tests\Helpers\TestPlayer;
 
 /**
  * Class TournamentTest
@@ -100,10 +100,12 @@ class TeamTest extends TestCase
   public function testPlayers()
   {
     $team = $this->team();
-    $player = new Player();
-    $team->getPlayers()->add($player);
+    $player = new TestPlayer();
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $team->getPlayers()->set($player->getId(), $player);
     self::assertEquals(1, $team->getPlayers()->count());
-    self::assertEquals($player, $team->getPlayers()->first());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($player, $team->getPlayers()[$player->getId()]);
   }
 
   public function testRank()
