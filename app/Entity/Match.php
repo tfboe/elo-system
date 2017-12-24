@@ -199,7 +199,7 @@ class Match extends BaseEntity
    * @param mixed $startTime
    * @return $this|Match
    */
-  public function setStartTime($startTime)
+  public function setStartTime($startTime): Match
   {
     $this->startTime = $startTime;
     return $this;
