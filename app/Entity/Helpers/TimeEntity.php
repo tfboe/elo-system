@@ -17,16 +17,38 @@ trait TimeEntity
 {
 //<editor-fold desc="Fields">
   /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
+   * @ORM\Column(type="datetime", nullable=true)
+   * @var \DateTime|null
    */
   protected $startTime = null;
 
   /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
+   * @ORM\Column(type="datetime", nullable=true)
+   * @var \DateTime|null
    */
   protected $endTime = null;
+
+  /**
+   * @ORM\Column(type="string")
+   * @var string
+   */
+  private $startTimezone = "";
+
+  /**
+   * @ORM\Column(type="string")
+   * @var string
+   */
+  private $endTimezone = "";
+
+  /**
+   * @var bool
+   */
+  private $startLocalized = false;
+
+  /**
+   * @var bool
+   */
+  private $endLocalized = false;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
@@ -35,6 +57,10 @@ trait TimeEntity
    */
   public function getEndTime(): ?\DateTime
   {
+    if ($this->endTime !== null && !$this->endLocalized) {
+      $this->endTime->setTimezone(new \DateTimeZone($this->endTimezone));
+      $this->endLocalized = true;
+    }
     return $this->endTime;
   }
 
@@ -43,6 +69,10 @@ trait TimeEntity
    */
   public function getStartTime(): ?\DateTime
   {
+    if ($this->startTime !== null && !$this->startLocalized) {
+      $this->startTime->setTimezone(new \DateTimeZone($this->startTimezone));
+      $this->startLocalized = true;
+    }
     return $this->startTime;
   }
 
@@ -54,6 +84,8 @@ trait TimeEntity
   public function setEndTime(?\DateTime $endTime)
   {
     $this->endTime = $endTime;
+    $this->endTimezone = $endTime === null ? "" : $endTime->getTimezone()->getName();
+    $this->endLocalized = true;
     return $this;
   }
 
@@ -64,6 +96,8 @@ trait TimeEntity
   public function setStartTime(?\DateTime $startTime)
   {
     $this->startTime = $startTime;
+    $this->startTimezone = $startTime === null ? "" : $startTime->getTimezone()->getName();
+    $this->startLocalized = true;
     return $this;
   }
 //</editor-fold desc="Public Methods">

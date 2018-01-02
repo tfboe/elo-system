@@ -96,6 +96,9 @@ $app->routeMiddleware([
 |
 */
 
+/** @noinspection PhpUnhandledExceptionInspection */
+Doctrine\DBAL\Types\Type::overrideType('datetime', \App\Entity\Helpers\UTCDateTimeType::class);
+
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(\Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
