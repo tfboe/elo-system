@@ -33,16 +33,6 @@ class GameTest extends TestCase
     self::assertInstanceOf(Collection::class, $game->getPlayersB());
     self::assertEquals(0, $game->getPlayersA()->count());
     self::assertEquals(0, $game->getPlayersB()->count());
-    self::assertNull($game->getStartTime());
-    self::assertNull($game->getEndTime());
-  }
-
-  public function testEndTime()
-  {
-    $game = $this->game();
-    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
-    $game->setEndTime($time);
-    self::assertEquals($time, $game->getEndTime());
   }
 
   public function testGameNumber()
@@ -142,14 +132,6 @@ class GameTest extends TestCase
     self::assertEquals(1, $game->getPlayersB()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($player, $game->getPlayersB()[$player->getId()]);
-  }
-
-  public function testStartTime()
-  {
-    $game = $this->game();
-    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
-    $game->setStartTime($time);
-    self::assertEquals($time, $game->getStartTime());
   }
 //</editor-fold desc="Public Methods">
 

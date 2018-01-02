@@ -89,6 +89,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    *                                   this user
    * @apiParam {string} name the name of the tournament
    * @apiParam {string} [tournamentListId="''"] the list id of which the tournament is part of
+   * @apiParam {string} [startTime] the start time of the tournament in the format 'YYYY-MM-DD HH:MM:SS e'
+   *                                where e is a timezone (for example Europe/Vienna)
+   * @apiParam {string} [endTime] the end time of the tournament in the format 'YYYY-MM-DD HH:MM:SS e'
+   *                              where e is a timezone (for example Europe/Vienna)
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [gameMode] The rule mode of the tournament. All games of the
    *                                                          tournament which do not specify another game mode will use
    *                                                          this game mode.
@@ -109,6 +113,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {Object[]} competitions list of competitions, at least one competition must be given
    * @apiParam {string} competitions.name the name of the competition, must be unique for all competitions in a
    *                                      tournament
+   * @apiParam {string} [competitions.startTime] the start time of the competition in the format 'YYYY-MM-DD HH:MM:SS e'
+   *                                             where e is a timezone (for example Europe/Vienna)
+   * @apiParam {string} [competitions.endTime] the end time of the competition in the format 'YYYY-MM-DD HH:MM:SS e'
+   *                                           where e is a timezone (for example Europe/Vienna)
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.gameMode]
    *           The rule mode of the competition. All games of the competition which do not specify another game mode
    *           will use this game mode.
@@ -136,6 +144,12 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {Object[]} competitions.phases list of phases of this competition
    * @apiParam {integer{>=1}} competitions.phases.phaseNumber the number of the phase
    * @apiParam {string} [competitions.phases.name="''"] the name of the phase
+   * @apiParam {string} [competitions.phases.startTime] the start time of the phase in the format
+   *                                                    'YYYY-MM-DD HH:MM:SS e' where e is a timezone
+   *                                                    (for example Europe/Vienna)
+   * @apiParam {string} [competitions.phases.endTime] the end time of the match in the format
+   *                                                  'YYYY-MM-DD HH:MM:SS e' where e is a timezone
+   *                                                  (for example Europe/Vienna)
    * @apiParam {string[]} [competitions.phases.nextPhaseNumbers=[]] the list of next phase numbers (direct successor
    *                                                                phases)
    * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.gameMode]

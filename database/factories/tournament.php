@@ -21,5 +21,7 @@ $factory->define(\App\Entity\Tournament::class, function (\Faker\Generator $fake
     'teamMode' => array_key_exists('teamMode', $attributes) ? $attributes['teamMode'] : null,
     'table' => array_key_exists('table', $attributes) ? $attributes['table'] : null,
     'competitions' => new \Doctrine\Common\Collections\ArrayCollection(),
+    'startTime' => array_key_exists('startTime', $attributes) ? $attributes['startTime'] : null,
+    'endTime' => array_key_exists('endTime', $attributes) ? $attributes['endTime'] : null
   ];
 });

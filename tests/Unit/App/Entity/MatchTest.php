@@ -35,16 +35,6 @@ class MatchTest extends TestCase
     self::assertEquals(0, $match->getRankingsA()->count());
     self::assertEquals(0, $match->getRankingsB()->count());
     self::assertEquals(0, $match->getGames()->count());
-    self::assertNull($match->getStartTime());
-    self::assertNull($match->getEndTime());
-  }
-
-  public function testEndTime()
-  {
-    $match = $this->match();
-    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
-    $match->setEndTime($time);
-    self::assertEquals($time, $match->getEndTime());
   }
 
   public function testId()
@@ -144,14 +134,6 @@ class MatchTest extends TestCase
     $match->getRankingsB()->set($ranking->getUniqueRank(), $ranking);
     self::assertEquals(1, $match->getRankingsB()->count());
     self::assertEquals($ranking, $match->getRankingsB()[1]);
-  }
-
-  public function testStartTime()
-  {
-    $match = $this->match();
-    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
-    $match->setStartTime($time);
-    self::assertEquals($time, $match->getStartTime());
   }
 
   public function testGames()

@@ -12,5 +12,7 @@ $factory->define(\App\Entity\Competition::class, function (/** @noinspection Php
   \Faker\Generator $faker, array $attributes) {
   return [
     'name' => $attributes['name'],
+    'startTime' => array_key_exists('startTime', $attributes) ? $attributes['startTime'] : null,
+    'endTime' => array_key_exists('endTime', $attributes) ? $attributes['endTime'] : null
   ];
 });

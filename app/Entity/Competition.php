@@ -16,6 +16,7 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\TimeEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +34,7 @@ class Competition extends BaseEntity
   use OrganizingMode;
   use ScoreMode;
   use Table;
+  use TimeEntity;
 
 //<editor-fold desc="Fields">
   /**

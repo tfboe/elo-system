@@ -16,6 +16,7 @@ use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\ResultEntity;
+use App\Entity\Helpers\TimeEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,6 +35,7 @@ class Match extends BaseEntity
   use ScoreMode;
   use Table;
   use ResultEntity;
+  use TimeEntity;
 
 //<editor-fold desc="Fields">
   /**
@@ -50,18 +52,6 @@ class Match extends BaseEntity
    * @var Phase
    */
   protected $phase;
-
-  /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
-   */
-  protected $startTime;
-
-  /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
-   */
-  protected $endTime;
 
   /**
    * @ORM\ManyToMany(targetEntity="Ranking", indexBy="uniqueRank")
@@ -99,19 +89,11 @@ class Match extends BaseEntity
     $this->rankingsA = new ArrayCollection();
     $this->rankingsB = new ArrayCollection();
     $this->games = new ArrayCollection();
-    $this->endTime = null;
-    $this->startTime = null;
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return \DateTime|null
-   */
-  public function getEndTime(): ?\DateTime
-  {
-    return $this->endTime;
-  }
+
 
   /**
    * @return Game[]|Collection
@@ -167,23 +149,6 @@ class Match extends BaseEntity
     return $this->rankingsB;
   }
 
-  /**
-   * @return \DateTime|null
-   */
-  public function getStartTime(): ?\DateTime
-  {
-    return $this->startTime;
-  }
-
-  /**
-   * @param mixed $endTime
-   * @return $this|Match
-   */
-  public function setEndTime($endTime)
-  {
-    $this->endTime = $endTime;
-    return $this;
-  }
 
   /**
    * @param int $matchNumber
@@ -207,16 +172,6 @@ class Match extends BaseEntity
     }
     $this->phase = $phase;
     $phase->getMatches()->set($this->getMatchNumber(), $this);
-    return $this;
-  }
-
-  /**
-   * @param mixed $startTime
-   * @return $this|Match
-   */
-  public function setStartTime($startTime): Match
-  {
-    $this->startTime = $startTime;
     return $this;
   }
 //</editor-fold desc="Public Methods">

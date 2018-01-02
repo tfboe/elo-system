@@ -16,6 +16,7 @@ use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\ResultEntity;
+use App\Entity\Helpers\TimeEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,6 +35,7 @@ class Game extends BaseEntity
   use ScoreMode;
   use Table;
   use ResultEntity;
+  use TimeEntity;
 
 //<editor-fold desc="Fields">
   /**
@@ -50,18 +52,6 @@ class Game extends BaseEntity
    * @var Match
    */
   protected $match;
-
-  /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
-   */
-  protected $startTime;
-
-  /**
-   * @ORM\Column(type="datetimetz", nullable=true)
-   * @var ?\DateTime
-   */
-  protected $endTime;
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
@@ -92,19 +82,10 @@ class Game extends BaseEntity
   {
     $this->playersA = new ArrayCollection();
     $this->playersB = new ArrayCollection();
-    $this->endTime = null;
-    $this->startTime = null;
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return \DateTime|null
-   */
-  public function getEndTime(): ?\DateTime
-  {
-    return $this->endTime;
-  }
 
   /**
    * @return int
@@ -153,24 +134,6 @@ class Game extends BaseEntity
   }
 
   /**
-   * @return \DateTime|null
-   */
-  public function getStartTime(): ?\DateTime
-  {
-    return $this->startTime;
-  }
-
-  /**
-   * @param mixed $endTime
-   * @return $this|Match
-   */
-  public function setEndTime($endTime)
-  {
-    $this->endTime = $endTime;
-    return $this;
-  }
-
-  /**
    * @param int $gameNumber
    * @return $this|Game
    */
@@ -192,16 +155,6 @@ class Game extends BaseEntity
     }
     $this->match = $match;
     $match->getGames()->set($this->getGameNumber(), $this);
-    return $this;
-  }
-
-  /**
-   * @param mixed $startTime
-   * @return $this|Game
-   */
-  public function setStartTime($startTime): Game
-  {
-    $this->startTime = $startTime;
     return $this;
   }
 //</editor-fold desc="Public Methods">

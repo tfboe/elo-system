@@ -94,17 +94,24 @@ class TournamentController extends BaseController
       'userIdentifier' => ['validation' => 'required|string'],
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string', 'default' => ''],
-      'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True]
+      'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'startTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+        'transformer' => $this->datetimetzTransformer(), 'default' => null],
+      'endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+        'transformer' => $this->datetimetzTransformer(), 'default' => null],
     ];
-    $this->tournamentSpecification = array_merge($this->tournamentSpecification, $this->categoriesSpecifications(''));
+    $this->tournamentSpecification = array_merge(
+      $this->tournamentSpecification, $this->categoriesSpecifications(''),
+      $this->timeSpecifications(''));
 
     $this->competitionSpecification = [
       'competitions.*.name' => ['validation' => 'required|string|distinct'],
       'competitions.*.teams' => ['validation' => 'required|array|min:2', 'ignore' => True],
-      'competitions.*.phases' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'competitions.*.phases' => ['validation' => 'required|array|min:1', 'ignore' => True]
     ];
     $this->competitionSpecification = array_merge($this->competitionSpecification,
-      $this->categoriesSpecifications('competitions.*.'));
+      $this->categoriesSpecifications('competitions.*.'),
+      $this->timeSpecifications('competitions.*.'));
 
     $this->teamSpecification = [
       'competitions.*.teams.*.name' => ['validation' => 'string', 'default' => ''],
@@ -120,10 +127,11 @@ class TournamentController extends BaseController
       'competitions.*.phases.*.nextPhaseNumbers' => ['validation' => 'array', 'ignore' => True],
       'competitions.*.phases.*.nextPhaseNumbers.*' => ['validation' => 'integer|min:1', 'ignore' => True],
       'competitions.*.phases.*.rankings' => ['validation' => 'required|array|min:2', 'ignore' => True],
-      'competitions.*.phases.*.matches' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'competitions.*.phases.*.matches' => ['validation' => 'required|array|min:1', 'ignore' => True]
     ];
     $this->phaseSpecification = array_merge($this->phaseSpecification,
-      $this->categoriesSpecifications('competitions.*.phases.*.'));
+      $this->categoriesSpecifications('competitions.*.phases.*.'),
+      $this->timeSpecifications('competitions.*.phases.*.'));
 
     $this->rankingSpecification = [
       'competitions.*.phases.*.rankings.*.uniqueRank' => ['validation' => 'required|integer|min:1'],
@@ -145,16 +153,13 @@ class TournamentController extends BaseController
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.rankingsBUniqueRanks.*' =>
         ['validation' => 'required|integer|min:1', 'ignore' => True],
-      'competitions.*.phases.*.matches.*.startTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
-        'transformer' => $this->datetimetzTransformer(), 'default' => null],
-      'competitions.*.phases.*.matches.*.endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
-        'transformer' => $this->datetimetzTransformer(), 'default' => null],
       'competitions.*.phases.*.matches.*.games' => ['validation' => 'required|array|min:1', 'ignore' => True],
     ];
 
     $this->matchSpecification = array_merge($this->matchSpecification,
       $this->categoriesSpecifications('competitions.*.phases.*.matches.*.'),
-      $this->resultSpecifications('competitions.*.phases.*.matches.*.'));
+      $this->resultSpecifications('competitions.*.phases.*.matches.*.'),
+      $this->timeSpecifications('competitions.*.phases.*.matches.*.'));
 
     $this->gameSpecification = [
       'competitions.*.phases.*.matches.*.games.*.gameNumber' => ['validation' => 'required|integer|min:1'],
@@ -165,16 +170,13 @@ class TournamentController extends BaseController
       'competitions.*.phases.*.matches.*.games.*.playersB' =>
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB.*' =>
-        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
-      'competitions.*.phases.*.matches.*.games.*.startTime' => ['validation' => 'date_format:' .
-        $this->datetimetzFormat, 'transformer' => $this->datetimetzTransformer(), 'default' => null],
-      'competitions.*.phases.*.matches.*.games.*.endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
-        'transformer' => $this->datetimetzTransformer(), 'default' => null],
+        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True]
     ];
 
     $this->gameSpecification = array_merge($this->gameSpecification,
       $this->categoriesSpecifications('competitions.*.phases.*.matches.*.games.*.'),
-      $this->resultSpecifications('competitions.*.phases.*.matches.*.games.*.'));
+      $this->resultSpecifications('competitions.*.phases.*.matches.*.games.*.'),
+      $this->timeSpecifications('competitions.*.phases.*.matches.*.games.*.'));
 
 
     $this->validateBySpecification($request, array_merge(
@@ -226,6 +228,22 @@ class TournamentController extends BaseController
       $prefix . 'result' => ['validation' => 'required|string|in:' . implode(",", Result::getNames()),
         'transformer' => $this->enumTransformer(Result::class)],
       $prefix . 'played' => ['validation' => 'required|boolean'],
+    ];
+  }
+
+  /**
+   * Returns a query input specification for the time part of an object which is used in multiple entities
+   * (see TimeEntity)
+   * @param string $prefix the prefix for the keys, used if the result parameters are deeper in the input structure
+   * @return string[] the query specification
+   */
+  private function timeSpecifications(string $prefix): array
+  {
+    return [
+      $prefix . 'startTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+        'transformer' => $this->datetimetzTransformer(), 'default' => null],
+      $prefix . 'endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+        'transformer' => $this->datetimetzTransformer(), 'default' => null]
     ];
   }
 

@@ -13,5 +13,7 @@ $factory->define(\App\Entity\Phase::class, function (/** @noinspection PhpUnused
   return [
     'name' => '',
     'phaseNumber' => $attributes['phaseNumber'],
+    'startTime' => array_key_exists('startTime', $attributes) ? $attributes['startTime'] : null,
+    'endTime' => array_key_exists('endTime', $attributes) ? $attributes['endTime'] : null
   ];
 });

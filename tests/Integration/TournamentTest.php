@@ -49,6 +49,8 @@ class TournamentTest extends AuthenticatedTestCase
       'scoreMode' => 'BEST_OF_FIVE',
       'teamMode' => 'DOUBLE',
       'table' => 'ROBERTO_SPORT',
+      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -64,6 +66,8 @@ class TournamentTest extends AuthenticatedTestCase
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' =>
               [$players[2]->getId(), $players[3]->getId(), $players[4]->getId()]]
           ],
+          'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+          'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
           'phases' => [
             [
               'name' => 'Phase 1',
@@ -78,6 +82,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [3], 'uniqueRank' => 2],
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -244,6 +250,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 1],
                 ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -311,6 +319,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -378,6 +388,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -445,6 +457,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -512,6 +526,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 2, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -580,6 +596,8 @@ class TournamentTest extends AuthenticatedTestCase
             ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getId()]]
           ],
+          'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+          'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
           'phases' => [
             [
               'name' => 'Phase 1',
@@ -594,6 +612,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
                 ['rank' => 2, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -1941,11 +1961,15 @@ class TournamentTest extends AuthenticatedTestCase
       'userIdentifier' => 't1',
       'creator' => $this->user,
       'gameMode' => GameMode::CLASSIC,
+      'startTime' => new \DateTime('2017-12-30 15:00', new \DateTimeZone('Europe/Vienna')),
+      'endTime' => new \DateTime('2017-12-31 18:35', new \DateTimeZone('Europe/Vienna')),
     ]);
     /** @var Competition[] $competitions */
     $competitions = [
       entity(Competition::class)->create(['name' => 'Test Competition']),
-      entity(Competition::class)->create(['name' => 'Test Competition 2']),
+      entity(Competition::class)->create(['name' => 'Test Competition 2',
+        'startTime' => new \DateTime('2017-12-30 15:00', new \DateTimeZone('Europe/Vienna')),
+        'endTime' => new \DateTime('2017-12-31 18:35', new \DateTimeZone('Europe/Vienna'))]),
       entity(Competition::class)->create(['name' => 'Test Competition 4']),
       entity(Competition::class)->create(['name' => 'Test Competition 5'])];
     foreach ($competitions as $competition) {
@@ -2103,6 +2127,8 @@ class TournamentTest extends AuthenticatedTestCase
       'userIdentifier' => 't1',
       'gameMode' => 'OFFICIAL',
       'table' => 'GARLANDO',
+      'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+      'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -2112,6 +2138,8 @@ class TournamentTest extends AuthenticatedTestCase
             ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getId()]],
             ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getId()]],
           ],
+          'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+          'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
           'phases' => [
             [
               'phaseNumber' => 1,
@@ -2120,6 +2148,8 @@ class TournamentTest extends AuthenticatedTestCase
                 ['rank' => 1, 'uniqueRank' => 1, 'teamStartNumbers' => [1]],
                 ['rank' => 1, 'uniqueRank' => 2, 'teamStartNumbers' => [2]]
               ],
+              'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
+              'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
               'matches' => [
                 [
                   'matchNumber' => 1,
@@ -2408,9 +2438,14 @@ class TournamentTest extends AuthenticatedTestCase
       'teamMode' => ['default' => null, 'enum' => TeamMode::class],
       'table' => ['default' => null, 'enum' => Table::class],
     ];
+    $datetimetz_transformer = function ($x) {
+      return \DateTime::createFromFormat('Y-m-d H:i:s e', $x);
+    };
     $this->checkProperties($data, $tournament, [
       'name' => null,
       'tournamentListId' => '',
+      'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+      'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
     ], $categories);
     self::assertInstanceOf(Collection::class, $tournament->getCompetitions());
     self::assertEquals(count($data['competitions']), $tournament->getCompetitions()->count());
@@ -2423,6 +2458,8 @@ class TournamentTest extends AuthenticatedTestCase
       $competition = $tournament->getCompetitions()->get($competition_data['name']);
       $this->checkProperties($competition_data, $competition, [
         'name' => null,
+        'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+        'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
       ], $categories);
       self::assertInstanceOf(Collection::class, $competition->getTeams());
       self::assertEquals(count($competition_data['teams']), $competition->getTeams()->count());
@@ -2457,7 +2494,9 @@ class TournamentTest extends AuthenticatedTestCase
 
         $this->checkProperties($phase_data, $phase, [
           'name' => '',
-          'phaseNumber' => null
+          'phaseNumber' => null,
+          'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+          'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
         ], $categories);
 
         self::assertInstanceOf(Collection::class, $phase->getNextQualificationSystems());
@@ -2505,11 +2544,6 @@ class TournamentTest extends AuthenticatedTestCase
           self::assertTrue($phase->getMatches()->containsKey($match_data['matchNumber']));
           /** @var Match $match */
           $match = $phase->getMatches()->get($match_data['matchNumber']);
-
-
-          $datetimetz_transformer = function ($x) {
-            return \DateTime::createFromFormat('Y-m-d H:i:s e', $x);
-          };
           $this->checkProperties($match_data, $match, [
             'matchNumber' => null,
             'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],

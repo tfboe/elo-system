@@ -17,7 +17,7 @@ $factory->define(\App\Entity\Match::class, function (/** @noinspection PhpUnused
     'resultB' => $attributes['resultB'],
     'result' => $attributes['result'],
     'played' => $attributes['played'],
-    'startTime' => $attributes['startTime'],
-    'endTime' => $attributes['endTime']
+    'startTime' => array_key_exists('startTime', $attributes) ? $attributes['startTime'] : null,
+    'endTime' => array_key_exists('endTime', $attributes) ? $attributes['endTime'] : null
   ];
 });

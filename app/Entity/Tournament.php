@@ -15,6 +15,7 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\TimeEntity;
 use App\Entity\Helpers\TimestampableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,6 +35,7 @@ class Tournament extends BaseEntity
   use ScoreMode;
   use Table;
   use TimestampableEntity;
+  use TimeEntity;
 
 //<editor-fold desc="Fields">
   /**
