@@ -24,7 +24,7 @@ class BaseEntity
    * @param string $method the method to search
    * @return bool true if it exists and false otherwise
    */
-  public function methodExists(string $method)
+  public function methodExists(string $method): bool
   {
     return method_exists($this, $method);
   }

@@ -90,10 +90,11 @@ trait SubClassData
   }
 
   /**
-   * @param $method
+   * Checks if a method with the given name exists considering also getter and setter for subclass properties
+   * @param string $method
    * @return bool
    */
-  public function methodExists($method): bool
+  public function methodExists(string $method): bool
   {
     if (method_exists($this, $method)) {
       return true;
