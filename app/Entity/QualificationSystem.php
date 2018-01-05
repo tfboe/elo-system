@@ -11,6 +11,7 @@ namespace App\Entity;
 
 
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\UUIDEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,16 +22,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class QualificationSystem extends BaseEntity
 {
-//<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
+  use UUIDEntity;
 
+//<editor-fold desc="Fields">
   /**
    * @ORM\ManyToOne(targetEntity="Phase", inversedBy="nextQualificationSystems")
    * @var Phase
@@ -45,16 +39,6 @@ class QualificationSystem extends BaseEntity
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull("id");
-    return $this->id;
-  }
-
   /**
    * @return Phase
    * @throws \App\Exceptions\ValueNotSet

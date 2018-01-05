@@ -88,6 +88,18 @@ abstract class TestCase extends \Laravel\Lumen\Testing\TestCase
   }
 
   /**
+   * Calls the given protected method on the given object with the given arguments
+   * @param mixed $object the object to call on
+   * @param string $method the method name
+   * @param mixed[] $args the arguments for the method
+   * @return mixed the return value of the method
+   */
+  protected static function callProtectedMethod($object, string $method, array $args = [])
+  {
+    return self::getMethod(get_class($object), $method)->invokeArgs($object, $args);
+  }
+
+  /**
    * Gets a protected or private property and makes it accessible
    * @param string $class the class name
    * @param string $name the method name

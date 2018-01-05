@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\NameEntity;
+use App\Entity\Helpers\UUIDEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,18 +21,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity
  * @ORM\Entity
  * @ORM\Table(name="teams")
+ *
+ * Method hint for getName, since it will never throw an exception (name gets initialized empty)
+ * @method string getName()
  */
 class Team extends BaseEntity
 {
+  use UUIDEntity;
+  use NameEntity;
 //<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
@@ -56,12 +55,6 @@ class Team extends BaseEntity
    * @var int
    */
   protected $startNumber;
-
-  /**
-   * @ORM\Column(type="string")
-   * @var string
-   */
-  protected $name;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -84,24 +77,6 @@ class Team extends BaseEntity
   {
     $this->ensureNotNull("competition");
     return $this->competition;
-  }
-
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull("id");
-    return $this->id;
-  }
-
-  /**
-   * @return string
-   */
-  public function getName(): string
-  {
-    return $this->name;
   }
 
   /**
@@ -144,16 +119,6 @@ class Team extends BaseEntity
     }
     $this->competition = $competition;
     $this->competition->getTeams()->set($this->getStartNumber(), $this);
-    return $this;
-  }
-
-  /**
-   * @param string $name
-   * @return $this|Team
-   */
-  public function setName(string $name): Team
-  {
-    $this->name = $name;
     return $this;
   }
 

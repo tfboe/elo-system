@@ -16,11 +16,14 @@ use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
+use App\Entity\RankingSystem;
 use App\Entity\Team;
 use App\Entity\Tournament;
 use App\Exceptions\DuplicateException;
 use App\Exceptions\ReferenceException;
 use App\Exceptions\UnorderedPhaseNumberException;
+use App\Helpers\Level;
+use App\Service\RankingSystemServiceInterface;
 use Doctrine\Common\Collections\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -66,6 +69,11 @@ class TournamentController extends BaseController
    * @var string[]
    */
   private $gameSpecification;
+
+  /**
+   * @var RankingSystem[][]
+   */
+  private $rankingSystems;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
@@ -74,6 +82,7 @@ class TournamentController extends BaseController
    * creates or replaces an existing tournament
    *
    * @param Request $request the http request
+   * @param RankingSystemServiceInterface $rss ranking system service
    * @return JsonResponse
    * @throws DuplicateException two competitions have the same name or a team start number is occurring twice or
    *                            a player is specified twice for a team or two phases of a competition have the same
@@ -88,7 +97,7 @@ class TournamentController extends BaseController
    *                            a player of a team is not in the players lists of this team
    * @throws UnorderedPhaseNumberException
    */
-  public function createOrReplaceTournament(Request $request): JsonResponse
+  public function createOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): JsonResponse
   {
     $this->tournamentSpecification = [
       'userIdentifier' => ['validation' => 'required|string'],
@@ -188,7 +197,7 @@ class TournamentController extends BaseController
       $this->matchSpecification,
       $this->gameSpecification));
 
-    return response()->json(['type' => $this->doCreateOrReplaceTournament($request)]);
+    return response()->json(['type' => $this->doCreateOrReplaceTournament($request, $rss)]);
   }
 //</editor-fold desc="Public Methods">
 
@@ -251,6 +260,7 @@ class TournamentController extends BaseController
   /**
    * creates or replaces the tournament as specified in the request
    * @param Request $request the http request
+   * @param RankingSystemServiceInterface $rss ranking system service
    * @return string the type (either replace or create) of the operation
    * @throws DuplicateException two competitions have the same name or a team start number is occurring twice or
    *                            a player is specified twice for a team or two phases of a competition have the same
@@ -265,7 +275,7 @@ class TournamentController extends BaseController
    *                            a player of a team is not in the players lists of this team
    * @throws UnorderedPhaseNumberException
    */
-  private function doCreateOrReplaceTournament(Request $request): string
+  private function doCreateOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): string
   {
     /** @noinspection PhpUnhandledExceptionInspection */
     assert(\Auth::user()->getId() != null);
@@ -273,15 +283,41 @@ class TournamentController extends BaseController
     $tournament = $this->em->getRepository(Tournament::class)->findOneBy(
       ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
     $type = 'replace';
+
+    $earliest_influence_times = $tournament === null ? [] : $rss->getRankingSystemsEarliestInfluences($tournament);
+
+    /** @var RankingSystem[] $ranking_systems */
+    $ranking_systems = $this->em->getRepository(RankingSystem::class)->findAll();
+    $this->rankingSystems = [];
+    foreach (Level::getValues() as $value) {
+      $this->rankingSystems[$value] = [];
+    }
+    foreach ($ranking_systems as $ranking_system) {
+      if ($ranking_system->getDefaultForLevel() !== null) {
+        $this->rankingSystems[$ranking_system->getDefaultForLevel()][] = $ranking_system;
+      }
+    }
+
     if ($tournament == null) {
       $tournament = new Tournament();
       $tournament->setCreator(\Auth::user());
       $this->em->persist($tournament);
+      foreach ($this->rankingSystems[Level::TOURNAMENT] as $ranking_system) {
+        /** @noinspection PhpUnhandledExceptionInspection
+         * ranking_system comes from the database and therefore has an id */
+        $tournament->getRankingSystems()->set($ranking_system->getId(), $ranking_system);
+        /** @noinspection PhpUnhandledExceptionInspection
+         * tournament is persisted and therefore has an id */
+        $ranking_system->getTournaments()->set($tournament->getId(), $tournament);
+      }
       $type = 'create';
     }
+
     $this->setFromSpecification($tournament, $this->tournamentSpecification, $request->input());
     /** @noinspection PhpUnhandledExceptionInspection */ //the tournament has a name since its required in the request
     $this->replaceCompetitions($request, $tournament);
+
+    $rss->applyRankingSystems($tournament, $earliest_influence_times);
     $this->em->flush();
 
     return $type;
@@ -416,6 +452,10 @@ class TournamentController extends BaseController
         $this->setFromSpecification($competition, $this->competitionSpecification, $competition_values);
         $competition->setTournament($tournament);
         $this->em->persist($competition);
+        foreach ($this->rankingSystems[Level::COMPETITION] as $ranking_system) {
+          $competition->getRankingSystems()->set($ranking_system->getId(), $ranking_system);
+          $ranking_system->getCompetitions()->set($competition->getId(), $competition);
+        }
       }
       $competition_names[$competition_values['name']] = true;
       /** @noinspection PhpUnhandledExceptionInspection */ // the competition has a name since it is required int the
@@ -475,6 +515,10 @@ class TournamentController extends BaseController
         // request
         $phase->setCompetition($competition);
         $this->em->persist($phase);
+        foreach ($this->rankingSystems[Level::PHASE] as $ranking_system) {
+          $phase->getRankingSystems()->set($ranking_system->getId(), $ranking_system);
+          $ranking_system->getPhases()->set($phase->getId(), $phase);
+        }
       }
       $phase_numbers[$phase_values['phaseNumber']] = true;
       $this->replaceRankings($phase, $phase_values['rankings']);
@@ -634,6 +678,10 @@ class TournamentController extends BaseController
         // request
         $match->setPhase($phase);
         $this->em->persist($match);
+        foreach ($this->rankingSystems[Level::MATCH] as $ranking_system) {
+          $match->getRankingSystems()->set($ranking_system->getId(), $ranking_system);
+          $ranking_system->getMatches()->set($match->getId(), $match);
+        }
       }
       $match_numbers[$match_values['matchNumber']] = true;
 
@@ -687,6 +735,10 @@ class TournamentController extends BaseController
         // request
         $game->setMatch($match);
         $this->em->persist($game);
+        foreach ($this->rankingSystems[Level::GAME] as $ranking_system) {
+          $game->getRankingSystems()->set($ranking_system->getId(), $ranking_system);
+          $ranking_system->getGames()->set($game->getId(), $game);
+        }
       }
       $game_numbers[$game_values['gameNumber']] = true;
 

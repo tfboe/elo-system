@@ -18,8 +18,6 @@ use App\Exceptions\ValueNotValid;
  */
 trait ResultEntity
 {
-  use UnsetProperty;
-
 //<editor-fold desc="Fields">
   /**
    * @ORM\Column(type="integer")

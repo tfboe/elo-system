@@ -13,7 +13,9 @@ use App\Entity\Game;
 use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\Ranking;
+use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
@@ -35,25 +37,8 @@ class MatchTest extends TestCase
     self::assertEquals(0, $match->getRankingsA()->count());
     self::assertEquals(0, $match->getRankingsB()->count());
     self::assertEquals(0, $match->getGames()->count());
-  }
-
-  public function testId()
-  {
-    $match = $this->match();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($match);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $match->getId());
-  }
-
-  public function testIdException()
-  {
-    $match = $this->match();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Match::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $match->getId();
+    self::assertInstanceOf(Collection::class, $match->getRankingSystems());
+    self::assertEquals(0, $match->getRankingSystems()->count());
   }
 
   public function testMatchNumber()
@@ -76,7 +61,7 @@ class MatchTest extends TestCase
     $match->getMatchNumber();
   }
 
-  public function testPhase()
+  public function testPhaseAndParent()
   {
     $match = $this->match();
     $phase = new Phase();
@@ -89,6 +74,8 @@ class MatchTest extends TestCase
     self::assertEquals(1, $match->getPhase()->getMatches()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($match, $match->getPhase()->getMatches()[$match->getMatchNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($match->getPhase(), $match->getParent());
 
     $phase2 = new Phase();
 
@@ -101,6 +88,8 @@ class MatchTest extends TestCase
     self::assertEquals(0, $phase->getMatches()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($match, $match->getPhase()->getMatches()[$match->getMatchNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($match->getPhase(), $match->getParent());
   }
 
   public function testPhaseException()
@@ -136,15 +125,35 @@ class MatchTest extends TestCase
     self::assertEquals($ranking, $match->getRankingsB()[1]);
   }
 
-  public function testGames()
+  public function testGamesAndChildren()
   {
     $match = $this->match();
     $game = new Game();
     $game->setGameNumber(1);
+    self::assertEquals($match->getGames(), $match->getChildren());
     /** @noinspection PhpUnhandledExceptionInspection */
     $match->getGames()->set($game->getGameNumber(), $game);
     self::assertEquals(1, $match->getGames()->count());
     self::assertEquals($game, $match->getGames()[1]);
+    self::assertEquals($match->getGames(), $match->getChildren());
+  }
+
+  public function testRankingSystems()
+  {
+    $e = $this->match();
+    $system = new RankingSystem([]);
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($system);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $e->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $e->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
+  }
+
+  public function testLevel()
+  {
+    self::assertEquals(Level::MATCH, $this->match()->getLevel());
   }
 //</editor-fold desc="Public Methods">
 

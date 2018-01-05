@@ -20,13 +20,13 @@ trait TimeEntity
    * @ORM\Column(type="datetime", nullable=true)
    * @var \DateTime|null
    */
-  protected $startTime = null;
+  private $startTime = null;
 
   /**
    * @ORM\Column(type="datetime", nullable=true)
    * @var \DateTime|null
    */
-  protected $endTime = null;
+  private $endTime = null;
 
   /**
    * @ORM\Column(type="string")

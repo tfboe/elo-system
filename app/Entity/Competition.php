@@ -16,7 +16,11 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\UUIDEntity;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="competitions",indexes={@ORM\Index(name="unique_name_idx", columns={"tournament_id","name"})})
  */
-class Competition extends BaseEntity
+class Competition extends BaseEntity implements TreeStructureEntityInterface
 {
   use GameMode;
   use TeamMode;
@@ -35,28 +39,15 @@ class Competition extends BaseEntity
   use ScoreMode;
   use Table;
   use TimeEntity;
+  use UUIDEntity;
+  use NameEntity;
 
 //<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
-
   /**
    * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="competitions")
    * @var Tournament
    */
   protected $tournament;
-
-  /**
-   * @ORM\Column(type="string")
-   * @var string
-   */
-  protected $name;
 
   /**
    * @ORM\OneToMany(targetEntity="Team", mappedBy="competition", indexBy="startNumber")
@@ -69,6 +60,25 @@ class Competition extends BaseEntity
    * @var Collection|Phase[]
    */
   protected $phases;
+
+  /**
+   * @ORM\ManyToMany(
+   *     targetEntity="RankingSystem",
+   *     inversedBy="competitions",
+   *     indexBy="id"
+   * )
+   * @ORM\JoinTable(name="relation__competition_ranking_systems")
+   * @var Collection|RankingSystem[]
+   */
+  private $rankingSystems;
+
+  /**
+   * @return RankingSystem[]|Collection
+   */
+  public function getRankingSystems()
+  {
+    return $this->rankingSystems;
+  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -79,30 +89,11 @@ class Competition extends BaseEntity
   {
     $this->teams = new ArrayCollection();
     $this->phases = new ArrayCollection();
+    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull('id');
-    return $this->id;
-  }
-
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getName(): string
-  {
-    $this->ensureNotNull('name');
-    return $this->name;
-  }
-
   /**
    * @return Phase[]|Collection
    */
@@ -130,16 +121,6 @@ class Competition extends BaseEntity
   }
 
   /**
-   * @param string $name
-   * @return $this|Competition
-   */
-  public function setName(string $name): Competition
-  {
-    $this->name = $name;
-    return $this;
-  }
-
-  /**
    * @param Tournament $tournament
    * @return $this|Competition
    * @throws \App\Exceptions\ValueNotSet if the name is not set
@@ -154,4 +135,28 @@ class Competition extends BaseEntity
     return $this;
   }
 //</editor-fold desc="Public Methods">
+
+  /**
+   * @inheritDoc
+   */
+  public function getParent(): ?TreeStructureEntityInterface
+  {
+    return $this->getTournament();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return $this->getPhases();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::COMPETITION;
+  }
 }

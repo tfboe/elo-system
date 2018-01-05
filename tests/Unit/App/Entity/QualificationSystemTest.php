@@ -12,7 +12,6 @@ namespace Tests\Unit\App\Entity;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Exceptions\ValueNotSet;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
 /**
@@ -28,26 +27,6 @@ class QualificationSystemTest extends TestCase
   {
     $system = $this->system();
     self::assertInstanceOf(QualificationSystem::class, $system);
-  }
-
-  public function testId()
-  {
-    $system = $this->system();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($system);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $system->getId());
-  }
-
-  public function testIdException()
-  {
-    $system = $this->system();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . QualificationSystem::class . " must be set before" .
-      " it can be accessed. Please set the property immediately after you call the constructor(Empty Constructor " .
-      "Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $system->getId();
   }
 
   public function testNextPhase()

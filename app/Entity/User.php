@@ -12,6 +12,7 @@ namespace App\Entity;
 
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\TimestampableEntity;
+use App\Entity\Helpers\UUIDEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -24,16 +25,9 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
 {
   use \LaravelDoctrine\ORM\Auth\Authenticatable;
   use TimestampableEntity;
+  use UUIDEntity;
 
 //<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
 
   /**
    * @ORM\Column(type="string")
@@ -74,16 +68,6 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   {
     $this->ensureNotNull("email");
     return $this->email;
-  }
-
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull("id");
-    return $this->id;
   }
 
   /**

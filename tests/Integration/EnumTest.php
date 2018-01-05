@@ -15,6 +15,8 @@ use App\Entity\Categories\OrganizingMode;
 use App\Entity\Categories\ScoreMode;
 use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
+use App\Entity\Helpers\AutomaticInstanceGeneration;
+use App\Helpers\Level;
 use Tests\Helpers\TestCase;
 
 /**
@@ -65,6 +67,24 @@ class EnumTest extends TestCase
     self::assertEquals(1, TeamMode::SINGLE);
     self::assertEquals(2, TeamMode::DYP);
     self::assertEquals(['DOUBLE', 'SINGLE', 'DYP'], TeamMode::getNames());
+  }
+
+  public function testAutomaticInstanceGeneration()
+  {
+    self::assertEquals(0, AutomaticInstanceGeneration::OFF);
+    self::assertEquals(1, AutomaticInstanceGeneration::MONTHLY);
+    self::assertEquals(['OFF', 'MONTHLY'],
+      AutomaticInstanceGeneration::getNames());
+  }
+
+  public function testLevels()
+  {
+    self::assertEquals(0, Level::GAME);
+    self::assertEquals(1, Level::MATCH);
+    self::assertEquals(2, Level::PHASE);
+    self::assertEquals(3, Level::COMPETITION);
+    self::assertEquals(4, Level::TOURNAMENT);
+    self::assertEquals(['GAME', 'MATCH', 'PHASE', 'COMPETITION', 'TOURNAMENT'], Level::getNames());
   }
 //</editor-fold desc="Public Methods">
 }

@@ -11,7 +11,9 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Game;
 use App\Entity\Match;
+use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
@@ -31,8 +33,10 @@ class GameTest extends TestCase
     self::assertInstanceOf(Game::class, $game);
     self::assertInstanceOf(Collection::class, $game->getPlayersA());
     self::assertInstanceOf(Collection::class, $game->getPlayersB());
+    self::assertInstanceOf(Collection::class, $game->getRankingSystems());
     self::assertEquals(0, $game->getPlayersA()->count());
     self::assertEquals(0, $game->getPlayersB()->count());
+    self::assertEquals(0, $game->getRankingSystems()->count());
   }
 
   public function testGameNumber()
@@ -55,30 +59,12 @@ class GameTest extends TestCase
     $game->getGameNumber();
   }
 
-  public function testId()
-  {
-    $game = $this->game();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($game);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $game->getId());
-  }
-
-  public function testIdException()
-  {
-    $game = $this->game();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Game::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $game->getId();
-  }
-
-  public function testMatch()
+  public function testMatchAndParent()
   {
     $game = $this->game();
     $match = new Match();
     $game->setGameNumber(1);
+
     /** @noinspection PhpUnhandledExceptionInspection */
     $game->setMatch($match);
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -87,6 +73,8 @@ class GameTest extends TestCase
     self::assertEquals(1, $game->getMatch()->getGames()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($game, $game->getMatch()->getGames()[$game->getGameNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($game->getMatch(), $game->getParent());
 
     $match2 = new Match();
 
@@ -99,6 +87,8 @@ class GameTest extends TestCase
     self::assertEquals(0, $match->getGames()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($game, $game->getMatch()->getGames()[$game->getGameNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($game->getMatch(), $game->getParent());
   }
 
   public function testMatchException()
@@ -132,6 +122,29 @@ class GameTest extends TestCase
     self::assertEquals(1, $game->getPlayersB()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($player, $game->getPlayersB()[$player->getId()]);
+  }
+
+  public function testRankingSystems()
+  {
+    $e = $this->game();
+    $system = new RankingSystem([]);
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($system);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $e->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $e->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
+  }
+
+  public function testLevel()
+  {
+    self::assertEquals(Level::GAME, $this->game()->getLevel());
+  }
+
+  public function testChildren()
+  {
+    self::assertEmpty($this->game()->getChildren());
   }
 //</editor-fold desc="Public Methods">
 

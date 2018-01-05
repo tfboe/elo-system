@@ -14,7 +14,6 @@ use App\Entity\Ranking;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 
 /**
@@ -69,32 +68,6 @@ class RankingTest extends TestCase
       "Pattern).");
     /** @noinspection PhpUnhandledExceptionInspection */
     $ranking->getPhase();
-  }
-
-  public function testId()
-  {
-    $ranking = $this->ranking();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($ranking);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $ranking->getId());
-  }
-
-  public function testIdException()
-  {
-    $ranking = $this->ranking();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Ranking::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $ranking->getId();
-  }
-
-  public function testName()
-  {
-    $ranking = $this->ranking();
-    $ranking->setName("Name");
-    self::assertEquals("Name", $ranking->getName());
   }
 
   public function testRank()

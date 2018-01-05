@@ -15,7 +15,11 @@ use App\Entity\CategoryTraits\ScoreMode;
 use App\Entity\CategoryTraits\Table;
 use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
+use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\UUIDEntity;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,8 +30,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity
  * @ORM\Entity
  * @ORM\Table(name="phases")
+ *
+ * Method hint for getName, since it will never throw an exception (name gets initialized empty)
+ * @method string getName()
  */
-class Phase extends BaseEntity
+class Phase extends BaseEntity implements TreeStructureEntityInterface
 {
   use GameMode;
   use TeamMode;
@@ -35,16 +42,10 @@ class Phase extends BaseEntity
   use ScoreMode;
   use Table;
   use TimeEntity;
+  use UUIDEntity;
+  use NameEntity;
 
 //<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
 
   /**
    * @ORM\ManyToOne(targetEntity="Competition", inversedBy="phases")
@@ -57,12 +58,6 @@ class Phase extends BaseEntity
    * @var int
    */
   protected $phaseNumber;
-
-  /**
-   * @ORM\Column(type="string")
-   * @var string
-   */
-  protected $name;
 
   /**
    * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="nextPhase")
@@ -87,6 +82,25 @@ class Phase extends BaseEntity
    * @var Collection|Match[]
    */
   protected $matches;
+
+  /**
+   * @ORM\ManyToMany(
+   *     targetEntity="RankingSystem",
+   *     inversedBy="phases",
+   *     indexBy="id"
+   * )
+   * @ORM\JoinTable(name="relation__phase_ranking_systems")
+   * @var Collection|RankingSystem[]
+   */
+  private $rankingSystems;
+
+  /**
+   * @return RankingSystem[]|Collection
+   */
+  public function getRankingSystems()
+  {
+    return $this->rankingSystems;
+  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -100,6 +114,7 @@ class Phase extends BaseEntity
     $this->name = '';
     $this->rankings = new ArrayCollection();
     $this->matches = new ArrayCollection();
+    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -115,29 +130,11 @@ class Phase extends BaseEntity
   }
 
   /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull('id');
-    return $this->id;
-  }
-
-  /**
    * @return Match[]|Collection
    */
   public function getMatches()
   {
     return $this->matches;
-  }
-
-  /**
-   * @return string
-   */
-  public function getName(): string
-  {
-    return $this->name;
   }
 
   /**
@@ -190,16 +187,6 @@ class Phase extends BaseEntity
   }
 
   /**
-   * @param string $name
-   * @return $this|Phase
-   */
-  public function setName(string $name): Phase
-  {
-    $this->name = $name;
-    return $this;
-  }
-
-  /**
    * @param int $phaseNumber
    * @return $this|Phase
    */
@@ -207,6 +194,30 @@ class Phase extends BaseEntity
   {
     $this->phaseNumber = $phaseNumber;
     return $this;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getParent(): ?TreeStructureEntityInterface
+  {
+    return $this->getCompetition();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return $this->getMatches();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::PHASE;
   }
 //</editor-fold desc="Public Methods">
 }

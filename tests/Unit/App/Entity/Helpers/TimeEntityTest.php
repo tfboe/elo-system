@@ -19,19 +19,19 @@ use Tests\Helpers\TestCase;
 class TimeEntityTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testEndTime()
-  {
-    $entity = $this->mock();
-    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
-    $entity->setEndTime($time);
-    self::assertEquals($time, $entity->getEndTime());
-  }
 
   public function testInitialState()
   {
     $entity = $this->mock();
     self::assertNull($entity->getStartTime());
     self::assertNull($entity->getEndTime());
+  }
+  public function testEndTime()
+  {
+    $entity = $this->mock();
+    $time = new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna'));
+    $entity->setEndTime($time);
+    self::assertEquals($time, $entity->getEndTime());
   }
 
   public function testStartTime()
@@ -49,7 +49,7 @@ class TimeEntityTest extends TestCase
    */
   private function mock(): \PHPUnit_Framework_MockObject_MockObject
   {
-    return $this->getMockForTrait(TimeEntity::class);
+    return $this->getMockForTrait(TimeEntity::class, [], "MockedTrait");
   }
 //</editor-fold desc="Private Methods">
 }

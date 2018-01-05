@@ -13,7 +13,6 @@ use App\Entity\Competition;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
 use Tests\Helpers\TestPlayer;
 
@@ -69,32 +68,6 @@ class TeamTest extends TestCase
     self::assertInstanceOf(Collection::class, $team->getPlayers());
     self::assertEquals(0, $team->getPlayers()->count());
     self::assertEquals("", $team->getName());
-  }
-
-  public function testId()
-  {
-    $team = $this->team();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($team);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $team->getId());
-  }
-
-  public function testIdException()
-  {
-    $team = $this->team();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Team::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $team->getId();
-  }
-
-  public function testName()
-  {
-    $team = $this->team();
-    $team->setName("Name");
-    self::assertEquals("Name", $team->getName());
   }
 
   public function testPlayers()

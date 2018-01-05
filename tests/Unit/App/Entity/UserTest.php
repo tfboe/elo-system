@@ -48,25 +48,6 @@ class UserTest extends TestCase
     $user->getEmail();
   }
 
-  public function testId()
-  {
-    $user = $this->user();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($user);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getId());
-  }
-
-  public function testIdException()
-  {
-    $user = $this->user();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $user->getId();
-  }
-
   public function testJWTCustomClaims()
   {
     $user = $this->user();

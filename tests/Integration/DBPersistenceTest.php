@@ -54,7 +54,8 @@ class DBPersistenceTest extends DatabaseTestCase
     $t = EntityManager::find(Tournament::class, $tournament->getId());
     $t->setCreatedAt($tournament->getCreatedAt());
     $t->setUpdatedAt($tournament->getUpdatedAt());
-    self::assertTrue($t->getCompetitions()->isEmpty());
+    self::assertTrue($t->getCompetitions()->isEmpty()); //initialize collection to be comparable
+    self::assertTrue($t->getRankingSystems()->isEmpty()); //initialize collection to be comparable
     self::assertNotEquals($t, $tournament);
     self::assertEquals($start_time, $t->getStartTime());
     self::assertNotEquals($t, $tournament);

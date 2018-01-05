@@ -14,6 +14,7 @@ use App\Entity\Helpers\ResultEntity;
 use App\Exceptions\ValueNotSet;
 use App\Exceptions\ValueNotValid;
 use Tests\Helpers\TestCase;
+use Tests\Helpers\TestResultEntity;
 
 /**
  * Class BaseEntityTest
@@ -119,11 +120,11 @@ class ResultEntityTest extends TestCase
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return \PHPUnit_Framework_MockObject_MockObject|ResultEntity
+   * @return ResultEntity
    */
-  private function mock(): \PHPUnit_Framework_MockObject_MockObject
+  private function mock()
   {
-    return $this->getMockForTrait(ResultEntity::class);
+    return new TestResultEntity();
   }
 //</editor-fold desc="Private Methods">
 }

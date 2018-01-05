@@ -14,7 +14,9 @@ use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
+use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\TestCase;
@@ -26,7 +28,7 @@ use Tests\Helpers\TestCase;
 class PhaseTest extends TestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testCompetition()
+  public function testCompetitionAndParent()
   {
     $phase = $this->phase();
     $competition = new Competition();
@@ -39,6 +41,8 @@ class PhaseTest extends TestCase
     self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($phase->getCompetition(), $phase->getParent());
 
     $competition2 = new Competition();
 
@@ -51,6 +55,8 @@ class PhaseTest extends TestCase
     self::assertEquals(0, $competition->getPhases()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($phase->getCompetition(), $phase->getParent());
   }
 
   public function testCompetitionException()
@@ -75,25 +81,8 @@ class PhaseTest extends TestCase
     self::assertEquals(0, $phase->getPreviousQualificationSystems()->count());
     self::assertInstanceOf(Collection::class, $phase->getRankings());
     self::assertEquals(0, $phase->getRankings()->count());
-  }
-
-  public function testId()
-  {
-    $phase = $this->phase();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($phase);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $phase->getId());
-  }
-
-  public function testIdException()
-  {
-    $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Phase::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getId();
+    self::assertInstanceOf(Collection::class, $phase->getRankingSystems());
+    self::assertEquals(0, $phase->getRankingSystems()->count());
   }
 
   public function testPhaseNumber()
@@ -113,13 +102,6 @@ class PhaseTest extends TestCase
     );
     /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getPhaseNumber();
-  }
-
-  public function testName()
-  {
-    $phase = $this->phase();
-    $phase->setName("Name");
-    self::assertEquals("Name", $phase->getName());
   }
 
   public function testPreviousQualificationSystems()
@@ -151,15 +133,35 @@ class PhaseTest extends TestCase
     self::assertEquals($ranking, $phase->getRankings()[1]);
   }
 
-  public function testMatches()
+  public function testMatchesAndChildren()
   {
     $phase = $this->phase();
     $match = new Match();
     $match->setMatchNumber(1);
+    self::assertEquals($phase->getMatches(), $phase->getChildren());
     /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getMatches()->set($match->getMatchNumber(), $match);
     self::assertEquals(1, $phase->getMatches()->count());
     self::assertEquals($match, $phase->getMatches()[1]);
+    self::assertEquals($phase->getMatches(), $phase->getChildren());
+  }
+
+  public function testRankingSystems()
+  {
+    $e = $this->phase();
+    $system = new RankingSystem([]);
+    /** @noinspection PhpUndefinedMethodInspection */
+    EntityManager::persist($system);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $e->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $e->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
+  }
+
+  public function testLevel()
+  {
+    self::assertEquals(Level::PHASE, $this->phase()->getLevel());
   }
 //</editor-fold desc="Public Methods">
 

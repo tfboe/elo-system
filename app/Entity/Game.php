@@ -17,6 +17,9 @@ use App\Entity\CategoryTraits\TeamMode;
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\ResultEntity;
 use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\UUIDEntity;
+use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="games")
  */
-class Game extends BaseEntity
+class Game extends BaseEntity implements TreeStructureEntityInterface
 {
   use GameMode;
   use TeamMode;
@@ -36,16 +39,9 @@ class Game extends BaseEntity
   use Table;
   use ResultEntity;
   use TimeEntity;
+  use UUIDEntity;
 
 //<editor-fold desc="Fields">
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="CUSTOM")
-   * @ORM\CustomIdGenerator(class="App\Entity\Helpers\IdGenerator")
-   * @ORM\Column(type="guid")
-   * @var string
-   */
-  protected $id;
 
   /**
    * @ORM\ManyToOne(targetEntity="Match", inversedBy="games")
@@ -72,6 +68,25 @@ class Game extends BaseEntity
    * @var int
    */
   protected $gameNumber;
+
+  /**
+   * @ORM\ManyToMany(
+   *     targetEntity="RankingSystem",
+   *     inversedBy="matches",
+   *     indexBy="id"
+   * )
+   * @ORM\JoinTable(name="relation__game_ranking_systems")
+   * @var Collection|RankingSystem[]
+   */
+  private $rankingSystems;
+
+  /**
+   * @return RankingSystem[]|Collection
+   */
+  public function getRankingSystems()
+  {
+    return $this->rankingSystems;
+  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -82,6 +97,7 @@ class Game extends BaseEntity
   {
     $this->playersA = new ArrayCollection();
     $this->playersB = new ArrayCollection();
+    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -95,16 +111,6 @@ class Game extends BaseEntity
   {
     $this->ensureNotNull('gameNumber');
     return $this->gameNumber;
-  }
-
-  /**
-   * @return string
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): string
-  {
-    $this->ensureNotNull('id');
-    return $this->id;
   }
 
   /**
@@ -156,6 +162,30 @@ class Game extends BaseEntity
     $this->match = $match;
     $match->getGames()->set($this->getGameNumber(), $this);
     return $this;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getParent(): ?TreeStructureEntityInterface
+  {
+    return $this->getMatch();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return new ArrayCollection();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::GAME;
   }
 //</editor-fold desc="Public Methods">
 }
