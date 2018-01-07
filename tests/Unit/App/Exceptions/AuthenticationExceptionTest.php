@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\AuthenticationException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
  * @package Tests\Unit\App\Exceptions
  */
-class AuthenticationExceptionTest extends TestCase
+class AuthenticationExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\AuthenticationException::__construct
+   */
   public function testConstructor()
   {
     $prev = new \Exception();

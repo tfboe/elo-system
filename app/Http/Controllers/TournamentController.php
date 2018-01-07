@@ -317,7 +317,9 @@ class TournamentController extends BaseController
     /** @noinspection PhpUnhandledExceptionInspection */ //the tournament has a name since its required in the request
     $this->replaceCompetitions($request, $tournament);
 
-    $rss->applyRankingSystems($tournament, $earliest_influence_times);
+    $rss->adaptOpenSyncFromValues($tournament, $earliest_influence_times);
+    $this->em->flush();
+    $rss->recalculateRankingSystems();
     $this->em->flush();
 
     return $type;

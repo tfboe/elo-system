@@ -11,16 +11,20 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
 use Tests\Helpers\TestEnum;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
  * @package Tests\Unit\App\Exceptions
  */
-class ValueNotValidTest extends TestCase
+class ValueNotValidTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\ValueNotValid::__construct
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testConstructor()
   {
     $exc = new ValueNotValid("value");

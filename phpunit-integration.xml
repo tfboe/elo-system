@@ -2,14 +2,14 @@
 <!--suppress XmlUnboundNsPrefix -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.3/phpunit.xsd"
+         colors="true"
          bootstrap="bootstrap/app.php"
-         colors="true">
+>
     <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./tests</directory>
+        <testsuite name="Integration Test Suite">
+            <directory>./tests/Integration</directory>
         </testsuite>
     </testsuites>
-    composer dump-autoload
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
@@ -23,8 +23,6 @@
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
     <logging>
-        <log type="coverage-html" target="./storage/logs/codeCoverage"
-             lowUpperBound="50" highLowerBound="80"/>
-        <log type="testdox-html" target="./storage/logs/testdox.html"/>
+        <log type="testdox-html" target="./storage/logs/testdox-integration.html"/>
     </logging>
 </phpunit>

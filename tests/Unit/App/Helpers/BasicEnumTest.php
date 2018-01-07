@@ -7,21 +7,40 @@ declare(strict_types=1);
  * Time: 11:03 AM
  */
 
-namespace Tests\Unit\App\Entity\Categories;
+namespace Tests\Unit\App\Helpers;
 
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use App\Helpers\BasicEnum;
 use Tests\Helpers\TestEnum;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BasicEnumTest
- * @package Tests\Unit\App\Entity\Categories
+ * @package Tests\Unit\App\Helpers
  */
-class BasicEnumTest extends TestCase
+class BasicEnumTest extends UnitTestCase
 {
+  /**
+   * @before
+   */
+  protected function clearStaticVariables()
+  {
+    self::getProperty(BasicEnum::class, 'constCacheArray')->setValue(NULL);
+    self::getProperty(BasicEnum::class, 'constCacheArrayCaseMapping')->setValue(NULL);
+  }
 //<editor-fold desc="Public Methods">
+
+  /**
+   * @covers \App\Helpers\BasicEnum::ensureValidValue
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @uses   \App\Helpers\BasicEnum::getValues
+   * @uses   \App\Helpers\BasicEnum::isValidValue
+   */
   public function testEnsureValidValueException()
   {
+    /** @noinspection PhpUnhandledExceptionInspection */
+    TestEnum::ensureValidValue(TestEnum::INT_KEY);
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
       'The following value is not valid: "1" in Tests\Helpers\TestEnum. Possible values: "value", 1.');
@@ -29,11 +48,21 @@ class BasicEnumTest extends TestCase
     TestEnum::ensureValidValue('1');
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::getNames
+   * @covers \App\Helpers\BasicEnum::getConstants
+   */
   public function testGetNames()
   {
     self::assertEquals(['KEY', 'INT_KEY'], TestEnum::getNames());
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::getValue
+   * @covers \App\Helpers\BasicEnum::getCaseMapping
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @uses   \App\Helpers\BasicEnum::getNames
+   */
   public function testGetValue()
   {
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -44,6 +73,12 @@ class BasicEnumTest extends TestCase
     self::assertEquals(1, TestEnum::getValue('INT_KEY', True));
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::getValue
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @uses   \App\Helpers\BasicEnum::getValues
+   */
   public function testGetValueException()
   {
     $this->expectException(ValueNotValid::class);
@@ -53,11 +88,19 @@ class BasicEnumTest extends TestCase
     TestEnum::getValue('int_key', True);
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::getValues
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   */
   public function testGetValues()
   {
     self::assertEquals(['value', 1], TestEnum::getValues());
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::isValidName
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   */
   public function testIsValidName()
   {
     self::assertTrue(TestEnum::isValidName('KEY'));
@@ -68,6 +111,11 @@ class BasicEnumTest extends TestCase
     self::assertFalse(TestEnum::isValidName('int_key', True));
   }
 
+  /**
+   * @covers \App\Helpers\BasicEnum::isValidValue
+   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @uses   \App\Helpers\BasicEnum::getValues
+   */
   public function testIsValidValue()
   {
     self::assertTrue(TestEnum::isValidValue('value'));

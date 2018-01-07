@@ -10,21 +10,20 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity\Helpers;
 
 use App\Entity\Helpers\IdGenerator;
-use Tests\Helpers\TestCase;
+use Doctrine\ORM\EntityManager;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class IdGeneratorTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class IdGeneratorTest extends TestCase
+class IdGeneratorTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testConstructor()
-  {
-    $generator = new IdGenerator();
-    self::assertInstanceOf(IdGenerator::class, $generator);
-  }
 
+  /**
+   * @covers \App\Entity\Helpers\IdGenerator::createIdFrom
+   */
   public function testCreateIdFrom()
   {
     /**
@@ -40,6 +39,18 @@ class IdGeneratorTest extends TestCase
       IdGenerator::createIdFrom('Tests\Unit\App\Entity\Helpers\test_com_create_guid'));
 
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', IdGenerator::createIdFrom());
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\IdGenerator::generate
+   * @uses   \App\Entity\Helpers\IdGenerator::createIdFrom
+   */
+  public function testGenerate()
+  {
+    $generator = new IdGenerator();
+    $em = $this->createMock(EntityManager::class);
+    /** @var EntityManager $em */
+    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $generator->generate($em, null));
   }
 //</editor-fold desc="Public Methods">
 }

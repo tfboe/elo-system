@@ -10,19 +10,28 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
+use App\Entity\Player;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
-use Tests\Helpers\TestCase;
-use Tests\Helpers\TestPlayer;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class TeamTest extends TestCase
+class TeamTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Team::setCompetition
+   * @covers \App\Entity\Team::getCompetition
+   * @uses   \App\Entity\Competition
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Entity\Team::getStartNumber
+   * @uses   \App\Entity\Team::setStartNumber
+   */
   public function testCompetition()
   {
     $team = $this->team();
@@ -50,6 +59,12 @@ class TeamTest extends TestCase
     self::assertEquals($team, $team->getCompetition()->getTeams()[$team->getStartNumber()]);
   }
 
+  /**
+   * @covers \App\Entity\Team::getCompetition
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testCompetitionException()
   {
     $team = $this->team();
@@ -61,6 +76,12 @@ class TeamTest extends TestCase
     $team->getCompetition();
   }
 
+  /**
+   * @covers \App\Entity\Team::__construct
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team::getPlayers
+   */
   public function testConstructor()
   {
     $team = $this->team();
@@ -70,10 +91,15 @@ class TeamTest extends TestCase
     self::assertEquals("", $team->getName());
   }
 
+  /**
+   * @covers \App\Entity\Team::getPlayers
+   * @uses   \App\Entity\Team::__construct
+   */
   public function testPlayers()
   {
     $team = $this->team();
-    $player = new TestPlayer();
+    /** @var Player $player */
+    $player = $this->createMockWithId(Player::class, 1);
     /** @noinspection PhpUnhandledExceptionInspection */
     $team->getPlayers()->set($player->getId(), $player);
     self::assertEquals(1, $team->getPlayers()->count());
@@ -81,6 +107,12 @@ class TeamTest extends TestCase
     self::assertEquals($player, $team->getPlayers()[$player->getId()]);
   }
 
+  /**
+   * @covers \App\Entity\Team::setRank
+   * @covers \App\Entity\Team::getRank
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testRank()
   {
     $team = $this->team();
@@ -89,6 +121,12 @@ class TeamTest extends TestCase
     self::assertEquals(1, $team->getRank());
   }
 
+  /**
+   * @covers \App\Entity\Team::getRank
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testRankException()
   {
     $team = $this->team();
@@ -100,6 +138,12 @@ class TeamTest extends TestCase
     $team->getRank();
   }
 
+  /**
+   * @covers \App\Entity\Team::setStartNumber
+   * @covers \App\Entity\Team::getStartNumber
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testStartNumber()
   {
     $team = $this->team();
@@ -108,6 +152,12 @@ class TeamTest extends TestCase
     self::assertEquals(1, $team->getStartNumber());
   }
 
+  /**
+   * @covers \App\Entity\Team::getStartNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testStartNumberException()
   {
     $team = $this->team();

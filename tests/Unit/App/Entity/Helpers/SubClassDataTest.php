@@ -13,43 +13,20 @@ namespace Tests\Unit\App\Entity\Helpers;
 use App\Entity\Helpers\SubClassData;
 use App\Exceptions\MethodNotExistingException;
 use App\Exceptions\PropertyNotExistingException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class SubClassDataTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class SubClassDataTest extends TestCase
+class SubClassDataTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testAddPropertyIfNotExistent()
-  {
-    $e = $this->mock();
-    $e->initSubClassData([]);
-    self::assertFalse($e->hasProperty("prop"));
-    $e->addPropertyIfNotExistent("prop", "default");
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("default", $e->getProp());
-    $e->addPropertyIfNotExistent("prop", "other");
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("default", $e->getProp());
-  }
 
-  public function testCall()
-  {
-    $e = $this->mock();
-    $e->initSubClassData(["Prop"]);
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertNull($e->getProp());
-    /** @noinspection PhpUndefinedMethodInspection */
-    $e->setProp("test");
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("test", $e->getProp());
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("test", $e->isProp());
-
-  }
-
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \App\Entity\Helpers\SubClassData::hasProperty
+   */
   public function testInitSubClassDataAndHasProperty()
   {
     $e = $this->mock();
@@ -79,6 +56,53 @@ class SubClassDataTest extends TestCase
     self::assertFalse($e->hasProperty("SUBCLASSDATA"));
   }
 
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::__call
+   * @covers \App\Entity\Helpers\SubClassData::getProperty
+   * @covers \App\Entity\Helpers\SubClassData::setProperty
+   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   */
+  public function testCall()
+  {
+    $e = $this->mock();
+    $e->initSubClassData(["Prop"]);
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertNull($e->getProp());
+    /** @noinspection PhpUndefinedMethodInspection */
+    $e->setProp("test");
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("test", $e->getProp());
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("test", $e->isProp());
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::addPropertyIfNotExistent
+   * @uses   \App\Entity\Helpers\SubClassData::__call
+   * @uses   \App\Entity\Helpers\SubClassData::getProperty
+   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   */
+  public function testAddPropertyIfNotExistent()
+  {
+    $e = $this->mock();
+    $e->initSubClassData([]);
+    self::assertFalse($e->hasProperty("prop"));
+    $e->addPropertyIfNotExistent("prop", "default");
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("default", $e->getProp());
+    $e->addPropertyIfNotExistent("prop", "other");
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("default", $e->getProp());
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::methodExists
+   * @uses   \App\Entity\Helpers\SubClassData::addPropertyIfNotExistent
+   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   */
   public function testMethodExists()
   {
     $e = $this->mock();
@@ -97,6 +121,11 @@ class SubClassDataTest extends TestCase
     self::assertTrue($e->methodExists("setProp"));
   }
 
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::__call
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Exceptions\MethodNotExistingException::__construct
+   */
   public function testNotExistingMethodCall()
   {
     $e = $this->mock();
@@ -107,6 +136,11 @@ class SubClassDataTest extends TestCase
     $e->notExistingMethod();
   }
 
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::__call
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Exceptions\MethodNotExistingException::__construct
+   */
   public function testNotExistingMethodSetterNoArgument()
   {
     $e = $this->mock();
@@ -117,6 +151,12 @@ class SubClassDataTest extends TestCase
     $e->setProp();
   }
 
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::__call
+   * @covers \App\Entity\Helpers\SubClassData::getProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Exceptions\PropertyNotExistingException::__construct
+   */
   public function testNotExistingPropertyGetCall()
   {
     $e = $this->mock();
@@ -128,6 +168,12 @@ class SubClassDataTest extends TestCase
     $e->getProp();
   }
 
+  /**
+   * @covers \App\Entity\Helpers\SubClassData::__call
+   * @covers \App\Entity\Helpers\SubClassData::setProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Exceptions\PropertyNotExistingException::__construct
+   */
   public function testNotExistingPropertySetCall()
   {
     $e = $this->mock();

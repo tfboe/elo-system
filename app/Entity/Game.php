@@ -114,6 +114,14 @@ class Game extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getGameNumber();
+  }
+
+  /**
    * @return Match
    * @throws \App\Exceptions\ValueNotSet
    */

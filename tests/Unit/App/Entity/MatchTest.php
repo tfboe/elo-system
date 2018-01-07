@@ -17,16 +17,22 @@ use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class MatchTest extends TestCase
+class MatchTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Match::__construct
+   * @uses   \App\Entity\Match::getGames
+   * @uses   \App\Entity\Match::getRankingSystems
+   * @uses   \App\Entity\Match::getRankingsA
+   * @uses   \App\Entity\Match::getRankingsB
+   */
   public function testConstructor()
   {
     $match = $this->match();
@@ -41,15 +47,30 @@ class MatchTest extends TestCase
     self::assertEquals(0, $match->getRankingSystems()->count());
   }
 
-  public function testMatchNumber()
+  /**
+   * @covers \App\Entity\Match::setMatchNumber
+   * @covers \App\Entity\Match::getMatchNumber
+   * @covers \App\Entity\Match::getLocalIdentifier
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   */
+  public function testMatchNumberAndLocalIdentifier()
   {
     $match = $this->match();
     $match_number = 1;
     $match->setMatchNumber($match_number);
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($match_number, $match->getMatchNumber());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($match->getMatchNumber(), $match->getLocalIdentifier());
   }
 
+  /**
+   * @covers \App\Entity\Match::getMatchNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testMatchNumberException()
   {
     $match = $this->match();
@@ -61,6 +82,34 @@ class MatchTest extends TestCase
     $match->getMatchNumber();
   }
 
+  /**
+   * @covers \App\Entity\Match::getLocalIdentifier
+   * @uses   \App\Entity\Match::getMatchNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testLocalIdentifierException()
+  {
+    $match = $this->match();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property matchNumber of the class " . Match::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $match->getLocalIdentifier();
+  }
+
+  /**
+   * @covers \App\Entity\Match::setPhase
+   * @covers \App\Entity\Match::getPhase
+   * @covers \App\Entity\Match::getParent
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Entity\Match::getMatchNumber
+   * @uses   \App\Entity\Match::setMatchNumber
+   * @uses   \App\Entity\Phase
+   */
   public function testPhaseAndParent()
   {
     $match = $this->match();
@@ -92,6 +141,12 @@ class MatchTest extends TestCase
     self::assertEquals($match->getPhase(), $match->getParent());
   }
 
+  /**
+   * @covers \App\Entity\Match::getPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testPhaseException()
   {
     $match = $this->match();
@@ -103,6 +158,12 @@ class MatchTest extends TestCase
     $match->getPhase();
   }
 
+  /**
+   * @covers \App\Entity\Match::getRankingsA
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Entity\Ranking
+   */
   public function testRankingsA()
   {
     $match = $this->match();
@@ -114,6 +175,12 @@ class MatchTest extends TestCase
     self::assertEquals($ranking, $match->getRankingsA()[1]);
   }
 
+  /**
+   * @covers \App\Entity\Match::getRankingsB
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Entity\Ranking
+   */
   public function testRankingsB()
   {
     $match = $this->match();
@@ -125,6 +192,13 @@ class MatchTest extends TestCase
     self::assertEquals($ranking, $match->getRankingsB()[1]);
   }
 
+  /**
+   * @covers \App\Entity\Match::getGames
+   * @covers \App\Entity\Match::getChildren
+   * @uses   \App\Entity\Game
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   */
   public function testGamesAndChildren()
   {
     $match = $this->match();
@@ -138,12 +212,15 @@ class MatchTest extends TestCase
     self::assertEquals($match->getGames(), $match->getChildren());
   }
 
+  /**
+   * @covers \App\Entity\Match::getRankingSystems
+   * @uses   \App\Entity\Match::__construct
+   */
   public function testRankingSystems()
   {
     $e = $this->match();
-    $system = new RankingSystem([]);
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($system);
+    /** @var $system RankingSystem */
+    $system = $this->createMockWithId(RankingSystem::class);
     /** @noinspection PhpUnhandledExceptionInspection */
     $e->getRankingSystems()->set($system->getId(), $system);
     self::assertEquals(1, $e->getRankingSystems()->count());
@@ -151,6 +228,10 @@ class MatchTest extends TestCase
     self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
   }
 
+  /**
+   * @covers \App\Entity\Match::getLevel
+   * @uses   \App\Entity\Match::__construct
+   */
   public function testLevel()
   {
     self::assertEquals(Level::MATCH, $this->match()->getLevel());

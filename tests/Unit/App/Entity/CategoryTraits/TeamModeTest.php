@@ -11,15 +11,21 @@ namespace Tests\Unit\App\Entity\CategoryTraits;
 
 use App\Entity\Categories\TeamMode;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TeamModeTest
  * @package Tests\Unit\App\Entity\CategoryTraits
  */
-class TeamModeTest extends TestCase
+class TeamModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+
+  /**
+   * @covers \App\Entity\CategoryTraits\TeamMode::getTeamMode
+   * @covers \App\Entity\CategoryTraits\TeamMode::setTeamMode
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testProperty()
   {
     $mock = $this->mock();
@@ -32,6 +38,11 @@ class TeamModeTest extends TestCase
     self::assertNull($mock->getTeamMode());
   }
 
+  /**
+   * @covers \App\Entity\CategoryTraits\TeamMode::setTeamMode
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   */
   public function testPropertyException()
   {
     $mock = $this->mock();

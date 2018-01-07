@@ -11,15 +11,20 @@ namespace Tests\Unit\App\Entity\CategoryTraits;
 
 use App\Entity\Categories\ScoreMode;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ScoreModeTest
  * @package Tests\Unit\App\Entity\CategoryTraits
  */
-class ScoreModeTest extends TestCase
+class ScoreModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\CategoryTraits\ScoreMode::getScoreMode
+   * @covers \App\Entity\CategoryTraits\ScoreMode::setScoreMode
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testProperty()
   {
     $mock = $this->mock();
@@ -32,6 +37,11 @@ class ScoreModeTest extends TestCase
     self::assertNull($mock->getScoreMode());
   }
 
+  /**
+   * @covers \App\Entity\CategoryTraits\ScoreMode::setScoreMode
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   */
   public function testPropertyException()
   {
     $mock = $this->mock();

@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\ReferenceException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
  * @package Tests\Unit\App\Exceptions
  */
-class ReferenceExceptionTest extends TestCase
+class ReferenceExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\ReferenceException::__construct
+   */
   public function testConstructor()
   {
     $exc = new ReferenceException('value', 'name');
@@ -27,7 +30,10 @@ class ReferenceExceptionTest extends TestCase
     self::assertEquals(409, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\ReferenceException::getJsonMessage
+   * @uses   \App\Exceptions\ReferenceException::__construct
+   */
   public function testJsonMessage()
   {
     $exc = new ReferenceException('value', 'name');

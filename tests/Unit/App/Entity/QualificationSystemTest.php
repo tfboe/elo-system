@@ -12,23 +12,21 @@ namespace Tests\Unit\App\Entity;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Exceptions\ValueNotSet;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class QualificationSystemTest extends TestCase
+class QualificationSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-
-
-  public function testConstructor()
-  {
-    $system = $this->system();
-    self::assertInstanceOf(QualificationSystem::class, $system);
-  }
-
+  /**
+   * @covers \App\Entity\QualificationSystem::setNextPhase
+   * @covers \App\Entity\QualificationSystem::getNextPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase
+   */
   public function testNextPhase()
   {
     $system = $this->system();
@@ -56,6 +54,11 @@ class QualificationSystemTest extends TestCase
     self::assertEquals($system, $system->getNextPhase()->getPreviousQualificationSystems()[0]);
   }
 
+  /**
+   * @covers \App\Entity\QualificationSystem::getNextPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testNextPhaseException()
   {
     $system = $this->system();
@@ -68,6 +71,12 @@ class QualificationSystemTest extends TestCase
     $system->getNextPhase();
   }
 
+  /**
+   * @covers \App\Entity\QualificationSystem::setPreviousPhase
+   * @covers \App\Entity\QualificationSystem::getPreviousPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase
+   */
   public function testPreviousPhase()
   {
     $system = $this->system();
@@ -95,6 +104,11 @@ class QualificationSystemTest extends TestCase
     self::assertEquals($system, $system->getPreviousPhase()->getNextQualificationSystems()[0]);
   }
 
+  /**
+   * @covers \App\Entity\QualificationSystem::getPreviousPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testPreviousPhaseException()
   {
     $system = $this->system();

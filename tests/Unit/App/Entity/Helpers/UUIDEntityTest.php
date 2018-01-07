@@ -9,46 +9,39 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity\Helpers;
 
+
 use App\Entity\Helpers\UUIDEntity;
-use App\Entity\User;
-use App\Exceptions\ValueNotSet;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Helpers\UnitTestCase;
+
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class UUIDEntityTest extends TestCase
+class UUIDEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Helpers\UUIDEntity::getId
+   * @uses   \App\Entity\Helpers\IdGenerator::createIdFrom
+   */
   public function testId()
   {
     $e = $this->mock();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($e);
+    self::getProperty(get_class($e), 'id')->setValue($e, 'test-id');
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $e->getId());
-  }
-
-  public function testIdException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . get_class($e) . " must be set before it can" .
-      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getId();
+    self::assertEquals('test-id', $e->getId());
   }
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return UUIDEntity
+   * @return MockObject|UUIDEntity
    */
-  private function mock()
+  private function mock(): MockObject
   {
-    return new User();
+    return $this->getMockForTrait(UUIDEntity::class, [], '', true, true, true, ['ensureNotNull']);
   }
 //</editor-fold desc="Private Methods">
 }

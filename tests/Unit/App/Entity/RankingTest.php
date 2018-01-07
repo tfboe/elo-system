@@ -14,15 +14,21 @@ use App\Entity\Ranking;
 use App\Entity\Team;
 use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\Collection;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class RankingTest extends TestCase
+class RankingTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Ranking::__construct
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::getTeams
+   */
   public function testConstructor()
   {
     $ranking = $this->ranking();
@@ -32,6 +38,15 @@ class RankingTest extends TestCase
     self::assertEquals(0, $ranking->getTeams()->count());
   }
 
+  /**
+   * @covers \App\Entity\Ranking::setPhase
+   * @covers \App\Entity\Ranking::getPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase
+   * @uses   \App\Entity\Ranking::__construct
+   * @uses   \App\Entity\Ranking::getUniqueRank
+   * @uses   \App\Entity\Ranking::setUniqueRank
+   */
   public function testPhase()
   {
     $ranking = $this->ranking();
@@ -59,6 +74,12 @@ class RankingTest extends TestCase
     self::assertEquals($ranking, $ranking->getPhase()->getRankings()[$ranking->getUniqueRank()]);
   }
 
+  /**
+   * @covers \App\Entity\Ranking::getPhase
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testPhaseException()
   {
     $ranking = $this->ranking();
@@ -70,6 +91,12 @@ class RankingTest extends TestCase
     $ranking->getPhase();
   }
 
+  /**
+   * @covers \App\Entity\Ranking::setRank
+   * @covers \App\Entity\Ranking::getRank
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   */
   public function testRank()
   {
     $ranking = $this->ranking();
@@ -78,6 +105,12 @@ class RankingTest extends TestCase
     self::assertEquals(5, $ranking->getRank());
   }
 
+  /**
+   * @covers \App\Entity\Ranking::getRank
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testRankException()
   {
     $ranking = $this->ranking();
@@ -89,6 +122,12 @@ class RankingTest extends TestCase
     $ranking->getRank();
   }
 
+  /**
+   * @covers \App\Entity\Ranking::getTeams
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   * @uses   \App\Entity\Team
+   */
   public function testTeams()
   {
     $ranking = $this->ranking();
@@ -100,6 +139,12 @@ class RankingTest extends TestCase
     self::assertEquals($team, $ranking->getTeams()[1]);
   }
 
+  /**
+   * @covers \App\Entity\Ranking::setUniqueRank
+   * @covers \App\Entity\Ranking::getUniqueRank
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   */
   public function testUniqueRank()
   {
     $ranking = $this->ranking();
@@ -108,6 +153,12 @@ class RankingTest extends TestCase
     self::assertEquals(5, $ranking->getUniqueRank());
   }
 
+  /**
+   * @covers \App\Entity\Ranking::getUniqueRank
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Ranking::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testUniqueRankException()
   {
     $ranking = $this->ranking();

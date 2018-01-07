@@ -11,15 +11,20 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Player;
 use App\Exceptions\ValueNotSet;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class PlayerTest
  * @package Tests\Unit\App\Entity
  */
-class PlayerTest extends TestCase
+class PlayerTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Player::setBirthday
+   * @covers \App\Entity\Player::getBirthday
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testBirthday()
   {
     $player = $this->player();
@@ -28,6 +33,11 @@ class PlayerTest extends TestCase
     self::assertEquals(new \DateTime('1992-02-02 02:02:02'), $player->getBirthday());
   }
 
+  /**
+   * @covers \App\Entity\Player::getBirthday
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testBirthdayException()
   {
     $player = $this->player();
@@ -38,12 +48,11 @@ class PlayerTest extends TestCase
     $player->getBirthday();
   }
 
-  public function testConstructor()
-  {
-    $player = $this->player();
-    self::assertInstanceOf(Player::class, $player);
-  }
-
+  /**
+   * @covers \App\Entity\Player::setFirstName
+   * @covers \App\Entity\Player::getFirstName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testFirstName()
   {
     $player = $this->player();
@@ -52,6 +61,11 @@ class PlayerTest extends TestCase
     self::assertEquals("First", $player->getFirstName());
   }
 
+  /**
+   * @covers \App\Entity\Player::getFirstName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testFirstNameException()
   {
     $player = $this->player();
@@ -62,6 +76,10 @@ class PlayerTest extends TestCase
     $player->getFirstName();
   }
 
+  /**
+   * @covers \App\Entity\Player::getId
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testId()
   {
     $player = $this->player();
@@ -71,6 +89,11 @@ class PlayerTest extends TestCase
     self::assertEquals(0, $player->getId());
   }
 
+  /**
+   * @covers \App\Entity\Player::getId
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testIdException()
   {
     $player = $this->player();
@@ -81,6 +104,11 @@ class PlayerTest extends TestCase
     $player->getId();
   }
 
+  /**
+   * @covers \App\Entity\Player::setLastName
+   * @covers \App\Entity\Player::getLastName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testLastName()
   {
     $player = $this->player();
@@ -89,6 +117,11 @@ class PlayerTest extends TestCase
     self::assertEquals("Last", $player->getLastName());
   }
 
+  /**
+   * @covers \App\Entity\Player::getLastName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testLastNameException()
   {
     $player = $this->player();

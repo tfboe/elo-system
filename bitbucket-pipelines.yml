@@ -25,5 +25,8 @@ pipelines:
           - php artisan doctrine:migrations:refresh
           - php artisan doctrine:generate:proxies
           - mv /etc/php/7.1/cli/conf.d/20-xdebug.ini.disabled /etc/php/7.1/cli/conf.d/20-xdebug.ini
-          - vendor/bin/phpunit --coverage-clover=coverage.xml
+          - rm -rf *.cov coverage-unit coverage-integration coverage.xml
+          - vendor/bin/phpunit -c phpunit-unit.xml --coverage-php=unit.cov --coverage-html=coverage-unit
+          - vendor/bin/phpunit -c phpunit-integration.xml --coverage-php=integration.cov --coverage-html=coverage-inte
+          - vendor/bin/phpcov -n merge --clover=coverage.xml .
           - if [ $? -eq 0 ]; then bash <(curl -s https://codecov.io/bash); fi

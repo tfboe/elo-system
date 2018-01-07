@@ -15,13 +15,4 @@ namespace App\Service\RankingSystem;
  */
 class EloRanking extends GameRankingSystem implements EloRankingInterface
 {
-//<editor-fold desc="Public Methods">
-  /**
-   * @inheritDoc
-   */
-  public function updateRankingFrom(\App\Entity\RankingSystem $ranking, \DateTime $from): void
-  {
-    // TODO: Implement updateRankingFrom() method.
-  }
-//</editor-fold desc="Public Methods">
 }

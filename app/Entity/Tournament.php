@@ -107,6 +107,14 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getId();
+  }
+
+  /**
    * @return User
    * @throws \App\Exceptions\ValueNotSet
    */

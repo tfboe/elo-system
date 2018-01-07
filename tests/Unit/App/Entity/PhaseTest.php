@@ -18,16 +18,25 @@ use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class PhaseTest extends TestCase
+class PhaseTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Phase::setCompetition
+   * @covers \App\Entity\Phase::getCompetition
+   * @covers \App\Entity\Phase::getParent
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Phase::getPhaseNumber
+   * @uses   \App\Entity\Phase::setPhaseNumber
+   * @uses   \App\Entity\Competition
+   */
   public function testCompetitionAndParent()
   {
     $phase = $this->phase();
@@ -59,6 +68,12 @@ class PhaseTest extends TestCase
     self::assertEquals($phase->getCompetition(), $phase->getParent());
   }
 
+  /**
+   * @covers \App\Entity\Phase::getCompetition
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testCompetitionException()
   {
     $phase = $this->phase();
@@ -70,6 +85,15 @@ class PhaseTest extends TestCase
     $phase->getCompetition();
   }
 
+  /**
+   * @covers \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::getNextQualificationSystems
+   * @uses   \App\Entity\Phase::getPreviousQualificationSystems
+   * @uses   \App\Entity\Phase::getRankingSystems
+   * @uses   \App\Entity\Phase::getRankings
+   */
   public function testConstructor()
   {
     $phase = $this->phase();
@@ -85,14 +109,29 @@ class PhaseTest extends TestCase
     self::assertEquals(0, $phase->getRankingSystems()->count());
   }
 
-  public function testPhaseNumber()
+  /**
+   * @covers \App\Entity\Phase::setPhaseNumber
+   * @covers \App\Entity\Phase::getPhaseNumber
+   * @covers \App\Entity\Phase::getLocalIdentifier
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   */
+  public function testPhaseNumberAndLocalIdentifier()
   {
     $phase = $this->phase();
     $phase->setPhaseNumber(5);
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(5, $phase->getPhaseNumber());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($phase->getPhaseNumber(), $phase->getLocalIdentifier());
   }
 
+  /**
+   * @covers \App\Entity\Phase::getPhaseNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testPhaseNumberException()
   {
     $phase = $this->phase();
@@ -104,6 +143,29 @@ class PhaseTest extends TestCase
     $phase->getPhaseNumber();
   }
 
+  /**
+   * @covers \App\Entity\Phase::getLocalIdentifier
+   * @covers \App\Entity\Phase::getPhaseNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testLocalIdentifierException()
+  {
+    $phase = $this->phase();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $phase->getLocalIdentifier();
+  }
+
+  /**
+   * @covers \App\Entity\Phase::getPreviousQualificationSystems
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\QualificationSystem
+   */
   public function testPreviousQualificationSystems()
   {
     $phase = $this->phase();
@@ -113,6 +175,11 @@ class PhaseTest extends TestCase
     self::assertEquals($qualification_system, $phase->getPreviousQualificationSystems()[0]);
   }
 
+  /**
+   * @covers \App\Entity\Phase::getNextQualificationSystems
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\QualificationSystem
+   */
   public function testNextQualificationSystems()
   {
     $phase = $this->phase();
@@ -122,6 +189,12 @@ class PhaseTest extends TestCase
     self::assertEquals($qualification_system, $phase->getNextQualificationSystems()[0]);
   }
 
+  /**
+   * @covers \App\Entity\Phase::getRankings
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Ranking
+   */
   public function testRankings()
   {
     $phase = $this->phase();
@@ -133,6 +206,13 @@ class PhaseTest extends TestCase
     self::assertEquals($ranking, $phase->getRankings()[1]);
   }
 
+  /**
+   * @covers \App\Entity\Phase::getMatches
+   * @covers \App\Entity\Phase::getChildren
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Match
+   */
   public function testMatchesAndChildren()
   {
     $phase = $this->phase();
@@ -146,12 +226,15 @@ class PhaseTest extends TestCase
     self::assertEquals($phase->getMatches(), $phase->getChildren());
   }
 
+  /**
+   * @covers \App\Entity\Phase::getRankingSystems
+   * @uses   \App\Entity\Phase::__construct
+   */
   public function testRankingSystems()
   {
     $e = $this->phase();
-    $system = new RankingSystem([]);
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($system);
+    /** @var $system RankingSystem */
+    $system = $this->createMockWithId(RankingSystem::class);
     /** @noinspection PhpUnhandledExceptionInspection */
     $e->getRankingSystems()->set($system->getId(), $system);
     self::assertEquals(1, $e->getRankingSystems()->count());
@@ -159,6 +242,10 @@ class PhaseTest extends TestCase
     self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
   }
 
+  /**
+   * @covers \App\Entity\Phase::getLevel
+   * @uses   \App\Entity\Phase::__construct
+   */
   public function testLevel()
   {
     self::assertEquals(Level::PHASE, $this->phase()->getLevel());

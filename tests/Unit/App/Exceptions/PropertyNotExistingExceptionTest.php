@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\PropertyNotExistingException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
  * @package Tests\Unit\App\Exceptions
  */
-class PropertyNotExistingExceptionTest extends TestCase
+class PropertyNotExistingExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\PropertyNotExistingException::__construct
+   */
   public function testConstructor()
   {
     $exc = new PropertyNotExistingException("class", "property", "getProperty");
@@ -27,7 +30,10 @@ class PropertyNotExistingExceptionTest extends TestCase
     self::assertEquals(0, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\PropertyNotExistingException::getJsonMessage
+   * @uses   \App\Exceptions\PropertyNotExistingException::__construct
+   */
   public function testJsonMessage()
   {
     $exc = new PropertyNotExistingException("class", "property", "getProperty");

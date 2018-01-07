@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\ValueNotSet;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotSetTest
  * @package Tests\Unit\App\Exceptions
  */
-class ValueNotSetTest extends TestCase
+class ValueNotSetTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\ValueNotSet::__construct
+   */
   public function testConstructor()
   {
     $exc = new ValueNotSet("MyClass", "MyProperty");

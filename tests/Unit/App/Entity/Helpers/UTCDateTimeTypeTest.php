@@ -10,21 +10,27 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity\Helpers;
 
 
+use App\Entity\Helpers\UTCDateTimeType;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Types\Type;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class UTCDateTimeTypeTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class UTCDateTimeTypeTest extends TestCase
+class UTCDateTimeTypeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Helpers\UTCDateTimeType::convertToDatabaseValue
+   * @covers \App\Entity\Helpers\UTCDateTimeType::getUtc
+   */
   public function testConvertToDatabaseValue()
   {
     /** @noinspection PhpUnhandledExceptionInspection */
-    $type = Type::getType("datetime");
+    //$type = Type::getType("datetime");
+    /** @var UTCDateTimeType $type */
+    $type = $this->getMockForAbstractClass(UTCDateTimeType::class, [], '', false);
     $platform = new MySqlPlatform();
     $datetime = new \DateTime("2017-12-31 15:23:20 +02:00");
     $value = $type->convertToDatabaseValue($datetime, $platform);

@@ -49,7 +49,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
     return $this->json($method, $uri, $data, $headers);
   }
 
-  protected function workOnDatabaseDestroy()
+  private function clearUsers()
   {
     /** @var Connection $connection */
     /** @noinspection PhpUndefinedMethodInspection */
@@ -57,11 +57,17 @@ class AuthenticatedTestCase extends DatabaseTestCase
     $sql = sprintf('SET FOREIGN_KEY_CHECKS=0;TRUNCATE TABLE %s;SET FOREIGN_KEY_CHECKS=1;', "users");
     /** @noinspection PhpUnhandledExceptionInspection */
     $connection->query($sql);
+  }
+
+  protected function workOnDatabaseDestroy()
+  {
+    $this->clearUsers();
     parent::workOnDatabaseDestroy();
   }
 
   protected function workOnDatabaseSetUp()
   {
+    $this->clearUsers();
     parent::workOnDatabaseSetUp();
     $password = $this->newPassword();
     $this->user = entity(User::class)->create(['originalPassword' => $password]);

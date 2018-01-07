@@ -23,7 +23,9 @@
     "phpunit/phpunit": "~6.0",
     "mockery/mockery": "~0.9",
     "barryvdh/laravel-ide-helper": "^2.4",
-    "laravel-doctrine/migrations": "^1.0.0"
+    "laravel-doctrine/migrations": "^1.0.0",
+    "phpunit/phpcov": "^4.0",
+    "phpmd/phpmd": "^2.6"
   },
   "autoload": {
     "psr-4": {

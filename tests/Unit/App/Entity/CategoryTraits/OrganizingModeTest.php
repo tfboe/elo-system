@@ -11,15 +11,20 @@ namespace Tests\Unit\App\Entity\CategoryTraits;
 
 use App\Entity\Categories\OrganizingMode;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class OrganizingModeTest
  * @package Tests\Unit\App\Entity\CategoryTraits
  */
-class OrganizingModeTest extends TestCase
+class OrganizingModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\CategoryTraits\OrganizingMode::getOrganizingMode
+   * @covers \App\Entity\CategoryTraits\OrganizingMode::setOrganizingMode
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testProperty()
   {
     $mock = $this->mock();
@@ -32,6 +37,11 @@ class OrganizingModeTest extends TestCase
     self::assertNull($mock->getOrganizingMode());
   }
 
+  /**
+   * @covers \App\Entity\CategoryTraits\OrganizingMode::setOrganizingMode
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   */
   public function testPropertyException()
   {
     $mock = $this->mock();

@@ -13,6 +13,7 @@ namespace App\Service;
 use App\Entity\Helpers\TreeStructureEntityInterface;
 use App\Entity\RankingSystem;
 use App\Entity\Tournament;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class RankingSystemService
@@ -25,16 +26,22 @@ class RankingSystemService implements RankingSystemServiceInterface
    * @var DynamicServiceLoadingServiceInterface
    */
   private $dsls;
+
+  /** @var EntityManagerInterface */
+  private $em;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
+
   /**
    * RankingSystemService constructor.
    * @param DynamicServiceLoadingServiceInterface $dsls
+   * @param EntityManagerInterface $em
    */
-  public function __construct(DynamicServiceLoadingServiceInterface $dsls)
+  public function __construct(DynamicServiceLoadingServiceInterface $dsls, EntityManagerInterface $em)
   {
     $this->dsls = $dsls;
+    $this->em = $em;
   }
 //</editor-fold desc="Constructor">
 
@@ -59,6 +66,50 @@ class RankingSystemService implements RankingSystemServiceInterface
       $earliest_influence = $arr["earliestInfluence"];
       $service = $this->dsls->loadRankingSystemService($ranking->getServiceName());
       $service->updateRankingForTournament($ranking, $tournament, $earliest_influence);
+    }
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function recalculateRankingSystems(): void
+  {
+    $query = $this->em->createQueryBuilder();
+    $query
+      ->from(RankingSystem::class, 's')
+      ->select('s')
+      ->where($query->expr()->isNotNull('s.openSyncFrom'));
+    /** @var RankingSystem[] $ranking_systems */
+    $ranking_systems = $query->getQuery()->getResult();
+    foreach ($ranking_systems as $ranking_system) {
+      $service = $this->dsls->loadRankingSystemService($ranking_system->getServiceName());
+      $service->updateRankingFrom($ranking_system, $ranking_system->getOpenSyncFrom());
+      $ranking_system->setOpenSyncFrom(null);
+    }
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function adaptOpenSyncFromValues(Tournament $tournament, array $old_earliest_influences): void
+  {
+    $earliest_influences = $this->getRankingSystemsEarliestInfluences($tournament);
+    foreach ($old_earliest_influences as $id => $arr) {
+      if (array_key_exists($id, $earliest_influences)) {
+        if ($old_earliest_influences[$id]["earliestInfluence"] < $earliest_influences[$id]["earliestInfluence"]) {
+          $earliest_influences[$id]["earliestInfluence"] = $old_earliest_influences[$id]["earliestInfluence"];
+        }
+      } else {
+        $earliest_influences[$id] = $old_earliest_influences[$id];
+      }
+    }
+    foreach ($earliest_influences as $arr) {
+      /** @var RankingSystem $ranking */
+      $ranking = $arr["rankingSystem"];
+      $earliest_influence = $arr["earliestInfluence"];
+      if ($ranking->getOpenSyncFrom() === null || $ranking->getOpenSyncFrom() > $earliest_influence) {
+        $ranking->setOpenSyncFrom($earliest_influence);
+      }
     }
   }
 

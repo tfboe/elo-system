@@ -11,15 +11,21 @@ namespace Tests\Unit\App\Entity\CategoryTraits;
 
 use App\Entity\Categories\Table;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TableTest
  * @package Tests\Unit\App\Entity\CategoryTraits
  */
-class TableTest extends TestCase
+class TableTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+
+  /**
+   * @covers \App\Entity\CategoryTraits\Table::getTable
+   * @covers \App\Entity\CategoryTraits\Table::setTable
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testProperty()
   {
     $mock = $this->mock();
@@ -32,6 +38,11 @@ class TableTest extends TestCase
     self::assertNull($mock->getTable());
   }
 
+  /**
+   * @covers \App\Entity\CategoryTraits\Table::setTable
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   */
   public function testPropertyException()
   {
     $mock = $this->mock();

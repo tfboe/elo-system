@@ -11,17 +11,21 @@ namespace Tests\Unit\App\Entity\Helpers;
 
 
 use App\Entity\Helpers\NameEntity;
-use App\Exceptions\ValueNotSet;
-use Tests\Helpers\TestCase;
-use Tests\Helpers\TestNameEntity;
+use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class NameEntityTest extends TestCase
+class NameEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Helpers\NameEntity::getName
+   * @covers \App\Entity\Helpers\NameEntity::setName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testName()
   {
     $e = $this->mock();
@@ -29,25 +33,15 @@ class NameEntityTest extends TestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("Name", $e->getName());
   }
-
-  public function testNameException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property name of the class " . get_class($e) . " must be set before it can" .
-      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getName();
-  }
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return NameEntity
+   * @return MockObject|NameEntity
    */
-  private function mock()
+  private function mock(): MockObject
   {
-    return new TestNameEntity();
+    return $this->getMockForTrait(NameEntity::class, [], '', true, true, true, ['ensureNotNull']);
   }
 //</editor-fold desc="Private Methods">
 }

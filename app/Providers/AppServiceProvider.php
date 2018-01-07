@@ -10,7 +10,8 @@ use App\Service\RankingSystem\EloRankingInterface;
 use App\Service\RankingSystemService;
 use App\Service\RankingSystemServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Illuminate\Container\Container;
+use Doctrine\ORM\EntityManagerInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -31,16 +32,17 @@ class AppServiceProvider extends ServiceProvider
       $this->app->register(IdeHelperServiceProvider::class);
     }
 
-    $this->app->singleton(DynamicServiceLoadingServiceInterface::class, function () {
-      return new DynamicServiceLoadingService();
+    $this->app->singleton(DynamicServiceLoadingServiceInterface::class, function (Container $app) {
+      return new DynamicServiceLoadingService($app);
     });
 
     $this->app->singleton(RankingSystemServiceInterface::class, function (Container $app) {
-      return new RankingSystemService($app->make(DynamicServiceLoadingServiceInterface::class));
+      return new RankingSystemService($app->make(DynamicServiceLoadingServiceInterface::class),
+        $app->make(EntityManagerInterface::class));
     });
 
-    $this->app->singleton(EloRankingInterface::class, function () {
-      return new EloRanking();
+    $this->app->singleton(EloRankingInterface::class, function (Container $app) {
+      return new EloRanking($app->make(EntityManagerInterface::class));
     });
   }
 //</editor-fold desc="Public Methods">

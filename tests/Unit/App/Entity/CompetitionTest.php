@@ -17,16 +17,21 @@ use App\Entity\Tournament;
 use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
  */
-class CompetitionTest extends TestCase
+class CompetitionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Competition::getPhases
+   * @uses   \App\Entity\Competition::getRankingSystems
+   * @uses   \App\Entity\Competition::getTeams
+   */
   public function testConstructor()
   {
     $competition = $this->competition();
@@ -39,6 +44,12 @@ class CompetitionTest extends TestCase
     self::assertEquals(0, $competition->getRankingSystems()->count());
   }
 
+  /**
+   * @covers \App\Entity\Competition::getTeams
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Team
+   */
   public function testTeams()
   {
     $competition = $this->competition();
@@ -50,6 +61,13 @@ class CompetitionTest extends TestCase
     self::assertEquals($team, $competition->getTeams()[1]);
   }
 
+  /**
+   * @covers \App\Entity\Competition::getPhases
+   * @covers \App\Entity\Competition::getChildren
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase
+   */
   public function testPhasesAndChildren()
   {
     $competition = $this->competition();
@@ -63,6 +81,48 @@ class CompetitionTest extends TestCase
     self::assertEquals($competition->getPhases(), $competition->getChildren());
   }
 
+  /**
+   * @covers \App\Entity\Competition::getLocalIdentifier
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\NameEntity::setName
+   */
+  public function testGetLocalIdentifier()
+  {
+    $e = $this->competition();
+    $e->setName("Name");
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($e->getName(), $e->getLocalIdentifier());
+  }
+
+  /**
+   * @covers \App\Entity\Competition::getLocalIdentifier
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testGetLocalIdentifierException()
+  {
+    $e = $this->competition();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property name of the class " . get_class($e) . " must be set before it can" .
+      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $e->getLocalIdentifier();
+  }
+
+  /**
+   * @covers \App\Entity\Competition::setTournament()
+   * @covers \App\Entity\Competition::getTournament()
+   * @covers \App\Entity\Competition::getParent()
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\NameEntity::setName
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Tournament
+   */
   public function testTournamentAndParent()
   {
     $competition = $this->competition();
@@ -96,6 +156,12 @@ class CompetitionTest extends TestCase
     self::assertEquals($competition, $competition->getTournament()->getCompetitions()[$competition->getName()]);
   }
 
+  /**
+   * @covers \App\Entity\Competition::getTournament()
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testTournamentException()
   {
     $competition = $this->competition();
@@ -107,12 +173,15 @@ class CompetitionTest extends TestCase
     $competition->getTournament();
   }
 
+  /**
+   * @covers \App\Entity\Competition::getRankingSystems()
+   * @uses   \App\Entity\Competition::__construct
+   */
   public function testRankingSystems()
   {
     $e = $this->competition();
-    $system = new RankingSystem([]);
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($system);
+    /** @var $system RankingSystem */
+    $system = $this->createMockWithId(RankingSystem::class);
     /** @noinspection PhpUnhandledExceptionInspection */
     $e->getRankingSystems()->set($system->getId(), $system);
     self::assertEquals(1, $e->getRankingSystems()->count());
@@ -120,6 +189,10 @@ class CompetitionTest extends TestCase
     self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
   }
 
+  /**
+   * @covers \App\Entity\Competition::getLevel()
+   * @uses   \App\Entity\Competition::__construct
+   */
   public function testLevel()
   {
     self::assertEquals(Level::COMPETITION, $this->competition()->getLevel());

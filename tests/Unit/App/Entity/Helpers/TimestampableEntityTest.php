@@ -10,15 +10,19 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity\Helpers;
 
 use App\Entity\Helpers\TimestampableEntity;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class TimestampableEntityTest extends TestCase
+class TimestampableEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Helpers\TimestampableEntity::setCreatedAt
+   * @covers \App\Entity\Helpers\TimestampableEntity::getCreatedAt
+   */
   public function testCreatedAt()
   {
     $e = $this->mock();
@@ -27,6 +31,10 @@ class TimestampableEntityTest extends TestCase
     self::assertEquals($dt, $e->getCreatedAt());
   }
 
+  /**
+   * @covers \App\Entity\Helpers\TimestampableEntity::setUpdatedAt
+   * @covers \App\Entity\Helpers\TimestampableEntity::getUpdatedAt
+   */
   public function testUpdateAt()
   {
     $e = $this->mock();

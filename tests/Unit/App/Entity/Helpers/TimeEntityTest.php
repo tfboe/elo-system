@@ -10,22 +10,30 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity\Helpers;
 
 use App\Entity\Helpers\TimeEntity;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class TimeEntityTest extends TestCase
+class TimeEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity
+   */
   public function testInitialState()
   {
     $entity = $this->mock();
     self::assertNull($entity->getStartTime());
     self::assertNull($entity->getEndTime());
   }
+
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity::setEndTime
+   * @covers \App\Entity\Helpers\TimeEntity::getEndTime
+   */
   public function testEndTime()
   {
     $entity = $this->mock();
@@ -34,6 +42,47 @@ class TimeEntityTest extends TestCase
     self::assertEquals($time, $entity->getEndTime());
   }
 
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity::getEndTime
+   */
+  public function testGetEndTimeNotLocalized()
+  {
+    $entity = $this->mock();
+    $parent_class = (new \ReflectionObject($entity))->getParentClass();
+    $property = $parent_class->getProperty('endTime');
+    $property->setAccessible(true);
+
+    self::getProperty(get_class($entity), 'endTime')->setValue($entity,
+      new \DateTime("2017-01-01 05:00:00", new \DateTimeZone("UTC")));
+    self::getProperty(get_class($entity), 'endTimezone')->setValue($entity, "+02:00");
+
+    $time = $entity->getEndTime();
+    self::assertEquals("2017-01-01 07:00:00 +0200", $time->format("Y-m-d H:i:s O"));
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity::getStartTime
+   */
+  public function testGetStartTimeNotLocalized()
+  {
+    $entity = $this->mock();
+    $parent_class = (new \ReflectionObject($entity))->getParentClass();
+    $property = $parent_class->getProperty('startTime');
+    $property->setAccessible(true);
+    $property->setValue($entity, new \DateTime("2017-01-01 05:00:00", new \DateTimeZone("UTC")));
+
+    $property = $parent_class->getProperty('startTimezone');
+    $property->setAccessible(true);
+    $property->setValue($entity, "+02:00");
+
+    $time = $entity->getStartTime();
+    self::assertEquals("2017-01-01 07:00:00 +0200", $time->format("Y-m-d H:i:s O"));
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity::setStartTime
+   * @covers \App\Entity\Helpers\TimeEntity::getStartTime
+   */
   public function testStartTime()
   {
     $entity = $this->mock();

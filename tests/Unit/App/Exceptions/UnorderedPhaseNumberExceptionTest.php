@@ -10,15 +10,18 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Exceptions;
 
 use App\Exceptions\UnorderedPhaseNumberException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
  * @package Tests\Unit\App\Exceptions
  */
-class UnorderedPhaseNumberExceptionTest extends TestCase
+class UnorderedPhaseNumberExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\UnorderedPhaseNumberException::__construct
+   */
   public function testConstructor()
   {
     $exc = new UnorderedPhaseNumberException(2, 1);
@@ -27,7 +30,10 @@ class UnorderedPhaseNumberExceptionTest extends TestCase
     self::assertEquals(409, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\UnorderedPhaseNumberException::getJsonMessage
+   * @uses   \App\Exceptions\UnorderedPhaseNumberException::__construct
+   */
   public function testJsonMessage()
   {
     $exc = new UnorderedPhaseNumberException(2, 1);

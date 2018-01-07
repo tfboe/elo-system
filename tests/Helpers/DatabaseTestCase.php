@@ -17,7 +17,7 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
  * Class DatabaseTestCase
  * @package Tests\Helpers
  */
-abstract class DatabaseTestCase extends TestCase
+abstract class DatabaseTestCase extends LumenTestCase
 {
 //<editor-fold desc="Fields">
   /**

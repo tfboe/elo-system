@@ -120,6 +120,14 @@ class Match extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getMatchNumber();
+  }
+
+  /**
    * @return int
    * @throws \App\Exceptions\ValueNotSet
    */

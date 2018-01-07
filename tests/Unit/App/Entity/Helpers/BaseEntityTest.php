@@ -9,33 +9,26 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Entity\Helpers;
 
-use App\Exceptions\ValueNotSet;
-use Tests\Helpers\TestCase;
-use Tests\Helpers\TestEntity;
+use App\Entity\Helpers\BaseEntity;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class BaseEntityTest extends TestCase
+class BaseEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testEnsureNotNull()
+  /**
+   * @covers \App\Entity\Helpers\BaseEntity::methodExists
+   */
+  public function testMethodExists()
   {
-    $e = new TestEntity();
-    $e->setProp(5);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(5, $e->getProp());
-  }
+    /** @var BaseEntity $e */
+    $e = $this->getMockForAbstractClass(BaseEntity::class);
 
-  public function testEnsureNotNullException()
-  {
-    $e = new TestEntity();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property prop of the class " . TestEntity::class . " must be set before it can" .
-      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getProp();
+    self::assertTrue($e->methodExists("methodExists"));
+    self::assertFalse($e->methodExists("notExistingMethod"));
   }
 //</editor-fold desc="Public Methods">
 }

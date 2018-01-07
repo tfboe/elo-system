@@ -11,16 +11,21 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\User;
 use App\Exceptions\ValueNotSet;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class UserTest
  * @package Tests\Unit\App\Entity
  */
-class UserTest extends TestCase
+class UserTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\User::__construct
+   * @uses   \App\Entity\User::getJWTCustomClaims
+   * @uses   \App\Entity\User::getJwtVersion
+   * @uses   \App\Entity\User::getLastConfirmedAGBVersion
+   */
   public function testConstructor()
   {
     $user = $this->user();
@@ -30,6 +35,12 @@ class UserTest extends TestCase
     self::assertEquals(0, $user->getLastConfirmedAGBVersion());
   }
 
+  /**
+   * @covers \App\Entity\User::setEmail
+   * @covers \App\Entity\User::getEmail
+   * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testEmail()
   {
     $user = $this->user();
@@ -38,6 +49,12 @@ class UserTest extends TestCase
     self::assertEquals("test@a1.net", $user->getEmail());
   }
 
+  /**
+   * @covers \App\Entity\User::getEmail
+   * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testEmailException()
   {
     $user = $this->user();
@@ -48,6 +65,12 @@ class UserTest extends TestCase
     $user->getEmail();
   }
 
+  /**
+   * @covers \App\Entity\User::getJWTCustomClaims
+   * @uses   \App\Entity\User::setJwtVersion
+   * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testJWTCustomClaims()
   {
     $user = $this->user();
@@ -55,18 +78,30 @@ class UserTest extends TestCase
     self::assertEquals(['ver' => 5], $user->getJWTCustomClaims());
   }
 
+  /**
+   * @covers \App\Entity\User::getJWTIdentifier
+   * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\UUIDEntity::getId
+   */
   public function testJWTIdentifier()
   {
     $user = $this->user();
-    /** @noinspection PhpUndefinedMethodInspection */
-    EntityManager::persist($user);
+    self::getProperty(get_class($user), 'id')->setValue($user, 'user-id');
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $user->getJWTIdentifier());
+    self::assertEquals('user-id', $user->getJWTIdentifier());
     /** @noinspection PhpUnhandledExceptionInspection */
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($user->getId(), $user->getJWTIdentifier());
   }
 
+  /**
+   * @covers \App\Entity\User::getJWTIdentifier
+   * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\UUIDEntity::getId
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
   public function testJWTIdentifierException()
   {
     $user = $this->user();
@@ -77,6 +112,11 @@ class UserTest extends TestCase
     $user->getJWTIdentifier();
   }
 
+  /**
+   * @covers \App\Entity\User::getJwtVersion()
+   * @covers \App\Entity\User::setJwtVersion
+   * @uses   \App\Entity\User::__construct
+   */
   public function testJwtVersion()
   {
     $user = $this->user();
@@ -84,6 +124,11 @@ class UserTest extends TestCase
     self::assertEquals(5, $user->getJwtVersion());
   }
 
+  /**
+   * @covers \App\Entity\User::getLastConfirmedAGBVersion
+   * @covers \App\Entity\User::setLastConfirmedAGBVersion
+   * @uses   \App\Entity\User::__construct
+   */
   public function testLastConfirmedAGBVersion()
   {
     $user = $this->user();

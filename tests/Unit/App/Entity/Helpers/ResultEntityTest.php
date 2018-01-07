@@ -11,18 +11,22 @@ namespace Tests\Unit\App\Entity\Helpers;
 
 use App\Entity\Helpers\Result;
 use App\Entity\Helpers\ResultEntity;
-use App\Exceptions\ValueNotSet;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
-use Tests\Helpers\TestResultEntity;
+use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
  */
-class ResultEntityTest extends TestCase
+class ResultEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Helpers\ResultEntity::setPlayed
+   * @covers \App\Entity\Helpers\ResultEntity::isPlayed
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testPlayed()
   {
     $e = $this->mock();
@@ -32,18 +36,12 @@ class ResultEntityTest extends TestCase
     self::assertEquals($played, $e->isPlayed());
   }
 
-  public function testPlayedException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property played of the class " . get_class($e) . " must be set before " .
-      "it can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->isPlayed();
-  }
-
+  /**
+   * @covers \App\Entity\Helpers\ResultEntity::setResult
+   * @covers \App\Entity\Helpers\ResultEntity::getResult
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testResult()
   {
     $mock = $this->mock();
@@ -53,6 +51,11 @@ class ResultEntityTest extends TestCase
     self::assertEquals(Result::DRAW, $mock->getResult());
   }
 
+  /**
+   * @covers \App\Entity\Helpers\ResultEntity::setResultA
+   * @covers \App\Entity\Helpers\ResultEntity::getResultA
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testResultA()
   {
     $e = $this->mock();
@@ -62,18 +65,11 @@ class ResultEntityTest extends TestCase
     self::assertEquals($res, $e->getResultA());
   }
 
-  public function testResultAException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property resultA of the class " . get_class($e) . " must be set before " .
-      "it can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getResultA();
-  }
-
+  /**
+   * @covers \App\Entity\Helpers\ResultEntity::setResultB
+   * @covers \App\Entity\Helpers\ResultEntity::getResultB
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   */
   public function testResultB()
   {
     $e = $this->mock();
@@ -83,30 +79,11 @@ class ResultEntityTest extends TestCase
     self::assertEquals($res, $e->getResultB());
   }
 
-  public function testResultBException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property resultB of the class " . get_class($e) . " must be set before " .
-      "it can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getResultB();
-  }
-
-  public function testResultNotSetException()
-  {
-    $e = $this->mock();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property result of the class " . get_class($e) . " must be set before " .
-      "it can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getResult();
-  }
-
+  /**
+   * @covers \App\Entity\Helpers\ResultEntity::setResult
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testResultNotValidException()
   {
     $mock = $this->mock();
@@ -120,11 +97,11 @@ class ResultEntityTest extends TestCase
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return ResultEntity
+   * @return MockObject|ResultEntity
    */
-  private function mock()
+  private function mock(): MockObject
   {
-    return new TestResultEntity();
+    return $this->getMockForTrait(ResultEntity::class, [], '', true, true, true, ['ensureNotNull']);
   }
 //</editor-fold desc="Private Methods">
 }

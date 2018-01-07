@@ -10,25 +10,48 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Service;
 
 use App\Service\DynamicServiceLoadingService;
-use App\Service\RankingSystem\EloRankingInterface;
-use Tests\Helpers\TestCase;
+use App\Service\RankingSystem\RankingSystemInterface;
+use Illuminate\Contracts\Container\Container;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class EloRankingTest
- * @package Tests\Unit\App\Service\RankingSystem
+ * @package Tests\Unit\App\Service
  */
-class DynamicServiceLoadingServiceTest extends TestCase
+class DynamicServiceLoadingServiceTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+
+  /**
+   * @covers \App\Service\DynamicServiceLoadingService::__construct
+   */
+  public function testConstruct()
+  {
+    $app = $this->getMockForAbstractClass(Container::class);
+    /** @var Container $app */
+    $e = new DynamicServiceLoadingService($app);
+    self::assertInstanceOf(DynamicServiceLoadingService::class, $e);
+    self::assertEquals($app, self::getProperty(get_class($e), 'app')->getValue($e));
+  }
+
+
+  /**
+   * @covers \App\Service\DynamicServiceLoadingService::loadRankingSystemService
+   * @covers \App\Service\DynamicServiceLoadingService::getClassWithNamespace
+   * @uses   \App\Service\DynamicServiceLoadingService::__construct
+   */
   public function testLoadRankingSystemService()
   {
-    $e = new DynamicServiceLoadingService();
-    $elo_service = $e->loadRankingSystemService("EloRanking");
-
-    self::assertInstanceOf(EloRankingInterface::class, $elo_service);
-    self::assertTrue($elo_service === $e->loadRankingSystemService("EloRankingInterface"));
-    self::assertTrue($elo_service === $e->loadRankingSystemService("App\Service\RankingSystem\EloRanking"));
-    self::assertTrue($elo_service === $e->loadRankingSystemService("App\Service\RankingSystem\EloRankingInterface"));
+    $app = $this->getMockForAbstractClass(Container::class);
+    $instance = $this->getMockForAbstractClass(RankingSystemInterface::class);
+    $app->expects(self::exactly(4))->method('make')->with('App\Service\RankingSystem\TestInterface')
+      ->willReturn($instance);
+    /** @var Container $app */
+    $e = new DynamicServiceLoadingService($app);
+    self::assertTrue($instance === $e->loadRankingSystemService("Test"));
+    self::assertTrue($instance === $e->loadRankingSystemService("TestInterface"));
+    self::assertTrue($instance === $e->loadRankingSystemService("App\Service\RankingSystem\Test"));
+    self::assertTrue($instance === $e->loadRankingSystemService("App\Service\RankingSystem\TestInterface"));
   }
 //</editor-fold desc="Public Methods">
 }

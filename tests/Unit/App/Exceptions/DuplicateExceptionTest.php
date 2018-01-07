@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\DuplicateException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
  * @package Tests\Unit\App\Exceptions
  */
-class DuplicateExceptionTest extends TestCase
+class DuplicateExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\DuplicateException::__construct
+   */
   public function testConstructor()
   {
     $exc = new DuplicateException('value', 'name', 'array');
@@ -27,7 +30,10 @@ class DuplicateExceptionTest extends TestCase
     self::assertEquals(409, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\DuplicateException::getJsonMessage
+   * @uses   \App\Exceptions\DuplicateException::__construct
+   */
   public function testJsonMessage()
   {
     $exc = new DuplicateException('value', 'name', 'array');

@@ -11,15 +11,18 @@ namespace Tests\Unit\App\Exceptions;
 
 
 use App\Exceptions\MethodNotExistingException;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
  * @package Tests\Unit\App\Exceptions
  */
-class MethodNotExistingExceptionTest extends TestCase
+class MethodNotExistingExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\MethodNotExistingException::__construct
+   */
   public function testConstructor()
   {
     $exc = new MethodNotExistingException("class", "method");
@@ -27,7 +30,10 @@ class MethodNotExistingExceptionTest extends TestCase
     self::assertEquals(0, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\MethodNotExistingException::getJsonMessage
+   * @uses   \App\Exceptions\MethodNotExistingException::__construct
+   */
   public function testJsonMessage()
   {
     $exc = new MethodNotExistingException("class", "method");

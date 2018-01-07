@@ -11,15 +11,20 @@ namespace Tests\Unit\App\Entity\CategoryTraits;
 
 use App\Entity\Categories\GameMode;
 use App\Exceptions\ValueNotValid;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class GameModeTest
  * @package Tests\Unit\App\Entity\CategoryTraits
  */
-class GameModeTest extends TestCase
+class GameModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\CategoryTraits\GameMode::getGameMode
+   * @covers \App\Entity\CategoryTraits\GameMode::setGameMode
+   * @uses   \App\Helpers\BasicEnum
+   */
   public function testProperty()
   {
     $mock = $this->mock();
@@ -32,6 +37,11 @@ class GameModeTest extends TestCase
     self::assertNull($mock->getGameMode());
   }
 
+  /**
+   * @covers \App\Entity\CategoryTraits\GameMode::setGameMode
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Exceptions\ValueNotValid::__construct
+   */
   public function testPropertyException()
   {
     $mock = $this->mock();

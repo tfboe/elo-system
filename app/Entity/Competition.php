@@ -121,6 +121,14 @@ class Competition extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getName();
+  }
+
+  /**
    * @param Tournament $tournament
    * @return $this|Competition
    * @throws \App\Exceptions\ValueNotSet if the name is not set

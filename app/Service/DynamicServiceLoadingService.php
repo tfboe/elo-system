@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Service\RankingSystem\RankingSystemInterface;
+use Illuminate\Contracts\Container\Container;
 
 /**
  * Class DynamicLoadingService
@@ -18,13 +19,24 @@ use App\Service\RankingSystem\RankingSystemInterface;
 class DynamicServiceLoadingService implements DynamicServiceLoadingServiceInterface
 {
 //<editor-fold desc="Public Methods">
+  /** @var Container */
+  private $app;
+
+  /**
+   * DynamicServiceLoadingService constructor.
+   * @param Container $app
+   */
+  public function __construct(Container $app)
+  {
+    $this->app = $app;
+  }
 
   /**
    * @inheritdoc
    */
   public function loadRankingSystemService(string $name): RankingSystemInterface
   {
-    return app($this->getClassWithNamespace($name, 'App\Service\RankingSystem'));
+    return $this->app->make($this->getClassWithNamespace($name, 'App\Service\RankingSystem'));
   }
 //</editor-fold desc="Public Methods">
 

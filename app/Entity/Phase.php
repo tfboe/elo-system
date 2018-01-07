@@ -130,6 +130,14 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getPhaseNumber();
+  }
+
+  /**
    * @return Match[]|Collection
    */
   public function getMatches()

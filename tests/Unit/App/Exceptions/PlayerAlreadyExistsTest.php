@@ -12,15 +12,18 @@ namespace Tests\Unit\App\Exceptions;
 
 use App\Entity\Player;
 use App\Exceptions\PlayerAlreadyExists;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
  * @package Tests\Unit\App\Exceptions
  */
-class PlayerAlreadyExistsTest extends TestCase
+class PlayerAlreadyExistsTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\PlayerAlreadyExists::__construct
+   */
   public function testConstructor()
   {
     $exc = new PlayerAlreadyExists([]);
@@ -28,7 +31,12 @@ class PlayerAlreadyExistsTest extends TestCase
     self::assertEquals(409, $exc->getCode());
   }
 
-
+  /**
+   * @covers \App\Exceptions\PlayerAlreadyExists::getJsonMessage
+   * @uses   \App\Exceptions\PlayerAlreadyExists::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Player
+   */
   public function testJsonMessage()
   {
     $exc = new PlayerAlreadyExists([]);

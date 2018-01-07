@@ -18,18 +18,30 @@ use App\Exceptions\ReferenceException;
 use App\Exceptions\UnorderedPhaseNumberException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\UnitTestCase;
 
 /**
  * Class HandlerTest
  * @package Tests\Unit\App\Exceptions
  */
-class HandlerTest extends TestCase
+class HandlerTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Exceptions\Handler::render
+   * @covers \App\Exceptions\Handler::getExceptionHTTPStatusCode
+   * @covers \App\Exceptions\Handler::getExceptionName
+   * @covers \App\Exceptions\Handler::getJsonMessage
+   * @uses   \App\Exceptions\AuthenticationException
+   * @uses   \App\Exceptions\DuplicateException
+   * @uses   \App\Exceptions\PlayerAlreadyExists
+   * @uses   \App\Exceptions\ReferenceException
+   * @uses   \App\Exceptions\UnorderedPhaseNumberException
+   */
   public function testRender()
   {
     $handler = $this->handler();
@@ -84,13 +96,20 @@ class HandlerTest extends TestCase
       'name' => 'PlayerAlreadyExistsException', 'players' => []], $res->getData(true));
   }
 
+  /**
+   * @covers \App\Exceptions\Handler::render
+   * @covers \App\Exceptions\Handler::getExceptionHTTPStatusCode
+   * @covers \App\Exceptions\Handler::getExceptionName
+   * @covers \App\Exceptions\Handler::getJsonMessage
+   */
   public function testRenderValidationErrors()
   {
     $handler = $this->handler();
+    $validator = $this->createMock(Validator::class);
+    $errors = $this->createMock(MessageBag::class);
+    $errors->method('messages')->willReturn(['username' => ['The username field is required.']]);
+    $validator->method('errors')->willReturn($errors);
     /** @var \Illuminate\Validation\Validator $validator */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $validator = Validator::make([], ['username' => 'required|min:6']);
-    self::assertTrue($validator->fails());
     $exception = new ValidationException($validator, new Response('', 422));
     $request = $this->request();
     $res = $handler->render($request, $exception);

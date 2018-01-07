@@ -17,13 +17,13 @@ use App\Entity\Categories\Table;
 use App\Entity\Categories\TeamMode;
 use App\Entity\Helpers\AutomaticInstanceGeneration;
 use App\Helpers\Level;
-use Tests\Helpers\TestCase;
+use Tests\Helpers\LumenTestCase;
 
 /**
  * Class TournamentTest
  * @package Tests\Integration
  */
-class EnumTest extends TestCase
+class EnumTest extends LumenTestCase
 {
 //<editor-fold desc="Public Methods">
   public function testGameMode()

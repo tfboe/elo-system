@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class RankingSystem
- * @package App\Entity\Helpers
+ * @package App\Entity
  * @ORM\Entity
  * @ORM\Table(name="rankingSystems")
  */
@@ -107,6 +107,44 @@ class RankingSystem extends BaseEntity
    * @var Collection|Game[]
    */
   private $games;
+
+  /**
+   * @ORM\Column(type="datetime", nullable=true)
+   * @var \DateTime|null
+   */
+  private $openSyncFrom;
+
+  /**
+   * @ORM\OneToMany(targetEntity="RankingSystemList", mappedBy="rankingSystem", indexBy="id")
+   * @var Collection|RankingSystemList[]
+   */
+  private $lists;
+
+  /**
+   * @return RankingSystemList[]|Collection
+   */
+  public function getLists(): Collection
+  {
+    return $this->lists;
+  }
+
+  /**
+   * @return \DateTime|null
+   */
+  public function getOpenSyncFrom(): ?\DateTime
+  {
+    return $this->openSyncFrom;
+  }
+
+  /**
+   * @param \DateTime|null $openSyncFrom
+   * @return $this|RankingSystem
+   */
+  public function setOpenSyncFrom(?\DateTime $openSyncFrom): RankingSystem
+  {
+    $this->openSyncFrom = $openSyncFrom;
+    return $this;
+  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -124,6 +162,8 @@ class RankingSystem extends BaseEntity
     $this->phases = new ArrayCollection();
     $this->matches = new ArrayCollection();
     $this->games = new ArrayCollection();
+    $this->openSyncFrom = null;
+    $this->lists = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
