@@ -15,8 +15,8 @@ class Version20171015093818 extends AbstractMigration
   {
     $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-    $this->addSql('DROP TABLE competitions');
     $this->addSql('DROP INDEX unique_name_idx ON competitions');
+    $this->addSql('DROP TABLE competitions');
   }
 
   /**
