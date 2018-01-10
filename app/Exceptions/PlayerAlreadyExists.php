@@ -43,12 +43,12 @@ class PlayerAlreadyExists extends AbstractException
   {
     return [
       'message' => "Some players do already exist",
-      'players' => array_map(function (Player $p) {
+      'players' => array_map(function (Player $player) {
         return [
-          "firstName" => $p->getFirstName(),
-          "lastName" => $p->getLastName(),
-          "id" => $p->getId(),
-          "birthday" => $p->getBirthday()->format("Y-m-d")];
+          "firstName" => $player->getFirstName(),
+          "lastName" => $player->getLastName(),
+          "id" => $player->getPlayerId(),
+          "birthday" => $player->getBirthday()->format("Y-m-d")];
       }, $this->players)
     ];
   }

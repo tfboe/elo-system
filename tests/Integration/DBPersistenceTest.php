@@ -38,29 +38,29 @@ class DBPersistenceTest extends DatabaseTestCase
     $tournament = new Tournament();
     $tournament->setUserIdentifier("test");
     $tournament->setName("TestTournament");
-    $start_time = new \DateTime("2017-12-31 15:23:20 +02:00");
-    $end_time = new \DateTime("2017-12-31 16:23:20 +03:00");
-    $tournament->setStartTime($start_time);
-    $tournament->setEndTime($end_time);
+    $startTime = new \DateTime("2017-12-31 15:23:20 +02:00");
+    $endTime = new \DateTime("2017-12-31 16:23:20 +03:00");
+    $tournament->setStartTime($startTime);
+    $tournament->setEndTime($endTime);
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::persist($tournament);
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::flush();
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::clear();
-    /** @var Tournament $t */
+    /** @var Tournament $resultTournament */
     /** @noinspection PhpUnhandledExceptionInspection */
     /** @noinspection PhpUndefinedMethodInspection */
-    $t = EntityManager::find(Tournament::class, $tournament->getId());
-    $t->setCreatedAt($tournament->getCreatedAt());
-    $t->setUpdatedAt($tournament->getUpdatedAt());
-    self::assertTrue($t->getCompetitions()->isEmpty()); //initialize collection to be comparable
-    self::assertTrue($t->getRankingSystems()->isEmpty()); //initialize collection to be comparable
-    self::assertNotEquals($t, $tournament);
-    self::assertEquals($start_time, $t->getStartTime());
-    self::assertNotEquals($t, $tournament);
-    self::assertEquals($end_time, $t->getEndTime());
-    self::assertEquals($t, $tournament);
+    $resultTournament = EntityManager::find(Tournament::class, $tournament->getId());
+    $resultTournament->setCreatedAt($tournament->getCreatedAt());
+    $resultTournament->setUpdatedAt($tournament->getUpdatedAt());
+    self::assertTrue($resultTournament->getCompetitions()->isEmpty()); //initialize collection to be comparable
+    self::assertTrue($resultTournament->getRankingSystems()->isEmpty()); //initialize collection to be comparable
+    self::assertNotEquals($resultTournament, $tournament);
+    self::assertEquals($startTime, $resultTournament->getStartTime());
+    self::assertNotEquals($resultTournament, $tournament);
+    self::assertEquals($endTime, $resultTournament->getEndTime());
+    self::assertEquals($resultTournament, $tournament);
   }
 //</editor-fold desc="Public Methods">
 }

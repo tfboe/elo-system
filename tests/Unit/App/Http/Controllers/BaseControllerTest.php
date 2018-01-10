@@ -34,25 +34,13 @@ class BaseControllerTest extends UnitTestCase
    */
   public function testConstruct()
   {
-    $em = $this->createMock(EntityManagerInterface::class);
+    $entityManager = $this->createMock(EntityManagerInterface::class);
     $controller = $this->getMockForAbstractClass(BaseController::class, [
-      $em
+      $entityManager
     ]);
     self::assertInstanceOf(BaseController::class, $controller);
-    self::assertEquals($em, self::getProperty(get_class($controller), 'em')->getValue($controller));
-  }
-
-  /**
-   * @covers \App\Http\Controllers\BaseController::enumTransformer
-   * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Http\Controllers\BaseController::__construct
-   */
-  public function testEnumTransformer()
-  {
-    $controller = $this->controller();
-    $closure = self::getMethod(BaseController::class, 'enumTransformer')->invokeArgs($controller, [TestEnum::class]);
-    self::assertEquals(1, $closure('INT_KEY'));
-    self::assertEquals('value', $closure('KEY'));
+    self::assertEquals($entityManager, self::getProperty(get_class($controller), 'entityManager')
+      ->getValue($controller));
   }
 
   /**
@@ -73,6 +61,19 @@ class BaseControllerTest extends UnitTestCase
   }
 
   /**
+   * @covers \App\Http\Controllers\BaseController::enumTransformer
+   * @uses   \App\Helpers\BasicEnum
+   * @uses   \App\Http\Controllers\BaseController::__construct
+   */
+  public function testEnumTransformer()
+  {
+    $controller = $this->controller();
+    $closure = self::getMethod(BaseController::class, 'enumTransformer')->invokeArgs($controller, [TestEnum::class]);
+    self::assertEquals(1, $closure('INT_KEY'));
+    self::assertEquals('value', $closure('KEY'));
+  }
+
+  /**
    * @covers \App\Http\Controllers\BaseController::setFromSpecification
    * @uses   \App\Entity\Helpers\BaseEntity::methodExists
    * @uses   \App\Http\Controllers\BaseController::__construct
@@ -90,23 +91,8 @@ class BaseControllerTest extends UnitTestCase
 
   /**
    * @covers \App\Http\Controllers\BaseController::setFromSpecification
-   * @covers \App\Http\Controllers\BaseController::transformByType
    * @uses   \App\Http\Controllers\BaseController::__construct
-   */
-  public function testSetFromSpecificationWithDefaultTransformBy()
-  {
-    $value = "2005-02-28 16:35:01";
-    $specification['prop'] = ['type' => 'default'];
-    $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setProp']);
-    $object->expects(static::once())->method('setProp')->with($value)->willReturnSelf();
-    $controller = $this->controller();
-    $method = self::getMethod(UserController::class, 'setFromSpecification');
-    $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
-  }
-
-  /**
-   * @covers \App\Http\Controllers\BaseController::setFromSpecification
-   * @uses   \App\Http\Controllers\BaseController::__construct
+   * @uses   \App\Http\Controllers\BaseController::transformValue
    */
   public function testSetFromSpecificationWithProperty()
   {
@@ -120,58 +106,78 @@ class BaseControllerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Http\Controllers\BaseController::setFromSpecification
-   * @uses   \App\Entity\User::__construct
+   * @covers \App\Http\Controllers\BaseController::transformValue
    * @uses   \App\Http\Controllers\BaseController::__construct
    */
-  public function testSetFromSpecificationWithReference()
+  public function testTransformValueByReference()
   {
-    $user = new User();
-    $specification['user'] = ['reference' => User::class];
-    $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setUser']);
-    $object->expects(static::once())->method('setUser')->with($user)->willReturnSelf();
-    $em = $this->createMock(EntityManagerInterface::class);
-    $em->expects(static::once())->method('find')->with(User::class, 'user-id')->willReturn($user);
-    $controller = $this->getMockForAbstractClass(BaseController::class, [$em]);
-    $method = self::getMethod(UserController::class, 'setFromSpecification');
+    $user = "resultUser";
+    $specification = ['reference' => User::class];
+    $value = 'user-id';
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+    $entityManager->expects(static::once())->method('find')->with(User::class, 'user-id')->willReturn($user);
+    $controller = $this->getMockForAbstractClass(BaseController::class, [$entityManager]);
+    $method = self::getMethod(UserController::class, 'transformValue');
     /** @noinspection PhpUnhandledExceptionInspection */
-    $method->invokeArgs($controller, [$object, $specification, ['user' => 'user-id']]);
+    $method->invokeArgs($controller, [&$value, $specification]);
+
+    self::assertTrue($value === $user);
   }
 
   /**
-   * @covers \App\Http\Controllers\BaseController::setFromSpecification
+   * @covers \App\Http\Controllers\BaseController::transformValue
+   * @uses   \App\Http\Controllers\BaseController::__construct
+   */
+  public function testTransformValueByTransformer()
+  {
+    $value = "5";
+    $transformer = function ($input) {
+      self::assertEquals("5", $input);
+      return 6;
+    };
+    $specification = ['transformer' => $transformer];
+
+    $controller = $this->controller();
+    $method = self::getMethod(UserController::class, 'transformValue');
+    $method->invokeArgs($controller, [&$value, $specification]);
+
+    self::assertEquals(6, $value);
+  }
+
+  /**
+   * @covers \App\Http\Controllers\BaseController::transformValue
    * @covers \App\Http\Controllers\BaseController::transformByType
    * @uses   \App\Http\Controllers\BaseController::__construct
    */
-  public function testSetFromSpecificationWithTransformByType()
+  public function testTransformValueByTypeDateTime()
   {
     $value = "2005-02-28 16:35:01";
     $datetime = new \DateTime($value);
-    $specification['prop'] = ['type' => 'datetime'];
-    $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setProp']);
-    $object->expects(static::once())->method('setProp')->with($datetime)->willReturnSelf();
+    $specification = ['type' => 'datetime'];
+
     $controller = $this->controller();
-    $method = self::getMethod(UserController::class, 'setFromSpecification');
-    $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
+    $method = self::getMethod(UserController::class, 'transformValue');
+    $method->invokeArgs($controller, [&$value, $specification]);
+
+    self::assertEquals($datetime, $value);
   }
 
   /**
-   * @covers \App\Http\Controllers\BaseController::setFromSpecification
+   * @covers \App\Http\Controllers\BaseController::transformValue
+   * @covers \App\Http\Controllers\BaseController::transformByType
    * @uses   \App\Http\Controllers\BaseController::__construct
    */
-  public function testSetFromSpecificationWithTransformer()
+  public function testTransformValueByTypeDefault()
   {
-    $value = "5";
-    $transformer = function ($v) {
-      self::assertEquals("5", $v);
-      return 6;
-    };
-    $specification['prop'] = ['transformer' => $transformer];
-    $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setProp']);
-    $object->expects(static::once())->method('setProp')->with(6)->willReturnSelf();
+    $value = "2005-02-28 16:35:01";
+    $specification = ['type' => 'default'];
+
     $controller = $this->controller();
-    $method = self::getMethod(UserController::class, 'setFromSpecification');
-    $method->invokeArgs($controller, [$object, $specification, ['prop' => $value]]);
+    $method = self::getMethod(UserController::class, 'transformValue');
+    $method->invokeArgs($controller, [&$value, $specification]);
+
+    self::assertEquals("2005-02-28 16:35:01", $value);
   }
 
   /**
@@ -193,7 +199,9 @@ class BaseControllerTest extends UnitTestCase
     $method = self::getMethod(UserController::class, 'validateBySpecification');
     $method->invokeArgs($controller, [$request, $specification]);
   }
+//</editor-fold desc="Public Methods">
 
+//<editor-fold desc="Private Methods">
   /**
    * @return MockObject|BaseController
    */
@@ -203,5 +211,5 @@ class BaseControllerTest extends UnitTestCase
       $this->createMock(EntityManagerInterface::class)
     ]);
   }
-//</editor-fold desc="Public Methods">
+//</editor-fold desc="Private Methods">
 }

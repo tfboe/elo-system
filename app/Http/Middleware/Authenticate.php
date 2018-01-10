@@ -42,20 +42,20 @@ class Authenticate
    *
    * @param  \Illuminate\Http\Request $request
    * @param  \Closure $next
-   * @param  string|null $guard
+   * @param  string|null $guardName
    * @return mixed
    * @throws AuthenticationException if request doesn't provide valid authentication token
    */
-  public function handle($request, Closure $next, $guard = null)
+  public function handle($request, Closure $next, $guardName = null)
   {
-    $g = $this->auth->guard($guard);
-    if ($g->guest()) {
+    $guard = $this->auth->guard($guardName);
+    if ($guard->guest()) {
       throw new AuthenticationException("Not logged in!");
     }
     /** @var Payload $payload */
-    $payload = $g->getPayload();
+    $payload = $guard->getPayload();
     /** @var User $user */
-    $user = $g->getUser();
+    $user = $guard->getUser();
     if (!$payload->hasKey('ver') || !($user instanceof User) || $payload->get(['ver'])[0] <
       $user->getJwtVersion()) {
       throw new AuthenticationException("Payload version expired!");

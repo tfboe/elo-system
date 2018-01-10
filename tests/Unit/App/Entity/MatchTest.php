@@ -22,6 +22,7 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MatchTest extends UnitTestCase
 {
@@ -48,6 +49,53 @@ class MatchTest extends UnitTestCase
   }
 
   /**
+   * @covers \App\Entity\Match::getGames
+   * @covers \App\Entity\Match::getChildren
+   * @uses   \App\Entity\Game
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   */
+  public function testGamesAndChildren()
+  {
+    $match = $this->match();
+    $game = new Game();
+    $game->setGameNumber(1);
+    self::assertEquals($match->getGames(), $match->getChildren());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $match->getGames()->set($game->getGameNumber(), $game);
+    self::assertEquals(1, $match->getGames()->count());
+    self::assertEquals($game, $match->getGames()[1]);
+    self::assertEquals($match->getGames(), $match->getChildren());
+  }
+
+  /**
+   * @covers \App\Entity\Match::getLevel
+   * @uses   \App\Entity\Match::__construct
+   */
+  public function testLevel()
+  {
+    self::assertEquals(Level::MATCH, $this->match()->getLevel());
+  }
+
+  /**
+   * @covers \App\Entity\Match::getLocalIdentifier
+   * @uses   \App\Entity\Match::getMatchNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Match::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testLocalIdentifierException()
+  {
+    $match = $this->match();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property matchNumber of the class " . Match::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $match->getLocalIdentifier();
+  }
+
+  /**
    * @covers \App\Entity\Match::setMatchNumber
    * @covers \App\Entity\Match::getMatchNumber
    * @covers \App\Entity\Match::getLocalIdentifier
@@ -57,10 +105,10 @@ class MatchTest extends UnitTestCase
   public function testMatchNumberAndLocalIdentifier()
   {
     $match = $this->match();
-    $match_number = 1;
-    $match->setMatchNumber($match_number);
+    $matchNumber = 1;
+    $match->setMatchNumber($matchNumber);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($match_number, $match->getMatchNumber());
+    self::assertEquals($matchNumber, $match->getMatchNumber());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($match->getMatchNumber(), $match->getLocalIdentifier());
   }
@@ -80,24 +128,6 @@ class MatchTest extends UnitTestCase
     );
     /** @noinspection PhpUnhandledExceptionInspection */
     $match->getMatchNumber();
-  }
-
-  /**
-   * @covers \App\Entity\Match::getLocalIdentifier
-   * @uses   \App\Entity\Match::getMatchNumber
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testLocalIdentifierException()
-  {
-    $match = $this->match();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property matchNumber of the class " . Match::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $match->getLocalIdentifier();
   }
 
   /**
@@ -159,6 +189,22 @@ class MatchTest extends UnitTestCase
   }
 
   /**
+   * @covers \App\Entity\Match::getRankingSystems
+   * @uses   \App\Entity\Match::__construct
+   */
+  public function testRankingSystems()
+  {
+    $match = $this->match();
+    /** @var $system RankingSystem */
+    $system = $this->createStubWithId(RankingSystem::class);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $match->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $match->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $match->getRankingSystems()[$system->getId()]);
+  }
+
+  /**
    * @covers \App\Entity\Match::getRankingsA
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Match::__construct
@@ -190,51 +236,6 @@ class MatchTest extends UnitTestCase
     $match->getRankingsB()->set($ranking->getUniqueRank(), $ranking);
     self::assertEquals(1, $match->getRankingsB()->count());
     self::assertEquals($ranking, $match->getRankingsB()[1]);
-  }
-
-  /**
-   * @covers \App\Entity\Match::getGames
-   * @covers \App\Entity\Match::getChildren
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Match::__construct
-   */
-  public function testGamesAndChildren()
-  {
-    $match = $this->match();
-    $game = new Game();
-    $game->setGameNumber(1);
-    self::assertEquals($match->getGames(), $match->getChildren());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $match->getGames()->set($game->getGameNumber(), $game);
-    self::assertEquals(1, $match->getGames()->count());
-    self::assertEquals($game, $match->getGames()[1]);
-    self::assertEquals($match->getGames(), $match->getChildren());
-  }
-
-  /**
-   * @covers \App\Entity\Match::getRankingSystems
-   * @uses   \App\Entity\Match::__construct
-   */
-  public function testRankingSystems()
-  {
-    $e = $this->match();
-    /** @var $system RankingSystem */
-    $system = $this->createMockWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $e->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\Match::getLevel
-   * @uses   \App\Entity\Match::__construct
-   */
-  public function testLevel()
-  {
-    self::assertEquals(Level::MATCH, $this->match()->getLevel());
   }
 //</editor-fold desc="Public Methods">
 

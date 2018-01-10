@@ -28,18 +28,21 @@ class UnsetPropertyTest extends UnitTestCase
    */
   public function testEnsureNotNull()
   {
-    $e = $this->mock();
+    $entity = $this->mock();
     /** @noinspection PhpUndefinedFieldInspection */
-    $e->prop = 5;
+    $entity->prop = 5;
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->ensureNotNull('prop');
+    $entity->ensureNotNull('prop');
     $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property unset of the class " . get_class($e) . " must be set before it can" .
-      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $this->expectExceptionMessage("The property unset of the class " . get_class($entity) . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the " .
+      "constructor(Empty Constructor Pattern).");
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->ensureNotNull('unset');
+    $entity->ensureNotNull('unset');
   }
+//</editor-fold desc="Public Methods">
 
+//<editor-fold desc="Private Methods">
   /**
    * @return MockObject|UnsetProperty
    */
@@ -47,5 +50,5 @@ class UnsetPropertyTest extends UnitTestCase
   {
     return $this->getMockForTrait(UnsetProperty::class);
   }
-//</editor-fold desc="Public Methods">
+//</editor-fold desc="Private Methods">
 }

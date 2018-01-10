@@ -13,8 +13,8 @@ $factory->define(\App\Entity\RankingSystem::class, function (\Faker\Generator $f
   return [
     'defaultForLevel' => array_key_exists('defaultForLevel', $attributes) ? $attributes['defaultForLevel'] : null,
     'serviceName' => $attributes['serviceName'],
-    'automaticInstanceGeneration' => array_key_exists('automaticInstanceGeneration', $attributes) ?
-      $attributes['automaticInstanceGeneration'] : \App\Entity\Helpers\AutomaticInstanceGeneration::OFF,
+    'generationInterval' => array_key_exists('generationInterval', $attributes) ?
+      $attributes['generationInterval'] : \App\Entity\Helpers\AutomaticInstanceGeneration::OFF,
     'subClassData' => [],
     'name' => $faker->name
   ];

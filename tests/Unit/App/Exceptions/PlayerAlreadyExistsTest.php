@@ -46,8 +46,8 @@ class PlayerAlreadyExistsTest extends UnitTestCase
     $player->setFirstName('first');
     $player->setLastName('last');
     $player->setBirthday(new \DateTime('1990-02-02'));
-    $id_property = self::getProperty(Player::class, 'id');
-    $id_property->setValue($player, 0);
+    $idProperty = self::getProperty(Player::class, 'playerId');
+    $idProperty->setValue($player, 0);
 
     $exc2 = new PlayerAlreadyExists([$player]);
     self::assertEquals(['message' => 'Some players do already exist', 'players' => [['firstName' => 'first',
@@ -57,7 +57,7 @@ class PlayerAlreadyExistsTest extends UnitTestCase
     $player2->setFirstName('first2');
     $player2->setLastName('last2');
     $player2->setBirthday(new \DateTime('1992-04-04'));
-    $id_property->setValue($player2, 1);
+    $idProperty->setValue($player2, 1);
 
 
     $exc3 = new PlayerAlreadyExists([$player, $player2]);

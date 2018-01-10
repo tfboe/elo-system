@@ -23,6 +23,7 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class TournamentTest
  * @package Tests\Unit\App\Entity
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class PhaseTest extends UnitTestCase
 {
@@ -89,8 +90,8 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::__construct
    * @uses   \App\Entity\Helpers\NameEntity::getName
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::getNextQualificationSystems
-   * @uses   \App\Entity\Phase::getPreviousQualificationSystems
+   * @uses   \App\Entity\Phase::getPostQualifications
+   * @uses   \App\Entity\Phase::getPreQualifications
    * @uses   \App\Entity\Phase::getRankingSystems
    * @uses   \App\Entity\Phase::getRankings
    */
@@ -99,14 +100,75 @@ class PhaseTest extends UnitTestCase
     $phase = $this->phase();
     self::assertInstanceOf(Phase::class, $phase);
     self::assertEquals('', $phase->getName());
-    self::assertInstanceOf(Collection::class, $phase->getNextQualificationSystems());
-    self::assertEquals(0, $phase->getNextQualificationSystems()->count());
-    self::assertInstanceOf(Collection::class, $phase->getPreviousQualificationSystems());
-    self::assertEquals(0, $phase->getPreviousQualificationSystems()->count());
+    self::assertInstanceOf(Collection::class, $phase->getPostQualifications());
+    self::assertEquals(0, $phase->getPostQualifications()->count());
+    self::assertInstanceOf(Collection::class, $phase->getPreQualifications());
+    self::assertEquals(0, $phase->getPreQualifications()->count());
     self::assertInstanceOf(Collection::class, $phase->getRankings());
     self::assertEquals(0, $phase->getRankings()->count());
     self::assertInstanceOf(Collection::class, $phase->getRankingSystems());
     self::assertEquals(0, $phase->getRankingSystems()->count());
+  }
+
+  /**
+   * @covers \App\Entity\Phase::getLevel
+   * @uses   \App\Entity\Phase::__construct
+   */
+  public function testLevel()
+  {
+    self::assertEquals(Level::PHASE, $this->phase()->getLevel());
+  }
+
+  /**
+   * @covers \App\Entity\Phase::getLocalIdentifier
+   * @covers \App\Entity\Phase::getPhaseNumber
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testLocalIdentifierException()
+  {
+    $phase = $this->phase();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $phase->getLocalIdentifier();
+  }
+
+  /**
+   * @covers \App\Entity\Phase::getMatches
+   * @covers \App\Entity\Phase::getChildren
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Match
+   */
+  public function testMatchesAndChildren()
+  {
+    $phase = $this->phase();
+    $match = new Match();
+    $match->setMatchNumber(1);
+    self::assertEquals($phase->getMatches(), $phase->getChildren());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $phase->getMatches()->set($match->getMatchNumber(), $match);
+    self::assertEquals(1, $phase->getMatches()->count());
+    self::assertEquals($match, $phase->getMatches()[1]);
+    self::assertEquals($phase->getMatches(), $phase->getChildren());
+  }
+
+  /**
+   * @covers \App\Entity\Phase::getPostQualifications
+   * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\QualificationSystem
+   */
+  public function testNextQualificationSystems()
+  {
+    $phase = $this->phase();
+    $qualificationSystem = new QualificationSystem();
+    $qualificationSystem->setPreviousPhase($phase);
+    self::assertEquals(1, $phase->getPostQualifications()->count());
+    self::assertEquals($qualificationSystem, $phase->getPostQualifications()[0]);
   }
 
   /**
@@ -144,49 +206,33 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getLocalIdentifier
-   * @covers \App\Entity\Phase::getPhaseNumber
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testLocalIdentifierException()
-  {
-    $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getLocalIdentifier();
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getPreviousQualificationSystems
+   * @covers \App\Entity\Phase::getPreQualifications
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\QualificationSystem
    */
   public function testPreviousQualificationSystems()
   {
     $phase = $this->phase();
-    $qualification_system = new QualificationSystem();
-    $qualification_system->setNextPhase($phase);
-    self::assertEquals(1, $phase->getPreviousQualificationSystems()->count());
-    self::assertEquals($qualification_system, $phase->getPreviousQualificationSystems()[0]);
+    $qualificationSystem = new QualificationSystem();
+    $qualificationSystem->setNextPhase($phase);
+    self::assertEquals(1, $phase->getPreQualifications()->count());
+    self::assertEquals($qualificationSystem, $phase->getPreQualifications()[0]);
   }
 
   /**
-   * @covers \App\Entity\Phase::getNextQualificationSystems
+   * @covers \App\Entity\Phase::getRankingSystems
    * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\QualificationSystem
    */
-  public function testNextQualificationSystems()
+  public function testRankingSystems()
   {
-    $phase = $this->phase();
-    $qualification_system = new QualificationSystem();
-    $qualification_system->setPreviousPhase($phase);
-    self::assertEquals(1, $phase->getNextQualificationSystems()->count());
-    self::assertEquals($qualification_system, $phase->getNextQualificationSystems()[0]);
+    $entity = $this->phase();
+    /** @var $system RankingSystem */
+    $system = $this->createStubWithId(RankingSystem::class);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $entity->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $entity->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
   }
 
   /**
@@ -204,51 +250,6 @@ class PhaseTest extends UnitTestCase
     $phase->getRankings()->set($ranking->getUniqueRank(), $ranking);
     self::assertEquals(1, $phase->getRankings()->count());
     self::assertEquals($ranking, $phase->getRankings()[1]);
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getMatches
-   * @covers \App\Entity\Phase::getChildren
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Match
-   */
-  public function testMatchesAndChildren()
-  {
-    $phase = $this->phase();
-    $match = new Match();
-    $match->setMatchNumber(1);
-    self::assertEquals($phase->getMatches(), $phase->getChildren());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getMatches()->set($match->getMatchNumber(), $match);
-    self::assertEquals(1, $phase->getMatches()->count());
-    self::assertEquals($match, $phase->getMatches()[1]);
-    self::assertEquals($phase->getMatches(), $phase->getChildren());
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getRankingSystems
-   * @uses   \App\Entity\Phase::__construct
-   */
-  public function testRankingSystems()
-  {
-    $e = $this->phase();
-    /** @var $system RankingSystem */
-    $system = $this->createMockWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $e->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getLevel
-   * @uses   \App\Entity\Phase::__construct
-   */
-  public function testLevel()
-  {
-    self::assertEquals(Level::PHASE, $this->phase()->getLevel());
   }
 //</editor-fold desc="Public Methods">
 

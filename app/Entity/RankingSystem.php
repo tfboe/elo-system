@@ -47,11 +47,12 @@ class RankingSystem extends BaseEntity
    * @var int|null
    */
   protected $defaultForLevel;
+
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  private $automaticInstanceGeneration;
+  protected $generationInterval;
 
   /**
    * @ORM\ManyToMany(
@@ -119,32 +120,6 @@ class RankingSystem extends BaseEntity
    * @var Collection|RankingSystemList[]
    */
   private $lists;
-
-  /**
-   * @return RankingSystemList[]|Collection
-   */
-  public function getLists(): Collection
-  {
-    return $this->lists;
-  }
-
-  /**
-   * @return \DateTime|null
-   */
-  public function getOpenSyncFrom(): ?\DateTime
-  {
-    return $this->openSyncFrom;
-  }
-
-  /**
-   * @param \DateTime|null $openSyncFrom
-   * @return $this|RankingSystem
-   */
-  public function setOpenSyncFrom(?\DateTime $openSyncFrom): RankingSystem
-  {
-    $this->openSyncFrom = $openSyncFrom;
-    return $this;
-  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -155,7 +130,7 @@ class RankingSystem extends BaseEntity
   public function __construct(array $keys)
   {
     $this->initSubClassData($keys);
-    $this->automaticInstanceGeneration = AutomaticInstanceGeneration::OFF;
+    $this->generationInterval = AutomaticInstanceGeneration::OFF;
     $this->defaultForLevel = null;
     $this->tournaments = new ArrayCollection();
     $this->competitions = new ArrayCollection();
@@ -168,14 +143,6 @@ class RankingSystem extends BaseEntity
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return int
-   */
-  public function getAutomaticInstanceGeneration(): int
-  {
-    return $this->automaticInstanceGeneration;
-  }
-
   /**
    * @return Competition[]|Collection
    */
@@ -201,11 +168,35 @@ class RankingSystem extends BaseEntity
   }
 
   /**
+   * @return int
+   */
+  public function getGenerationInterval(): int
+  {
+    return $this->generationInterval;
+  }
+
+  /**
+   * @return RankingSystemList[]|Collection
+   */
+  public function getLists(): Collection
+  {
+    return $this->lists;
+  }
+
+  /**
    * @return Match[]|Collection
    */
   public function getMatches(): Collection
   {
     return $this->matches;
+  }
+
+  /**
+   * @return \DateTime|null
+   */
+  public function getOpenSyncFrom(): ?\DateTime
+  {
+    return $this->openSyncFrom;
   }
 
   /**
@@ -235,18 +226,6 @@ class RankingSystem extends BaseEntity
   }
 
   /**
-   * @param int $automaticInstanceGeneration
-   * @return $this|RankingSystem
-   * @throws \App\Exceptions\ValueNotValid
-   */
-  public function setAutomaticInstanceGeneration(int $automaticInstanceGeneration): RankingSystem
-  {
-    AutomaticInstanceGeneration::ensureValidValue($automaticInstanceGeneration);
-    $this->automaticInstanceGeneration = $automaticInstanceGeneration;
-    return $this;
-  }
-
-  /**
    * @param int|null $defaultForLevel
    * @return $this|RankingSystem
    * @throws ValueNotValid
@@ -257,6 +236,28 @@ class RankingSystem extends BaseEntity
       Level::ensureValidValue($defaultForLevel);
     }
     $this->defaultForLevel = $defaultForLevel;
+    return $this;
+  }
+
+  /**
+   * @param int $generationInterval
+   * @return $this|RankingSystem
+   * @throws \App\Exceptions\ValueNotValid
+   */
+  public function setGenerationInterval(int $generationInterval): RankingSystem
+  {
+    AutomaticInstanceGeneration::ensureValidValue($generationInterval);
+    $this->generationInterval = $generationInterval;
+    return $this;
+  }
+
+  /**
+   * @param \DateTime|null $openSyncFrom
+   * @return $this|RankingSystem
+   */
+  public function setOpenSyncFrom(?\DateTime $openSyncFrom): RankingSystem
+  {
+    $this->openSyncFrom = $openSyncFrom;
     return $this;
   }
 

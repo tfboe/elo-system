@@ -18,17 +18,17 @@ class ValueNotValid extends AbstractException
 //<editor-fold desc="Constructor">
   /**
    * @param mixed $value
-   * @param string|null $enum_name the corresponding enum class name or null
+   * @param string|null $enumName the corresponding enum class name or null
    * @param string $valueFunction the function to call on the enum class to get the list of possible values
    */
-  public function __construct($value, ?string $enum_name = null, string $valueFunction = "getValues")
+  public function __construct($value, ?string $enumName = null, string $valueFunction = "getValues")
   {
     $message = "The following value is not valid: " . json_encode($value);
-    if ($enum_name != null && method_exists($enum_name, $valueFunction)) {
+    if ($enumName != null && method_exists($enumName, $valueFunction)) {
       /** @var mixed[] $values */
-      $values = call_user_func([$enum_name, $valueFunction]);
+      $values = call_user_func([$enumName, $valueFunction]);
       assert(!in_array($value, $values, true));
-      $message .= " in " . $enum_name . ". Possible values: " .
+      $message .= " in " . $enumName . ". Possible values: " .
         implode(', ', array_map("json_encode", $values)) . ".";
     }
     parent::__construct($message);

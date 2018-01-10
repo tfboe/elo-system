@@ -107,14 +107,6 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
-   * @inheritDoc
-   */
-  public function getLocalIdentifier()
-  {
-    return $this->getId();
-  }
-
-  /**
    * @return User
    * @throws \App\Exceptions\ValueNotSet
    */
@@ -130,6 +122,14 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
   public function getLevel(): int
   {
     return Level::TOURNAMENT;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getId();
   }
 
   /**
@@ -187,12 +187,12 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
-   * @param string $user_identifier
+   * @param string $userIdentifier
    * @return $this|Tournament
    */
-  public function setUserIdentifier(string $user_identifier): Tournament
+  public function setUserIdentifier(string $userIdentifier): Tournament
   {
-    $this->userIdentifier = $user_identifier;
+    $this->userIdentifier = $userIdentifier;
     return $this;
   }
 //</editor-fold desc="Public Methods">

@@ -41,45 +41,39 @@ class PlayerController extends BaseController
 
     $this->validateBySpecification($request, $specification);
 
-    $already_existing_players = [];
+    $existingPlayers = [];
     $input = $request->input();
-    foreach ($input as &$player_ref) {
-      $player_ref['birthday'] = new \DateTime($player_ref['birthday']);
-    }
-    usort($input, function ($x, $y) {
-      $comp = $x['firstName'] <=> $y['firstName'];
-      if ($comp !== 0) {
-        return $comp;
-      }
-      $comp = $x['lastName'] <=> $y['lastName'];
-      if ($comp !== 0) {
-        return $comp;
-      }
-      return $x['birthday'] <=> $y['birthday'];
-    });
-    $last = null;
     $players = [];
+    $inputPlayerData = [];
     foreach ($input as $player) {
-      if ($last == null || $player['firstName'] != $last['firstName'] || $player['lastName'] != $last['lastName'] ||
-        $player['birthday'] != $last['birthday']) {
-        $last = $player;
-        $result = $this->em->getRepository(Player::class)->findBy($player);
+      //ignore duplicate players
+      if (!array_key_exists($player['firstName'], $inputPlayerData)) {
+        $inputPlayerData[$player['firstName']] = [];
+      }
+      if (!array_key_exists($player['lastName'], $inputPlayerData[$player['firstName']])) {
+        $inputPlayerData[$player['firstName']][$player['lastName']] = [];
+      }
+      if (!array_key_exists($player['birthday'], $inputPlayerData[$player['firstName']][$player['lastName']])) {
+        $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = true;
+        $player['birthday'] = new \DateTime($player['birthday']);
+        //check if player already exists
+        $result = $this->entityManager->getRepository(Player::class)->findBy($player);
         if (count($result) > 0) {
-          $already_existing_players[] = $result[0];
+          $existingPlayers[] = $result[0];
         } else {
           $p = $this->setFromSpecification(new Player(), $specification, $player);
-          $this->em->persist($p);
+          $this->entityManager->persist($p);
           $players[] = $p;
         }
       }
     }
-    if (count($already_existing_players) > 0) {
-      throw new PlayerAlreadyExists($already_existing_players);
+    if (count($existingPlayers) > 0) {
+      throw new PlayerAlreadyExists($existingPlayers);
     }
-    $this->em->flush();
+    $this->entityManager->flush();
 
     return response()->json(array_map(function (Player $p) {
-      return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getId(),
+      return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getPlayerId(),
         "birthday" => $p->getBirthday()->format("Y-m-d")];
     }, $players));
   }
@@ -108,12 +102,12 @@ class PlayerController extends BaseController
         $criteria['birthday'] = new \DateTime($criteria['birthday']);
       }
       /** @var Player[] $result */
-      $result = $this->em->getRepository(Player::class)->findBy($criteria);
+      $result = $this->entityManager->getRepository(Player::class)->findBy($criteria);
       $found = [];
       foreach ($result as $p) {
         /** @noinspection PhpUnhandledExceptionInspection */ //all values must be set since we used them in the
         // criteria (findBy)
-        $found[] = ['id' => $p->getId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
+        $found[] = ['id' => $p->getPlayerId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
           'birthday' => $p->getBirthday()->format('Y-m-d')];
       }
       $results[] = ['search' => $player, 'found' => $found];

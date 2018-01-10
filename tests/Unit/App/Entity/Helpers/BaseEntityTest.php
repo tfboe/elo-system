@@ -24,11 +24,11 @@ class BaseEntityTest extends UnitTestCase
    */
   public function testMethodExists()
   {
-    /** @var BaseEntity $e */
-    $e = $this->getMockForAbstractClass(BaseEntity::class);
+    /** @var BaseEntity $entity */
+    $entity = $this->getMockForAbstractClass(BaseEntity::class);
 
-    self::assertTrue($e->methodExists("methodExists"));
-    self::assertFalse($e->methodExists("notExistingMethod"));
+    self::assertTrue($entity->methodExists("methodExists"));
+    self::assertFalse($entity->methodExists("notExistingMethod"));
   }
 //</editor-fold desc="Public Methods">
 }

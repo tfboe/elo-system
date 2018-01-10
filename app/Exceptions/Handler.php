@@ -30,17 +30,18 @@ class Handler extends ExceptionHandler
    * Render an exception into an HTTP response.
    *
    * @param  \Illuminate\Http\Request $request
-   * @param  \Exception $e
+   * @param  \Exception $exception
    * @return \Illuminate\Http\Response
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
-  public function render($request, Exception $e)
+  public function render($request, Exception $exception)
   {
     //don't throw html exceptions always render using json
-    $status_code = $this->getExceptionHTTPStatusCode($e);
+    $statusCode = $this->getExceptionHTTPStatusCode($exception);
 
     return response()->json(
-      $this->getJsonMessage($e, $status_code),
-      $status_code
+      $this->getJsonMessage($exception, $statusCode),
+      $statusCode
     );
   }
 //</editor-fold desc="Public Methods">
@@ -48,33 +49,62 @@ class Handler extends ExceptionHandler
 //<editor-fold desc="Protected Methods">
   /**
    * Extracts the status code of an exception
-   * @param Exception $e the exception to extract from
+   * @param Exception $exception the exception to extract from
    * @return int|mixed the status code or 500 if no status code found
    */
-  protected function getExceptionHTTPStatusCode(Exception $e)
+  protected function getExceptionHTTPStatusCode(Exception $exception)
   {
     // Not all Exceptions have a http status code
     // We will give Error 500 if none found
-    if ($e instanceof ValidationException) {
-      return $e->getResponse()->getStatusCode();
+    if ($exception instanceof ValidationException) {
+      return $exception->getResponse()->getStatusCode();
     }
-    return method_exists($e, 'getStatusCode') ? $e->getStatusCode() :
-      ($e->getCode() != 0 ? $e->getCode() : 500);
+    return method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() :
+      ($exception->getCode() != 0 ? $exception->getCode() : 500);
+  }
+
+  /**
+   * Gets the exception name of an exception which is used by clients to identify the type of the error.
+   * @param Exception $exception the exception whose name we want
+   * @return string the exception name
+   */
+  protected function getExceptionName(Exception $exception): string
+  {
+    if ($exception instanceof AuthenticationException) {
+      return ExceptionNames::AUTHENTICATION_EXCEPTION;
+    }
+    if ($exception instanceof DuplicateException) {
+      return ExceptionNames::DUPLICATE_EXCEPTION;
+    }
+    if ($exception instanceof UnorderedPhaseNumberException) {
+      return ExceptionNames::UNORDERED_PHASE_NUMBER_EXCEPTION;
+    }
+    if ($exception instanceof ReferenceException) {
+      return ExceptionNames::REFERENCE_EXCEPTION;
+    }
+    if ($exception instanceof PlayerAlreadyExists) {
+      return ExceptionNames::PLAYER_ALREADY_EXISTS_EXCEPTION;
+    }
+    if ($exception instanceof ValidationException) {
+      return ExceptionNames::VALIDATION_EXCEPTION;
+    }
+    return ExceptionNames::INTERNAL_EXCEPTION;
   }
 
   /**
    * Extracts the status and the message from the given exception and status code
-   * @param Exception $e the raised exception
+   * @param Exception $exception the raised exception
    * @param string|null $statusCode the status code or null if unknown
    * @return array containing the infos status and message
    */
-  protected function getJsonMessage(Exception $e, $statusCode = null)
+  protected function getJsonMessage(Exception $exception, $statusCode = null)
   {
 
-    $result = method_exists($e, 'getJsonMessage') ? $e->getJsonMessage() : ['message' => $e->getMessage()];
+    $result = method_exists($exception, 'getJsonMessage') ? $exception->getJsonMessage() :
+      ['message' => $exception->getMessage()];
 
-    if ($e instanceof ValidationException) {
-      $result["errors"] = $e->errors();
+    if ($exception instanceof ValidationException) {
+      $result["errors"] = $exception->errors();
     }
 
     if (!array_key_exists('status', $result)) {
@@ -82,38 +112,10 @@ class Handler extends ExceptionHandler
     }
 
     if (!array_key_exists('name', $result)) {
-      $result['name'] = $this->getExceptionName($e);
+      $result['name'] = $this->getExceptionName($exception);
     }
 
     return $result;
-  }
-
-  /**
-   * Gets the exception name of an exception which is used by clients to identify the type of the error.
-   * @param Exception $e the exception whose name we want
-   * @return string the exception name
-   */
-  protected function getExceptionName(Exception $e): string
-  {
-    if ($e instanceof AuthenticationException) {
-      return ExceptionNames::AUTHENTICATION_EXCEPTION;
-    }
-    if ($e instanceof DuplicateException) {
-      return ExceptionNames::DUPLICATE_EXCEPTION;
-    }
-    if ($e instanceof UnorderedPhaseNumberException) {
-      return ExceptionNames::UNORDERED_PHASE_NUMBER_EXCEPTION;
-    }
-    if ($e instanceof ReferenceException) {
-      return ExceptionNames::REFERENCE_EXCEPTION;
-    }
-    if ($e instanceof PlayerAlreadyExists) {
-      return ExceptionNames::PLAYER_ALREADY_EXISTS_EXCEPTION;
-    }
-    if ($e instanceof ValidationException) {
-      return ExceptionNames::VALIDATION_EXCEPTION;
-    }
-    return ExceptionNames::INTERNAL_EXCEPTION;
   }
 //</editor-fold desc="Protected Methods">
 }

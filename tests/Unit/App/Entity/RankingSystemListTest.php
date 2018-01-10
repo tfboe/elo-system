@@ -30,9 +30,9 @@ class RankingSystemListTest extends UnitTestCase
    */
   public function testConstructor()
   {
-    $e = $this->instance();
-    self::assertEquals(new \DateTime("2000-01-01"), $e->getLastEntryTime());
-    self::assertFalse($e->isCurrent());
+    $entity = $this->instance();
+    self::assertEquals(new \DateTime("2000-01-01"), $entity->getLastEntryTime());
+    self::assertFalse($entity->isCurrent());
   }
 
   /**
@@ -42,9 +42,9 @@ class RankingSystemListTest extends UnitTestCase
    */
   public function testCurrent()
   {
-    $e = $this->instance();
-    $e->setCurrent(true);
-    self::assertTrue($e->isCurrent());
+    $entity = $this->instance();
+    $entity->setCurrent(true);
+    self::assertTrue($entity->isCurrent());
   }
 
   /**
@@ -54,9 +54,9 @@ class RankingSystemListTest extends UnitTestCase
    */
   public function testLastEntry()
   {
-    $e = $this->instance();
-    $e->setLastEntryTime(new \DateTime("2017-01-01"));
-    self::assertEquals(new \DateTime("2017-01-01"), $e->getLastEntryTime());
+    $instance = $this->instance();
+    $instance->setLastEntryTime(new \DateTime("2017-01-01"));
+    self::assertEquals(new \DateTime("2017-01-01"), $instance->getLastEntryTime());
   }
 
   /**
@@ -70,32 +70,32 @@ class RankingSystemListTest extends UnitTestCase
    */
   public function testRankingSystem()
   {
-    $e = $this->instance();
-    self::getProperty(get_class($e), 'id')->setValue($e, 'list-id');
-    $ranking_system = new RankingSystem([]);
+    $instance = $this->instance();
+    self::getProperty(get_class($instance), 'id')->setValue($instance, 'list-id');
+    $rankingSystem = new RankingSystem([]);
     /** @noinspection PhpUndefinedMethodInspection */
 
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->setRankingSystem($ranking_system);
+    $instance->setRankingSystem($rankingSystem);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($ranking_system, $e->getRankingSystem());
+    self::assertEquals($rankingSystem, $instance->getRankingSystem());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $e->getRankingSystem()->getLists()->count());
+    self::assertEquals(1, $instance->getRankingSystem()->getLists()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e, $e->getRankingSystem()->getLists()[$e->getId()]);
+    self::assertEquals($instance, $instance->getRankingSystem()->getLists()[$instance->getId()]);
 
-    $ranking_system2 = new RankingSystem([]);
+    $rankingSystem2 = new RankingSystem([]);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->setRankingSystem($ranking_system2);
+    $instance->setRankingSystem($rankingSystem2);
 
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($ranking_system2, $e->getRankingSystem());
+    self::assertEquals($rankingSystem2, $instance->getRankingSystem());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $e->getRankingSystem()->getLists()->count());
+    self::assertEquals(1, $instance->getRankingSystem()->getLists()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(0, $ranking_system->getLists()->count());
+    self::assertEquals(0, $rankingSystem->getLists()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e, $e->getRankingSystem()->getLists()[$e->getId()]);
+    self::assertEquals($instance, $instance->getRankingSystem()->getLists()[$instance->getId()]);
   }
 
   /**
@@ -106,13 +106,13 @@ class RankingSystemListTest extends UnitTestCase
    */
   public function testRankingSystemException()
   {
-    $e = $this->instance();
+    $instance = $this->instance();
     $this->expectException(ValueNotSet::class);
     $this->expectExceptionMessage("The property rankingSystem of the class " . RankingSystemList::class . " must be " .
       "set before it can be accessed. Please set the property immediately after you call the constructor(Empty " .
       "Constructor Pattern).");
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getRankingSystem();
+    $instance->getRankingSystem();
   }
 //</editor-fold desc="Public Methods">
 

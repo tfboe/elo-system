@@ -28,7 +28,7 @@ abstract class GameRankingSystem extends RankingSystem implements GameRankingSys
   protected function getEntitiesQueryBuilder(\App\Entity\RankingSystem $ranking, \DateTime $from): QueryBuilder
   {
     // query all relevant games
-    $query = $this->em->createQueryBuilder();
+    $query = $this->entityManager->createQueryBuilder();
     $query
       ->from(Game::class, 'g')
       ->select('g')
@@ -45,7 +45,7 @@ abstract class GameRankingSystem extends RankingSystem implements GameRankingSys
       ->setParameter('from', $from);
     $times = ['g.endTime', 'g.startTime', 'm.endTime', 'm.startTime', 'p.endTime', 'p.startTime', 'c.endTime',
       'c.startTime', 't.endTime', 't.startTime', 't.updatedAt'];
-    $or_expr = $query->expr()->orX();
+    $orExpr = $query->expr()->orX();
     for ($i = 0; $i < count($times); $i++) {
       $expr = $query->expr()->gt($times[$i], ':from');
       if ($i > 0) {
@@ -54,9 +54,9 @@ abstract class GameRankingSystem extends RankingSystem implements GameRankingSys
           $expr->add($query->expr()->isNull($times[$i]));
         }
       }
-      $or_expr->add($expr);
+      $orExpr->add($expr);
     }
-    $query->andWhere($or_expr);
+    $query->andWhere($orExpr);
     $query->andWhere($query->expr()->orX(
       $query->expr()->isNotNull('grs.id'),
       $query->expr()->isNotNull('mrs.id'),

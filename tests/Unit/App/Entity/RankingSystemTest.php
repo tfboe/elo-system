@@ -25,24 +25,25 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class BaseEntityTest
  * @package Tests\Unit\App\Entity\Helpers
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RankingSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\RankingSystem::setAutomaticInstanceGeneration
-   * @covers \App\Entity\RankingSystem::getAutomaticInstanceGeneration
+   * @covers \App\Entity\RankingSystem::setGenerationInterval
+   * @covers \App\Entity\RankingSystem::getGenerationInterval
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    * @uses   \App\Entity\RankingSystem::__construct
    * @uses   \App\Helpers\BasicEnum
    */
   public function testAutomaticInstanceGeneration()
   {
-    $e = $this->instance();
+    $entity = $this->instance();
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->setAutomaticInstanceGeneration(AutomaticInstanceGeneration::MONTHLY);
-    self::assertEquals(AutomaticInstanceGeneration::MONTHLY, $e->getAutomaticInstanceGeneration());
+    $entity->setGenerationInterval(AutomaticInstanceGeneration::MONTHLY);
+    self::assertEquals(AutomaticInstanceGeneration::MONTHLY, $entity->getGenerationInterval());
   }
 
   /**
@@ -52,21 +53,21 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testCompetitions()
   {
-    $e = $this->instance();
-    /** @var Competition $e2 */
-    $e2 = $this->createMockWithId(Competition::class);
+    $entity = $this->instance();
+    /** @var Competition $entity2 */
+    $entity2 = $this->createStubWithId(Competition::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getCompetitions()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getCompetitions()->count());
+    $entity->getCompetitions()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getCompetitions()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getCompetitions()[$e2->getId()]);
+    self::assertEquals($entity2, $entity->getCompetitions()[$entity2->getId()]);
   }
 
   /**
    * @covers \App\Entity\RankingSystem::__construct
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Entity\RankingSystem::getAutomaticInstanceGeneration
+   * @uses   \App\Entity\RankingSystem::getGenerationInterval
    * @uses   \App\Entity\RankingSystem::getCompetitions
    * @uses   \App\Entity\RankingSystem::getDefaultForLevel
    * @uses   \App\Entity\RankingSystem::getGames
@@ -78,23 +79,23 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testConstructor()
   {
-    $e = $this->instance();
-    self::assertInstanceOf(RankingSystem::class, $e);
-    self::assertEquals(AutomaticInstanceGeneration::OFF, $e->getAutomaticInstanceGeneration());
-    self::assertNull($e->getDefaultForLevel());
-    self::assertNull($e->getOpenSyncFrom());
-    self::assertInstanceOf(Collection::class, $e->getTournaments());
-    self::assertInstanceOf(Collection::class, $e->getCompetitions());
-    self::assertInstanceOf(Collection::class, $e->getPhases());
-    self::assertInstanceOf(Collection::class, $e->getMatches());
-    self::assertInstanceOf(Collection::class, $e->getGames());
-    self::assertInstanceOf(Collection::class, $e->getLists());
-    self::assertEquals(0, count($e->getTournaments()));
-    self::assertEquals(0, count($e->getCompetitions()));
-    self::assertEquals(0, count($e->getPhases()));
-    self::assertEquals(0, count($e->getMatches()));
-    self::assertEquals(0, count($e->getGames()));
-    self::assertEquals(0, count($e->getLists()));
+    $entity = $this->instance();
+    self::assertInstanceOf(RankingSystem::class, $entity);
+    self::assertEquals(AutomaticInstanceGeneration::OFF, $entity->getGenerationInterval());
+    self::assertNull($entity->getDefaultForLevel());
+    self::assertNull($entity->getOpenSyncFrom());
+    self::assertInstanceOf(Collection::class, $entity->getTournaments());
+    self::assertInstanceOf(Collection::class, $entity->getCompetitions());
+    self::assertInstanceOf(Collection::class, $entity->getPhases());
+    self::assertInstanceOf(Collection::class, $entity->getMatches());
+    self::assertInstanceOf(Collection::class, $entity->getGames());
+    self::assertInstanceOf(Collection::class, $entity->getLists());
+    self::assertEquals(0, count($entity->getTournaments()));
+    self::assertEquals(0, count($entity->getCompetitions()));
+    self::assertEquals(0, count($entity->getPhases()));
+    self::assertEquals(0, count($entity->getMatches()));
+    self::assertEquals(0, count($entity->getGames()));
+    self::assertEquals(0, count($entity->getLists()));
   }
 
   /**
@@ -106,11 +107,11 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testDefaultForLevel()
   {
-    $e = $this->instance();
+    $entity = $this->instance();
     $level = Level::COMPETITION;
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->setDefaultForLevel($level);
-    self::assertEquals($level, $e->getDefaultForLevel());
+    $entity->setDefaultForLevel($level);
+    self::assertEquals($level, $entity->getDefaultForLevel());
   }
 
   /**
@@ -120,14 +121,31 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testGames()
   {
-    $e = $this->instance();
-    /** @var Game $e2 */
-    $e2 = $this->createMockWithId(Game::class);
+    $entity = $this->instance();
+    /** @var Game $entity2 */
+    $entity2 = $this->createStubWithId(Game::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getGames()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getGames()->count());
+    $entity->getGames()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getGames()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getGames()[$e2->getId()]);
+    self::assertEquals($entity2, $entity->getGames()[$entity2->getId()]);
+  }
+
+  /**
+   * @covers \App\Entity\RankingSystem::getLists
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Entity\RankingSystem::__construct
+   */
+  public function testLists()
+  {
+    $entity = $this->instance();
+    /** @var RankingSystemList $entity2 */
+    $entity2 = $this->createStubWithId(RankingSystemList::class);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $entity->getLists()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getLists()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($entity2, $entity->getLists()[$entity2->getId()]);
   }
 
   /**
@@ -137,14 +155,28 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testMatches()
   {
-    $e = $this->instance();
-    /** @var Match $e2 */
-    $e2 = $this->createMockWithId(Match::class);
+    $entity = $this->instance();
+    /** @var Match $entity2 */
+    $entity2 = $this->createStubWithId(Match::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getMatches()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getMatches()->count());
+    $entity->getMatches()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getMatches()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getMatches()[$e2->getId()]);
+    self::assertEquals($entity2, $entity->getMatches()[$entity2->getId()]);
+  }
+
+  /**
+   * @covers \App\Entity\RankingSystem::setOpenSyncFrom
+   * @covers \App\Entity\RankingSystem::getOpenSyncFrom
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \App\Entity\RankingSystem::__construct
+   */
+  public function testOpenSyncFrom()
+  {
+    $entity = $this->instance();
+    $entity->setOpenSyncFrom(new \DateTime("2017-01-01"));
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals(new \DateTime("2017-01-01"), $entity->getOpenSyncFrom());
   }
 
   /**
@@ -154,14 +186,14 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testPhases()
   {
-    $e = $this->instance();
-    /** @var Phase $e2 */
-    $e2 = $this->createMockWithId(Phase::class);
+    $entity = $this->instance();
+    /** @var Phase $entity2 */
+    $entity2 = $this->createStubWithId(Phase::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getPhases()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getPhases()->count());
+    $entity->getPhases()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getPhases()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getPhases()[$e2->getId()]);
+    self::assertEquals($entity2, $entity->getPhases()[$entity2->getId()]);
   }
 
   /**
@@ -173,10 +205,10 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testServiceName()
   {
-    $e = $this->instance();
-    $e->setServiceName("serviceName");
+    $entity = $this->instance();
+    $entity->setServiceName("serviceName");
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals("serviceName", $e->getServiceName());
+    self::assertEquals("serviceName", $entity->getServiceName());
   }
 
   /**
@@ -188,13 +220,14 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testServiceNameException()
   {
-    $e = $this->instance();
+    $entity = $this->instance();
     $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property serviceName of the class " . get_class($e) . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    $this->expectExceptionMessage("The property serviceName of the class " . get_class($entity) . " must be set " .
+      "before it can be accessed. Please set the property immediately after you call the " .
+      "constructor(Empty Constructor Pattern)."
     );
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getServiceName();
+    $entity->getServiceName();
   }
 
   /**
@@ -204,45 +237,14 @@ class RankingSystemTest extends UnitTestCase
    */
   public function testTournaments()
   {
-    $e = $this->instance();
-    /** @var Tournament $e2 */
-    $e2 = $this->createMockWithId(Tournament::class);
+    $entity = $this->instance();
+    /** @var Tournament $entity2 */
+    $entity2 = $this->createStubWithId(Tournament::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getTournaments()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getTournaments()->count());
+    $entity->getTournaments()->set($entity2->getId(), $entity2);
+    self::assertEquals(1, $entity->getTournaments()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getTournaments()[$e2->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\RankingSystem::getLists
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
-   */
-  public function testLists()
-  {
-    $e = $this->instance();
-    /** @var RankingSystemList $e2 */
-    $e2 = $this->createMockWithId(RankingSystemList::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getLists()->set($e2->getId(), $e2);
-    self::assertEquals(1, $e->getLists()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e2, $e->getLists()[$e2->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\RankingSystem::setOpenSyncFrom
-   * @covers \App\Entity\RankingSystem::getOpenSyncFrom
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
-   */
-  public function testOpenSyncFrom()
-  {
-    $e = $this->instance();
-    $e->setOpenSyncFrom(new \DateTime("2017-01-01"));
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(new \DateTime("2017-01-01"), $e->getOpenSyncFrom());
+    self::assertEquals($entity2, $entity->getTournaments()[$entity2->getId()]);
   }
 //</editor-fold desc="Public Methods">
 

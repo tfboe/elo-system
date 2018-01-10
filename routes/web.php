@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  * @apiParam {string} email the unique email address of the user
  * @apiParam {string{8..}} password the password
- * @apiParam {integer{>=0}} lastConfirmedAGBVersion last confirmed AGB version
+ * @apiParam {integer{>=0}} confirmedAGBVersion confirmed AGB version
  *
  * @apiSuccess {string} id the id of the newly created user
  * @apiError ValidationException The provided email is malformed or does already exist, or the provided password is too

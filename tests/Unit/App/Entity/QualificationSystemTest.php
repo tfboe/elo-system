@@ -37,9 +37,9 @@ class QualificationSystemTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $system->getNextPhase());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $system->getNextPhase()->getPreviousQualificationSystems()->count());
+    self::assertEquals(1, $system->getNextPhase()->getPreQualifications()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $system->getNextPhase()->getPreviousQualificationSystems()[0]);
+    self::assertEquals($system, $system->getNextPhase()->getPreQualifications()[0]);
 
     $phase2 = new Phase();
 
@@ -48,10 +48,10 @@ class QualificationSystemTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase2, $system->getNextPhase());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $system->getNextPhase()->getPreviousQualificationSystems()->count());
-    self::assertEquals(0, $phase->getPreviousQualificationSystems()->count());
+    self::assertEquals(1, $system->getNextPhase()->getPreQualifications()->count());
+    self::assertEquals(0, $phase->getPreQualifications()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $system->getNextPhase()->getPreviousQualificationSystems()[0]);
+    self::assertEquals($system, $system->getNextPhase()->getPreQualifications()[0]);
   }
 
   /**
@@ -87,9 +87,9 @@ class QualificationSystemTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $system->getPreviousPhase());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $system->getPreviousPhase()->getNextQualificationSystems()->count());
+    self::assertEquals(1, $system->getPreviousPhase()->getPostQualifications()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $system->getPreviousPhase()->getNextQualificationSystems()[0]);
+    self::assertEquals($system, $system->getPreviousPhase()->getPostQualifications()[0]);
 
     $phase2 = new Phase();
 
@@ -98,10 +98,10 @@ class QualificationSystemTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase2, $system->getPreviousPhase());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(1, $system->getPreviousPhase()->getNextQualificationSystems()->count());
-    self::assertEquals(0, $phase->getNextQualificationSystems()->count());
+    self::assertEquals(1, $system->getPreviousPhase()->getPostQualifications()->count());
+    self::assertEquals(0, $phase->getPostQualifications()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $system->getPreviousPhase()->getNextQualificationSystems()[0]);
+    self::assertEquals($system, $system->getPreviousPhase()->getPostQualifications()[0]);
   }
 
   /**

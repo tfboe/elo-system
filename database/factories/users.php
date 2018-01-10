@@ -19,6 +19,6 @@ $factory->define(\App\Entity\User::class, function (\Faker\Generator $faker, arr
     'password' => Hash::make($password),
     'email' => $faker->email,
     'jwtVersion' => 1,
-    'lastConfirmedAGBVersion' => 0,
+    'confirmedAGBVersion' => 0,
   ];
 });

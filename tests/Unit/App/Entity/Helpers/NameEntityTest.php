@@ -28,10 +28,10 @@ class NameEntityTest extends UnitTestCase
    */
   public function testName()
   {
-    $e = $this->mock();
-    $e->setName("Name");
+    $entity = $this->mock();
+    $entity->setName("Name");
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals("Name", $e->getName());
+    self::assertEquals("Name", $entity->getName());
   }
 //</editor-fold desc="Public Methods">
 

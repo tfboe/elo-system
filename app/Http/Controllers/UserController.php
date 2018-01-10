@@ -58,18 +58,18 @@ class UserController extends BaseController
    */
   public function register(Request $request, Application $app): JsonResponse
   {
-    $user_specification = $this->getCredentialSpecification($app);
-    $user_specification['email']['validation'] .= '|unique:App\Entity\User,email';
-    $user_specification['lastConfirmedAGBVersion'] = ['validation' => 'integer|min:0'];
+    $userSpecification = $this->getCredentialSpecification($app);
+    $userSpecification['email']['validation'] .= '|unique:App\Entity\User,email';
+    $userSpecification['confirmedAGBVersion'] = ['validation' => 'integer|min:0'];
 
-    $this->validateBySpecification($request, $user_specification);
+    $this->validateBySpecification($request, $userSpecification);
 
     $input = $request->input();
     /** @var User $user */
-    $user = $this->setFromSpecification(new User(), $user_specification, $input);
+    $user = $this->setFromSpecification(new User(), $userSpecification, $input);
 
-    $this->em->persist($user); //sets the user id
-    $this->em->flush();
+    $this->entityManager->persist($user); //sets the user id
+    $this->entityManager->flush();
 
     /** @noinspection PhpUnhandledExceptionInspection */
     return response()->json(['id' => $user->getId()]);
@@ -98,8 +98,8 @@ class UserController extends BaseController
     return [
       'email' => ['validation' => 'required|email'],
       'password' => ['validation' => 'required|string|min:8',
-        'transformer' => function ($x) use ($app) {
-          return $app['hash']->make($x);
+        'transformer' => function ($value) use ($app) {
+          return $app['hash']->make($value);
         }]
     ];
   }

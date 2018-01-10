@@ -45,20 +45,45 @@ class CompetitionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Competition::getTeams
+   * @covers \App\Entity\Competition::getLocalIdentifier
    * @uses   \App\Entity\Competition::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Team
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Entity\Helpers\NameEntity::setName
    */
-  public function testTeams()
+  public function testGetLocalIdentifier()
   {
-    $competition = $this->competition();
-    $team = new Team();
-    $team->setStartNumber(1);
+    $entity = $this->competition();
+    $entity->setName("Name");
     /** @noinspection PhpUnhandledExceptionInspection */
-    $competition->getTeams()->set($team->getStartNumber(), $team);
-    self::assertEquals(1, $competition->getTeams()->count());
-    self::assertEquals($team, $competition->getTeams()[1]);
+    self::assertEquals($entity->getName(), $entity->getLocalIdentifier());
+  }
+
+  /**
+   * @covers \App\Entity\Competition::getLocalIdentifier
+   * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\NameEntity::getName
+   * @uses   \App\Exceptions\ValueNotSet::__construct
+   */
+  public function testGetLocalIdentifierException()
+  {
+    $entity = $this->competition();
+    $this->expectException(ValueNotSet::class);
+    $this->expectExceptionMessage("The property name of the class " . get_class($entity) . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the " .
+      "constructor(Empty Constructor Pattern).");
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $entity->getLocalIdentifier();
+  }
+
+  /**
+   * @covers \App\Entity\Competition::getLevel()
+   * @uses   \App\Entity\Competition::__construct
+   */
+  public function testLevel()
+  {
+    self::assertEquals(Level::COMPETITION, $this->competition()->getLevel());
   }
 
   /**
@@ -82,35 +107,36 @@ class CompetitionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Competition::getLocalIdentifier
+   * @covers \App\Entity\Competition::getRankingSystems()
    * @uses   \App\Entity\Competition::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Entity\Helpers\NameEntity::setName
    */
-  public function testGetLocalIdentifier()
+  public function testRankingSystems()
   {
-    $e = $this->competition();
-    $e->setName("Name");
+    $entity = $this->competition();
+    /** @var $system RankingSystem */
+    $system = $this->createStubWithId(RankingSystem::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($e->getName(), $e->getLocalIdentifier());
+    $entity->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $entity->getRankingSystems()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
   }
 
   /**
-   * @covers \App\Entity\Competition::getLocalIdentifier
+   * @covers \App\Entity\Competition::getTeams
    * @uses   \App\Entity\Competition::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Team
    */
-  public function testGetLocalIdentifierException()
+  public function testTeams()
   {
-    $e = $this->competition();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property name of the class " . get_class($e) . " must be set before it can" .
-      " be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $competition = $this->competition();
+    $team = new Team();
+    $team->setStartNumber(1);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getLocalIdentifier();
+    $competition->getTeams()->set($team->getStartNumber(), $team);
+    self::assertEquals(1, $competition->getTeams()->count());
+    self::assertEquals($team, $competition->getTeams()[1]);
   }
 
   /**
@@ -171,31 +197,6 @@ class CompetitionTest extends UnitTestCase
       "Pattern).");
     /** @noinspection PhpUnhandledExceptionInspection */
     $competition->getTournament();
-  }
-
-  /**
-   * @covers \App\Entity\Competition::getRankingSystems()
-   * @uses   \App\Entity\Competition::__construct
-   */
-  public function testRankingSystems()
-  {
-    $e = $this->competition();
-    /** @var $system RankingSystem */
-    $system = $this->createMockWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $e->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\Competition::getLevel()
-   * @uses   \App\Entity\Competition::__construct
-   */
-  public function testLevel()
-  {
-    self::assertEquals(Level::COMPETITION, $this->competition()->getLevel());
   }
 //</editor-fold desc="Public Methods">
 

@@ -29,11 +29,11 @@ class ResultEntityTest extends UnitTestCase
    */
   public function testPlayed()
   {
-    $e = $this->mock();
+    $entity = $this->mock();
     $played = true;
-    $e->setPlayed($played);
+    $entity->setPlayed($played);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($played, $e->isPlayed());
+    self::assertEquals($played, $entity->isPlayed());
   }
 
   /**
@@ -58,11 +58,11 @@ class ResultEntityTest extends UnitTestCase
    */
   public function testResultA()
   {
-    $e = $this->mock();
+    $entity = $this->mock();
     $res = 1;
-    $e->setResultA($res);
+    $entity->setResultA($res);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($res, $e->getResultA());
+    self::assertEquals($res, $entity->getResultA());
   }
 
   /**
@@ -72,11 +72,11 @@ class ResultEntityTest extends UnitTestCase
    */
   public function testResultB()
   {
-    $e = $this->mock();
+    $entity = $this->mock();
     $res = 1;
-    $e->setResultB($res);
+    $entity->setResultB($res);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($res, $e->getResultB());
+    self::assertEquals($res, $entity->getResultB());
   }
 
   /**

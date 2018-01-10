@@ -63,13 +63,13 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
    * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="nextPhase")
    * @var Collection|QualificationSystem[]
    */
-  protected $previousQualificationSystems;
+  protected $preQualifications;
 
   /**
    * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="previousPhase")
    * @var Collection|QualificationSystem[]
    */
-  protected $nextQualificationSystems;
+  protected $postQualifications;
 
   /**
    * @ORM\OneToMany(targetEntity="Ranking", mappedBy="group", indexBy="uniqueRank")
@@ -93,14 +93,6 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
    * @var Collection|RankingSystem[]
    */
   private $rankingSystems;
-
-  /**
-   * @return RankingSystem[]|Collection
-   */
-  public function getRankingSystems()
-  {
-    return $this->rankingSystems;
-  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -109,8 +101,8 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
    */
   public function __construct()
   {
-    $this->previousQualificationSystems = new ArrayCollection();
-    $this->nextQualificationSystems = new ArrayCollection();
+    $this->preQualifications = new ArrayCollection();
+    $this->postQualifications = new ArrayCollection();
     $this->name = '';
     $this->rankings = new ArrayCollection();
     $this->matches = new ArrayCollection();
@@ -120,6 +112,14 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
 
 //<editor-fold desc="Public Methods">
   /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return $this->getMatches();
+  }
+
+  /**
    * @return Competition
    * @throws \App\Exceptions\ValueNotSet
    */
@@ -127,6 +127,14 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   {
     $this->ensureNotNull('competition');
     return $this->competition;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::PHASE;
   }
 
   /**
@@ -146,11 +154,11 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   }
 
   /**
-   * @return QualificationSystem[]|Collection
+   * @inheritDoc
    */
-  public function getNextQualificationSystems(): Collection
+  public function getParent(): ?TreeStructureEntityInterface
   {
-    return $this->nextQualificationSystems;
+    return $this->getCompetition();
   }
 
   /**
@@ -166,9 +174,25 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   /**
    * @return QualificationSystem[]|Collection
    */
-  public function getPreviousQualificationSystems(): Collection
+  public function getPostQualifications(): Collection
   {
-    return $this->previousQualificationSystems;
+    return $this->postQualifications;
+  }
+
+  /**
+   * @return QualificationSystem[]|Collection
+   */
+  public function getPreQualifications(): Collection
+  {
+    return $this->preQualifications;
+  }
+
+  /**
+   * @return RankingSystem[]|Collection
+   */
+  public function getRankingSystems()
+  {
+    return $this->rankingSystems;
   }
 
   /**
@@ -202,30 +226,6 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   {
     $this->phaseNumber = $phaseNumber;
     return $this;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getParent(): ?TreeStructureEntityInterface
-  {
-    return $this->getCompetition();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getChildren(): Collection
-  {
-    return $this->getMatches();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getLevel(): int
-  {
-    return Level::PHASE;
   }
 //</editor-fold desc="Public Methods">
 }

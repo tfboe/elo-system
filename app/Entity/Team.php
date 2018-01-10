@@ -32,8 +32,12 @@ class Team extends BaseEntity
 //<editor-fold desc="Fields">
 
   /**
-   * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
-   * @ORM\JoinTable(name="relation__team_players")
+   * @ORM\ManyToMany(targetEntity="Player", indexBy="playerId")
+   * @ORM\JoinTable(name="relation__team_players",
+   *      joinColumns={@ORM\JoinColumn(name="team_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="player_id", referencedColumnName="player_id")}
+   *      )
+   *
    * @var Collection|Player[]
    */
   protected $players;

@@ -48,9 +48,9 @@ class IdGeneratorTest extends UnitTestCase
   public function testGenerate()
   {
     $generator = new IdGenerator();
-    $em = $this->createMock(EntityManager::class);
-    /** @var EntityManager $em */
-    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $generator->generate($em, null));
+    $entityManager = $this->createMock(EntityManager::class);
+    /** @var EntityManager $entityManager */
+    self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', $generator->generate($entityManager, null));
   }
 //</editor-fold desc="Public Methods">
 }

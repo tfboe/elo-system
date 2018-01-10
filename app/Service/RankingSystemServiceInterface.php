@@ -20,17 +20,11 @@ interface RankingSystemServiceInterface
 {
 //<editor-fold desc="Public Methods">
   /**
-   * Recalculates all ranking systems which have an open sync from value.
-   */
-  public function recalculateRankingSystems(): void;
-
-  /**
    * Adapts the open sync from property of all relevant ranking systems
    * @param Tournament $tournament The tournament to analyze
-   * @param mixed[][] $earliest_influences the earliest influences of the tournament before the change
+   * @param mixed[][] $influences the earliest influences of the tournament before the change
    */
-  public function adaptOpenSyncFromValues(Tournament $tournament, array $earliest_influences): void;
-
+  public function adaptOpenSyncFromValues(Tournament $tournament, array $influences): void;
 
   /**
    * Gets all ranking systems of a tournament and its earliest influences as time.
@@ -39,5 +33,10 @@ interface RankingSystemServiceInterface
    * @return mixed[][]
    */
   public function getRankingSystemsEarliestInfluences(Tournament $tournament): array;
+
+  /**
+   * Recalculates all ranking systems which have an open sync from value.
+   */
+  public function recalculateRankingSystems(): void;
 //</editor-fold desc="Public Methods">
 }

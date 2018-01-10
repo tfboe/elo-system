@@ -28,7 +28,7 @@ class RankingSystemService implements RankingSystemServiceInterface
   private $dsls;
 
   /** @var EntityManagerInterface */
-  private $em;
+  private $entityManager;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -36,12 +36,12 @@ class RankingSystemService implements RankingSystemServiceInterface
   /**
    * RankingSystemService constructor.
    * @param DynamicServiceLoadingServiceInterface $dsls
-   * @param EntityManagerInterface $em
+   * @param EntityManagerInterface $entityManager
    */
-  public function __construct(DynamicServiceLoadingServiceInterface $dsls, EntityManagerInterface $em)
+  public function __construct(DynamicServiceLoadingServiceInterface $dsls, EntityManagerInterface $entityManager)
   {
     $this->dsls = $dsls;
-    $this->em = $em;
+    $this->entityManager = $entityManager;
   }
 //</editor-fold desc="Constructor">
 
@@ -49,67 +49,48 @@ class RankingSystemService implements RankingSystemServiceInterface
   /**
    * @inheritDoc
    */
-  public function applyRankingSystems(Tournament $tournament, array $earliest_influences): void
+  public function adaptOpenSyncFromValues(Tournament $tournament, array $oldInfluences): void
   {
-    $ranking_systems = $this->getRankingSystems($tournament);
-    foreach ($ranking_systems as $sys) {
-      if (!array_key_exists($sys->getId(), $earliest_influences)) {
-        $earliest_influences[$sys->getId()] = [
+    $earliestInfluences = $this->getRankingSystemsEarliestInfluences($tournament);
+    foreach ($oldInfluences as $id => $arr) {
+      if (array_key_exists($id, $earliestInfluences)) {
+        if ($oldInfluences[$id]["earliestInfluence"] < $earliestInfluences[$id]["earliestInfluence"]) {
+          $earliestInfluences[$id]["earliestInfluence"] = $oldInfluences[$id]["earliestInfluence"];
+        }
+      } else {
+        $earliestInfluences[$id] = $oldInfluences[$id];
+      }
+    }
+    foreach ($earliestInfluences as $arr) {
+      /** @var RankingSystem $ranking */
+      $ranking = $arr["rankingSystem"];
+      $earliestInfluence = $arr["earliestInfluence"];
+      if ($ranking->getOpenSyncFrom() === null || $ranking->getOpenSyncFrom() > $earliestInfluence) {
+        $ranking->setOpenSyncFrom($earliestInfluence);
+      }
+    }
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function applyRankingSystems(Tournament $tournament, array $earliestInfluences): void
+  {
+    $rankingSystems = $this->getRankingSystems($tournament);
+    foreach ($rankingSystems as $sys) {
+      if (!array_key_exists($sys->getId(), $earliestInfluences)) {
+        $earliestInfluences[$sys->getId()] = [
           "rankingSystem" => $sys,
           "earliestInfluence" => null
         ];
       }
     }
-    foreach ($earliest_influences as $arr) {
+    foreach ($earliestInfluences as $arr) {
       /** @var RankingSystem $ranking */
       $ranking = $arr["rankingSystem"];
-      $earliest_influence = $arr["earliestInfluence"];
+      $earliestInfluence = $arr["earliestInfluence"];
       $service = $this->dsls->loadRankingSystemService($ranking->getServiceName());
-      $service->updateRankingForTournament($ranking, $tournament, $earliest_influence);
-    }
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function recalculateRankingSystems(): void
-  {
-    $query = $this->em->createQueryBuilder();
-    $query
-      ->from(RankingSystem::class, 's')
-      ->select('s')
-      ->where($query->expr()->isNotNull('s.openSyncFrom'));
-    /** @var RankingSystem[] $ranking_systems */
-    $ranking_systems = $query->getQuery()->getResult();
-    foreach ($ranking_systems as $ranking_system) {
-      $service = $this->dsls->loadRankingSystemService($ranking_system->getServiceName());
-      $service->updateRankingFrom($ranking_system, $ranking_system->getOpenSyncFrom());
-      $ranking_system->setOpenSyncFrom(null);
-    }
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function adaptOpenSyncFromValues(Tournament $tournament, array $old_earliest_influences): void
-  {
-    $earliest_influences = $this->getRankingSystemsEarliestInfluences($tournament);
-    foreach ($old_earliest_influences as $id => $arr) {
-      if (array_key_exists($id, $earliest_influences)) {
-        if ($old_earliest_influences[$id]["earliestInfluence"] < $earliest_influences[$id]["earliestInfluence"]) {
-          $earliest_influences[$id]["earliestInfluence"] = $old_earliest_influences[$id]["earliestInfluence"];
-        }
-      } else {
-        $earliest_influences[$id] = $old_earliest_influences[$id];
-      }
-    }
-    foreach ($earliest_influences as $arr) {
-      /** @var RankingSystem $ranking */
-      $ranking = $arr["rankingSystem"];
-      $earliest_influence = $arr["earliestInfluence"];
-      if ($ranking->getOpenSyncFrom() === null || $ranking->getOpenSyncFrom() > $earliest_influence) {
-        $ranking->setOpenSyncFrom($earliest_influence);
-      }
+      $service->updateRankingForTournament($ranking, $tournament, $earliestInfluence);
     }
   }
 
@@ -118,11 +99,11 @@ class RankingSystemService implements RankingSystemServiceInterface
    */
   public function getRankingSystemsEarliestInfluences(Tournament $tournament): array
   {
-    $ranking_systems = $this->getRankingSystems($tournament);
+    $rankingSystems = $this->getRankingSystems($tournament);
 
     $result = [];
     //compute earliest influences
-    foreach ($ranking_systems as $sys) {
+    foreach ($rankingSystems as $sys) {
       $service = $this->dsls->loadRankingSystemService($sys->getServiceName());
       $result[$sys->getId()] = [
         "rankingSystem" => $sys,
@@ -131,6 +112,25 @@ class RankingSystemService implements RankingSystemServiceInterface
     }
 
     return $result;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function recalculateRankingSystems(): void
+  {
+    $query = $this->entityManager->createQueryBuilder();
+    $query
+      ->from(RankingSystem::class, 's')
+      ->select('s')
+      ->where($query->expr()->isNotNull('s.openSyncFrom'));
+    /** @var RankingSystem[] $rankingSystems */
+    $rankingSystems = $query->getQuery()->getResult();
+    foreach ($rankingSystems as $rankingSystem) {
+      $service = $this->dsls->loadRankingSystemService($rankingSystem->getServiceName());
+      $service->updateRankingFrom($rankingSystem, $rankingSystem->getOpenSyncFrom());
+      $rankingSystem->setOpenSyncFrom(null);
+    }
   }
 //</editor-fold desc="Public Methods">
 

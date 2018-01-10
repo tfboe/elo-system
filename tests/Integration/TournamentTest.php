@@ -32,10 +32,18 @@ use Tests\Helpers\AuthenticatedTestCase;
 /**
  * Class TournamentTest
  * @package Tests\Integration
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class TournamentTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+   */
   public function testCreateTournamentFull()
   {
     $players = $this->createPlayers(5);
@@ -60,11 +68,11 @@ class TournamentTest extends AuthenticatedTestCase
           'teamMode' => 'SINGLE',
           'table' => 'MULTITABLE',
           'teams' => [
-            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId(),
-              $players[2]->getId()]],
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId(),
+              $players[2]->getPlayerId()]],
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' =>
-              [$players[2]->getId(), $players[3]->getId(), $players[4]->getId()]]
+              [$players[2]->getPlayerId(), $players[3]->getPlayerId(), $players[4]->getPlayerId()]]
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -103,8 +111,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -119,8 +127,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -153,8 +161,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[4]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[4]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -169,8 +177,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[3]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[3]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -203,8 +211,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[1]->getId()],
-                      'playersB' => [$players[2]->getId()],
+                      'playersA' => [$players[1]->getPlayerId()],
+                      'playersB' => [$players[2]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -219,8 +227,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[1]->getId()],
-                      'playersB' => [$players[4]->getId()],
+                      'playersA' => [$players[1]->getPlayerId()],
+                      'playersB' => [$players[4]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -271,8 +279,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[3]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[3]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -287,8 +295,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[2]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -340,8 +348,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[4]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -356,8 +364,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getId()],
-                      'playersB' => [$players[0]->getId()],
+                      'playersA' => [$players[2]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -409,8 +417,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getId()],
-                      'playersB' => [$players[0]->getId()],
+                      'playersA' => [$players[4]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -425,8 +433,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[3]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[3]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -478,8 +486,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[2]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[2]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -494,8 +502,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[3]->getId()],
-                      'playersB' => [$players[0]->getId()],
+                      'playersA' => [$players[3]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -547,8 +555,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getId()],
-                      'playersB' => [$players[0]->getId()],
+                      'playersA' => [$players[4]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -563,8 +571,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[2]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -592,9 +600,9 @@ class TournamentTest extends AuthenticatedTestCase
           'teamMode' => 'DYP',
           'table' => 'GARLANDO',
           'teams' => [
-            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
-            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getId()]]
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId()]],
+            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getPlayerId()]]
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -633,8 +641,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -649,8 +657,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[2]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[2]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -695,8 +703,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -717,8 +725,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -743,899 +751,6 @@ class TournamentTest extends AuthenticatedTestCase
     $this->assertTournamentInfoByRequest($request, $tournament);
   }
 
-  public function testDuplicatePlayerInTeam()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
-              'players' => [$players[0]->getId(), $players[0]->getId()]],
-            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-          ]
-        ]
-      ],
-    ];
-
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateStartNumber()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'groupNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-          ]
-        ]
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the team list of competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicatePhaseNumber()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
-                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the phase list of the competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testUnorderedTestNumberException()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 2,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'nextPhaseNumbers' => [1],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
-                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[1]->getId()],
-                      'playersB' => [$players[0]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Unordered Phase Number Exception",
-        "nextPhaseNumber" => 1, "previousPhaseNumber" => 2,
-        "name" => "UnorderedPhaseNumberException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateNextPhaseNumber()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'nextPhaseNumbers' => [2, 2],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-            [
-              'phaseNumber' => 2,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
-                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[1]->getId()],
-                      'playersB' => [$players[0]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 2,
-        "arrayName" => "the next phase numbers list of phase 1 of the competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testNextPhaseNumberReferenceException()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'nextPhaseNumbers' => [2],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 2,
-        "referenceName" => "phase numbers in competition Test Competition",
-        "name" => "ReferenceException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testTeamStartNumberReferenceException()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 3,
-        "referenceName" => "team start number in competition Test Competition",
-        "name" => "ReferenceException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateRankingUniqueRank()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the ranking list of phase 1 of the competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateRankingTeamStartNumber()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1, 1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ],
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the team list of ranking (Unique rank 1) of the phase 1 of the competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateMatchNumber()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ],
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [2],
-                  'rankingsBUniqueRanks' => [1],
-                  'resultA' => 5,
-                  'resultB' => 7,
-                  'result' => 'TEAM_B_WINS',
-                  'played' => false,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[1]->getId()],
-                      'playersB' => [$players[0]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ],
-            ],
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the match list of phase 1 of the competition Test Competition",
-        "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateRankInMatchRankingsAAndB()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [1],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ],
-              ],
-            ],
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the rankings A and ranking B lists of the match with match number 1 of the phase 1 of the " .
-          "competition Test Competition", "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testDuplicateRankInMatchRankingsA()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1, 1],
-                  'rankingsBUniqueRanks' => [2],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ],
-              ],
-            ],
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
-        "arrayName" => "the rankings A list of the match with match number 1 of the phase 1 of the competition Test " .
-          "Competition", "name" => "DuplicateException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
-  public function testMatchRankingReferenceException()
-  {
-    $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $request = [
-      'name' => 'Test Tournament',
-      'userIdentifier' => 'id0',
-      'competitions' => [
-        [
-          'name' => 'Test Competition',
-          'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-          ],
-          'phases' => [
-            [
-              'phaseNumber' => 1,
-              'rankings' => [
-                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
-                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
-              ],
-              'matches' => [
-                [
-                  'matchNumber' => 1,
-                  'rankingsAUniqueRanks' => [1],
-                  'rankingsBUniqueRanks' => [3],
-                  'resultA' => 1,
-                  'resultB' => 0,
-                  'result' => 'TEAM_A_WINS',
-                  'played' => true,
-                  'games' => [
-                    [
-                      'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
-                      'resultA' => 1,
-                      'resultB' => 0,
-                      'result' => 'TEAM_A_WINS',
-                      'played' => true,
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ],
-      ],
-    ];
-
-    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
-      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 3,
-        "referenceName" => "unique rank in phase 1 of the competition Test Competition",
-        "name" => "ReferenceException", "status" => 409]);
-
-    /** @var \Doctrine\ORM\EntityRepository $repo */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $repo = EntityManager::getRepository(Tournament::class);
-    self::assertEquals(0, count($repo->findAll()));
-  }
-
   public function testDuplicateGameNumberException()
   {
     $players = $this->createPlayers(2);
@@ -1647,8 +762,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -1669,8 +784,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1678,8 +793,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1705,7 +820,7 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
-  public function testDuplicatePlayerIdInGamePlayersA()
+  public function testDuplicateMatchNumber()
   {
     $players = $this->createPlayers(2);
     /** @noinspection PhpUnhandledExceptionInspection */
@@ -1716,8 +831,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -1738,8 +853,267 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId(), $players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ],
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [2],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 5,
+                  'resultB' => 7,
+                  'result' => 'TEAM_B_WINS',
+                  'played' => false,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the match list of phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateNextPhaseNumber()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'nextPhaseNumbers' => [2, 2],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              'phaseNumber' => 2,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
+                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 2,
+        "arrayName" => "the next phase numbers list of phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicatePhaseNumber()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
+                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the phase list of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicatePlayerIdInGamePlayersA()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId(), $players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1757,7 +1131,7 @@ class TournamentTest extends AuthenticatedTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getId(),
+        "duplicateValue" => $players[0]->getPlayerId(),
         "arrayName" => "the players A list of the game with game number 1 of the match with match number 1 of the " .
           "phase 1 of the competition Test Competition", "name" => "DuplicateException", "status" => 409]);
 
@@ -1778,8 +1152,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -1800,8 +1174,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[0]->getId(), $players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId(), $players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1819,9 +1193,372 @@ class TournamentTest extends AuthenticatedTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getId(), "status" => 409,
+        "duplicateValue" => $players[0]->getPlayerId(), "status" => 409,
         "arrayName" => "the players A and players B lists of the game with game number 1 of the match with match " .
           "number 1 of the phase 1 of the competition Test Competition", "name" => "DuplicateException"]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicatePlayerInTeam()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
+              'players' => [$players[0]->getPlayerId(), $players[0]->getPlayerId()]],
+            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ]
+      ],
+    ];
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getPlayerId(), "arrayName" => "the player list of team duplicate team",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankInMatchRankingsA()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1, 1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ],
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the rankings A list of the match with match number 1 of the phase 1 of the competition Test " .
+          "Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankInMatchRankingsAAndB()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [1],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ],
+              ],
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the rankings A and ranking B lists of the match with match number 1 of the phase 1 of the " .
+          "competition Test Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankingTeamStartNumber()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1, 1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the team list of ranking (Unique rank 1) of the phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateRankingUniqueRank()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the ranking list of phase 1 of the competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateStartNumber()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'groupNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ]
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception", "duplicateValue" => 1,
+        "arrayName" => "the team list of competition Test Competition",
+        "name" => "DuplicateException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
@@ -1840,8 +1577,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -1862,8 +1599,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1889,6 +1626,127 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
+  public function testMatchRankingReferenceException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [3],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 3,
+        "referenceName" => "unique rank in phase 1 of the competition Test Competition",
+        "name" => "ReferenceException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testNextPhaseNumberReferenceException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'nextPhaseNumbers' => [2],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 2,
+        "referenceName" => "phase numbers in competition Test Competition",
+        "name" => "ReferenceException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
   public function testPlayerIdReferenceException()
   {
     $players = $this->createPlayers(3);
@@ -1900,9 +1758,9 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
-            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -1924,8 +1782,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[2]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[2]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1943,7 +1801,7 @@ class TournamentTest extends AuthenticatedTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception",
-        "referenceValue" => $players[2]->getId(),
+        "referenceValue" => $players[2]->getPlayerId(),
         "referenceName" => "player id in players B in game 1 of match 1 of phase 1 of competition Test Competition, " .
           "which is not in the players lists of the teams of team B", "name" => "ReferenceException", "status" => 409]);
 
@@ -1953,7 +1811,69 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
+  public function testTeamStartNumberReferenceException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
 
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception", "referenceValue" => 3,
+        "referenceName" => "team start number in competition Test Competition",
+        "name" => "ReferenceException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  /**
+   * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+   */
   public function testTournamentUpdate()
   {
     /** @var Tournament $tournament */
@@ -2133,10 +2053,10 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 4, 'startNumber' => 1, 'players' => [$teams[0][0]->getPlayers()->first()->getId()]],
-            ['rank' => 3, 'startNumber' => 2, 'players' => [$teams[0][1]->getPlayers()->first()->getId()]],
-            ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getId()]],
-            ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getId()]],
+            ['rank' => 4, 'startNumber' => 1, 'players' => [$teams[0][0]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 3, 'startNumber' => 2, 'players' => [$teams[0][1]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getPlayerId()]],
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -2162,8 +2082,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$teams[0][1]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[0][0]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[0][1]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2192,8 +2112,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[0][3]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[0][0]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[0][3]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2212,8 +2132,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[0][0]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[0][3]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[0][3]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2229,15 +2149,15 @@ class TournamentTest extends AuthenticatedTestCase
           'name' => 'Test Competition 2',
           'teams' => [
             ['rank' => 1, 'startNumber' => 1, 'players' => [
-              $teams[1][0]->getPlayers()[0]->getId(),
-              $teams[1][0]->getPlayers()[2]->getId(),
-              $teams[1][1]->getPlayers()[0]->getId()]],
+              $teams[1][0]->getPlayers()[0]->getPlayerId(),
+              $teams[1][0]->getPlayers()[2]->getPlayerId(),
+              $teams[1][1]->getPlayers()[0]->getPlayerId()]],
             ['rank' => 2, 'startNumber' => 2, 'players' => [
-              $teams[1][1]->getPlayers()[1]->getId(),
-              $teams[1][1]->getPlayers()[2]->getId()]
+              $teams[1][1]->getPlayers()[1]->getPlayerId(),
+              $teams[1][1]->getPlayers()[2]->getPlayerId()]
             ],
             ['rank' => 2, 'startNumber' => 3, 'players' => [
-              $teams[1][2]->getPlayers()[0]->getId()]
+              $teams[1][2]->getPlayers()[0]->getPlayerId()]
             ],
           ],
           'phases' => [
@@ -2260,8 +2180,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[1][0]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[1][0]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2291,8 +2211,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[1][0]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[1][0]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2323,8 +2243,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[1][1]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[1][1]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2354,8 +2274,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[1][1]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[1][1]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2370,9 +2290,9 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition 3',
           'teams' => [
-            ['rank' => 3, 'startNumber' => 1, 'players' => [$teams[2][0]->getPlayers()->first()->getId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$teams[2][1]->getPlayers()->first()->getId()]],
-            ['rank' => 1, 'startNumber' => 3, 'players' => [$teams[2][2]->getPlayers()->first()->getId()]],
+            ['rank' => 3, 'startNumber' => 1, 'players' => [$teams[2][0]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$teams[2][1]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 3, 'players' => [$teams[2][2]->getPlayers()->first()->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -2394,8 +2314,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$teams[2][2]->getPlayers()->first()->getId()],
-                      'playersB' => [$teams[2][0]->getPlayers()->first()->getId()],
+                      'playersA' => [$teams[2][2]->getPlayers()->first()->getPlayerId()],
+                      'playersB' => [$teams[2][0]->getPlayers()->first()->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2417,9 +2337,99 @@ class TournamentTest extends AuthenticatedTestCase
     /** @var Tournament[] $tournaments */
     $tournaments = $repo->findAll();
     self::assertEquals(1, count($tournaments));
-    $new_tournament = $tournaments[0];
-    self::assertEquals($tournament, $new_tournament);
+    $newTournament = $tournaments[0];
+    self::assertEquals($tournament, $newTournament);
     $this->assertTournamentInfoByRequest($request, $tournament);
+  }
+
+  public function testUnorderedTestNumberException()
+  {
+    $players = $this->createPlayers(2);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 2,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'nextPhaseNumbers' => [1],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 1],
+                ['rank' => 2, 'teamStartNumbers' => [1], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[1]->getPlayerId()],
+                      'playersB' => [$players[0]->getPlayerId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Unordered Phase Number Exception",
+        "nextPhaseNumber" => 1, "previousPhaseNumber" => 2,
+        "name" => "UnorderedPhaseNumberException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
   }
 //</editor-fold desc="Public Methods">
 
@@ -2428,6 +2438,9 @@ class TournamentTest extends AuthenticatedTestCase
   /**
    * @param mixed[] $data
    * @param Tournament $tournament
+   * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+   * @SuppressWarnings(PHPMD.NPathComplexity)
+   * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    */
   private function assertTournamentInfoByRequest(array $data, Tournament $tournament)
   {
@@ -2438,47 +2451,47 @@ class TournamentTest extends AuthenticatedTestCase
       'teamMode' => ['default' => null, 'enum' => TeamMode::class],
       'table' => ['default' => null, 'enum' => Table::class],
     ];
-    $datetimetz_transformer = function ($x) {
-      return \DateTime::createFromFormat('Y-m-d H:i:s e', $x);
+    $dateTransformer = function ($dateString) {
+      return \DateTime::createFromFormat('Y-m-d H:i:s e', $dateString);
     };
     $this->checkProperties($data, $tournament, [
       'name' => null,
       'tournamentListId' => '',
-      'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
-      'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+      'startTime' => ['transformer' => $dateTransformer, 'default' => null],
+      'endTime' => ['transformer' => $dateTransformer, 'default' => null],
     ], $categories);
     self::assertInstanceOf(Collection::class, $tournament->getCompetitions());
     self::assertEquals(count($data['competitions']), $tournament->getCompetitions()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertNotEmpty($tournament->getId());
 
-    foreach ($data['competitions'] as $competition_data) {
-      self::assertTrue($tournament->getCompetitions()->containsKey($competition_data['name']));
+    foreach ($data['competitions'] as $competitionData) {
+      self::assertTrue($tournament->getCompetitions()->containsKey($competitionData['name']));
       /** @var Competition $competition */
-      $competition = $tournament->getCompetitions()->get($competition_data['name']);
-      $this->checkProperties($competition_data, $competition, [
+      $competition = $tournament->getCompetitions()->get($competitionData['name']);
+      $this->checkProperties($competitionData, $competition, [
         'name' => null,
-        'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
-        'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+        'startTime' => ['transformer' => $dateTransformer, 'default' => null],
+        'endTime' => ['transformer' => $dateTransformer, 'default' => null],
       ], $categories);
       self::assertInstanceOf(Collection::class, $competition->getTeams());
-      self::assertEquals(count($competition_data['teams']), $competition->getTeams()->count());
-      foreach ($competition_data['teams'] as $team_data) {
-        self::assertTrue($competition->getTeams()->containsKey($team_data['startNumber']));
+      self::assertEquals(count($competitionData['teams']), $competition->getTeams()->count());
+      foreach ($competitionData['teams'] as $teamData) {
+        self::assertTrue($competition->getTeams()->containsKey($teamData['startNumber']));
         /** @var Team $team */
-        $team = $competition->getTeams()->get($team_data['startNumber']);
-        $this->checkProperties($team_data, $team, [
+        $team = $competition->getTeams()->get($teamData['startNumber']);
+        $this->checkProperties($teamData, $team, [
           'name' => null,
           'rank' => null,
           'startNumber' => null
         ]);
         self::assertInstanceOf(Collection::class, $team->getPlayers());
-        self::assertEquals(count($team_data['players']), $team->getPlayers()->count());
-        foreach ($team_data['players'] as $id) {
+        self::assertEquals(count($teamData['players']), $team->getPlayers()->count());
+        foreach ($teamData['players'] as $id) {
           $exists = false;
           foreach ($team->getPlayers() as $player) {
             /** @noinspection PhpUnhandledExceptionInspection */
-            if ($player->getId() == $id) {
+            if ($player->getPlayerId() == $id) {
               $exists = true;
               break;
             }
@@ -2487,26 +2500,26 @@ class TournamentTest extends AuthenticatedTestCase
         }
       }
 
-      foreach ($competition_data['phases'] as $phase_data) {
-        self::assertTrue($competition->getPhases()->containsKey($phase_data['phaseNumber']));
+      foreach ($competitionData['phases'] as $phaseData) {
+        self::assertTrue($competition->getPhases()->containsKey($phaseData['phaseNumber']));
         /** @var Phase $phase */
-        $phase = $competition->getPhases()->get($phase_data['phaseNumber']);
+        $phase = $competition->getPhases()->get($phaseData['phaseNumber']);
 
-        $this->checkProperties($phase_data, $phase, [
+        $this->checkProperties($phaseData, $phase, [
           'name' => '',
           'phaseNumber' => null,
-          'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
-          'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+          'startTime' => ['transformer' => $dateTransformer, 'default' => null],
+          'endTime' => ['transformer' => $dateTransformer, 'default' => null],
         ], $categories);
 
-        self::assertInstanceOf(Collection::class, $phase->getNextQualificationSystems());
-        if (array_key_exists('nextPhaseNumbers', $phase_data)) {
-          self::assertEquals(count($phase_data['nextPhaseNumbers']), $phase->getNextQualificationSystems()->count());
-          foreach ($phase_data['nextPhaseNumbers'] as $phase_number) {
+        self::assertInstanceOf(Collection::class, $phase->getPostQualifications());
+        if (array_key_exists('nextPhaseNumbers', $phaseData)) {
+          self::assertEquals(count($phaseData['nextPhaseNumbers']), $phase->getPostQualifications()->count());
+          foreach ($phaseData['nextPhaseNumbers'] as $phaseNumber) {
             $found = false;
-            foreach ($phase->getNextQualificationSystems() as $system) {
+            foreach ($phase->getPostQualifications() as $system) {
               /** @noinspection PhpUnhandledExceptionInspection */
-              if ($system->getNextPhase()->getPhaseNumber() === $phase_number) {
+              if ($system->getNextPhase()->getPhaseNumber() === $phaseNumber) {
                 $found = true;
                 break;
               }
@@ -2514,40 +2527,40 @@ class TournamentTest extends AuthenticatedTestCase
             self::assertTrue($found);
           }
         } else {
-          self::assertEquals(0, $phase->getNextQualificationSystems()->count());
+          self::assertEquals(0, $phase->getPostQualifications()->count());
         }
 
         self::assertInstanceOf(Collection::class, $phase->getRankings());
-        self::assertEquals(count($phase_data['rankings']), $phase->getRankings()->count());
-        foreach ($phase_data['rankings'] as $ranking_data) {
-          self::assertTrue($phase->getRankings()->containsKey($ranking_data['uniqueRank']));
+        self::assertEquals(count($phaseData['rankings']), $phase->getRankings()->count());
+        foreach ($phaseData['rankings'] as $rankingData) {
+          self::assertTrue($phase->getRankings()->containsKey($rankingData['uniqueRank']));
           /** @var Ranking $ranking */
-          $ranking = $phase->getRankings()->get($ranking_data['uniqueRank']);
+          $ranking = $phase->getRankings()->get($rankingData['uniqueRank']);
 
-          $this->checkProperties($ranking_data, $ranking, [
+          $this->checkProperties($rankingData, $ranking, [
             'rank' => null,
             'uniqueRank' => null,
             'name' => ''
           ]);
           self::assertInstanceOf(Collection::class, $ranking->getTeams());
-          self::assertEquals(count($ranking_data['teamStartNumbers']), $ranking->getTeams()->count());
-          foreach ($ranking_data['teamStartNumbers'] as $start_number) {
-            self::assertTrue($competition->getTeams()->containsKey($start_number));
+          self::assertEquals(count($rankingData['teamStartNumbers']), $ranking->getTeams()->count());
+          foreach ($rankingData['teamStartNumbers'] as $startNumber) {
+            self::assertTrue($competition->getTeams()->containsKey($startNumber));
             /** @noinspection PhpUnhandledExceptionInspection */
-            self::assertTrue($competition->getTeams()[$start_number]->getStartNumber() == $start_number);
+            self::assertTrue($competition->getTeams()[$startNumber]->getStartNumber() == $startNumber);
           }
         }
 
         self::assertInstanceOf(Collection::class, $phase->getMatches());
-        self::assertEquals(count($phase_data['matches']), $phase->getMatches()->count());
-        foreach ($phase_data['matches'] as $match_data) {
-          self::assertTrue($phase->getMatches()->containsKey($match_data['matchNumber']));
+        self::assertEquals(count($phaseData['matches']), $phase->getMatches()->count());
+        foreach ($phaseData['matches'] as $matchData) {
+          self::assertTrue($phase->getMatches()->containsKey($matchData['matchNumber']));
           /** @var Match $match */
-          $match = $phase->getMatches()->get($match_data['matchNumber']);
-          $this->checkProperties($match_data, $match, [
+          $match = $phase->getMatches()->get($matchData['matchNumber']);
+          $this->checkProperties($matchData, $match, [
             'matchNumber' => null,
-            'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
-            'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+            'startTime' => ['transformer' => $dateTransformer, 'default' => null],
+            'endTime' => ['transformer' => $dateTransformer, 'default' => null],
             'resultA' => null,
             'resultB' => null,
             'played' => null,
@@ -2557,26 +2570,26 @@ class TournamentTest extends AuthenticatedTestCase
             $method = 'getRankings' . $letter;
             /** @var Collection|Ranking[] $rankings */
             $rankings = $match->$method();
-            $rankings_data = $match_data['rankings' . $letter . 'UniqueRanks'];
+            $rankingsData = $matchData['rankings' . $letter . 'UniqueRanks'];
             self::assertInstanceOf(Collection::class, $rankings);
-            self::assertEquals(count($rankings_data), $rankings->count());
-            foreach ($rankings_data as $unique_rank) {
-              self::assertTrue($rankings->containsKey($unique_rank));
+            self::assertEquals(count($rankingsData), $rankings->count());
+            foreach ($rankingsData as $uniqueRank) {
+              self::assertTrue($rankings->containsKey($uniqueRank));
               /** @noinspection PhpUnhandledExceptionInspection */
-              self::assertTrue($rankings[$unique_rank]->getUniqueRank() == $unique_rank);
+              self::assertTrue($rankings[$uniqueRank]->getUniqueRank() == $uniqueRank);
             }
           }
 
           self::assertInstanceOf(Collection::class, $match->getGames());
-          self::assertEquals(count($match_data['games']), $match->getGames()->count());
-          foreach ($match_data['games'] as $game_data) {
-            self::assertTrue($match->getGames()->containsKey($game_data['gameNumber']));
+          self::assertEquals(count($matchData['games']), $match->getGames()->count());
+          foreach ($matchData['games'] as $gameData) {
+            self::assertTrue($match->getGames()->containsKey($gameData['gameNumber']));
             /** @var Match $match */
-            $game = $match->getGames()->get($game_data['gameNumber']);
-            $this->checkProperties($game_data, $game, [
+            $game = $match->getGames()->get($gameData['gameNumber']);
+            $this->checkProperties($gameData, $game, [
               'gameNumber' => null,
-              'startTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
-              'endTime' => ['transformer' => $datetimetz_transformer, 'default' => null],
+              'startTime' => ['transformer' => $dateTransformer, 'default' => null],
+              'endTime' => ['transformer' => $dateTransformer, 'default' => null],
               'resultA' => null,
               'resultB' => null,
               'played' => null,
@@ -2586,13 +2599,13 @@ class TournamentTest extends AuthenticatedTestCase
               $method = 'getPlayers' . $letter;
               /** @var Collection|Player[] $players */
               $players = $game->$method();
-              $players_data = $game_data['players' . $letter];
+              $playersData = $gameData['players' . $letter];
               self::assertInstanceOf(Collection::class, $players);
-              self::assertEquals(count($players_data), $players->count());
-              foreach ($players_data as $id) {
+              self::assertEquals(count($playersData), $players->count());
+              foreach ($playersData as $id) {
                 self::assertTrue($players->containsKey($id));
                 /** @noinspection PhpUnhandledExceptionInspection */
-                self::assertTrue($players[$id]->getId() == $id);
+                self::assertTrue($players[$id]->getPlayerId() == $id);
               }
             }
           }
@@ -2602,23 +2615,44 @@ class TournamentTest extends AuthenticatedTestCase
   }
 
   /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpTooManyParametersInspection */
   /**
-   * Creates a ranking
-   * @param Team[] $teams the teams of the ranking
-   * @param int $rank the rank of the ranking
-   * @param int|null $uniqueRank the unique rank of the ranking or null if it equals the rank
-   * @return Ranking
+   * Creates a game
+   * @param Player[] $playersA the players A
+   * @param Player[] $playersB the players B
+   * @param int $gameNumber the game number
+   * @param int $resultA the result A
+   * @param int $resultB the result B
+   * @param int $result the result of the game
+   * @param bool $played true if played and false if it didn't get played
+   * @param \DateTime|null $startTime the start time
+   * @param \DateTime|null $endTime the end time
+   * @return Game
    */
-  private function createRanking(array $teams, int $rank, int $uniqueRank = null): Ranking
+  private function createGame(array $playersA, array $playersB, int $gameNumber, int $resultA = 1, int $resultB = 0,
+                              int $result = Result::TEAM_A_WINS, bool $played = true, ?\DateTime $startTime = null,
+                              ?\DateTime $endTime = null)
   {
-    /** @var Ranking $ranking */
-    $ranking = entity(Ranking::class)->create(['rank' => $rank,
-      'uniqueRank' => $uniqueRank === null ? $rank : $uniqueRank]);
-    foreach ($teams as $team) {
+    /** @var Game $game */
+    $game = entity(Game::class)->create([
+      'gameNumber' => $gameNumber,
+      'resultA' => $resultA,
+      'resultB' => $resultB,
+      'result' => $result,
+      'played' => $played,
+      'startTime' => $startTime,
+      'endTime' => $endTime]);
+    foreach ($playersA as $player) {
       /** @noinspection PhpUnhandledExceptionInspection */
-      $ranking->getTeams()->set($team->getStartNumber(), $team);
+      $game->getPlayersA()->set($player->getPlayerId(), $player);
     }
-    return $ranking;
+
+    foreach ($playersB as $player) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $game->getPlayersB()->set($player->getPlayerId(), $player);
+    }
+
+    return $game;
   }
 
   /** @noinspection PhpDocMissingThrowsInspection */
@@ -2664,45 +2698,6 @@ class TournamentTest extends AuthenticatedTestCase
   /** @noinspection PhpTooManyParametersInspection */
   /** @noinspection PhpDocMissingThrowsInspection */
   /**
-   * Creates a game
-   * @param Player[] $playersA the players A
-   * @param Player[] $playersB the players B
-   * @param int $gameNumber the game number
-   * @param int $resultA the result A
-   * @param int $resultB the result B
-   * @param int $result the result of the game
-   * @param bool $played true if played and false if it didn't get played
-   * @param \DateTime|null $startTime the start time
-   * @param \DateTime|null $endTime the end time
-   * @return Game
-   */
-  private function createGame(array $playersA, array $playersB, int $gameNumber, int $resultA = 1, int $resultB = 0,
-                              int $result = Result::TEAM_A_WINS, bool $played = true, ?\DateTime $startTime = null,
-                              ?\DateTime $endTime = null)
-  {
-    /** @var Game $game */
-    $game = entity(Game::class)->create([
-      'gameNumber' => $gameNumber,
-      'resultA' => $resultA,
-      'resultB' => $resultB,
-      'result' => $result,
-      'played' => $played,
-      'startTime' => $startTime,
-      'endTime' => $endTime]);
-    foreach ($playersA as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
-      $game->getPlayersA()->set($player->getId(), $player);
-    }
-
-    foreach ($playersB as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
-      $game->getPlayersB()->set($player->getId(), $player);
-    }
-
-    return $game;
-  }
-
-  /**
    * Creates a list of phases
    * @param int $number the number of phases
    * @param string[] $names a list of optional phase names
@@ -2730,6 +2725,26 @@ class TournamentTest extends AuthenticatedTestCase
       }
     }
     return $phases;
+  }
+
+  /** @noinspection PhpDocMissingThrowsInspection */
+  /**
+   * Creates a ranking
+   * @param Team[] $teams the teams of the ranking
+   * @param int $rank the rank of the ranking
+   * @param int|null $uniqueRank the unique rank of the ranking or null if it equals the rank
+   * @return Ranking
+   */
+  private function createRanking(array $teams, int $rank, int $uniqueRank = null): Ranking
+  {
+    /** @var Ranking $ranking */
+    $ranking = entity(Ranking::class)->create(['rank' => $rank,
+      'uniqueRank' => $uniqueRank === null ? $rank : $uniqueRank]);
+    foreach ($teams as $team) {
+      /** @noinspection PhpUnhandledExceptionInspection */
+      $ranking->getTeams()->set($team->getStartNumber(), $team);
+    }
+    return $ranking;
   }
 //</editor-fold desc="Private Methods">
 }

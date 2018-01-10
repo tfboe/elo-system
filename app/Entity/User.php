@@ -45,7 +45,7 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $lastConfirmedAGBVersion;
+  protected $confirmedAGBVersion;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -55,11 +55,19 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   public function __construct()
   {
     $this->jwtVersion = 1;
-    $this->lastConfirmedAGBVersion = 0;
+    $this->confirmedAGBVersion = 0;
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
+  /**
+   * @return int
+   */
+  public function getConfirmedAGBVersion(): int
+  {
+    return $this->confirmedAGBVersion;
+  }
+
   /**
    * @return string
    * @throws \App\Exceptions\ValueNotSet
@@ -102,11 +110,13 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   }
 
   /**
-   * @return int
+   * @param mixed $confirmedAGBVersion
+   * @return $this|User
    */
-  public function getLastConfirmedAGBVersion(): int
+  public function setConfirmedAGBVersion($confirmedAGBVersion): User
   {
-    return $this->lastConfirmedAGBVersion;
+    $this->confirmedAGBVersion = $confirmedAGBVersion;
+    return $this;
   }
 
   /**
@@ -126,16 +136,6 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
   public function setJwtVersion($jwtVersion): User
   {
     $this->jwtVersion = $jwtVersion;
-    return $this;
-  }
-
-  /**
-   * @param mixed $lastConfirmedAGBVersion
-   * @return $this|User
-   */
-  public function setLastConfirmedAGBVersion($lastConfirmedAGBVersion): User
-  {
-    $this->lastConfirmedAGBVersion = $lastConfirmedAGBVersion;
     return $this;
   }
 //</editor-fold desc="Public Methods">

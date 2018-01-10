@@ -19,7 +19,9 @@ abstract class LumenTestCase extends TestCase
 {
   use ReflectionMethods;
   use OnlyTestLogging;
+
 //<editor-fold desc="Public Methods">
+
   /**
    * Creates the application.
    *
@@ -64,13 +66,13 @@ abstract class LumenTestCase extends TestCase
     }
 
     foreach ($enumProperties as $property => $info) {
-      $enum_class = $info['enum'];
+      $enumClass = $info['enum'];
       $default = $info['default'];
       $getter = 'get' . ucfirst($property);
       if (array_key_exists($property, $data)) {
         $name = $data[$property];
         /** @noinspection PhpUndefinedMethodInspection */
-        self::assertEquals($enum_class::getValue($name), $object->$getter());
+        self::assertEquals($enumClass::getValue($name), $object->$getter());
       } else {
         self::assertEquals($default, $object->$getter());
       }

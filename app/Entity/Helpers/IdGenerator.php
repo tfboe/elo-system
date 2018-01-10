@@ -23,13 +23,13 @@ class IdGenerator extends AbstractIdGenerator
 //<editor-fold desc="Public Methods">
   /**
    * creates a new id
-   * @param string $creator_function the id creator function name to use (if existent)
+   * @param string $creatorFunction the id creator function name to use (if existent)
    * @return string the new id
    */
-  public static function createIdFrom($creator_function = 'com_create_guid')
+  public static function createIdFrom($creatorFunction = 'com_create_guid')
   {
-    if (function_exists($creator_function) === true) {
-      return strtolower(trim($creator_function(), '{}'));
+    if (function_exists($creatorFunction) === true) {
+      return strtolower(trim($creatorFunction(), '{}'));
     }
 
     return strtolower(sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
@@ -40,11 +40,12 @@ class IdGenerator extends AbstractIdGenerator
   /**
    * Generates an identifier for an entity.
    *
-   * @param EntityManager|EntityManager $em
+   * @param EntityManager $entityManager
    * @param Entity $entity
    * @return string
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
-  public function generate(EntityManager $em, $entity): string
+  public function generate(EntityManager $entityManager, $entity): string
   {
     return self::createIdFrom();
   }

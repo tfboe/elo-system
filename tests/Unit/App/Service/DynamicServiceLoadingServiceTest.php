@@ -29,9 +29,9 @@ class DynamicServiceLoadingServiceTest extends UnitTestCase
   {
     $app = $this->getMockForAbstractClass(Container::class);
     /** @var Container $app */
-    $e = new DynamicServiceLoadingService($app);
-    self::assertInstanceOf(DynamicServiceLoadingService::class, $e);
-    self::assertEquals($app, self::getProperty(get_class($e), 'app')->getValue($e));
+    $entity = new DynamicServiceLoadingService($app);
+    self::assertInstanceOf(DynamicServiceLoadingService::class, $entity);
+    self::assertEquals($app, self::getProperty(get_class($entity), 'app')->getValue($entity));
   }
 
 
@@ -47,11 +47,11 @@ class DynamicServiceLoadingServiceTest extends UnitTestCase
     $app->expects(self::exactly(4))->method('make')->with('App\Service\RankingSystem\TestInterface')
       ->willReturn($instance);
     /** @var Container $app */
-    $e = new DynamicServiceLoadingService($app);
-    self::assertTrue($instance === $e->loadRankingSystemService("Test"));
-    self::assertTrue($instance === $e->loadRankingSystemService("TestInterface"));
-    self::assertTrue($instance === $e->loadRankingSystemService("App\Service\RankingSystem\Test"));
-    self::assertTrue($instance === $e->loadRankingSystemService("App\Service\RankingSystem\TestInterface"));
+    $entity = new DynamicServiceLoadingService($app);
+    self::assertTrue($instance === $entity->loadRankingSystemService("Test"));
+    self::assertTrue($instance === $entity->loadRankingSystemService("TestInterface"));
+    self::assertTrue($instance === $entity->loadRankingSystemService("App\Service\RankingSystem\Test"));
+    self::assertTrue($instance === $entity->loadRankingSystemService("App\Service\RankingSystem\TestInterface"));
   }
 //</editor-fold desc="Public Methods">
 }

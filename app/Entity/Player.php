@@ -24,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Player extends BaseEntity
 {
   use TimestampableEntity;
+
 //<editor-fold desc="Fields">
   /**
    * @ORM\Id
@@ -31,7 +32,7 @@ class Player extends BaseEntity
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $id;
+  protected $playerId;
 
   /**
    * @ORM\Column(type="string", nullable=false)
@@ -74,16 +75,6 @@ class Player extends BaseEntity
   }
 
   /**
-   * @return int
-   * @throws \App\Exceptions\ValueNotSet
-   */
-  public function getId(): int
-  {
-    $this->ensureNotNull("id");
-    return $this->id;
-  }
-
-  /**
    * @return string
    * @throws \App\Exceptions\ValueNotSet
    */
@@ -91,6 +82,16 @@ class Player extends BaseEntity
   {
     $this->ensureNotNull("lastName");
     return $this->lastName;
+  }
+
+  /**
+   * @return int
+   * @throws \App\Exceptions\ValueNotSet
+   */
+  public function getPlayerId(): int
+  {
+    $this->ensureNotNull("playerId");
+    return $this->playerId;
   }
 
   /**

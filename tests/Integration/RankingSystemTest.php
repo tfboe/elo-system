@@ -23,7 +23,7 @@ use Tests\Helpers\AuthenticatedTestCase;
 class RankingSystemTest extends AuthenticatedTestCase
 {
 //<editor-fold desc="Public Methods">
-  public function testCreateTournamentMin()
+  public function testCreateTournamentWithEloRankings()
   {
     $players = $this->createPlayers(2);
     /** @var RankingSystem $ranking1 */
@@ -53,8 +53,8 @@ class RankingSystemTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
-            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
           ],
           'phases' => [
             [
@@ -75,8 +75,8 @@ class RankingSystemTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getId()],
-                      'playersB' => [$players[1]->getId()],
+                      'playersA' => [$players[0]->getPlayerId()],
+                      'playersB' => [$players[1]->getPlayerId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',

@@ -24,7 +24,7 @@ class UserTest extends UnitTestCase
    * @covers \App\Entity\User::__construct
    * @uses   \App\Entity\User::getJWTCustomClaims
    * @uses   \App\Entity\User::getJwtVersion
-   * @uses   \App\Entity\User::getLastConfirmedAGBVersion
+   * @uses   \App\Entity\User::getConfirmedAGBVersion
    */
   public function testConstructor()
   {
@@ -32,7 +32,7 @@ class UserTest extends UnitTestCase
     self::assertInstanceOf(User::class, $user);
     self::assertEquals(['ver' => 1], $user->getJWTCustomClaims());
     self::assertEquals(1, $user->getJwtVersion());
-    self::assertEquals(0, $user->getLastConfirmedAGBVersion());
+    self::assertEquals(0, $user->getConfirmedAGBVersion());
   }
 
   /**
@@ -125,15 +125,15 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::getLastConfirmedAGBVersion
-   * @covers \App\Entity\User::setLastConfirmedAGBVersion
+   * @covers \App\Entity\User::getConfirmedAGBVersion
+   * @covers \App\Entity\User::setConfirmedAGBVersion
    * @uses   \App\Entity\User::__construct
    */
   public function testLastConfirmedAGBVersion()
   {
     $user = $this->user();
-    $user->setLastConfirmedAGBVersion(5);
-    self::assertEquals(5, $user->getLastConfirmedAGBVersion());
+    $user->setConfirmedAGBVersion(5);
+    self::assertEquals(5, $user->getConfirmedAGBVersion());
   }
 //</editor-fold desc="Public Methods">
 

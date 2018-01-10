@@ -31,6 +31,7 @@ class AppServiceProviderTest extends UnitTestCase
    * @uses   \App\Service\RankingSystemService::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\DynamicServiceLoadingService::__construct
+   * @uses   \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
    */
   public function testRegister()
   {

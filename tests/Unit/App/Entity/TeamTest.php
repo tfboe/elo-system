@@ -99,12 +99,12 @@ class TeamTest extends UnitTestCase
   {
     $team = $this->team();
     /** @var Player $player */
-    $player = $this->createMockWithId(Player::class, 1);
+    $player = $this->createStubWithId(Player::class, 1, 'getPlayerId');
     /** @noinspection PhpUnhandledExceptionInspection */
-    $team->getPlayers()->set($player->getId(), $player);
+    $team->getPlayers()->set($player->getPlayerId(), $player);
     self::assertEquals(1, $team->getPlayers()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($player, $team->getPlayers()[$player->getId()]);
+    self::assertEquals($player, $team->getPlayers()[$player->getPlayerId()]);
   }
 
   /**

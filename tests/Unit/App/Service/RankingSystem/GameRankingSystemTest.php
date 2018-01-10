@@ -11,7 +11,9 @@ namespace Tests\Unit\App\Service\RankingSystem;
 
 use App\Entity\RankingSystem;
 use App\Helpers\Level;
+use App\Service\RankingSystem\EntityComparerInterface;
 use App\Service\RankingSystem\GameRankingSystem;
+use App\Service\RankingSystem\TimeServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -20,33 +22,26 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class GameRankingSystemTest
  * @package Tests\Unit\App\Service\RankingSystem
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects
  */
 class GameRankingSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-  /**
-   * @covers \App\Service\RankingSystem\GameRankingSystem::getLevel
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
-   */
-  public function testLevel()
-  {
-    $e = $this->getMockForAbstractClass(GameRankingSystem::class,
-      [$this->createMock(EntityManagerInterface::class)]);
-    self::assertEquals(Level::GAME, self::callProtectedMethod($e, "getLevel"));
-  }
-
   /**
    * @covers \App\Service\RankingSystem\GameRankingSystem::getEntitiesQueryBuilder
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    */
   public function testGetEntitiesQueryBuilder()
   {
-    $em = $this->getMockForAbstractClass(EntityManager::class, [], '', false);
-    $e = $this->getMockForAbstractClass(GameRankingSystem::class, [$em]);
-    $ranking_system = $this->createMock(RankingSystem::class);
-    $ranking_system->method('getId')->willReturn('ranking-system-id');
+    $entityManager = $this->getMockForAbstractClass(EntityManager::class, [], '', false);
+    $system = $this->getMockForAbstractClass(GameRankingSystem::class, [$entityManager,
+      $this->createMock(TimeServiceInterface::class),
+      $this->createMock(EntityComparerInterface::class)]);
+    $rankingSystem = $this->createMock(RankingSystem::class);
+    $rankingSystem->method('getId')->willReturn('ranking-system-id');
     /** @var QueryBuilder $builder */
-    $builder = self::callProtectedMethod($e, "getEntitiesQueryBuilder", [$ranking_system, new \DateTime("2000-01-01")]);
+    $builder = self::callProtectedMethod($system, "getEntitiesQueryBuilder",
+      [$rankingSystem, new \DateTime("2000-01-01")]);
     /** @noinspection LongLine */
     self::assertEquals(
       'SELECT g FROM App\Entity\Game g LEFT JOIN g.rankingSystems grs WITH grs = :ranking INNER JOIN g.match ' .
@@ -70,6 +65,19 @@ class GameRankingSystemTest extends UnitTestCase
       't.updatedAt IS NULL)) AND (grs.id IS NOT NULL OR mrs.id IS NOT NULL OR prs.id IS NOT NULL OR crs.id IS NOT ' .
       'NULL OR trs.id IS NOT NULL)',
       $builder->getDQL());
+  }
+
+  /**
+   * @covers \App\Service\RankingSystem\GameRankingSystem::getLevel
+   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   */
+  public function testLevel()
+  {
+    $system = $this->getMockForAbstractClass(GameRankingSystem::class,
+      [$this->createMock(EntityManagerInterface::class),
+        $this->createMock(TimeServiceInterface::class),
+        $this->createMock(EntityComparerInterface::class)]);
+    self::assertEquals(Level::GAME, self::callProtectedMethod($system, "getLevel"));
   }
 //</editor-fold desc="Public Methods">
 

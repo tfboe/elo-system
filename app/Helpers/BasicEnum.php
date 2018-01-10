@@ -124,14 +124,14 @@ abstract class BasicEnum
     if (self::$constCacheArrayCaseMapping == NULL) {
       self::$constCacheArrayCaseMapping = [];
     }
-    $called_class = get_called_class();
-    if (!array_key_exists($called_class, self::$constCacheArrayCaseMapping)) {
-      self::$constCacheArrayCaseMapping[$called_class] = [];
+    $calledClass = get_called_class();
+    if (!array_key_exists($calledClass, self::$constCacheArrayCaseMapping)) {
+      self::$constCacheArrayCaseMapping[$calledClass] = [];
       foreach (self::getNames() as $name) {
-        self::$constCacheArrayCaseMapping[$called_class][strtolower($name)] = $name;
+        self::$constCacheArrayCaseMapping[$calledClass][strtolower($name)] = $name;
       }
     }
-    return self::$constCacheArrayCaseMapping[$called_class];
+    return self::$constCacheArrayCaseMapping[$calledClass];
   }
 
   /**
@@ -143,14 +143,14 @@ abstract class BasicEnum
     if (self::$constCacheArray == NULL) {
       self::$constCacheArray = [];
     }
-    $called_class = get_called_class();
-    if (!array_key_exists($called_class, self::$constCacheArray)) {
-      $reflect = new \ReflectionClass($called_class);
+    $calledClass = get_called_class();
+    if (!array_key_exists($calledClass, self::$constCacheArray)) {
+      $reflect = new \ReflectionClass($calledClass);
       $array = $reflect->getConstants();
       asort($array);
-      self::$constCacheArray[$called_class] = $array;
+      self::$constCacheArray[$calledClass] = $array;
     }
-    return self::$constCacheArray[$called_class];
+    return self::$constCacheArray[$calledClass];
   }
 //</editor-fold desc="Private Methods">
 }

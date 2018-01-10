@@ -27,6 +27,7 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class HandlerTest
  * @package Tests\Unit\App\Exceptions
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class HandlerTest extends UnitTestCase
 {

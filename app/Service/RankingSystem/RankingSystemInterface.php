@@ -34,17 +34,17 @@ interface RankingSystemInterface
    * Updates the rankings for this tournament
    * @param \App\Entity\RankingSystem $ranking
    * @param Tournament $tournament
-   * @param \DateTime|null $earliest_old_influence if the tournament changed this is the earliest influence of the
+   * @param \DateTime|null $oldInfluence if the tournament changed this is the earliest influence of the
    *                       tournament before the change
    */
   public function updateRankingForTournament(\App\Entity\RankingSystem $ranking, Tournament $tournament,
-                                             ?\DateTime $earliest_old_influence): void;
+                                             ?\DateTime $oldInfluence);
 
   /**
    * Updates the rankings assuming all changes happened after $from.
    * @param \App\Entity\RankingSystem $ranking
    * @param \DateTime $from
    */
-  public function updateRankingFrom(\App\Entity\RankingSystem $ranking, \DateTime $from): void;
+  public function updateRankingFrom(\App\Entity\RankingSystem $ranking, \DateTime $from);
 //</editor-fold desc="Public Methods">
 }

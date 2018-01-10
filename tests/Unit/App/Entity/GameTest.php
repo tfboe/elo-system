@@ -22,10 +22,20 @@ use Tests\Helpers\UnitTestCase;
 /**
  * Class GameTest
  * @package Tests\Unit\App\Entity
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class GameTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
+  /**
+   * @covers \App\Entity\Game::getChildren
+   * @uses   \App\Entity\Game::__construct
+   */
+  public function testChildren()
+  {
+    self::assertEmpty($this->game()->getChildren());
+  }
+
   /**
    * @covers \App\Entity\Game::__construct
    * @uses   \App\Entity\Game::getPlayersA
@@ -54,10 +64,10 @@ class GameTest extends UnitTestCase
   public function testGameNumberAndLocalIdentifier()
   {
     $game = $this->game();
-    $game_number = 1;
-    $game->setGameNumber($game_number);
+    $gameNumber = 1;
+    $game->setGameNumber($gameNumber);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($game_number, $game->getGameNumber());
+    self::assertEquals($gameNumber, $game->getGameNumber());
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($game->getGameNumber(), $game->getLocalIdentifier());
   }
@@ -77,6 +87,15 @@ class GameTest extends UnitTestCase
     );
     /** @noinspection PhpUnhandledExceptionInspection */
     $game->getGameNumber();
+  }
+
+  /**
+   * @covers \App\Entity\Game::getLevel
+   * @uses   \App\Entity\Game::__construct
+   */
+  public function testLevel()
+  {
+    self::assertEquals(Level::GAME, $this->game()->getLevel());
   }
 
   /**
@@ -164,12 +183,12 @@ class GameTest extends UnitTestCase
   {
     $game = $this->game();
     /** @var Player $player */
-    $player = $this->createMockWithId(Player::class, 1);
+    $player = $this->createStubWithId(Player::class, 1, 'getPlayerId');
     /** @noinspection PhpUnhandledExceptionInspection */
-    $game->getPlayersA()->set($player->getId(), $player);
+    $game->getPlayersA()->set($player->getPlayerId(), $player);
     self::assertEquals(1, $game->getPlayersA()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($player, $game->getPlayersA()[$player->getId()]);
+    self::assertEquals($player, $game->getPlayersA()[$player->getPlayerId()]);
   }
 
   /**
@@ -180,12 +199,12 @@ class GameTest extends UnitTestCase
   {
     $game = $this->game();
     /** @var Player $player */
-    $player = $this->createMockWithId(Player::class, 1);
+    $player = $this->createStubWithId(Player::class, 1, 'getPlayerId');
     /** @noinspection PhpUnhandledExceptionInspection */
-    $game->getPlayersB()->set($player->getId(), $player);
+    $game->getPlayersB()->set($player->getPlayerId(), $player);
     self::assertEquals(1, $game->getPlayersB()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($player, $game->getPlayersB()[$player->getId()]);
+    self::assertEquals($player, $game->getPlayersB()[$player->getPlayerId()]);
   }
 
   /**
@@ -194,32 +213,14 @@ class GameTest extends UnitTestCase
    */
   public function testRankingSystems()
   {
-    $e = $this->game();
+    $entity = $this->game();
     /** @var $system RankingSystem */
-    $system = $this->createMockWithId(RankingSystem::class);
+    $system = $this->createStubWithId(RankingSystem::class);
     /** @noinspection PhpUnhandledExceptionInspection */
-    $e->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $e->getRankingSystems()->count());
+    $entity->getRankingSystems()->set($system->getId(), $system);
+    self::assertEquals(1, $entity->getRankingSystems()->count());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $e->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\Game::getLevel
-   * @uses   \App\Entity\Game::__construct
-   */
-  public function testLevel()
-  {
-    self::assertEquals(Level::GAME, $this->game()->getLevel());
-  }
-
-  /**
-   * @covers \App\Entity\Game::getChildren
-   * @uses   \App\Entity\Game::__construct
-   */
-  public function testChildren()
-  {
-    self::assertEmpty($this->game()->getChildren());
+    self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
   }
 //</editor-fold desc="Public Methods">
 

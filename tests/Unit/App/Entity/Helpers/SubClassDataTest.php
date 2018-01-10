@@ -22,38 +22,24 @@ use Tests\Helpers\UnitTestCase;
 class SubClassDataTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-
   /**
-   * @covers \App\Entity\Helpers\SubClassData::initSubClassData
-   * @covers \App\Entity\Helpers\SubClassData::hasProperty
+   * @covers \App\Entity\Helpers\SubClassData::addPropertyIfNotExistent
+   * @uses   \App\Entity\Helpers\SubClassData::__call
+   * @uses   \App\Entity\Helpers\SubClassData::getProperty
+   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    */
-  public function testInitSubClassDataAndHasProperty()
+  public function testAddPropertyIfNotExistent()
   {
-    $e = $this->mock();
-    /** @noinspection SpellCheckingInspection */
-    $e->initSubClassData(["TESTUPPER", "testlower"]);
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("testupper"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("TESTUPPER"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("TESTupper"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("testlower"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("TESTLOWER"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("TESTlower"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertFalse($e->hasProperty("notexisting"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertFalse($e->hasProperty("NOTEXISTING"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertFalse($e->hasProperty("NOTexistING"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertTrue($e->hasProperty("subClassData"));
-    /** @noinspection SpellCheckingInspection */
-    self::assertFalse($e->hasProperty("SUBCLASSDATA"));
+    $entity = $this->mock();
+    $entity->initSubClassData([]);
+    self::assertFalse($entity->hasProperty("prop"));
+    $entity->addPropertyIfNotExistent("prop", "default");
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("default", $entity->getProp());
+    $entity->addPropertyIfNotExistent("prop", "other");
+    /** @noinspection PhpUndefinedMethodInspection */
+    self::assertEquals("default", $entity->getProp());
   }
 
   /**
@@ -65,36 +51,49 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testCall()
   {
-    $e = $this->mock();
-    $e->initSubClassData(["Prop"]);
+    $entity = $this->mock();
+    $entity->initSubClassData(["Prop"]);
     /** @noinspection PhpUndefinedMethodInspection */
-    self::assertNull($e->getProp());
+    self::assertNull($entity->getProp());
     /** @noinspection PhpUndefinedMethodInspection */
-    $e->setProp("test");
+    $entity->setProp("test");
     /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("test", $e->getProp());
+    self::assertEquals("test", $entity->getProp());
     /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("test", $e->isProp());
+    self::assertEquals("test", $entity->isProp());
   }
 
   /**
-   * @covers \App\Entity\Helpers\SubClassData::addPropertyIfNotExistent
-   * @uses   \App\Entity\Helpers\SubClassData::__call
-   * @uses   \App\Entity\Helpers\SubClassData::getProperty
-   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \App\Entity\Helpers\SubClassData::hasProperty
    */
-  public function testAddPropertyIfNotExistent()
+  public function testInitSubClassDataAndHasProperty()
   {
-    $e = $this->mock();
-    $e->initSubClassData([]);
-    self::assertFalse($e->hasProperty("prop"));
-    $e->addPropertyIfNotExistent("prop", "default");
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("default", $e->getProp());
-    $e->addPropertyIfNotExistent("prop", "other");
-    /** @noinspection PhpUndefinedMethodInspection */
-    self::assertEquals("default", $e->getProp());
+    $entity = $this->mock();
+    /** @noinspection SpellCheckingInspection */
+    $entity->initSubClassData(["TESTUPPER", "testlower"]);
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("testupper"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("TESTUPPER"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("TESTupper"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("testlower"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("TESTLOWER"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("TESTlower"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertFalse($entity->hasProperty("notexisting"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertFalse($entity->hasProperty("NOTEXISTING"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertFalse($entity->hasProperty("NOTexistING"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertTrue($entity->hasProperty("subClassData"));
+    /** @noinspection SpellCheckingInspection */
+    self::assertFalse($entity->hasProperty("SUBCLASSDATA"));
   }
 
   /**
@@ -105,20 +104,20 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testMethodExists()
   {
-    $e = $this->mock();
-    $e->initSubClassData(["test"]);
-    self::assertTrue($e->methodExists("methodExists"));
-    self::assertFalse($e->methodExists("notExistingMethod"));
-    self::assertFalse($e->methodExists("getProp"));
-    self::assertFalse($e->methodExists("isProp"));
-    self::assertFalse($e->methodExists("setProp"));
-    self::assertTrue($e->methodExists("getTest"));
-    self::assertTrue($e->methodExists("isTest"));
-    self::assertTrue($e->methodExists("setTest"));
-    $e->addPropertyIfNotExistent("prop", null);
-    self::assertTrue($e->methodExists("getProp"));
-    self::assertTrue($e->methodExists("isProp"));
-    self::assertTrue($e->methodExists("setProp"));
+    $entity = $this->mock();
+    $entity->initSubClassData(["test"]);
+    self::assertTrue($entity->methodExists("methodExists"));
+    self::assertFalse($entity->methodExists("notExistingMethod"));
+    self::assertFalse($entity->methodExists("getProp"));
+    self::assertFalse($entity->methodExists("isProp"));
+    self::assertFalse($entity->methodExists("setProp"));
+    self::assertTrue($entity->methodExists("getTest"));
+    self::assertTrue($entity->methodExists("isTest"));
+    self::assertTrue($entity->methodExists("setTest"));
+    $entity->addPropertyIfNotExistent("prop", null);
+    self::assertTrue($entity->methodExists("getProp"));
+    self::assertTrue($entity->methodExists("isProp"));
+    self::assertTrue($entity->methodExists("setProp"));
   }
 
   /**
@@ -128,12 +127,12 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testNotExistingMethodCall()
   {
-    $e = $this->mock();
-    $e->initSubClassData([]);
+    $entity = $this->mock();
+    $entity->initSubClassData([]);
     $this->expectException(MethodNotExistingException::class);
-    $this->expectExceptionMessage("An object of the class " . get_class($e) . " had no method notExistingMethod");
+    $this->expectExceptionMessage("An object of the class " . get_class($entity) . " had no method notExistingMethod");
     /** @noinspection PhpUndefinedMethodInspection */
-    $e->notExistingMethod();
+    $entity->notExistingMethod();
   }
 
   /**
@@ -143,12 +142,12 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testNotExistingMethodSetterNoArgument()
   {
-    $e = $this->mock();
-    $e->initSubClassData([]);
+    $entity = $this->mock();
+    $entity->initSubClassData([]);
     $this->expectException(MethodNotExistingException::class);
-    $this->expectExceptionMessage("An object of the class " . get_class($e) . " had no method setProp");
+    $this->expectExceptionMessage("An object of the class " . get_class($entity) . " had no method setProp");
     /** @noinspection PhpUndefinedMethodInspection */
-    $e->setProp();
+    $entity->setProp();
   }
 
   /**
@@ -159,13 +158,13 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testNotExistingPropertyGetCall()
   {
-    $e = $this->mock();
-    $e->initSubClassData([]);
+    $entity = $this->mock();
+    $entity->initSubClassData([]);
     $this->expectException(PropertyNotExistingException::class);
-    $this->expectExceptionMessage("An object of the class " . get_class($e) .
+    $this->expectExceptionMessage("An object of the class " . get_class($entity) .
       " had no property prop via getProperty");
     /** @noinspection PhpUndefinedMethodInspection */
-    $e->getProp();
+    $entity->getProp();
   }
 
   /**
@@ -176,13 +175,13 @@ class SubClassDataTest extends UnitTestCase
    */
   public function testNotExistingPropertySetCall()
   {
-    $e = $this->mock();
-    $e->initSubClassData([]);
+    $entity = $this->mock();
+    $entity->initSubClassData([]);
     $this->expectException(PropertyNotExistingException::class);
-    $this->expectExceptionMessage("An object of the class " . get_class($e) .
+    $this->expectExceptionMessage("An object of the class " . get_class($entity) .
       " had no property prop via setProperty");
     /** @noinspection PhpUndefinedMethodInspection */
-    $e->setProp(5);
+    $entity->setProp(5);
   }
 //</editor-fold desc="Public Methods">
 

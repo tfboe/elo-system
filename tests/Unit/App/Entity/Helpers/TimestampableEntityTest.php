@@ -25,10 +25,10 @@ class TimestampableEntityTest extends UnitTestCase
    */
   public function testCreatedAt()
   {
-    $e = $this->mock();
-    $dt = new \DateTime();
-    $e->setCreatedAt($dt);
-    self::assertEquals($dt, $e->getCreatedAt());
+    $entity = $this->mock();
+    $createTime = new \DateTime();
+    $entity->setCreatedAt($createTime);
+    self::assertEquals($createTime, $entity->getCreatedAt());
   }
 
   /**
@@ -37,10 +37,10 @@ class TimestampableEntityTest extends UnitTestCase
    */
   public function testUpdateAt()
   {
-    $e = $this->mock();
-    $dt = new \DateTime();
-    $e->setUpdatedAt($dt);
-    self::assertEquals($dt, $e->getUpdatedAt());
+    $entity = $this->mock();
+    $createTime = new \DateTime();
+    $entity->setUpdatedAt($createTime);
+    self::assertEquals($createTime, $entity->getUpdatedAt());
   }
 //</editor-fold desc="Public Methods">
 

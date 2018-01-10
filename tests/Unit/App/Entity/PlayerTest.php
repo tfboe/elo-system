@@ -77,20 +77,20 @@ class PlayerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Player::getId
+   * @covers \App\Entity\Player::getPlayerId
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testId()
   {
     $player = $this->player();
-    $id_property = self::getProperty(Player::class, 'id');
-    $id_property->setValue($player, 0);
+    $idProperty = self::getProperty(Player::class, 'playerId');
+    $idProperty->setValue($player, 0);
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(0, $player->getId());
+    self::assertEquals(0, $player->getPlayerId());
   }
 
   /**
-   * @covers \App\Entity\Player::getId
+   * @covers \App\Entity\Player::getPlayerId
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Exceptions\ValueNotSet::__construct
    */
@@ -98,10 +98,11 @@ class PlayerTest extends UnitTestCase
   {
     $player = $this->player();
     $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . Player::class . " must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
+    $this->expectExceptionMessage("The property playerId of the class " . Player::class . " must be set before it " .
+      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
+    );
     /** @noinspection PhpUnhandledExceptionInspection */
-    $player->getId();
+    $player->getPlayerId();
   }
 
   /**

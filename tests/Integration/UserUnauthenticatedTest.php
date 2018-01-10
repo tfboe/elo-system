@@ -9,6 +9,7 @@ use Tests\Helpers\DatabaseTestCase;
 
 /**
  * Class UserUnauthenticatedTest
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class UserUnauthenticatedTest extends DatabaseTestCase
 {
@@ -132,9 +133,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'test@user1.com',
       'password' => 'testPassword',
-      'lastConfirmedAGBVersion' => 'noInt',
-    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["lastConfirmedAGBVersion" =>
-      ["The last confirmed a g b version must be an integer."]],
+      'confirmedAGBVersion' => 'noInt',
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["confirmedAGBVersion" =>
+      ["The confirmed a g b version must be an integer."]],
       "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
@@ -168,9 +169,9 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'test@user1.com',
       'password' => 'testPassword',
-      'lastConfirmedAGBVersion' => -1,
-    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["lastConfirmedAGBVersion" =>
-      ["The last confirmed a g b version must be at least 0."]],
+      'confirmedAGBVersion' => -1,
+    ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["confirmedAGBVersion" =>
+      ["The confirmed a g b version must be at least 0."]],
       "message" => "The given data was invalid.", "name" => "ValidationException", "status" => 422]);
   }
 
@@ -227,13 +228,13 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $this->json('POST', '/register', [
       'email' => 'test@user1.com',
       'password' => 'testPassword',
-      'lastConfirmedAGBVersion' => 5
+      'confirmedAGBVersion' => 5
     ])->seeJsonStructure(['id']);
     $result = json_decode($this->response->getContent(), true);
     /** @var \App\Entity\User $user */
     /** @noinspection PhpUndefinedMethodInspection */
     $user = EntityManager::find(User::class, $result['id']);
-    self::assertEquals(5, $user->getLastConfirmedAGBVersion());
+    self::assertEquals(5, $user->getConfirmedAGBVersion());
   }
 
   public function testTooShortPassword()

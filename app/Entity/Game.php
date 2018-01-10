@@ -51,14 +51,18 @@ class Game extends BaseEntity implements TreeStructureEntityInterface
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
-   * @ORM\JoinTable(name="relation__game_playersA")
+   * @ORM\JoinTable(name="relation__game_playersA",
+   *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="player_id", referencedColumnName="player_id")})
    * @var Collection|Player
    */
   protected $playersA;
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
-   * @ORM\JoinTable(name="relation__game_playersB")
+   * @ORM\JoinTable(name="relation__game_playersB",
+   *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="player_id", referencedColumnName="player_id")})
    * @var Collection|Player
    */
   protected $playersB;

@@ -7,6 +7,8 @@ use App\Service\DynamicServiceLoadingService;
 use App\Service\DynamicServiceLoadingServiceInterface;
 use App\Service\RankingSystem\EloRanking;
 use App\Service\RankingSystem\EloRankingInterface;
+use App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier;
+use App\Service\RankingSystem\RecursiveEndStartTimeService;
 use App\Service\RankingSystemService;
 use App\Service\RankingSystemServiceInterface;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
@@ -42,7 +44,9 @@ class AppServiceProvider extends ServiceProvider
     });
 
     $this->app->singleton(EloRankingInterface::class, function (Container $app) {
-      return new EloRanking($app->make(EntityManagerInterface::class));
+      $timeService = new RecursiveEndStartTimeService();
+      $entityComparer = new EntityComparerByTimeStartTimeAndLocalIdentifier($timeService);
+      return new EloRanking($app->make(EntityManagerInterface::class), $timeService, $entityComparer);
     });
   }
 //</editor-fold desc="Public Methods">

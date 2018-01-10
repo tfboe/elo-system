@@ -28,12 +28,12 @@ class PlayerTest extends AuthenticatedTestCase
     $player1 = entity(Player::class)->create();
 
     /** @noinspection PhpUnhandledExceptionInspection */
-    $player_array1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName(),
+    $playerArray1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName(),
       'birthday' => $player1->getBirthday()->format('Y-m-d')];
-    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
 
-    $this->jsonAuth('POST', '/addPlayers', [$player_array2, $player_array1])
+    $this->jsonAuth('POST', '/addPlayers', [$playerArray2, $playerArray1])
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Some players do already exist", "players" => [
         $this->getResultArray($player1)
       ], "name" => "PlayerAlreadyExistsException", "status" => 409]);
@@ -51,11 +51,11 @@ class PlayerTest extends AuthenticatedTestCase
 
   public function testAddMultiplePlayers()
   {
-    $player_array1 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray1 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $player_array2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $this->jsonAuth('POST', '/addPlayers', [$player_array1, $player_array2])->assertResponseOk();
+    $this->jsonAuth('POST', '/addPlayers', [$playerArray1, $playerArray2])->assertResponseOk();
     $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -67,7 +67,7 @@ class PlayerTest extends AuthenticatedTestCase
     self::assertEquals(2, count($players));
     foreach ($players as $player) {
       /** @noinspection PhpUnhandledExceptionInspection */
-      self::assertInternalType('int', $player->getId());
+      self::assertInternalType('int', $player->getPlayerId());
     }
   }
 
@@ -87,9 +87,9 @@ class PlayerTest extends AuthenticatedTestCase
 
   public function testAddPlayer()
   {
-    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $this->jsonAuth('POST', '/addPlayers', [$player_array])->assertResponseOk();
+    $this->jsonAuth('POST', '/addPlayers', [$playerArray])->assertResponseOk();
     $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -101,28 +101,28 @@ class PlayerTest extends AuthenticatedTestCase
     self::assertEquals(1, count($players));
     $player = $players[0];
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($player_array['firstName'], $player->getFirstName());
+    self::assertEquals($playerArray['firstName'], $player->getFirstName());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($player_array['lastName'], $player->getLastName());
+    self::assertEquals($playerArray['lastName'], $player->getLastName());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals(new \DateTime($player_array['birthday']), $player->getBirthday());
+    self::assertEquals(new \DateTime($playerArray['birthday']), $player->getBirthday());
     /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertInternalType('int', $player->getId());
+    self::assertInternalType('int', $player->getPlayerId());
   }
 
   public function testAddPlayerMultipleTimes()
   {
-    $player_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $player2_array = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
+    $playerArray2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $player3_array = ['firstName' => $player_array['firstName'], 'lastName' => $this->faker->lastName,
+    $playerArray3 = ['firstName' => $playerArray['firstName'], 'lastName' => $this->faker->lastName,
       'birthday' => $this->faker->date()];
-    $player4_array = ['firstName' => $player_array['firstName'], 'lastName' => $player_array['lastName'],
+    $playerArray4 = ['firstName' => $playerArray['firstName'], 'lastName' => $playerArray['lastName'],
       'birthday' => $this->faker->date()];
 
-    $this->jsonAuth('POST', '/addPlayers', [$player_array, $player2_array, $player3_array, $player4_array,
-      $player_array])->assertResponseOk();
+    $this->jsonAuth('POST', '/addPlayers', [$playerArray, $playerArray2, $playerArray3, $playerArray4,
+      $playerArray])->assertResponseOk();
     $this->seeJsonStructure([['firstName', 'lastName', 'birthday', 'id']]);
 
 
@@ -135,7 +135,7 @@ class PlayerTest extends AuthenticatedTestCase
     self::assertEquals(4, count($players));
     foreach ($players as $player) {
       /** @noinspection PhpUnhandledExceptionInspection */
-      self::assertInternalType('int', $player->getId());
+      self::assertInternalType('int', $player->getPlayerId());
     }
   }
 
@@ -175,7 +175,7 @@ class PlayerTest extends AuthenticatedTestCase
     /** @var Player $player1SameName */
 
     /** @noinspection PhpUnhandledExceptionInspection */
-    $player1_same_name = entity(Player::class)->create(['firstName' => $player1->getFirstName(),
+    $player1SameName = entity(Player::class)->create(['firstName' => $player1->getFirstName(),
       'lastName' => $player1->getLastName()]);
 
     /** @var Player $player2 */
@@ -197,7 +197,7 @@ class PlayerTest extends AuthenticatedTestCase
     $this->jsonAuth('GET', '/searchPlayers', [$search1, $search2, $search3, $search4, $search5])
       ->assertResponseOk();
     $this->seeJsonEquals([
-      ["found" => [$this->getResultArray($player1), $this->getResultArray($player1_same_name)], "search" => $search1],
+      ["found" => [$this->getResultArray($player1), $this->getResultArray($player1SameName)], "search" => $search1],
       ["found" => [$this->getResultArray($player1)], "search" => $search2],
       ["found" => [], "search" => $search3],
       ["found" => [], "search" => $search4],
@@ -216,7 +216,7 @@ class PlayerTest extends AuthenticatedTestCase
   {
     /** @noinspection PhpUnhandledExceptionInspection */
     return ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
-      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getId()];
+      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getPlayerId()];
   }
 //</editor-fold desc="Private Methods">
 }

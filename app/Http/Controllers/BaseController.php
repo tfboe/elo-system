@@ -25,7 +25,7 @@ abstract class BaseController extends Controller
   /**
    * @var EntityManagerInterface
    */
-  protected $em;
+  protected $entityManager;
 
   /**
    * @var string
@@ -38,35 +38,35 @@ abstract class BaseController extends Controller
 //<editor-fold desc="Constructor">
   /**
    * BaseController constructor.
-   * @param EntityManagerInterface $em
+   * @param EntityManagerInterface $entityManager
    */
-  public function __construct(EntityManagerInterface $em)
+  public function __construct(EntityManagerInterface $entityManager)
   {
-    $this->em = $em;
+    $this->entityManager = $entityManager;
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Protected Methods">
-  /**
-   * Gets a transformation function which transforms an enum name into the corresponding value
-   * @param string $enum_name the name of the enum
-   * @return \Closure the function which transforms a name into the enum value
-   */
-  protected function enumTransformer(string $enum_name): \Closure
-  {
-    return function ($x) use ($enum_name) {
-      return call_user_func([$enum_name, "getValue"], $x);
-    };
-  }
-
   /**
    * Gets a transformation function which transforms a string in datetime format into a datetime with the given timezone
    * @return \Closure the function which transforms a string into a datetime
    */
   protected function datetimetzTransformer(): \Closure
   {
-    return function ($x) {
-      return \DateTime::createFromFormat($this->datetimetzFormat, $x);
+    return function ($dateString) {
+      return \DateTime::createFromFormat($this->datetimetzFormat, $dateString);
+    };
+  }
+
+  /**
+   * Gets a transformation function which transforms an enum name into the corresponding value
+   * @param string $enumName the name of the enum
+   * @return \Closure the function which transforms a name into the enum value
+   */
+  protected function enumTransformer(string $enumName): \Closure
+  {
+    return function ($name) use ($enumName) {
+      return call_user_func([$enumName, "getValue"], $name);
     };
   }
 
@@ -83,24 +83,16 @@ abstract class BaseController extends Controller
       if (!array_key_exists('ignore', $values) || $values['ignore'] != true) {
         $matches = [];
         preg_match('/[^\.]*$/', $key, $matches);
-        $arr_key = $matches[0];
+        $arrKey = $matches[0];
         if (array_key_exists('property', $values)) {
           $property = $values['property'];
         } else {
-          $property = $arr_key;
+          $property = $arrKey;
         }
         $setter = 'set' . ucfirst($property);
-        if (array_key_exists($arr_key, $inputArray)) {
-          $value = $inputArray[$arr_key];
-          if (array_key_exists('reference', $values)) {
-            $value = $this->em->find($values['reference'], $value);
-          }
-          if (array_key_exists('type', $values)) {
-            $value = self::transformByType($value, $values['type']);
-          }
-          if (array_key_exists('transformer', $values)) {
-            $value = $values['transformer']($value);
-          }
+        if (array_key_exists($arrKey, $inputArray)) {
+          $value = $inputArray[$arrKey];
+          $this->transformValue($value, $values);
           $object->$setter($value);
         } else if (array_key_exists('default', $values) && $object->methodExists($setter)) {
           $object->$setter($values['default']);
@@ -108,6 +100,24 @@ abstract class BaseController extends Controller
       }
     }
     return $object;
+  }
+
+  /**
+   * Transforms the given value based on different configurations in specification.
+   * @param mixed $value the value to optionally transform
+   * @param array $specification the specification for this value
+   */
+  protected function transformValue(&$value, array $specification)
+  {
+    if (array_key_exists('reference', $specification)) {
+      $value = $this->entityManager->find($specification['reference'], $value);
+    }
+    if (array_key_exists('type', $specification)) {
+      $value = self::transformByType($value, $specification['type']);
+    }
+    if (array_key_exists('transformer', $specification)) {
+      $value = $specification['transformer']($value);
+    }
   }
 
   /**

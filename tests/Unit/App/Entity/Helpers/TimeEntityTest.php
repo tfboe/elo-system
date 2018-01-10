@@ -19,17 +19,6 @@ use Tests\Helpers\UnitTestCase;
 class TimeEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
-
-  /**
-   * @covers \App\Entity\Helpers\TimeEntity
-   */
-  public function testInitialState()
-  {
-    $entity = $this->mock();
-    self::assertNull($entity->getStartTime());
-    self::assertNull($entity->getEndTime());
-  }
-
   /**
    * @covers \App\Entity\Helpers\TimeEntity::setEndTime
    * @covers \App\Entity\Helpers\TimeEntity::getEndTime
@@ -48,8 +37,8 @@ class TimeEntityTest extends UnitTestCase
   public function testGetEndTimeNotLocalized()
   {
     $entity = $this->mock();
-    $parent_class = (new \ReflectionObject($entity))->getParentClass();
-    $property = $parent_class->getProperty('endTime');
+    $parentClass = (new \ReflectionObject($entity))->getParentClass();
+    $property = $parentClass->getProperty('endTime');
     $property->setAccessible(true);
 
     self::getProperty(get_class($entity), 'endTime')->setValue($entity,
@@ -66,17 +55,27 @@ class TimeEntityTest extends UnitTestCase
   public function testGetStartTimeNotLocalized()
   {
     $entity = $this->mock();
-    $parent_class = (new \ReflectionObject($entity))->getParentClass();
-    $property = $parent_class->getProperty('startTime');
+    $parentClass = (new \ReflectionObject($entity))->getParentClass();
+    $property = $parentClass->getProperty('startTime');
     $property->setAccessible(true);
     $property->setValue($entity, new \DateTime("2017-01-01 05:00:00", new \DateTimeZone("UTC")));
 
-    $property = $parent_class->getProperty('startTimezone');
+    $property = $parentClass->getProperty('startTimezone');
     $property->setAccessible(true);
     $property->setValue($entity, "+02:00");
 
     $time = $entity->getStartTime();
     self::assertEquals("2017-01-01 07:00:00 +0200", $time->format("Y-m-d H:i:s O"));
+  }
+
+  /**
+   * @covers \App\Entity\Helpers\TimeEntity
+   */
+  public function testInitialState()
+  {
+    $entity = $this->mock();
+    self::assertNull($entity->getStartTime());
+    self::assertNull($entity->getEndTime());
   }
 
   /**
