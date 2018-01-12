@@ -62,6 +62,38 @@ class Competition extends TournamentHierarchyEntity implements TreeStructureEnti
 
 //<editor-fold desc="Public Methods">
   /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return $this->getPhases();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::COMPETITION;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLocalIdentifier()
+  {
+    return $this->getName();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getParent(): ?TreeStructureEntityInterface
+  {
+    return $this->getTournament();
+  }
+
+  /**
    * @return Phase[]|Collection
    */
   public function getPhases()
@@ -88,14 +120,6 @@ class Competition extends TournamentHierarchyEntity implements TreeStructureEnti
   }
 
   /**
-   * @inheritDoc
-   */
-  public function getLocalIdentifier()
-  {
-    return $this->getName();
-  }
-
-  /**
    * @param Tournament $tournament
    * @return $this|Competition
    * @throws \App\Exceptions\ValueNotSet if the name is not set
@@ -110,28 +134,4 @@ class Competition extends TournamentHierarchyEntity implements TreeStructureEnti
     return $this;
   }
 //</editor-fold desc="Public Methods">
-
-  /**
-   * @inheritDoc
-   */
-  public function getParent(): ?TreeStructureEntityInterface
-  {
-    return $this->getTournament();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getChildren(): Collection
-  {
-    return $this->getPhases();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getLevel(): int
-  {
-    return Level::COMPETITION;
-  }
 }

@@ -32,10 +32,21 @@ interface TreeStructureEntityInterface
   public function getEndTime(): ?\DateTime;
 
   /**
+   * Gets the id of the entity
+   * @return string
+   */
+  public function getId(): string;
+
+  /**
    * Gets the level of the entity (see Level Enum)
    * @return int
    */
   public function getLevel(): int;
+
+  /**
+   * @return int|string the local identifier also used as unique identifier in the children array of the parent
+   */
+  public function getLocalIdentifier();
 
   /**
    * @return TreeStructureEntityInterface
@@ -52,16 +63,5 @@ interface TreeStructureEntityInterface
    * @return \DateTime
    */
   public function getStartTime(): ?\DateTime;
-
-  /**
-   * Gets the id of the entity
-   * @return string
-   */
-  public function getId(): string;
-
-  /**
-   * @return int|string the local identifier also used as unique identifier in the children array of the parent
-   */
-  public function getLocalIdentifier();
 //</editor-fold desc="Public Methods">
 }

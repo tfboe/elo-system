@@ -29,6 +29,7 @@ class Team extends BaseEntity
 {
   use UUIDEntity;
   use NameEntity;
+
 //<editor-fold desc="Fields">
 
   /**

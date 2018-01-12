@@ -77,7 +77,13 @@ class Match extends TournamentHierarchyEntity implements TreeStructureEntityInte
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-
+  /**
+   * @inheritDoc
+   */
+  public function getChildren(): Collection
+  {
+    return $this->getGames();
+  }
 
   /**
    * @return Game[]|Collection
@@ -85,6 +91,14 @@ class Match extends TournamentHierarchyEntity implements TreeStructureEntityInte
   public function getGames()
   {
     return $this->games;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getLevel(): int
+  {
+    return Level::MATCH;
   }
 
   /**
@@ -103,6 +117,14 @@ class Match extends TournamentHierarchyEntity implements TreeStructureEntityInte
   {
     $this->ensureNotNull('matchNumber');
     return $this->matchNumber;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getParent(): ?TreeStructureEntityInterface
+  {
+    return $this->phase;
   }
 
   /**
@@ -131,7 +153,6 @@ class Match extends TournamentHierarchyEntity implements TreeStructureEntityInte
     return $this->rankingsB;
   }
 
-
   /**
    * @param int $matchNumber
    * @return $this|Match
@@ -155,30 +176,6 @@ class Match extends TournamentHierarchyEntity implements TreeStructureEntityInte
     $this->phase = $phase;
     $phase->getMatches()->set($this->getMatchNumber(), $this);
     return $this;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getParent(): ?TreeStructureEntityInterface
-  {
-    return $this->phase;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getChildren(): Collection
-  {
-    return $this->getGames();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getLevel(): int
-  {
-    return Level::MATCH;
   }
 //</editor-fold desc="Public Methods">
 }

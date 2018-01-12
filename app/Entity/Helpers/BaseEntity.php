@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace App\Entity\Helpers;
 
 
-
 /**
  * Class BaseEntity
  * @package App\Entity\Helpers
@@ -18,7 +17,9 @@ namespace App\Entity\Helpers;
 abstract class BaseEntity
 {
   use UnsetProperty;
+
 //<editor-fold desc="Public Methods">
+
   /**
    * Checks if the given method exists
    * @param string $method the method to search

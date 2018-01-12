@@ -64,21 +64,11 @@ class RankingSystem extends BaseEntity
    * @var Collection|Tournament[]
    */
   private $hierarchyEntries;
-
-  /**
-   * @return Tournament[]|Collection
-   */
-  public function getHierarchyEntries()
-  {
-    return $this->hierarchyEntries;
-  }
-
   /**
    * @ORM\Column(type="datetime", nullable=true)
    * @var \DateTime|null
    */
   private $openSyncFrom;
-
   /**
    * @ORM\OneToMany(targetEntity="RankingSystemList", mappedBy="rankingSystem", indexBy="id")
    * @var Collection|RankingSystemList[]
@@ -117,6 +107,14 @@ class RankingSystem extends BaseEntity
   public function getGenerationInterval(): int
   {
     return $this->generationInterval;
+  }
+
+  /**
+   * @return Tournament[]|Collection
+   */
+  public function getHierarchyEntries()
+  {
+    return $this->hierarchyEntries;
   }
 
   /**

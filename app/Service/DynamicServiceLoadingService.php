@@ -18,10 +18,12 @@ use Illuminate\Contracts\Container\Container;
  */
 class DynamicServiceLoadingService implements DynamicServiceLoadingServiceInterface
 {
-//<editor-fold desc="Public Methods">
+//<editor-fold desc="Fields">
   /** @var Container */
   private $app;
+//</editor-fold desc="Fields">
 
+//<editor-fold desc="Constructor">
   /**
    * DynamicServiceLoadingService constructor.
    * @param Container $app
@@ -30,7 +32,9 @@ class DynamicServiceLoadingService implements DynamicServiceLoadingServiceInterf
   {
     $this->app = $app;
   }
+//</editor-fold desc="Constructor">
 
+//<editor-fold desc="Public Methods">
   /**
    * @inheritdoc
    */
