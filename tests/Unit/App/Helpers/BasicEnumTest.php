@@ -20,16 +20,7 @@ use Tests\Helpers\UnitTestCase;
  */
 class BasicEnumTest extends UnitTestCase
 {
-  /**
-   * @before
-   */
-  protected function clearStaticVariables()
-  {
-    self::getProperty(BasicEnum::class, 'constCacheArray')->setValue(NULL);
-    self::getProperty(BasicEnum::class, 'constCacheArrayCaseMapping')->setValue(NULL);
-  }
 //<editor-fold desc="Public Methods">
-
   /**
    * @covers \App\Helpers\BasicEnum::ensureValidValue
    * @uses   \App\Exceptions\ValueNotValid::__construct
@@ -127,4 +118,15 @@ class BasicEnumTest extends UnitTestCase
     self::assertFalse(TestEnum::isValidValue('VALUE', False));
   }
 //</editor-fold desc="Public Methods">
+
+//<editor-fold desc="Protected Methods">
+  /**
+   * @before
+   */
+  protected function clearStaticVariables()
+  {
+    self::getProperty(BasicEnum::class, 'constCacheArray')->setValue(NULL);
+    self::getProperty(BasicEnum::class, 'constCacheArrayCaseMapping')->setValue(NULL);
+  }
+//</editor-fold desc="Protected Methods">
 }

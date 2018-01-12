@@ -49,16 +49,6 @@ class AuthenticatedTestCase extends DatabaseTestCase
     return $this->json($method, $uri, $data, $headers);
   }
 
-  private function clearUsers()
-  {
-    /** @var Connection $connection */
-    /** @noinspection PhpUndefinedMethodInspection */
-    $connection = EntityManager::getConnection();
-    $sql = sprintf('SET FOREIGN_KEY_CHECKS=0;TRUNCATE TABLE %s;SET FOREIGN_KEY_CHECKS=1;', "users");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $connection->query($sql);
-  }
-
   protected function workOnDatabaseDestroy()
   {
     $this->clearUsers();
@@ -79,4 +69,16 @@ class AuthenticatedTestCase extends DatabaseTestCase
     $this->user = EntityManager::find(User::class, $this->user->getId());
   }
 //</editor-fold desc="Protected Methods">
+
+//<editor-fold desc="Private Methods">
+  private function clearUsers()
+  {
+    /** @var Connection $connection */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $connection = EntityManager::getConnection();
+    $sql = sprintf('SET FOREIGN_KEY_CHECKS=0;TRUNCATE TABLE %s;SET FOREIGN_KEY_CHECKS=1;', "users");
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $connection->query($sql);
+  }
+//</editor-fold desc="Private Methods">
 }

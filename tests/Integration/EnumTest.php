@@ -26,12 +26,30 @@ use Tests\Helpers\LumenTestCase;
 class EnumTest extends LumenTestCase
 {
 //<editor-fold desc="Public Methods">
+  public function testAutomaticInstanceGeneration()
+  {
+    self::assertEquals(0, AutomaticInstanceGeneration::OFF);
+    self::assertEquals(1, AutomaticInstanceGeneration::MONTHLY);
+    self::assertEquals(['OFF', 'MONTHLY'],
+      AutomaticInstanceGeneration::getNames());
+  }
+
   public function testGameMode()
   {
     self::assertEquals(0, GameMode::OFFICIAL);
     self::assertEquals(1, GameMode::SPEEDBALL);
     self::assertEquals(2, GameMode::CLASSIC);
     self::assertEquals(['OFFICIAL', 'SPEEDBALL', 'CLASSIC'], GameMode::getNames());
+  }
+
+  public function testLevels()
+  {
+    self::assertEquals(0, Level::GAME);
+    self::assertEquals(1, Level::MATCH);
+    self::assertEquals(2, Level::PHASE);
+    self::assertEquals(3, Level::COMPETITION);
+    self::assertEquals(4, Level::TOURNAMENT);
+    self::assertEquals(['GAME', 'MATCH', 'PHASE', 'COMPETITION', 'TOURNAMENT'], Level::getNames());
   }
 
   public function testOrganizingMode()
@@ -67,24 +85,6 @@ class EnumTest extends LumenTestCase
     self::assertEquals(1, TeamMode::SINGLE);
     self::assertEquals(2, TeamMode::DYP);
     self::assertEquals(['DOUBLE', 'SINGLE', 'DYP'], TeamMode::getNames());
-  }
-
-  public function testAutomaticInstanceGeneration()
-  {
-    self::assertEquals(0, AutomaticInstanceGeneration::OFF);
-    self::assertEquals(1, AutomaticInstanceGeneration::MONTHLY);
-    self::assertEquals(['OFF', 'MONTHLY'],
-      AutomaticInstanceGeneration::getNames());
-  }
-
-  public function testLevels()
-  {
-    self::assertEquals(0, Level::GAME);
-    self::assertEquals(1, Level::MATCH);
-    self::assertEquals(2, Level::PHASE);
-    self::assertEquals(3, Level::COMPETITION);
-    self::assertEquals(4, Level::TOURNAMENT);
-    self::assertEquals(['GAME', 'MATCH', 'PHASE', 'COMPETITION', 'TOURNAMENT'], Level::getNames());
   }
 //</editor-fold desc="Public Methods">
 }
