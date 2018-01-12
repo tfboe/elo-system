@@ -33,6 +33,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testClearTimes()
   {
@@ -63,6 +64,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimeGame()
   {
@@ -115,6 +117,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimePhase()
   {
@@ -152,6 +155,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimeTournament()
   {

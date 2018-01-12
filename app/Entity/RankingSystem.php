@@ -56,58 +56,22 @@ class RankingSystem extends BaseEntity
 
   /**
    * @ORM\ManyToMany(
-   *     targetEntity="Tournament",
+   *     targetEntity="\App\Entity\Helpers\TournamentHierarchyEntity",
    *     mappedBy="rankingSystems",
    *     indexBy="id"
    * )
    * @ORM\JoinTable(name="relation__tournament_ranking_systems")
    * @var Collection|Tournament[]
    */
-  private $tournaments;
+  private $hierarchyEntries;
 
   /**
-   * @ORM\ManyToMany(
-   *     targetEntity="Competition",
-   *     mappedBy="rankingSystems",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__competition_ranking_systems")
-   * @var Collection|Competition[]
+   * @return Tournament[]|Collection
    */
-  private $competitions;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="Phase",
-   *     mappedBy="rankingSystems",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__phase_ranking_systems")
-   * @var Collection|Phase[]
-   */
-  private $phases;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="Match",
-   *     mappedBy="rankingSystems",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__match_ranking_systems")
-   * @var Collection|Match[]
-   */
-  private $matches;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="Game",
-   *     mappedBy="rankingSystems",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__game_ranking_systems")
-   * @var Collection|Game[]
-   */
-  private $games;
+  public function getHierarchyEntries()
+  {
+    return $this->hierarchyEntries;
+  }
 
   /**
    * @ORM\Column(type="datetime", nullable=true)
@@ -132,39 +96,19 @@ class RankingSystem extends BaseEntity
     $this->initSubClassData($keys);
     $this->generationInterval = AutomaticInstanceGeneration::OFF;
     $this->defaultForLevel = null;
-    $this->tournaments = new ArrayCollection();
-    $this->competitions = new ArrayCollection();
-    $this->phases = new ArrayCollection();
-    $this->matches = new ArrayCollection();
-    $this->games = new ArrayCollection();
     $this->openSyncFrom = null;
     $this->lists = new ArrayCollection();
+    $this->hierarchyEntries = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
-  /**
-   * @return Competition[]|Collection
-   */
-  public function getCompetitions(): Collection
-  {
-    return $this->competitions;
-  }
-
   /**
    * @return int|null
    */
   public function getDefaultForLevel(): ?int
   {
     return $this->defaultForLevel;
-  }
-
-  /**
-   * @return Game[]|Collection
-   */
-  public function getGames(): Collection
-  {
-    return $this->games;
   }
 
   /**
@@ -184,27 +128,11 @@ class RankingSystem extends BaseEntity
   }
 
   /**
-   * @return Match[]|Collection
-   */
-  public function getMatches(): Collection
-  {
-    return $this->matches;
-  }
-
-  /**
    * @return \DateTime|null
    */
   public function getOpenSyncFrom(): ?\DateTime
   {
     return $this->openSyncFrom;
-  }
-
-  /**
-   * @return Phase[]|Collection
-   */
-  public function getPhases(): Collection
-  {
-    return $this->phases;
   }
 
   /**
@@ -215,14 +143,6 @@ class RankingSystem extends BaseEntity
   {
     $this->ensureNotNull('serviceName');
     return $this->serviceName;
-  }
-
-  /**
-   * @return Collection|Tournament[]
-   */
-  public function getTournaments(): Collection
-  {
-    return $this->tournaments;
   }
 
   /**

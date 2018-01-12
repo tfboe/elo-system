@@ -9,16 +9,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\CategoryTraits\GameMode;
-use App\Entity\CategoryTraits\OrganizingMode;
-use App\Entity\CategoryTraits\ScoreMode;
-use App\Entity\CategoryTraits\Table;
-use App\Entity\CategoryTraits\TeamMode;
-use App\Entity\Helpers\BaseEntity;
+
 use App\Entity\Helpers\ResultEntity;
-use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TournamentHierarchyEntity;
 use App\Entity\Helpers\TreeStructureEntityInterface;
-use App\Entity\Helpers\UUIDEntity;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,16 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="matches")
  */
-class Match extends BaseEntity implements TreeStructureEntityInterface
+class Match extends TournamentHierarchyEntity implements TreeStructureEntityInterface
 {
-  use GameMode;
-  use TeamMode;
-  use OrganizingMode;
-  use ScoreMode;
-  use Table;
   use ResultEntity;
-  use TimeEntity;
-  use UUIDEntity;
 
 //<editor-fold desc="Fields">
 
@@ -74,25 +61,6 @@ class Match extends BaseEntity implements TreeStructureEntityInterface
    * @var Collection|Game[]
    */
   protected $games;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="RankingSystem",
-   *     inversedBy="matches",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__match_ranking_systems")
-   * @var Collection|RankingSystem[]
-   */
-  private $rankingSystems;
-
-  /**
-   * @return RankingSystem[]|Collection
-   */
-  public function getRankingSystems()
-  {
-    return $this->rankingSystems;
-  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -101,10 +69,10 @@ class Match extends BaseEntity implements TreeStructureEntityInterface
    */
   public function __construct()
   {
+    parent::__construct();
     $this->rankingsA = new ArrayCollection();
     $this->rankingsB = new ArrayCollection();
     $this->games = new ArrayCollection();
-    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 

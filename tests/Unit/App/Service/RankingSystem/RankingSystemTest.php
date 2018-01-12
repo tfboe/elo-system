@@ -64,6 +64,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Tournament
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetEarliestInfluenceGameLevel()
   {
@@ -130,6 +132,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Tournament
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
    */
   public function testGetEarliestInfluenceGameLevelWithDifferentImpactLevels()
@@ -250,6 +254,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Entity\Helpers\TimeEntity
    * @uses   \App\Entity\Helpers\TimestampableEntity
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetEarliestInfluenceTournamentLevel()
   {
@@ -311,6 +317,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestEntityInfluence
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestInfluence
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsEarlier()
   {
@@ -347,6 +355,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestEntityInfluence
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestInfluence
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNotNullAndTournamentNotRanked()
   {
@@ -377,6 +387,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestEntityInfluence
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestInfluence
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNull()
   {
@@ -412,6 +424,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestEntityInfluence
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestInfluence
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNullAndTournamentNotRanked()
   {
@@ -439,6 +453,8 @@ class RankingSystemTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestEntityInfluence
    * @uses   \App\Service\RankingSystem\RankingSystem::getEarliestInfluence
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentTournamentIsEarlier()
   {

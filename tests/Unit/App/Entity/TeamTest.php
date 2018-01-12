@@ -31,6 +31,7 @@ class TeamTest extends UnitTestCase
    * @uses   \App\Entity\Team::__construct
    * @uses   \App\Entity\Team::getStartNumber
    * @uses   \App\Entity\Team::setStartNumber
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetition()
   {

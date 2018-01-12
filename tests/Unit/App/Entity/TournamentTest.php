@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
-use App\Entity\RankingSystem;
 use App\Entity\Tournament;
 use App\Entity\User;
 use App\Exceptions\ValueNotSet;
@@ -34,6 +33,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\NameEntity::setName
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetitionsAndChildren()
   {
@@ -52,18 +52,16 @@ class TournamentTest extends UnitTestCase
   /**
    * @covers \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Tournament::getCompetitions
-   * @uses   \App\Entity\Tournament::getRankingSystems
    * @uses   \App\Entity\Tournament::getTournamentListId
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testConstructor()
   {
     $tournament = $this->tournament();
     self::assertInstanceOf(Tournament::class, $tournament);
     self::assertInstanceOf(ArrayCollection::class, $tournament->getCompetitions());
-    self::assertInstanceOf(ArrayCollection::class, $tournament->getRankingSystems());
     self::assertEquals(0, $tournament->getCompetitions()->count());
     self::assertEquals("", $tournament->getTournamentListId());
-    self::assertEquals(0, $tournament->getRankingSystems()->count());
   }
 
   /**
@@ -72,6 +70,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\User::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCreator()
   {
@@ -87,6 +86,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCreatorException()
   {
@@ -104,6 +104,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetLocalIdentifier()
   {
@@ -119,6 +120,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetLocalIdentifierException()
   {
@@ -134,6 +136,7 @@ class TournamentTest extends UnitTestCase
   /**
    * @covers \App\Entity\Tournament::getLevel
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -143,6 +146,7 @@ class TournamentTest extends UnitTestCase
   /**
    * @covers \App\Entity\Tournament::getParent
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testParent()
   {
@@ -150,25 +154,10 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::getRankingSystems()
-   * @uses   \App\Entity\Tournament::__construct
-   */
-  public function testRankingSystems()
-  {
-    $tournament = $this->tournament();
-    /** @var $system RankingSystem */
-    $system = $this->createStubWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $tournament->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $tournament->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $tournament->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
    * @covers \App\Entity\Tournament::setTournamentListId
    * @covers \App\Entity\Tournament::getTournamentListId
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testTournamentListId()
   {
@@ -182,6 +171,7 @@ class TournamentTest extends UnitTestCase
    * @covers \App\Entity\Tournament::getUserIdentifier
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testUserIdentifier()
   {
@@ -196,6 +186,7 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testUserIdentifierException()
   {

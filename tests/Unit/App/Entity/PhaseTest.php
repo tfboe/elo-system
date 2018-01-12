@@ -14,7 +14,6 @@ use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
-use App\Entity\RankingSystem;
 use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
@@ -37,6 +36,7 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Phase::getPhaseNumber
    * @uses   \App\Entity\Phase::setPhaseNumber
    * @uses   \App\Entity\Competition
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetitionAndParent()
   {
@@ -74,6 +74,7 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetitionException()
   {
@@ -92,8 +93,8 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::getPostQualifications
    * @uses   \App\Entity\Phase::getPreQualifications
-   * @uses   \App\Entity\Phase::getRankingSystems
    * @uses   \App\Entity\Phase::getRankings
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testConstructor()
   {
@@ -106,13 +107,12 @@ class PhaseTest extends UnitTestCase
     self::assertEquals(0, $phase->getPreQualifications()->count());
     self::assertInstanceOf(Collection::class, $phase->getRankings());
     self::assertEquals(0, $phase->getRankings()->count());
-    self::assertInstanceOf(Collection::class, $phase->getRankingSystems());
-    self::assertEquals(0, $phase->getRankingSystems()->count());
   }
 
   /**
    * @covers \App\Entity\Phase::getLevel
    * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -125,6 +125,7 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLocalIdentifierException()
   {
@@ -143,6 +144,7 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Match
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testMatchesAndChildren()
   {
@@ -161,6 +163,7 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::getPostQualifications
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\QualificationSystem
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testNextQualificationSystems()
   {
@@ -177,6 +180,7 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::getLocalIdentifier
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPhaseNumberAndLocalIdentifier()
   {
@@ -193,6 +197,7 @@ class PhaseTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Exceptions\ValueNotSet::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPhaseNumberException()
   {
@@ -209,6 +214,7 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::getPreQualifications
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\QualificationSystem
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPreviousQualificationSystems()
   {
@@ -220,26 +226,11 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getRankingSystems
-   * @uses   \App\Entity\Phase::__construct
-   */
-  public function testRankingSystems()
-  {
-    $entity = $this->phase();
-    /** @var $system RankingSystem */
-    $system = $this->createStubWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $entity->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $entity->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
    * @covers \App\Entity\Phase::getRankings
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Ranking
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testRankings()
   {

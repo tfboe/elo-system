@@ -46,6 +46,7 @@ class RankingTest extends UnitTestCase
    * @uses   \App\Entity\Ranking::__construct
    * @uses   \App\Entity\Ranking::getUniqueRank
    * @uses   \App\Entity\Ranking::setUniqueRank
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPhase()
   {

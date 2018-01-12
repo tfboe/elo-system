@@ -11,7 +11,6 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Competition;
 use App\Entity\Phase;
-use App\Entity\RankingSystem;
 use App\Entity\Team;
 use App\Entity\Tournament;
 use App\Exceptions\ValueNotSet;
@@ -28,8 +27,8 @@ class CompetitionTest extends UnitTestCase
 //<editor-fold desc="Public Methods">
   /**
    * @covers \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Competition::getPhases
-   * @uses   \App\Entity\Competition::getRankingSystems
    * @uses   \App\Entity\Competition::getTeams
    */
   public function testConstructor()
@@ -38,15 +37,14 @@ class CompetitionTest extends UnitTestCase
     self::assertInstanceOf(Competition::class, $competition);
     self::assertInstanceOf(Collection::class, $competition->getTeams());
     self::assertInstanceOf(Collection::class, $competition->getPhases());
-    self::assertInstanceOf(Collection::class, $competition->getRankingSystems());
     self::assertEquals(0, $competition->getTeams()->count());
     self::assertEquals(0, $competition->getPhases()->count());
-    self::assertEquals(0, $competition->getRankingSystems()->count());
   }
 
   /**
    * @covers \App\Entity\Competition::getLocalIdentifier
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Helpers\NameEntity::getName
    * @uses   \App\Entity\Helpers\NameEntity::setName
@@ -62,6 +60,7 @@ class CompetitionTest extends UnitTestCase
   /**
    * @covers \App\Entity\Competition::getLocalIdentifier
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Helpers\NameEntity::getName
    * @uses   \App\Exceptions\ValueNotSet::__construct
@@ -80,6 +79,7 @@ class CompetitionTest extends UnitTestCase
   /**
    * @covers \App\Entity\Competition::getLevel()
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -90,6 +90,7 @@ class CompetitionTest extends UnitTestCase
    * @covers \App\Entity\Competition::getPhases
    * @covers \App\Entity\Competition::getChildren
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase
    */
@@ -107,24 +108,9 @@ class CompetitionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Competition::getRankingSystems()
-   * @uses   \App\Entity\Competition::__construct
-   */
-  public function testRankingSystems()
-  {
-    $entity = $this->competition();
-    /** @var $system RankingSystem */
-    $system = $this->createStubWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $entity->getRankingSystems()->set($system->getId(), $system);
-    self::assertEquals(1, $entity->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
-  }
-
-  /**
    * @covers \App\Entity\Competition::getTeams
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Team
    */
@@ -144,6 +130,7 @@ class CompetitionTest extends UnitTestCase
    * @covers \App\Entity\Competition::getTournament()
    * @covers \App\Entity\Competition::getParent()
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\NameEntity::getName
    * @uses   \App\Entity\Helpers\NameEntity::setName
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
@@ -185,6 +172,7 @@ class CompetitionTest extends UnitTestCase
   /**
    * @covers \App\Entity\Competition::getTournament()
    * @uses   \App\Entity\Competition::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Exceptions\ValueNotSet::__construct
    */

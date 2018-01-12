@@ -226,6 +226,7 @@ abstract class RankingSystem implements RankingSystemInterface
         return;
       }
       //TODO compute ranking changes for this entity and apply it to $list
+
     }
     $nextEntityIndex = count($entities);
   }

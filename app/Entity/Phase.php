@@ -9,16 +9,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\CategoryTraits\GameMode;
-use App\Entity\CategoryTraits\OrganizingMode;
-use App\Entity\CategoryTraits\ScoreMode;
-use App\Entity\CategoryTraits\Table;
-use App\Entity\CategoryTraits\TeamMode;
-use App\Entity\Helpers\BaseEntity;
+
 use App\Entity\Helpers\NameEntity;
-use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TournamentHierarchyEntity;
 use App\Entity\Helpers\TreeStructureEntityInterface;
-use App\Entity\Helpers\UUIDEntity;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,15 +28,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Method hint for getName, since it will never throw an exception (name gets initialized empty)
  * @method string getName()
  */
-class Phase extends BaseEntity implements TreeStructureEntityInterface
+class Phase extends TournamentHierarchyEntity implements TreeStructureEntityInterface
 {
-  use GameMode;
-  use TeamMode;
-  use OrganizingMode;
-  use ScoreMode;
-  use Table;
-  use TimeEntity;
-  use UUIDEntity;
   use NameEntity;
 
 //<editor-fold desc="Fields">
@@ -82,17 +69,6 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
    * @var Collection|Match[]
    */
   protected $matches;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="RankingSystem",
-   *     inversedBy="phases",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__phase_ranking_systems")
-   * @var Collection|RankingSystem[]
-   */
-  private $rankingSystems;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -101,12 +77,12 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
    */
   public function __construct()
   {
+    parent::__construct();
     $this->preQualifications = new ArrayCollection();
     $this->postQualifications = new ArrayCollection();
     $this->name = '';
     $this->rankings = new ArrayCollection();
     $this->matches = new ArrayCollection();
-    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -185,14 +161,6 @@ class Phase extends BaseEntity implements TreeStructureEntityInterface
   public function getPreQualifications(): Collection
   {
     return $this->preQualifications;
-  }
-
-  /**
-   * @return RankingSystem[]|Collection
-   */
-  public function getRankingSystems()
-  {
-    return $this->rankingSystems;
   }
 
   /**

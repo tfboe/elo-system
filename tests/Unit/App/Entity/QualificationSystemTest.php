@@ -26,6 +26,7 @@ class QualificationSystemTest extends UnitTestCase
    * @covers \App\Entity\QualificationSystem::getNextPhase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testNextPhase()
   {
@@ -76,6 +77,7 @@ class QualificationSystemTest extends UnitTestCase
    * @covers \App\Entity\QualificationSystem::getPreviousPhase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPreviousPhase()
   {

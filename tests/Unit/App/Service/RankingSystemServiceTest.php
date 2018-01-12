@@ -40,6 +40,8 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Service\RankingSystemService::getRankingSystems
    * @uses   \App\Service\RankingSystemService::getRankingSystemsEarliestInfluences
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testAdaptOpenSyncFromValues()
   {
@@ -96,6 +98,8 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Tournament
    * @uses   \App\Service\RankingSystemService::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testApplyRankingSystems()
   {
@@ -166,6 +170,8 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Service\RankingSystemService::__construct
    * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetRankingSystemsEarliestInfluences()
   {

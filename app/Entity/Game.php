@@ -9,16 +9,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\CategoryTraits\GameMode;
-use App\Entity\CategoryTraits\OrganizingMode;
-use App\Entity\CategoryTraits\ScoreMode;
-use App\Entity\CategoryTraits\Table;
-use App\Entity\CategoryTraits\TeamMode;
-use App\Entity\Helpers\BaseEntity;
+
 use App\Entity\Helpers\ResultEntity;
-use App\Entity\Helpers\TimeEntity;
+use App\Entity\Helpers\TournamentHierarchyEntity;
 use App\Entity\Helpers\TreeStructureEntityInterface;
-use App\Entity\Helpers\UUIDEntity;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,16 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="games")
  */
-class Game extends BaseEntity implements TreeStructureEntityInterface
+class Game extends TournamentHierarchyEntity implements TreeStructureEntityInterface
 {
-  use GameMode;
-  use TeamMode;
-  use OrganizingMode;
-  use ScoreMode;
-  use Table;
   use ResultEntity;
-  use TimeEntity;
-  use UUIDEntity;
 
 //<editor-fold desc="Fields">
 
@@ -72,25 +59,6 @@ class Game extends BaseEntity implements TreeStructureEntityInterface
    * @var int
    */
   protected $gameNumber;
-
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="RankingSystem",
-   *     inversedBy="matches",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__game_ranking_systems")
-   * @var Collection|RankingSystem[]
-   */
-  private $rankingSystems;
-
-  /**
-   * @return RankingSystem[]|Collection
-   */
-  public function getRankingSystems()
-  {
-    return $this->rankingSystems;
-  }
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -99,9 +67,9 @@ class Game extends BaseEntity implements TreeStructureEntityInterface
    */
   public function __construct()
   {
+    parent::__construct();
     $this->playersA = new ArrayCollection();
     $this->playersB = new ArrayCollection();
-    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 

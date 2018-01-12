@@ -9,17 +9,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\CategoryTraits\GameMode;
-use App\Entity\CategoryTraits\OrganizingMode;
-use App\Entity\CategoryTraits\ScoreMode;
-use App\Entity\CategoryTraits\Table;
-use App\Entity\CategoryTraits\TeamMode;
-use App\Entity\Helpers\BaseEntity;
+
 use App\Entity\Helpers\NameEntity;
-use App\Entity\Helpers\TimeEntity;
 use App\Entity\Helpers\TimestampableEntity;
+use App\Entity\Helpers\TournamentHierarchyEntity;
 use App\Entity\Helpers\TreeStructureEntityInterface;
-use App\Entity\Helpers\UUIDEntity;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,16 +25,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="tournaments",indexes={@ORM\Index(name="user_id_idx", columns={"user_identifier","creator_id"})})
  */
-class Tournament extends BaseEntity implements TreeStructureEntityInterface
+class Tournament extends TournamentHierarchyEntity implements TreeStructureEntityInterface
 {
-  use GameMode;
-  use TeamMode;
-  use OrganizingMode;
-  use ScoreMode;
-  use Table;
   use TimestampableEntity;
-  use TimeEntity;
-  use UUIDEntity;
   use NameEntity;
 
 //<editor-fold desc="Fields">
@@ -65,16 +52,6 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
    * @var Collection|Competition[]
    */
   protected $competitions;
-  /**
-   * @ORM\ManyToMany(
-   *     targetEntity="RankingSystem",
-   *     inversedBy="tournaments",
-   *     indexBy="id"
-   * )
-   * @ORM\JoinTable(name="relation__tournament_ranking_systems")
-   * @var Collection|RankingSystem[]
-   */
-  private $rankingSystems;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -83,9 +60,9 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
    */
   public function __construct()
   {
+    parent::__construct();
     $this->tournamentListId = "";
     $this->competitions = new ArrayCollection();
-    $this->rankingSystems = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
@@ -138,14 +115,6 @@ class Tournament extends BaseEntity implements TreeStructureEntityInterface
   public function getParent(): ?TreeStructureEntityInterface
   {
     return null;
-  }
-
-  /**
-   * @return Collection|RankingSystem[]
-   */
-  public function getRankingSystems(): Collection
-  {
-    return $this->rankingSystems;
   }
 
   /**

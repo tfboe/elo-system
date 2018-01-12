@@ -276,7 +276,7 @@ class TournamentController extends BaseController
         $tournament->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
         /** @noinspection PhpUnhandledExceptionInspection
          * tournament is persisted and therefore has an id */
-        $rankingSystem->getTournaments()->set($tournament->getId(), $tournament);
+        $rankingSystem->getHierarchyEntries()->set($tournament->getId(), $tournament);
       }
       $type = 'create';
     }
@@ -426,7 +426,7 @@ class TournamentController extends BaseController
         $this->entityManager->persist($competition);
         foreach ($this->rankingSystems[Level::COMPETITION] as $rankingSystem) {
           $competition->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getCompetitions()->set($competition->getId(), $competition);
+          $rankingSystem->getHierarchyEntries()->set($competition->getId(), $competition);
         }
       }
       $competitionNames[$competitionValues['name']] = true;
@@ -556,7 +556,7 @@ class TournamentController extends BaseController
         $this->entityManager->persist($game);
         foreach ($this->rankingSystems[Level::GAME] as $rankingSystem) {
           $game->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getGames()->set($game->getId(), $game);
+          $rankingSystem->getHierarchyEntries()->set($game->getId(), $game);
         }
       }
       $gameNumbers[$gameValues['gameNumber']] = true;
@@ -670,7 +670,7 @@ class TournamentController extends BaseController
         $this->entityManager->persist($match);
         foreach ($this->rankingSystems[Level::MATCH] as $rankingSystem) {
           $match->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getMatches()->set($match->getId(), $match);
+          $rankingSystem->getHierarchyEntries()->set($match->getId(), $match);
         }
       }
       $matchNumbers[$matchValues['matchNumber']] = true;
@@ -790,7 +790,7 @@ class TournamentController extends BaseController
         $this->entityManager->persist($phase);
         foreach ($this->rankingSystems[Level::PHASE] as $rankingSystem) {
           $phase->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getPhases()->set($phase->getId(), $phase);
+          $rankingSystem->getHierarchyEntries()->set($phase->getId(), $phase);
         }
       }
       $phaseNumbers[$phaseValues['phaseNumber']] = true;

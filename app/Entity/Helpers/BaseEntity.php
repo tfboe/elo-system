@@ -15,7 +15,7 @@ namespace App\Entity\Helpers;
  * Class BaseEntity
  * @package App\Entity\Helpers
  */
-class BaseEntity
+abstract class BaseEntity
 {
   use UnsetProperty;
 //<editor-fold desc="Public Methods">
