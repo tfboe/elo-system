@@ -23,7 +23,7 @@ trait Table
    * @ORM\Column(name="table_id", type="smallint", nullable=true)
    * @var int|null
    */
-  protected $table;
+  private $table;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">

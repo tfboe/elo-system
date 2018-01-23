@@ -49,7 +49,6 @@ class DBPersistenceTest extends DatabaseTestCase
     /** @noinspection PhpUndefinedMethodInspection */
     EntityManager::clear();
     /** @var Tournament $resultTournament */
-    /** @noinspection PhpUnhandledExceptionInspection */
     /** @noinspection PhpUndefinedMethodInspection */
     $resultTournament = EntityManager::find(Tournament::class, $tournament->getId());
     $resultTournament->setCreatedAt($tournament->getCreatedAt());

@@ -33,19 +33,19 @@ class Competition extends TournamentHierarchyEntity
    * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="competitions")
    * @var Tournament
    */
-  protected $tournament;
+  private $tournament;
 
   /**
    * @ORM\OneToMany(targetEntity="Team", mappedBy="competition", indexBy="startNumber")
    * @var Collection|Team[]
    */
-  protected $teams;
+  private $teams;
 
   /**
    * @ORM\OneToMany(targetEntity="Phase", mappedBy="competition", indexBy="phaseNumber")
    * @var Collection|Phase[]
    */
-  protected $phases;
+  private $phases;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -111,18 +111,15 @@ class Competition extends TournamentHierarchyEntity
 
   /**
    * @return Tournament
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getTournament(): Tournament
   {
-    $this->ensureNotNull('tournament');
     return $this->tournament;
   }
 
   /**
    * @param Tournament $tournament
    * @return $this|Competition
-   * @throws \App\Exceptions\ValueNotSet if the name is not set
    */
   public function setTournament(Tournament $tournament): Competition
   {

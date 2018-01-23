@@ -34,33 +34,33 @@ class Match extends TournamentHierarchyEntity
    * @ORM\ManyToOne(targetEntity="Phase", inversedBy="matches")
    * @var Phase
    */
-  protected $phase;
+  private $phase;
 
   /**
    * @ORM\ManyToMany(targetEntity="Ranking", indexBy="uniqueRank")
    * @ORM\JoinTable(name="relation__match_rankingA")
    * @var Collection|Ranking
    */
-  protected $rankingsA;
+  private $rankingsA;
 
   /**
    * @ORM\ManyToMany(targetEntity="Ranking", indexBy="uniqueRank")
    * @ORM\JoinTable(name="relation__match_rankingB")
    * @var Collection|Ranking
    */
-  protected $rankingsB;
+  private $rankingsB;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $matchNumber;
+  private $matchNumber;
 
   /**
    * @ORM\OneToMany(targetEntity="Game", mappedBy="match", indexBy="gameNumber")
    * @var Collection|Game[]
    */
-  protected $games;
+  private $games;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -111,11 +111,9 @@ class Match extends TournamentHierarchyEntity
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getMatchNumber(): int
   {
-    $this->ensureNotNull('matchNumber');
     return $this->matchNumber;
   }
 
@@ -129,11 +127,9 @@ class Match extends TournamentHierarchyEntity
 
   /**
    * @return Phase
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPhase(): Phase
   {
-    $this->ensureNotNull('phase');
     return $this->phase;
   }
 
@@ -166,7 +162,6 @@ class Match extends TournamentHierarchyEntity
   /**
    * @param Phase $phase
    * @return $this|Match
-   * @throws \App\Exceptions\ValueNotSet the match number is not yet set
    */
   public function setPhase(Phase $phase): Match
   {

@@ -47,7 +47,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testCreateTournamentFull()
   {
     $players = $this->createPlayers(5);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -695,7 +694,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testCreateTournamentMin()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -754,7 +752,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateGameNumberException()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -823,7 +820,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateMatchNumber()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -903,7 +899,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateNextPhaseNumber()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -993,7 +988,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicatePhaseNumber()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1082,7 +1076,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicatePlayerIdInGamePlayersA()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1128,7 +1121,6 @@ class TournamentTest extends AuthenticatedTestCase
       ],
     ];
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
         "duplicateValue" => $players[0]->getPlayerId(),
@@ -1144,7 +1136,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicatePlayerIdInGamePlayersAAndB()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1190,7 +1181,6 @@ class TournamentTest extends AuthenticatedTestCase
       ],
     ];
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
         "duplicateValue" => $players[0]->getPlayerId(), "status" => 409,
@@ -1206,7 +1196,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicatePlayerInTeam()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1253,7 +1242,6 @@ class TournamentTest extends AuthenticatedTestCase
       ],
     ];
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
         "duplicateValue" => $players[0]->getPlayerId(), "arrayName" => "the player list of team duplicate team",
@@ -1268,7 +1256,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateRankInMatchRankingsA()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1328,7 +1315,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateRankInMatchRankingsAAndB()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1388,7 +1374,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateRankingTeamStartNumber()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1448,7 +1433,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateRankingUniqueRank()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1508,7 +1492,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateStartNumber()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1569,7 +1552,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testDuplicateTeamStartNumbersInRankings()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1629,7 +1611,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testMatchRankingReferenceException()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1689,7 +1670,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testNextPhaseNumberReferenceException()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1750,7 +1730,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testPlayerIdReferenceException()
   {
     $players = $this->createPlayers(3);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1798,7 +1777,6 @@ class TournamentTest extends AuthenticatedTestCase
       ],
     ];
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception",
         "referenceValue" => $players[2]->getPlayerId(),
@@ -1814,7 +1792,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testTeamStartNumberReferenceException()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -1893,7 +1870,6 @@ class TournamentTest extends AuthenticatedTestCase
       entity(Competition::class)->create(['name' => 'Test Competition 4']),
       entity(Competition::class)->create(['name' => 'Test Competition 5'])];
     foreach ($competitions as $competition) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $competition->setTournament($tournament);
     }
 
@@ -2007,29 +1983,23 @@ class TournamentTest extends AuthenticatedTestCase
 
     for ($i = 0; $i < count($phases); $i++) {
       foreach ($teams[$i] as $team) {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $team->setCompetition($competitions[$i]);
       }
       for ($j = 0; $j < count($phases[$i]); $j++) {
         $phase = $phases[$i][$j];
-        /** @noinspection PhpUnhandledExceptionInspection */
         $phase->setCompetition($competitions[$i]);
         for ($k = 0; $k < count($rankings[$i][$j]); $k++) {
-          /** @noinspection PhpUnhandledExceptionInspection */
           $rankings[$i][$j][$k]->setPhase($phase);
         }
         for ($k = 0; $k < count($matches[$i][$j]); $k++) {
-          /** @noinspection PhpUnhandledExceptionInspection */
           $matches[$i][$j][$k]->setPhase($phase);
           for ($l = 0; $l < count($games[$i][$j][$k]); $l++) {
-            /** @noinspection PhpUnhandledExceptionInspection */
             $games[$i][$j][$k][$l]->setMatch($matches[$i][$j][$k]);
           }
         }
       }
     }
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals('t1', $tournament->getUserIdentifier());
     self::assertEquals('', $tournament->getTournamentListId());
     self::assertEquals(4, $tournament->getCompetitions()->count());
@@ -2041,7 +2011,6 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertNull($tournament->getTeamMode());
     self::assertNull($tournament->getTable());
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'New Name',
       'userIdentifier' => 't1',
@@ -2345,7 +2314,6 @@ class TournamentTest extends AuthenticatedTestCase
   public function testUnorderedTestNumberException()
   {
     $players = $this->createPlayers(2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -2434,7 +2402,6 @@ class TournamentTest extends AuthenticatedTestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * @param mixed[] $data
    * @param Tournament $tournament
@@ -2462,7 +2429,6 @@ class TournamentTest extends AuthenticatedTestCase
     ], $categories);
     self::assertInstanceOf(Collection::class, $tournament->getCompetitions());
     self::assertEquals(count($data['competitions']), $tournament->getCompetitions()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertNotEmpty($tournament->getId());
 
     foreach ($data['competitions'] as $competitionData) {
@@ -2490,7 +2456,6 @@ class TournamentTest extends AuthenticatedTestCase
         foreach ($teamData['players'] as $id) {
           $exists = false;
           foreach ($team->getPlayers() as $player) {
-            /** @noinspection PhpUnhandledExceptionInspection */
             if ($player->getPlayerId() == $id) {
               $exists = true;
               break;
@@ -2518,7 +2483,6 @@ class TournamentTest extends AuthenticatedTestCase
           foreach ($phaseData['nextPhaseNumbers'] as $phaseNumber) {
             $found = false;
             foreach ($phase->getPostQualifications() as $system) {
-              /** @noinspection PhpUnhandledExceptionInspection */
               if ($system->getNextPhase()->getPhaseNumber() === $phaseNumber) {
                 $found = true;
                 break;
@@ -2546,7 +2510,6 @@ class TournamentTest extends AuthenticatedTestCase
           self::assertEquals(count($rankingData['teamStartNumbers']), $ranking->getTeams()->count());
           foreach ($rankingData['teamStartNumbers'] as $startNumber) {
             self::assertTrue($competition->getTeams()->containsKey($startNumber));
-            /** @noinspection PhpUnhandledExceptionInspection */
             self::assertTrue($competition->getTeams()[$startNumber]->getStartNumber() == $startNumber);
           }
         }
@@ -2575,7 +2538,6 @@ class TournamentTest extends AuthenticatedTestCase
             self::assertEquals(count($rankingsData), $rankings->count());
             foreach ($rankingsData as $uniqueRank) {
               self::assertTrue($rankings->containsKey($uniqueRank));
-              /** @noinspection PhpUnhandledExceptionInspection */
               self::assertTrue($rankings[$uniqueRank]->getUniqueRank() == $uniqueRank);
             }
           }
@@ -2604,7 +2566,6 @@ class TournamentTest extends AuthenticatedTestCase
               self::assertEquals(count($playersData), $players->count());
               foreach ($playersData as $id) {
                 self::assertTrue($players->containsKey($id));
-                /** @noinspection PhpUnhandledExceptionInspection */
                 self::assertTrue($players[$id]->getPlayerId() == $id);
               }
             }
@@ -2614,7 +2575,6 @@ class TournamentTest extends AuthenticatedTestCase
     }
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /** @noinspection PhpTooManyParametersInspection */
   /**
    * Creates a game
@@ -2643,19 +2603,16 @@ class TournamentTest extends AuthenticatedTestCase
       'startTime' => $startTime,
       'endTime' => $endTime]);
     foreach ($playersA as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $game->getPlayersA()->set($player->getPlayerId(), $player);
     }
 
     foreach ($playersB as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $game->getPlayersB()->set($player->getPlayerId(), $player);
     }
 
     return $game;
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /** @noinspection PhpTooManyParametersInspection */
   /**
    * Creates a match
@@ -2684,19 +2641,15 @@ class TournamentTest extends AuthenticatedTestCase
       'startTime' => $startTime,
       'endTime' => $endTime]);
     foreach ($rankingsA as $ranking) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $match->getRankingsA()->set($ranking->getUniqueRank(), $ranking);
     }
 
     foreach ($rankingsB as $ranking) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $match->getRankingsB()->set($ranking->getUniqueRank(), $ranking);
     }
     return $match;
   }
 
-  /** @noinspection PhpTooManyParametersInspection */
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Creates a list of phases
    * @param int $number the number of phases
@@ -2727,7 +2680,6 @@ class TournamentTest extends AuthenticatedTestCase
     return $phases;
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Creates a ranking
    * @param Team[] $teams the teams of the ranking
@@ -2741,7 +2693,6 @@ class TournamentTest extends AuthenticatedTestCase
     $ranking = entity(Ranking::class)->create(['rank' => $rank,
       'uniqueRank' => $uniqueRank === null ? $rank : $uniqueRank]);
     foreach ($teams as $team) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       $ranking->getTeams()->set($team->getStartNumber(), $team);
     }
     return $ranking;

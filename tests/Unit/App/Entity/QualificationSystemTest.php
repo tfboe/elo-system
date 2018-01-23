@@ -11,7 +11,6 @@ namespace Tests\Unit\App\Entity;
 
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
-use App\Exceptions\ValueNotSet;
 use Tests\Helpers\UnitTestCase;
 
 /**
@@ -24,7 +23,6 @@ class QualificationSystemTest extends UnitTestCase
   /**
    * @covers \App\Entity\QualificationSystem::setNextPhase
    * @covers \App\Entity\QualificationSystem::getNextPhase
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -33,49 +31,23 @@ class QualificationSystemTest extends UnitTestCase
     $system = $this->system();
     $phase = new Phase();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $system->setNextPhase($phase);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $system->getNextPhase());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $system->getNextPhase()->getPreQualifications()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($system, $system->getNextPhase()->getPreQualifications()[0]);
 
     $phase2 = new Phase();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $system->setNextPhase($phase2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase2, $system->getNextPhase());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $system->getNextPhase()->getPreQualifications()->count());
     self::assertEquals(0, $phase->getPreQualifications()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($system, $system->getNextPhase()->getPreQualifications()[0]);
-  }
-
-  /**
-   * @covers \App\Entity\QualificationSystem::getNextPhase
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testNextPhaseException()
-  {
-    $system = $this->system();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property nextPhase of the class " . QualificationSystem::class . " must be" .
-      " set before it can be accessed. Please set the property immediately after you call the constructor(Empty " .
-      "Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $system->getNextPhase();
   }
 
   /**
    * @covers \App\Entity\QualificationSystem::setPreviousPhase
    * @covers \App\Entity\QualificationSystem::getPreviousPhase
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -84,43 +56,18 @@ class QualificationSystemTest extends UnitTestCase
     $system = $this->system();
     $phase = new Phase();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $system->setPreviousPhase($phase);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $system->getPreviousPhase());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $system->getPreviousPhase()->getPostQualifications()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($system, $system->getPreviousPhase()->getPostQualifications()[0]);
 
     $phase2 = new Phase();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $system->setPreviousPhase($phase2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase2, $system->getPreviousPhase());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $system->getPreviousPhase()->getPostQualifications()->count());
     self::assertEquals(0, $phase->getPostQualifications()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($system, $system->getPreviousPhase()->getPostQualifications()[0]);
-  }
-
-  /**
-   * @covers \App\Entity\QualificationSystem::getPreviousPhase
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testPreviousPhaseException()
-  {
-    $system = $this->system();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property previousPhase of the class " . QualificationSystem::class . " must be" .
-      " set before it can be accessed. Please set the property immediately after you call the constructor(Empty " .
-      "Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $system->getPreviousPhase();
   }
 //</editor-fold desc="Public Methods">
 

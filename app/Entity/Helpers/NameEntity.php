@@ -20,17 +20,15 @@ trait NameEntity
    * @ORM\Column(type="string")
    * @var string
    */
-  protected $name;
+  private $name;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getName(): string
   {
-    $this->ensureNotNull('name');
     return $this->name;
   }
 

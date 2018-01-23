@@ -21,7 +21,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerI
 {
 //<editor-fold desc="Fields">
   /** @var TimeServiceInterface */
-  protected $timeService;
+  private $timeService;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">

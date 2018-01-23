@@ -42,10 +42,8 @@ class TournamentHierarchyEntityTest extends UnitTestCase
     $entity = $this->entity();
     /** @var $system RankingSystem */
     $system = $this->createStubWithId(RankingSystem::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->getRankingSystems()->set($system->getId(), $system);
     self::assertEquals(1, $entity->getRankingSystems()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($system, $entity->getRankingSystems()[$system->getId()]);
   }
 //</editor-fold desc="Public Methods">

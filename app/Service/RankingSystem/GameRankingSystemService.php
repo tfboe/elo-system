@@ -30,7 +30,7 @@ abstract class GameRankingSystemService extends RankingSystemService implements 
   protected function getEntitiesQueryBuilder(RankingSystem $ranking, \DateTime $from): QueryBuilder
   {
     // query all relevant games
-    $query = $this->entityManager->createQueryBuilder();
+    $query = $this->getEntityManager()->createQueryBuilder();
     $query
       ->from(Game::class, 'g')
       ->select('g')

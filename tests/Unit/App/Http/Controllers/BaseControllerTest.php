@@ -113,6 +113,7 @@ class BaseControllerTest extends UnitTestCase
   /**
    * @covers \App\Http\Controllers\BaseController::transformValue
    * @uses   \App\Http\Controllers\BaseController::__construct
+   * @uses   \App\Http\Controllers\BaseController::getEntityManager
    */
   public function testTransformValueByReference()
   {
@@ -125,7 +126,6 @@ class BaseControllerTest extends UnitTestCase
     $controller = $this->getMockForAbstractClass(BaseController::class, [$entityManager]);
     /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'transformValue');
-    /** @noinspection PhpUnhandledExceptionInspection */
     $method->invokeArgs($controller, [&$value, $specification]);
 
     self::assertTrue($value === $user);

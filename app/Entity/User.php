@@ -33,19 +33,19 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * @ORM\Column(type="string")
    * @var string
    */
-  protected $email;
+  private $email;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $jwtVersion;
+  private $jwtVersion;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $confirmedAGBVersion;
+  private $confirmedAGBVersion;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -70,11 +70,9 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getEmail(): string
   {
-    $this->ensureNotNull("email");
     return $this->email;
   }
 
@@ -94,7 +92,6 @@ class User extends BaseEntity implements Authenticatable, JWTSubject
    * Get the identifier that will be stored in the subject claim of the JWT.
    *
    * @return string
-   * @throws \App\Exceptions\ValueNotSet if the id is not set
    */
   public function getJWTIdentifier(): string
   {

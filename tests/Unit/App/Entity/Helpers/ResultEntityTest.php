@@ -25,21 +25,18 @@ class ResultEntityTest extends UnitTestCase
   /**
    * @covers \App\Entity\Helpers\ResultEntity::setPlayed
    * @covers \App\Entity\Helpers\ResultEntity::isPlayed
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testPlayed()
   {
     $entity = $this->mock();
     $played = true;
     $entity->setPlayed($played);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($played, $entity->isPlayed());
   }
 
   /**
    * @covers \App\Entity\Helpers\ResultEntity::setResult
    * @covers \App\Entity\Helpers\ResultEntity::getResult
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Helpers\BasicEnum
    */
   public function testResult()
@@ -47,35 +44,30 @@ class ResultEntityTest extends UnitTestCase
     $mock = $this->mock();
     /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setResult(Result::DRAW);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(Result::DRAW, $mock->getResult());
   }
 
   /**
    * @covers \App\Entity\Helpers\ResultEntity::setResultA
    * @covers \App\Entity\Helpers\ResultEntity::getResultA
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testResultA()
   {
     $entity = $this->mock();
     $res = 1;
     $entity->setResultA($res);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($res, $entity->getResultA());
   }
 
   /**
    * @covers \App\Entity\Helpers\ResultEntity::setResultB
    * @covers \App\Entity\Helpers\ResultEntity::getResultB
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testResultB()
   {
     $entity = $this->mock();
     $res = 1;
     $entity->setResultB($res);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($res, $entity->getResultB());
   }
 
@@ -101,7 +93,7 @@ class ResultEntityTest extends UnitTestCase
    */
   private function mock(): MockObject
   {
-    return $this->getMockForTrait(ResultEntity::class, [], '', true, true, true, ['ensureNotNull']);
+    return $this->getMockForTrait(ResultEntity::class);
   }
 //</editor-fold desc="Private Methods">
 }

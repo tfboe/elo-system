@@ -14,7 +14,6 @@ use App\Entity\Player;
 use App\Entity\RankingSystem;
 use App\Entity\RankingSystemList;
 use App\Entity\RankingSystemListEntry;
-use App\Exceptions\ValueNotSet;
 use Tests\Helpers\UnitTestCase;
 
 
@@ -72,10 +71,8 @@ class RankingSystemListTest extends UnitTestCase
     $player = $this->createStubWithId(Player::class, 5, 'getPlayerId');
     /** @var Player $player */
     $entity2->method('getPlayer')->willReturn($player);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->getEntries()->set($player->getPlayerId(), $entity2);
     self::assertEquals(1, $entity->getEntries()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($entity2, $entity->getEntries()[$player->getPlayerId()]);
   }
 
@@ -84,7 +81,6 @@ class RankingSystemListTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemList::getRankingSystem
    * @uses   \App\Entity\RankingSystemList::__construct
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystem
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    */
@@ -94,46 +90,19 @@ class RankingSystemListTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($instance), 'id')->setValue($instance, 'list-id');
     $rankingSystem = new RankingSystem([]);
-    /** @noinspection PhpUndefinedMethodInspection */
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $instance->setRankingSystem($rankingSystem);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($rankingSystem, $instance->getRankingSystem());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $instance->getRankingSystem()->getLists()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($instance, $instance->getRankingSystem()->getLists()[$instance->getId()]);
 
     $rankingSystem2 = new RankingSystem([]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $instance->setRankingSystem($rankingSystem2);
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($rankingSystem2, $instance->getRankingSystem());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $instance->getRankingSystem()->getLists()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(0, $rankingSystem->getLists()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($instance, $instance->getRankingSystem()->getLists()[$instance->getId()]);
-  }
-
-  /**
-   * @covers \App\Entity\RankingSystemList::getRankingSystem
-   * @uses   \App\Entity\RankingSystemList::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testRankingSystemException()
-  {
-    $instance = $this->instance();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property rankingSystem of the class " . RankingSystemList::class . " must be " .
-      "set before it can be accessed. Please set the property immediately after you call the constructor(Empty " .
-      "Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $instance->getRankingSystem();
   }
 //</editor-fold desc="Public Methods">
 

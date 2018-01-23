@@ -31,7 +31,6 @@ class UUIDEntityTest extends UnitTestCase
     $entity = $this->mock();
     /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($entity), 'id')->setValue($entity, 'test-id');
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals('test-id', $entity->getId());
   }
 //</editor-fold desc="Public Methods">
@@ -42,7 +41,7 @@ class UUIDEntityTest extends UnitTestCase
    */
   private function mock(): MockObject
   {
-    return $this->getMockForTrait(UUIDEntity::class, [], '', true, true, true, ['ensureNotNull']);
+    return $this->getMockForTrait(UUIDEntity::class);
   }
 //</editor-fold desc="Private Methods">
 }

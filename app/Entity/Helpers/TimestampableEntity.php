@@ -18,14 +18,14 @@ trait TimestampableEntity
    * @Gedmo\Timestampable(on="create")
    * @ORM\Column(type="datetime")
    */
-  protected $createdAt;
+  private $createdAt;
 
   /**
    * @var \DateTime
    * @Gedmo\Timestampable(on="update")
    * @ORM\Column(type="datetime")
    */
-  protected $updatedAt;
+  private $updatedAt;
 
 //</editor-fold desc="Fields">
 

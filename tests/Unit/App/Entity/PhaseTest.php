@@ -14,7 +14,6 @@ use App\Entity\Match;
 use App\Entity\Phase;
 use App\Entity\QualificationSystem;
 use App\Entity\Ranking;
-use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
@@ -31,7 +30,6 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::setCompetition
    * @covers \App\Entity\Phase::getCompetition
    * @covers \App\Entity\Phase::getParent
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Phase::getPhaseNumber
    * @uses   \App\Entity\Phase::setPhaseNumber
@@ -43,54 +41,25 @@ class PhaseTest extends UnitTestCase
     $phase = $this->phase();
     $competition = new Competition();
     $phase->setPhaseNumber(1);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setCompetition($competition);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $phase->getCompetition());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase->getCompetition(), $phase->getParent());
 
     $competition2 = new Competition();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setCompetition($competition2);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition2, $phase->getCompetition());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(1, $phase->getCompetition()->getPhases()->count());
     self::assertEquals(0, $competition->getPhases()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase, $phase->getCompetition()->getPhases()[$phase->getPhaseNumber()]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase->getCompetition(), $phase->getParent());
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getCompetition
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testCompetitionException()
-  {
-    $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property competition of the class " . Phase::class . " must be set before" .
-      " it can be accessed. Please set the property immediately after you call the constructor(Empty Constructor " .
-      "Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getCompetition();
   }
 
   /**
    * @covers \App\Entity\Phase::__construct
    * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::getPostQualifications
    * @uses   \App\Entity\Phase::getPreQualifications
    * @uses   \App\Entity\Phase::getRankings
@@ -120,28 +89,8 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getLocalIdentifier
-   * @covers \App\Entity\Phase::getPhaseNumber
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testLocalIdentifierException()
-  {
-    $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getLocalIdentifier();
-  }
-
-  /**
    * @covers \App\Entity\Phase::getMatches
    * @covers \App\Entity\Phase::getChildren
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Match
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
@@ -152,7 +101,6 @@ class PhaseTest extends UnitTestCase
     $match = new Match();
     $match->setMatchNumber(1);
     self::assertEquals($phase->getMatches(), $phase->getChildren());
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getMatches()->set($match->getMatchNumber(), $match);
     self::assertEquals(1, $phase->getMatches()->count());
     self::assertEquals($match, $phase->getMatches()[1]);
@@ -178,7 +126,6 @@ class PhaseTest extends UnitTestCase
    * @covers \App\Entity\Phase::setPhaseNumber
    * @covers \App\Entity\Phase::getPhaseNumber
    * @covers \App\Entity\Phase::getLocalIdentifier
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -186,28 +133,8 @@ class PhaseTest extends UnitTestCase
   {
     $phase = $this->phase();
     $phase->setPhaseNumber(5);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(5, $phase->getPhaseNumber());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($phase->getPhaseNumber(), $phase->getLocalIdentifier());
-  }
-
-  /**
-   * @covers \App\Entity\Phase::getPhaseNumber
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testPhaseNumberException()
-  {
-    $phase = $this->phase();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property phaseNumber of the class " . Phase::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $phase->getPhaseNumber();
   }
 
   /**
@@ -227,7 +154,6 @@ class PhaseTest extends UnitTestCase
 
   /**
    * @covers \App\Entity\Phase::getRankings
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Phase::__construct
    * @uses   \App\Entity\Ranking
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
@@ -237,7 +163,6 @@ class PhaseTest extends UnitTestCase
     $phase = $this->phase();
     $ranking = new Ranking();
     $ranking->setUniqueRank(1);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getRankings()->set($ranking->getUniqueRank(), $ranking);
     self::assertEquals(1, $phase->getRankings()->count());
     self::assertEquals($ranking, $phase->getRankings()[1]);

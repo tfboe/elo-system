@@ -51,7 +51,6 @@ class RankingSystemListEntryTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemListEntry::setNumberRankedEntities
    * @covers \App\Entity\RankingSystemListEntry::getNumberRankedEntities
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry::__construct
    */
   public function testNumberOfRankedEntities()
@@ -59,14 +58,12 @@ class RankingSystemListEntryTest extends UnitTestCase
     $entity = $this->instance();
     $points = 5;
     $entity->setNumberRankedEntities($points);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($points, $entity->getNumberRankedEntities());
   }
 
   /**
    * @covers \App\Entity\RankingSystemListEntry::getPlayer
    * @covers \App\Entity\RankingSystemListEntry::setPlayer
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry::__construct
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    */
@@ -76,7 +73,6 @@ class RankingSystemListEntryTest extends UnitTestCase
     /** @var Player $player */
     $player = $this->createMock(Player::class);
     $entity->setPlayer($player);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($player, $entity->getPlayer());
   }
 
@@ -84,7 +80,6 @@ class RankingSystemListEntryTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemListEntry::setPoints
    * @covers \App\Entity\RankingSystemListEntry::getPoints
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry::__construct
    */
   public function testPoints()
@@ -92,7 +87,6 @@ class RankingSystemListEntryTest extends UnitTestCase
     $entity = $this->instance();
     $points = 24.333;
     $entity->setPoints($points);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($points, $entity->getPoints());
   }
 
@@ -100,7 +94,6 @@ class RankingSystemListEntryTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemListEntry::setRankingSystemList
    * @covers \App\Entity\RankingSystemListEntry::getRankingSystemList
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry::__construct
    * @uses   \App\Entity\RankingSystemListEntry::getPlayer
    * @uses   \App\Entity\RankingSystemListEntry::setPlayer
@@ -115,9 +108,7 @@ class RankingSystemListEntryTest extends UnitTestCase
     /** @var Player $player */
     $entity->setPlayer($player);
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->setRankingSystemList($rankingSystemList);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($rankingSystemList, $entity->getRankingSystemList());
     self::assertEquals(1, $rankingSystemList->getEntries()->count());
     self::assertEquals($entity, $rankingSystemList->getEntries()[5]);
@@ -127,7 +118,6 @@ class RankingSystemListEntryTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemListEntry::setRankingSystemList
    * @covers \App\Entity\RankingSystemListEntry::getRankingSystemList
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry::__construct
    * @uses   \App\Entity\RankingSystemListEntry::getPlayer
    * @uses   \App\Entity\RankingSystemListEntry::setPlayer
@@ -142,14 +132,11 @@ class RankingSystemListEntryTest extends UnitTestCase
     /** @var Player $player */
     $entity->setPlayer($player);
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->setRankingSystemList($rankingSystemList);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($rankingSystemList, $entity->getRankingSystemList());
     self::assertEquals(1, $rankingSystemList->getEntries()->count());
 
     $rankingSystemList2 = new RankingSystemList();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->setRankingSystemList($rankingSystemList2);
     self::assertEquals(0, $rankingSystemList->getEntries()->count());
     self::assertEquals(1, $rankingSystemList2->getEntries()->count());

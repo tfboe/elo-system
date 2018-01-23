@@ -91,7 +91,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Game
    * @uses   \App\Entity\Helpers\NameEntity
    * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Match
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Tournament
@@ -116,36 +115,29 @@ class RankingSystemServiceTest extends UnitTestCase
     /** @var RankingSystemService $service */
     $tournament = new Tournament();
     $competition = new Competition();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $competition->setName("TestCompetition")->setTournament($tournament);
     $phase = new Phase();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setPhaseNumber(1)->setCompetition($competition);
     $match = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match->setMatchNumber(1)->setPhase($phase);
     self::assertNull($service->getEarliestInfluence($ranking, $tournament));
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertNull($service->getEarliestInfluence($ranking, $tournament));
 
     $game = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game->setGameNumber(1)->setMatch($match);
     $gameEndTime = new \DateTime("2017-06-01 00:00:00");
     $game->setEndTime($gameEndTime);
     self::assertEquals($gameEndTime, $service->getEarliestInfluence($ranking, $tournament));
 
     $game2 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game2->setGameNumber(2)->setMatch($match);
     $game2EndTime = new \DateTime("2017-05-01 00:00:00");
     $game2->setEndTime($game2EndTime);
     self::assertEquals($game2EndTime, $service->getEarliestInfluence($ranking, $tournament));
 
     $game3 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game3->setGameNumber(3)->setMatch($match);
     $game3EndTime = new \DateTime("2017-07-01 00:00:00");
     $game3->setEndTime($game3EndTime);
@@ -159,7 +151,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Game
    * @uses   \App\Entity\Helpers\NameEntity
    * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Match
    * @uses   \App\Entity\Phase
    * @uses   \App\Entity\Tournament
@@ -185,96 +176,74 @@ class RankingSystemServiceTest extends UnitTestCase
     /** @var RankingSystemService $service */
     $tournament = new Tournament();
     $competition = new Competition();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $competition->setName("TestCompetition")->setTournament($tournament);
     $phase = new Phase();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setPhaseNumber(1)->setCompetition($competition);
     $match = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match->setMatchNumber(1)->setPhase($phase);
     $game = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game->setGameNumber(1)->setMatch($match);
     $endTime1 = new \DateTime("2017-12-01 00:00:00");
     $game->setEndTime($endTime1);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime1, $service->getEarliestInfluence($ranking, $tournament));
 
     $game2 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game2->setGameNumber(2)->setMatch($match);
     $endTime2 = new \DateTime("2017-11-01 00:00:00");
     $game2->setEndTime($endTime2);
     self::assertEquals($endTime1, $service->getEarliestInfluence($ranking, $tournament));
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime2, $service->getEarliestInfluence($ranking, $tournament));
 
     $match2 = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match2->setMatchNumber(2)->setPhase($phase);
     $game3 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game3->setGameNumber(1)->setMatch($match2);
     $endTime3 = new \DateTime("2017-10-01 00:00:00");
     $game3->setEndTime($endTime3);
     self::assertEquals($endTime2, $service->getEarliestInfluence($ranking, $tournament));
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime3, $service->getEarliestInfluence($ranking, $tournament));
 
     $phase2 = new Phase();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase2->setPhaseNumber(2)->setCompetition($competition);
     $match3 = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match3->setMatchNumber(1)->setPhase($phase2);
     $game4 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game4->setGameNumber(1)->setMatch($match3);
     $endTime4 = new \DateTime("2017-09-01 00:00:00");
     $game4->setEndTime($endTime4);
     self::assertEquals($endTime3, $service->getEarliestInfluence($ranking, $tournament));
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $competition->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime4, $service->getEarliestInfluence($ranking, $tournament));
 
     $competition2 = new Competition();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $competition2->setName("TestCompetition2")->setTournament($tournament);
     $phase3 = new Phase();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase3->setPhaseNumber(1)->setCompetition($competition2);
     $match4 = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match4->setMatchNumber(1)->setPhase($phase3);
     $game5 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game5->setGameNumber(1)->setMatch($match4);
     $endTime5 = new \DateTime("2017-01-01 00:00:00");
     $game5->setEndTime($endTime5);
     self::assertEquals($endTime4, $service->getEarliestInfluence($ranking, $tournament));
 
     $game6 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game6->setGameNumber(2)->setMatch($match4);
     $endTime6 = new \DateTime("2017-10-01 00:00:00");
     $game6->setEndTime($endTime6);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game6->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime4, $service->getEarliestInfluence($ranking, $tournament));
 
     $game7 = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game7->setGameNumber(3)->setMatch($match4);
     $endTime7 = new \DateTime("2017-08-01 00:00:00");
     $game7->setEndTime($endTime7);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game7->getRankingSystems()->set($ranking->getId(), $ranking);
     self::assertEquals($endTime7, $service->getEarliestInfluence($ranking, $tournament));
   }
@@ -305,7 +274,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $service->method("getLevel")->willReturn(Level::TOURNAMENT);
     /** @var RankingSystemService $service */
     $tournament = new Tournament();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
     $endTime = new \DateTime("2017-03-01 00:00:00");
     $tournament->setEndTime($endTime);
@@ -381,7 +349,6 @@ class RankingSystemServiceTest extends UnitTestCase
   /**
    * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\SubClassData::setProperty
@@ -409,7 +376,6 @@ class RankingSystemServiceTest extends UnitTestCase
   /**
    * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    */
@@ -430,7 +396,6 @@ class RankingSystemServiceTest extends UnitTestCase
   /**
    * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    */
@@ -515,7 +480,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
    * @covers \App\Service\RankingSystem\RankingSystemService::startPoints
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    */
@@ -538,7 +502,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
    * @covers \App\Service\RankingSystem\RankingSystemService::startPoints
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemListEntry
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\SubClassData::setProperty
@@ -600,7 +563,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $tournament = new Tournament();
     $endedAt = new \DateTime("2017-02-01 00:00:00");
     $tournament->setUpdatedAt($endedAt);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
     $oldInfluence = new \DateTime("2017-01-01 00:00:00");
     $service->expects(static::once())
@@ -660,7 +622,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $tournament = new Tournament();
     $endedAt = new \DateTime("2017-01-01 00:00:00");
     $tournament->setEndTime($endedAt);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
     $timeService = $this->createMock(TimeServiceInterface::class);
     $timeService->expects(self::atLeastOnce())->method('clearTimes')->id('clearTimes');
@@ -726,7 +687,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $tournament = new Tournament();
     $endedAt = new \DateTime("2017-01-01");
     $tournament->setEndTime($endedAt);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
     $timeService = $this->createMock(TimeServiceInterface::class);
     $timeService->expects(self::atLeastOnce())->method('clearTimes')->id('clearTimes');
@@ -759,7 +719,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\RankingSystemListEntry
    * @uses   \App\Entity\Helpers\SubClassData::cloneSubClassDataFrom
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
    * @uses   \App\Entity\Helpers\SubClassData::getProperty
    * @uses   \App\Entity\Helpers\SubClassData::setProperty
@@ -895,7 +854,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
    */
   public function testUpdateRankingFromNoCurrent()
@@ -939,6 +897,9 @@ class RankingSystemServiceTest extends UnitTestCase
 
     /** @var RankingSystemService $service */
     /** @var RankingSystem $ranking */
+    /** @noinspection PhpUnhandledExceptionInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
+    /** @noinspection PhpUnhandledExceptionInspection */
     /** @noinspection PhpUnhandledExceptionInspection */
     $service->updateRankingFrom($ranking, new \DateTime('2017-02-28'));
   }

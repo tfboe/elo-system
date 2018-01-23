@@ -23,7 +23,7 @@ trait OrganizingMode
    * @ORM\Column(type="smallint", nullable=true)
    * @var int|null
    */
-  protected $organizingMode;
+  private $organizingMode;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">

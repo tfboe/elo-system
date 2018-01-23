@@ -23,7 +23,7 @@ trait GameMode
    * @ORM\Column(type="smallint", nullable=true)
    * @var int|null
    */
-  protected $gameMode;
+  private $gameMode;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">

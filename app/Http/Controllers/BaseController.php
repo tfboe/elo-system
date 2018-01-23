@@ -25,12 +25,28 @@ abstract class BaseController extends Controller
   /**
    * @var EntityManagerInterface
    */
-  protected $entityManager;
+  private $entityManager;
+
+  /**
+   * @return EntityManagerInterface
+   */
+  protected final function getEntityManager(): EntityManagerInterface
+  {
+    return $this->entityManager;
+  }
+
+  /**
+   * @return string
+   */
+  protected final function getDatetimetzFormat(): string
+  {
+    return $this->datetimetzFormat;
+  }
 
   /**
    * @var string
    */
-  protected $datetimetzFormat = 'Y-m-d H:i:s e';
+  private $datetimetzFormat = 'Y-m-d H:i:s e';
 //</editor-fold desc="Fields">
 //</editor-fold desc="Fields">
 
@@ -110,7 +126,7 @@ abstract class BaseController extends Controller
   protected function transformValue(&$value, array $specification)
   {
     if (array_key_exists('reference', $specification)) {
-      $value = $this->entityManager->find($specification['reference'], $value);
+      $value = $this->getEntityManager()->find($specification['reference'], $value);
     }
     if (array_key_exists('type', $specification)) {
       $value = self::transformByType($value, $specification['type']);

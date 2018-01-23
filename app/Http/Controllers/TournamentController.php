@@ -105,9 +105,9 @@ class TournamentController extends BaseController
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string', 'default' => ''],
       'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True],
-      'startTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+      'startTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
         'transformer' => $this->datetimetzTransformer(), 'default' => null],
-      'endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+      'endTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
         'transformer' => $this->datetimetzTransformer(), 'default' => null],
     ];
     $this->tournamentSpecification = array_merge(
@@ -224,7 +224,6 @@ class TournamentController extends BaseController
     ];
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * creates or replaces the tournament as specified in the request
    * @param Request $request the http request
@@ -245,17 +244,16 @@ class TournamentController extends BaseController
    */
   private function doCreateOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): string
   {
-    /** @noinspection PhpUnhandledExceptionInspection */
     assert(\Auth::user()->getId() != null);
     /** @var Tournament|null $tournament */
-    $tournament = $this->entityManager->getRepository(Tournament::class)->findOneBy(
+    $tournament = $this->getEntityManager()->getRepository(Tournament::class)->findOneBy(
       ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
     $type = 'replace';
 
     $earliestInfluence = $tournament === null ? [] : $rss->getRankingSystemsEarliestInfluences($tournament);
 
     /** @var RankingSystem[] $rankingSystems */
-    $rankingSystems = $this->entityManager->getRepository(RankingSystem::class)->findAll();
+    $rankingSystems = $this->getEntityManager()->getRepository(RankingSystem::class)->findAll();
     $this->rankingSystems = [];
     foreach (Level::getValues() as $value) {
       $this->rankingSystems[$value] = [];
@@ -269,26 +267,21 @@ class TournamentController extends BaseController
     if ($tournament == null) {
       $tournament = new Tournament();
       $tournament->setCreator(\Auth::user());
-      $this->entityManager->persist($tournament);
+      $this->getEntityManager()->persist($tournament);
       foreach ($this->rankingSystems[Level::TOURNAMENT] as $rankingSystem) {
-        /** @noinspection PhpUnhandledExceptionInspection
-         * rankingSystem comes from the database and therefore has an id */
         $tournament->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-        /** @noinspection PhpUnhandledExceptionInspection
-         * tournament is persisted and therefore has an id */
         $rankingSystem->getHierarchyEntries()->set($tournament->getId(), $tournament);
       }
       $type = 'create';
     }
 
     $this->setFromSpecification($tournament, $this->tournamentSpecification, $request->input());
-    /** @noinspection PhpUnhandledExceptionInspection */ //the tournament has a name since its required in the request
     $this->replaceCompetitions($request, $tournament);
 
     $rss->adaptOpenSyncFromValues($tournament, $earliestInfluence);
-    $this->entityManager->flush();
+    $this->getEntityManager()->flush();
     $rss->recalculateRankingSystems();
-    $this->entityManager->flush();
+    $this->getEntityManager()->flush();
 
     return $type;
   }
@@ -309,7 +302,6 @@ class TournamentController extends BaseController
     $competition->getTeams()->clear();
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * Removes the given game from the database
@@ -317,7 +309,7 @@ class TournamentController extends BaseController
    */
   private function removeGame(Game $game)
   {
-    $this->entityManager->remove($game);
+    $this->getEntityManager()->remove($game);
   }
 
   /**
@@ -330,10 +322,9 @@ class TournamentController extends BaseController
       $this->removeGame($game);
     }
     $match->getGames()->clear();
-    $this->entityManager->remove($match);
+    $this->getEntityManager()->remove($match);
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Removes the given phase from the database
    * @param Phase $phase
@@ -348,25 +339,23 @@ class TournamentController extends BaseController
     foreach ($phase->getPreQualifications()->toArray() as $system) {
       /** @var $system QualificationSystem */
       $phase->getPreQualifications()->removeElement($system);
-      /** @noinspection PhpUnhandledExceptionInspection */
       // all systems in the array have a next phase and the phase has a phase number
       $system->getPreviousPhase()->getPostQualifications()->removeElement($system);
-      $this->entityManager->remove($system);
+      $this->getEntityManager()->remove($system);
     }
 
     foreach ($phase->getPostQualifications()->toArray() as $system) {
       /** @var $system QualificationSystem */
       $phase->getPostQualifications()->removeElement($system);
-      /** @noinspection PhpUnhandledExceptionInspection */
       // all systems in the array have a next phase and the phase has a phase number
       $system->getNextPhase()->getPreQualifications()->removeElement($system);
-      $this->entityManager->remove($system);
+      $this->getEntityManager()->remove($system);
     }
     foreach ($phase->getRankings() as $ranking) {
       $this->removeRanking($ranking);
     }
     $phase->getRankings()->clear();
-    $this->entityManager->remove($phase);
+    $this->getEntityManager()->remove($phase);
   }
 
   /**
@@ -375,7 +364,7 @@ class TournamentController extends BaseController
    */
   private function removeRanking(Ranking $ranking)
   {
-    $this->entityManager->remove($ranking);
+    $this->getEntityManager()->remove($ranking);
   }
 
   /**
@@ -384,7 +373,7 @@ class TournamentController extends BaseController
    */
   private function removeTeam(Team $team)
   {
-    $this->entityManager->remove($team);
+    $this->getEntityManager()->remove($team);
   }
 
   /**
@@ -398,7 +387,6 @@ class TournamentController extends BaseController
    *                            twice in a phase or a unique rank is specified twice for the two teams in a match in a
    *                            phase or a game number is occurring twice or a player id is specified twice for the
    *                            players of a game
-   * @throws \App\Exceptions\ValueNotSet the tournament has no name
    * @throws ReferenceException a referenced phase number in the next phases array does not exist or a referenced team
    *                            start number in the team values does not exist or a referenced unique rank in the
    *                            rankings lists of a match does not exist in the rankings of the corresponding phase  or
@@ -409,7 +397,6 @@ class TournamentController extends BaseController
   {
     $competitionNames = [];
     foreach ($tournament->getCompetitions() as $competition) {
-      /** @noinspection PhpUnhandledExceptionInspection */ //all competitions in the array have a name
       $competitionNames[$competition->getName()] = false;
     }
     foreach ($request->input('competitions') as $competitionValues) {
@@ -423,17 +410,15 @@ class TournamentController extends BaseController
         $competition = new Competition();
         $this->setFromSpecification($competition, $this->competitionSpecification, $competitionValues);
         $competition->setTournament($tournament);
-        $this->entityManager->persist($competition);
+        $this->getEntityManager()->persist($competition);
         foreach ($this->rankingSystems[Level::COMPETITION] as $rankingSystem) {
           $competition->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
           $rankingSystem->getHierarchyEntries()->set($competition->getId(), $competition);
         }
       }
       $competitionNames[$competitionValues['name']] = true;
-      /** @noinspection PhpUnhandledExceptionInspection */ // the competition has a name since it is required int the
       // request
       $this->replaceTeams($competition, $competitionValues['teams']);
-      /** @noinspection PhpUnhandledExceptionInspection */ // the competition has a name since it is required int the
       // request
       $this->replacePhases($competition, $competitionValues['phases']);
     }
@@ -454,7 +439,6 @@ class TournamentController extends BaseController
    * @param bool[] $otherPlayerIds the player ids of the other team already parsed
    * @throws DuplicateException Either a duplicate player id in this list or a player id in the list which is
    *                            also in $other_player_ids.
-   * @throws \App\Exceptions\ValueNotSet the game has no game number or no match or its match has no match number or no
    *                                     phase or its phase has no phase number or no competition or its competition has
    *                                     no name
    * @throws ReferenceException a player for this team is not in the players lists of this team
@@ -508,7 +492,7 @@ class TournamentController extends BaseController
             " of competition " . $phase->getCompetition()->getName() . ", which is not in the players lists of the "
             . "teams of team " . $teamLetter);
         }
-        $players->set($id, $this->entityManager->find(Player::class, $id));
+        $players->set($id, $this->getEntityManager()->find(Player::class, $id));
       }
       $otherPlayerIds[$id] = true;
       $internalPlayerIds[$id] = true;
@@ -526,7 +510,6 @@ class TournamentController extends BaseController
    * @param mixed[] $values the request values for the games
    * @throws DuplicateException A game number is occurring twice or a player id is specified twice for the players of
    *                            this game
-   * @throws \App\Exceptions\ValueNotSet the match has no match number or no phase or its phase has no phase number or
    *                                     no competition or its competition has no name
    * @throws ReferenceException a player of a team is not in the players lists of this team
    */
@@ -550,10 +533,9 @@ class TournamentController extends BaseController
       } else {
         $game = new Game();
         $this->setFromSpecification($game, $this->gameSpecification, $gameValues);
-        /** @noinspection PhpUnhandledExceptionInspection */ // the game has a game number since its required in the
         // request
         $game->setMatch($match);
-        $this->entityManager->persist($game);
+        $this->getEntityManager()->persist($game);
         foreach ($this->rankingSystems[Level::GAME] as $rankingSystem) {
           $game->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
           $rankingSystem->getHierarchyEntries()->set($game->getId(), $game);
@@ -575,7 +557,6 @@ class TournamentController extends BaseController
     }
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * Replaces the match rankings of the given match according to the request
@@ -586,7 +567,6 @@ class TournamentController extends BaseController
    * @throws DuplicateException Either a duplicate unique rank in this list or a unique rank in the list which is
    *                            also in u_ranks.
    * @throws ReferenceException A unique rank is in the list which is not a valid unique rank for this phase
-   * @throws \App\Exceptions\ValueNotSet the match has no phase set or no match number or its phase has no phase number
    *                                      or no competition or its competition has no name
    */
   private function replaceMatchRankings(Match $match, array $rankingValues, string $teamLetter, array &$uRanks)
@@ -641,7 +621,6 @@ class TournamentController extends BaseController
    * @throws DuplicateException a match number is occurring twice or a unique rank is specified twice for the teams in
    *                            this match or a game number is occurring twice or a player id is specified twice for the
    *                            players of a game
-   * @throws \App\Exceptions\ValueNotSet the phase has no phase number or no competition or its competition has no name
    * @throws ReferenceException A unique rank is in one of the rankings lists which is not a valid unique rank for this
    *                            phase or a player of a team is not in the players lists of this team
    */
@@ -664,10 +643,9 @@ class TournamentController extends BaseController
       } else {
         $match = new Match();
         $this->setFromSpecification($match, $this->matchSpecification, $matchValues);
-        /** @noinspection PhpUnhandledExceptionInspection */ // the match has a match number since its required in the
         // request
         $match->setPhase($phase);
-        $this->entityManager->persist($match);
+        $this->getEntityManager()->persist($match);
         foreach ($this->rankingSystems[Level::MATCH] as $rankingSystem) {
           $match->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
           $rankingSystem->getHierarchyEntries()->set($match->getId(), $match);
@@ -697,7 +675,6 @@ class TournamentController extends BaseController
    * @param Phase $phase the phase to modify
    * @param int[] $otherPhaseNumbers list of next phase numbers
    * @throws DuplicateException a phase number was specified twice
-   * @throws \App\Exceptions\ValueNotSet the given phase has no phase number or no competition or its competition has
    *                                     no name
    * @throws ReferenceException a referenced phase number in the next phases array does not exist
    * @throws UnorderedPhaseNumberException
@@ -706,7 +683,6 @@ class TournamentController extends BaseController
   {
     $nextPhaseNumbers = [];
     foreach ($phase->getPostQualifications() as $system) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       // all systems in the array have a next phase and the phase has a phase number
       $nextPhaseNumbers[$system->getNextPhase()->getPhaseNumber()] = false;
     }
@@ -730,20 +706,18 @@ class TournamentController extends BaseController
         $nextPhase = $phase->getCompetition()->getPhases()[$phaseNumber];
         $system->setNextPhase($nextPhase);
         $system->setPreviousPhase($phase);
-        $this->entityManager->persist($system);
+        $this->getEntityManager()->persist($system);
       }
       $nextPhaseNumbers[$phaseNumber] = true;
     }
     foreach ($phase->getPostQualifications()->toArray() as $system) {
       /** @var $system QualificationSystem */
-      /** @noinspection PhpUnhandledExceptionInspection */
       // all systems in the array have a next phase and the phase has a phase number
       if ($nextPhaseNumbers[$system->getNextPhase()->getPhaseNumber()] === false) {
         $phase->getPostQualifications()->removeElement($system);
-        /** @noinspection PhpUnhandledExceptionInspection */
         // all systems in the array have a next phase and the phase has a phase number
         $system->getNextPhase()->getPreQualifications()->removeElement($system);
-        $this->entityManager->remove($system);
+        $this->getEntityManager()->remove($system);
       }
     }
   }
@@ -757,7 +731,6 @@ class TournamentController extends BaseController
    *                            occurring twice or a unique rank is specified twice for the two teams in a match or a
    *                            game number is occurring twice or a player id is specified twice for the players of a
    *                            game
-   * @throws \App\Exceptions\ValueNotSet the competition has no name
    * @throws ReferenceException a referenced phase number in the next phases array does not exist or a referenced team
    *                            start number in the team values does not exist or a referenced unique rank in the
    *                            rankings lists of a match does not exist in the rankings of the phase or a player of a
@@ -768,7 +741,6 @@ class TournamentController extends BaseController
   {
     $phaseNumbers = [];
     foreach ($competition->getPhases() as $phase) {
-      /** @noinspection PhpUnhandledExceptionInspection */ //all phases in the array have a phase number
       $phaseNumbers[$phase->getPhaseNumber()] = false;
     }
     foreach ($values as $phaseValues) {
@@ -784,10 +756,9 @@ class TournamentController extends BaseController
       } else {
         $phase = new Phase();
         $this->setFromSpecification($phase, $this->phaseSpecification, $phaseValues);
-        /** @noinspection PhpUnhandledExceptionInspection */ // the phase has a phase number since it is required in the
         // request
         $phase->setCompetition($competition);
-        $this->entityManager->persist($phase);
+        $this->getEntityManager()->persist($phase);
         foreach ($this->rankingSystems[Level::PHASE] as $rankingSystem) {
           $phase->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
           $rankingSystem->getHierarchyEntries()->set($phase->getId(), $phase);
@@ -819,7 +790,6 @@ class TournamentController extends BaseController
    * @param array $teamValues the list of the teams start numbers
    * @param string[] $otherStartNumbers team start numbers of other rankings
    * @throws DuplicateException a team start number is specified twice for this ranking
-   * @throws \App\Exceptions\ValueNotSet the ranking has no phase or unique rank or its phase has no phase number or no
    *                                     competition or its competition has no name
    * @throws ReferenceException a referenced team start number in the team values does not exist
    */
@@ -865,7 +835,6 @@ class TournamentController extends BaseController
    * @param mixed[] $values the request values for the rankings
    * @throws DuplicateException a unique rank is occurring twice or a team start number is specified twice for this
    *                            ranking
-   * @throws \App\Exceptions\ValueNotSet the phase has no phase number or no competition or its competition has no name
    * @throws ReferenceException a referenced team start number in the team values does not exist
    */
   private function replaceRankings(Phase $phase, array $values)
@@ -888,10 +857,9 @@ class TournamentController extends BaseController
       } else {
         $ranking = new Ranking();
         $this->setFromSpecification($ranking, $this->rankingSpecification, $rankingValues);
-        /** @noinspection PhpUnhandledExceptionInspection */ // the ranking has a unique rank since its required in the
         // request
         $ranking->setPhase($phase);
-        $this->entityManager->persist($ranking);
+        $this->getEntityManager()->persist($ranking);
       }
       $uniqueRanks[$rankingValues['uniqueRank']] = true;
       //the ranking has a phase and a unique rank since it is required for the request
@@ -926,7 +894,7 @@ class TournamentController extends BaseController
             'the player list of team ' . $team->getName());
         }
       } else {
-        $team->getPlayers()->set($playerId, $this->entityManager->find(Player::class, $playerId));
+        $team->getPlayers()->set($playerId, $this->getEntityManager()->find(Player::class, $playerId));
       }
       $playerIds[$playerId] = true;
     }
@@ -942,13 +910,11 @@ class TournamentController extends BaseController
    * @param Competition $competition the competition to modify
    * @param mixed[] $values the request values for the teams
    * @throws DuplicateException a team start number is occurring twice or a player is specified twice for a team
-   * @throws \App\Exceptions\ValueNotSet the competition has no name
    */
   private function replaceTeams(Competition $competition, array $values)
   {
     $oldStartNumbers = [];
     foreach ($competition->getTeams() as $team) {
-      /** @noinspection PhpUnhandledExceptionInspection */ //all teams in the array have a start number
       $oldStartNumbers[$team->getStartNumber()] = false;
     }
     foreach ($values as $teamValues) {
@@ -963,10 +929,9 @@ class TournamentController extends BaseController
       } else {
         $team = new Team();
         $this->setFromSpecification($team, $this->teamSpecification, $teamValues);
-        /** @noinspection PhpUnhandledExceptionInspection */ // the team has a start number since it is required in the
         // request
         $team->setCompetition($competition);
-        $this->entityManager->persist($team);
+        $this->getEntityManager()->persist($team);
       }
       $oldStartNumbers[$teamValues['startNumber']] = true;
       $this->replaceTeamPlayers($team, $teamValues['players']);
@@ -980,7 +945,6 @@ class TournamentController extends BaseController
     }
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * Returns a query input specification for the result part of an object which is used multiple entities
@@ -1008,9 +972,9 @@ class TournamentController extends BaseController
   private function timeSpecifications(string $prefix): array
   {
     return [
-      $prefix . 'startTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+      $prefix . 'startTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
         'transformer' => $this->datetimetzTransformer(), 'default' => null],
-      $prefix . 'endTime' => ['validation' => 'date_format:' . $this->datetimetzFormat,
+      $prefix . 'endTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
         'transformer' => $this->datetimetzTransformer(), 'default' => null]
     ];
   }

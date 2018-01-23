@@ -23,65 +23,57 @@ trait ResultEntity
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $resultA;
+  private $resultA;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $resultB;
+  private $resultB;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $result;
+  private $result;
 
   /**
    * @ORM\Column(type="boolean")
    * @var bool
    */
-  protected $played;
+  private $played;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getResult(): int
   {
-    $this->ensureNotNull('result');
     return $this->result;
   }
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getResultA(): int
   {
-    $this->ensureNotNull('resultA');
     return $this->resultA;
   }
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getResultB(): int
   {
-    $this->ensureNotNull('resultB');
     return $this->resultB;
   }
 
   /**
    * @return bool
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function isPlayed(): bool
   {
-    $this->ensureNotNull('played');
     return $this->played;
   }
 

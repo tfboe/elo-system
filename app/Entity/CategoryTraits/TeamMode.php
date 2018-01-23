@@ -22,7 +22,7 @@ trait TeamMode
    * @ORM\Column(type="smallint", nullable=true)
    * @var int|null
    */
-  protected $teamMode;
+  private $teamMode;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">

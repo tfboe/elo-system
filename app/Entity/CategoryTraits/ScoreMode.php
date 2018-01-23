@@ -23,7 +23,7 @@ trait ScoreMode
    * @ORM\Column(type="smallint", nullable=true)
    * @var int|null
    */
-  protected $scoreMode;
+  private $scoreMode;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">

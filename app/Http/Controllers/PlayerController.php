@@ -57,12 +57,12 @@ class PlayerController extends BaseController
         $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = true;
         $player['birthday'] = new \DateTime($player['birthday']);
         //check if player already exists
-        $result = $this->entityManager->getRepository(Player::class)->findBy($player);
+        $result = $this->getEntityManager()->getRepository(Player::class)->findBy($player);
         if (count($result) > 0) {
           $existingPlayers[] = $result[0];
         } else {
           $p = $this->setFromSpecification(new Player(), $specification, $player);
-          $this->entityManager->persist($p);
+          $this->getEntityManager()->persist($p);
           $players[] = $p;
         }
       }
@@ -70,7 +70,7 @@ class PlayerController extends BaseController
     if (count($existingPlayers) > 0) {
       throw new PlayerAlreadyExists($existingPlayers);
     }
-    $this->entityManager->flush();
+    $this->getEntityManager()->flush();
 
     return response()->json(array_map(function (Player $p) {
       return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getPlayerId(),
@@ -78,7 +78,6 @@ class PlayerController extends BaseController
     }, $players));
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Searches for players by name and birthday and returns the found results in a json format.
    *
@@ -102,10 +101,9 @@ class PlayerController extends BaseController
         $criteria['birthday'] = new \DateTime($criteria['birthday']);
       }
       /** @var Player[] $result */
-      $result = $this->entityManager->getRepository(Player::class)->findBy($criteria);
+      $result = $this->getEntityManager()->getRepository(Player::class)->findBy($criteria);
       $found = [];
       foreach ($result as $p) {
-        /** @noinspection PhpUnhandledExceptionInspection */ //all values must be set since we used them in the
         // criteria (findBy)
         $found[] = ['id' => $p->getPlayerId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
           'birthday' => $p->getBirthday()->format('Y-m-d')];

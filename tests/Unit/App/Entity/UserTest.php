@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 use App\Entity\User;
-use App\Exceptions\ValueNotSet;
 use Tests\Helpers\UnitTestCase;
 
 /**
@@ -39,37 +38,18 @@ class UserTest extends UnitTestCase
    * @covers \App\Entity\User::setEmail
    * @covers \App\Entity\User::getEmail
    * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testEmail()
   {
     $user = $this->user();
     $user->setEmail("test@a1.net");
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("test@a1.net", $user->getEmail());
-  }
-
-  /**
-   * @covers \App\Entity\User::getEmail
-   * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testEmailException()
-  {
-    $user = $this->user();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property email of the class App\Entity\User must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $user->getEmail();
   }
 
   /**
    * @covers \App\Entity\User::getJWTCustomClaims
    * @uses   \App\Entity\User::setJwtVersion
    * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testJWTCustomClaims()
   {
@@ -81,7 +61,6 @@ class UserTest extends UnitTestCase
   /**
    * @covers \App\Entity\User::getJWTIdentifier
    * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
    */
   public function testJWTIdentifier()
@@ -89,28 +68,8 @@ class UserTest extends UnitTestCase
     $user = $this->user();
     /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($user), 'id')->setValue($user, 'user-id');
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals('user-id', $user->getJWTIdentifier());
-    /** @noinspection PhpUnhandledExceptionInspection */
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($user->getId(), $user->getJWTIdentifier());
-  }
-
-  /**
-   * @covers \App\Entity\User::getJWTIdentifier
-   * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testJWTIdentifierException()
-  {
-    $user = $this->user();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class App\Entity\User must be set before it can " .
-      "be accessed. Please set the property immediately after you call the constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $user->getJWTIdentifier();
   }
 
   /**

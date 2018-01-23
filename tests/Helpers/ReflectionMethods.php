@@ -17,7 +17,7 @@ namespace Tests\Helpers;
 trait ReflectionMethods
 {
 //<editor-fold desc="Protected Methods">
-  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * Calls the given protected method on the given object with the given arguments
    * @param mixed $object the object to call on
@@ -27,7 +27,8 @@ trait ReflectionMethods
    */
   protected static function callProtectedMethod($object, string $method, array $args = [])
   {
-    /** @noinspection PhpUnhandledExceptionInspection */ //get_class is a valid class
+    // ReflectionException => get_class is a valid class
+    /** @noinspection PhpUnhandledExceptionInspection */
     return self::getMethod(get_class($object), $method)->invokeArgs($object, $args);
   }
 

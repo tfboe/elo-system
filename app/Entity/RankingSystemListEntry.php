@@ -40,26 +40,26 @@ class RankingSystemListEntry extends BaseEntity
    * @ORM\ManyToOne(targetEntity="RankingSystemList", inversedBy="entries")
    * @var RankingSystemList
    */
-  protected $rankingSystemList;
+  private $rankingSystemList;
 
   /**
    * @ORM\Column(type="float")
    * @var float
    */
-  protected $points;
+  private $points;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $numberRankedEntities;
+  private $numberRankedEntities;
 
   /**
    * @ORM\ManyToOne(targetEntity="Player")
    * @ORM\JoinColumn(referencedColumnName="player_id")
    * @var Player
    */
-  protected $player;
+  private $player;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -85,31 +85,25 @@ class RankingSystemListEntry extends BaseEntity
 
   /**
    * @return Player
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPlayer(): Player
   {
-    $this->ensureNotNull('player');
     return $this->player;
   }
 
   /**
    * @return float
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPoints(): float
   {
-    $this->ensureNotNull('points');
     return $this->points;
   }
 
   /**
    * @return RankingSystemList
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getRankingSystemList(): RankingSystemList
   {
-    $this->ensureNotNull('rankingSystemList');
     return $this->rankingSystemList;
   }
 
@@ -146,7 +140,6 @@ class RankingSystemListEntry extends BaseEntity
   /**
    * @param RankingSystemList $rankingSystemList
    * @return $this|RankingSystemListEntry
-   * @throws \App\Exceptions\ValueNotSet player not set or its player_id is not set
    */
   public function setRankingSystemList(RankingSystemList $rankingSystemList): RankingSystemListEntry
   {

@@ -65,7 +65,6 @@ class AuthenticatedTestCase extends DatabaseTestCase
     $this->token = \Auth::attempt(['email' => $this->user->getEmail(), 'password' => $password]);
     $this->refreshApplication();
     /** @noinspection PhpUndefinedMethodInspection */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->user = EntityManager::find(User::class, $this->user->getId());
   }
 //</editor-fold desc="Protected Methods">

@@ -45,7 +45,6 @@ class RankingSystemTest extends AuthenticatedTestCase
     $ranking6 = entity(RankingSystem::class)->create(['defaultForLevel' => Level::TOURNAMENT,
       'serviceName' => "EloRanking"]);
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
@@ -97,24 +96,19 @@ class RankingSystemTest extends AuthenticatedTestCase
     $repo = EntityManager::getRepository(Tournament::class);
     /** @var Tournament $tournament */
     $tournament = $repo->findOneBy(['creator' => $this->user, 'userIdentifier' => 'id0']);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [$ranking1->getId() => $ranking1, $ranking6->getId() => $ranking6],
       $tournament->getRankingSystems()->toArray());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [$ranking2->getId() => $ranking2],
       $tournament->getCompetitions()['Test Competition']->getRankingSystems()->toArray());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [$ranking3->getId() => $ranking3],
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getRankingSystems()->toArray());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [$ranking4->getId() => $ranking4],
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getMatches()[1]
         ->getRankingSystems()->toArray());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [$ranking5->getId() => $ranking5],
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getMatches()[1]->getGames()[1]

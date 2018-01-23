@@ -51,7 +51,6 @@ class RankingSystemChangeTest extends UnitTestCase
   /**
    * @covers \App\Entity\RankingSystemChange::getPlayer
    * @covers \App\Entity\RankingSystemChange::setPlayer
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange::__construct
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    */
@@ -61,7 +60,6 @@ class RankingSystemChangeTest extends UnitTestCase
     /** @var Player $player */
     $player = $this->createMock(Player::class);
     $entity->setPlayer($player);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($player, $entity->getPlayer());
   }
 
@@ -69,7 +67,6 @@ class RankingSystemChangeTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemChange::setPointsAfterwards
    * @covers \App\Entity\RankingSystemChange::getPointsAfterwards
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange::__construct
    */
   public function testPointsAfterwards()
@@ -77,7 +74,6 @@ class RankingSystemChangeTest extends UnitTestCase
     $entity = $this->instance();
     $points = 24.333;
     $entity->setPointsAfterwards($points);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($points, $entity->getPointsAfterwards());
   }
 
@@ -85,7 +81,6 @@ class RankingSystemChangeTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemChange::setPointsChange
    * @covers \App\Entity\RankingSystemChange::getPointsChange
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange::__construct
    */
   public function testPointsChange()
@@ -93,7 +88,6 @@ class RankingSystemChangeTest extends UnitTestCase
     $entity = $this->instance();
     $points = 24.333;
     $entity->setPointsChange($points);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($points, $entity->getPointsChange());
   }
 
@@ -101,7 +95,6 @@ class RankingSystemChangeTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemChange::setRankingSystem
    * @covers \App\Entity\RankingSystemChange::getRankingSystem
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange::__construct
    */
   public function testRankingSystem()
@@ -110,7 +103,6 @@ class RankingSystemChangeTest extends UnitTestCase
     /** @var RankingSystem $rankingSystem */
     $rankingSystem = $this->createMock(RankingSystem::class);
     $entity->setRankingSystem($rankingSystem);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($rankingSystem, $entity->getRankingSystem());
   }
 
@@ -118,7 +110,6 @@ class RankingSystemChangeTest extends UnitTestCase
    * @covers \App\Entity\RankingSystemChange::setHierarchyEntity
    * @covers \App\Entity\RankingSystemChange::getHierarchyEntity
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\RankingSystemChange::__construct
    */
   public function testTournamentHierarchyEntity()
@@ -127,7 +118,6 @@ class RankingSystemChangeTest extends UnitTestCase
     /** @var TournamentHierarchyEntity $tEntity */
     $tEntity = $this->createMock(TournamentHierarchyEntity::class);
     $entity->setHierarchyEntity($tEntity);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($tEntity, $entity->getHierarchyEntity());
   }
 //</editor-fold desc="Public Methods">

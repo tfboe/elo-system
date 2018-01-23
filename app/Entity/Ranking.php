@@ -12,7 +12,6 @@ namespace App\Entity;
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\UUIDEntity;
-use App\Exceptions\ValueNotSet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,25 +37,25 @@ class Ranking extends BaseEntity
    * @ORM\JoinTable(name="relation__ranking_teams")
    * @var Collection|Team[]
    */
-  protected $teams;
+  private $teams;
 
   /**
    * @ORM\ManyToOne(targetEntity="Phase", inversedBy="rankings")
    * @var Phase
    */
-  protected $phase;
+  private $phase;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $rank;
+  private $rank;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $uniqueRank;
+  private $uniqueRank;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -73,21 +72,17 @@ class Ranking extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return Phase
-   * @throws ValueNotSet
    */
   public function getPhase(): Phase
   {
-    $this->ensureNotNull("phase");
     return $this->phase;
   }
 
   /**
    * @return int
-   * @throws ValueNotSet
    */
   public function getRank(): int
   {
-    $this->ensureNotNull("rank");
     return $this->rank;
   }
 
@@ -101,18 +96,15 @@ class Ranking extends BaseEntity
 
   /**
    * @return int
-   * @throws ValueNotSet
    */
   public function getUniqueRank(): int
   {
-    $this->ensureNotNull("uniqueRank");
     return $this->uniqueRank;
   }
 
   /**
    * @param Phase $phase
    * @return $this|Ranking
-   * @throws ValueNotSet if the unique rank is not set
    */
   public function setPhase(Phase $phase): Ranking
   {

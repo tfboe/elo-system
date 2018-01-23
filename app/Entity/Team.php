@@ -41,25 +41,25 @@ class Team extends BaseEntity
    *
    * @var Collection|Player[]
    */
-  protected $players;
+  private $players;
 
   /**
    * @ORM\ManyToOne(targetEntity="Competition", inversedBy="teams")
    * @var Competition
    */
-  protected $competition;
+  private $competition;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $rank;
+  private $rank;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $startNumber;
+  private $startNumber;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -76,11 +76,9 @@ class Team extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return Competition
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getCompetition(): Competition
   {
-    $this->ensureNotNull("competition");
     return $this->competition;
   }
 
@@ -94,28 +92,23 @@ class Team extends BaseEntity
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getRank(): int
   {
-    $this->ensureNotNull("rank");
     return $this->rank;
   }
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getStartNumber(): int
   {
-    $this->ensureNotNull("startNumber");
     return $this->startNumber;
   }
 
   /**
    * @param Competition $competition
    * @return $this|Team
-   * @throws \App\Exceptions\ValueNotSet if the start number is not set
    */
   public function setCompetition(Competition $competition): Team
   {

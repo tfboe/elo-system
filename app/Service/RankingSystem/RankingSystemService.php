@@ -33,13 +33,21 @@ abstract class RankingSystemService implements RankingSystemInterface
 {
 //<editor-fold desc="Fields">
   /** @var EntityManagerInterface */
-  protected $entityManager;
+  private $entityManager;
+
+  /**
+   * @return EntityManagerInterface
+   */
+  protected final function getEntityManager(): EntityManagerInterface
+  {
+    return $this->entityManager;
+  }
 
   /** @var TimeServiceInterface */
-  protected $timeService;
+  private $timeService;
 
   /** @var EntityComparerInterface */
-  protected $entityComparer;
+  private $entityComparer;
 
   /**
    * @var RankingSystemChange[][][]
@@ -176,7 +184,6 @@ abstract class RankingSystemService implements RankingSystemInterface
    * Computes the average rating of the given entries
    * @param RankingSystemListEntry[] $entries
    * @return float
-   * @throws \App\Exceptions\ValueNotSet at least one entry has no points
    */
   protected final function getAverage(array $entries): float
   {
@@ -208,7 +215,6 @@ abstract class RankingSystemService implements RankingSystemInterface
    * @param Collection|Player[] $players
    * @param RankingSystemList $list
    * @return RankingSystemListEntry[] $entries
-   * @throws \App\Exceptions\ValueNotSet at least one player has no id
    */
   protected final function getEntriesOfPlayers(Collection $players, RankingSystemList $list): array
   {
@@ -219,14 +225,13 @@ abstract class RankingSystemService implements RankingSystemInterface
     return $result;
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */ //PropertyNotExistingException
   /**
    * Gets or creates a tournament system change entry for the given entity, ranking and player.
    * @param TournamentHierarchyEntity $entity the tournament hierarchy entity to search for
    * @param RankingSystem $ranking the ranking system to search for
    * @param Player $player the player to search for
    * @return RankingSystemChange the found or newly created ranking system change
-   * @throws \App\Exceptions\ValueNotSet either entity, ranking or player has no id
    */
   protected final function getOrCreateChange(TournamentHierarchyEntity $entity, RankingSystem $ranking,
                                              Player $player)
@@ -242,11 +247,7 @@ abstract class RankingSystemService implements RankingSystemInterface
       $this->changes[$key1] = [];
       foreach ($changes as $change) {
 
-        /** @noinspection PhpUnhandledExceptionInspection change comes from the database and therefore has a ranking
-         * system with id*/
         $newKey2 = $change->getRankingSystem()->getId();
-        /** @noinspection PhpUnhandledExceptionInspection change comes from the database and therefore has a player with
-         * id*/
         $newKey3 = $change->getPlayer()->getPlayerId();
         if (!array_key_exists($key1, $this->deletedChanges) || !array_key_exists($key2, $this->deletedChanges[$key1]) ||
           !array_key_exists($key3, $this->deletedChanges[$key1][$key2])) {
@@ -261,8 +262,8 @@ abstract class RankingSystemService implements RankingSystemInterface
       //create new change
       $change = new RankingSystemChange(array_keys($this->getAdditionalFields()));
       foreach ($this->getAdditionalFields() as $field => $value) {
-        /** @noinspection PhpUnhandledExceptionInspection */ // we know for sure that the property exists
-        //(see 2 lines above)
+        // PropertyNotExistingException => we know for sure that the property exists (see 2 lines above)
+        /** @noinspection PhpUnhandledExceptionInspection */
         $change->setProperty($field, 0);
       }
       $change->setHierarchyEntity($entity);
@@ -278,12 +279,11 @@ abstract class RankingSystemService implements RankingSystemInterface
     return $this->changes[$key1][$key2][$key3];
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */ //PropertyNotExistingException
   /**
    * @param RankingSystemList $list the list in which to search for the entry or in which to add it
    * @param Player $player the player to search for
    * @return RankingSystemListEntry the found or the new entry
-   * @throws \App\Exceptions\ValueNotSet player has no id
    */
   protected final function getOrCreateRankingSystemListEntry(RankingSystemList $list,
                                                              Player $player): RankingSystemListEntry
@@ -295,8 +295,8 @@ abstract class RankingSystemService implements RankingSystemInterface
       $entry->setPlayer($player);
       $entry->setRankingSystemList($list);
       foreach ($this->getAdditionalFields() as $field => $value) {
-        /** @noinspection PhpUnhandledExceptionInspection */ // we know for sure that the property exists
-        //(see 4 lines above)
+        // PropertyNotExistingException => we know for sure that the property exists (see 2 lines above)
+        /** @noinspection PhpUnhandledExceptionInspection */
         $entry->setProperty($field, $value);
       }
       $this->entityManager->persist($entry);
@@ -353,7 +353,6 @@ abstract class RankingSystemService implements RankingSystemInterface
    * list. After this method was called list and base contain exactly the same rankings.
    * @param RankingSystemList $list the ranking list to change
    * @param RankingSystemList $base the ranking list to use as base list, this doesn't get changed
-   * @throws \App\Exceptions\ValueNotSet at least one entry of base has no points or no player or a player with no id
    */
   private function cloneInto(RankingSystemList $list, RankingSystemList $base)
   {
@@ -395,7 +394,6 @@ abstract class RankingSystemService implements RankingSystemInterface
   /**
    * @param RankingSystem $ranking
    * @param TournamentHierarchyEntity[] $entities
-   * @throws \App\Exceptions\ValueNotSet ranking has no id
    */
   private function deleteOldChanges(RankingSystem $ranking, array $entities)
   {
@@ -423,7 +421,6 @@ abstract class RankingSystemService implements RankingSystemInterface
    * @param bool $parentIsRanked true iff a predecessor contained the given ranking in its ranking systems
    * @return \DateTime|null the earliest influence or null if $parentIsRanked is false and the entity and all its
    *                        successors do not have the ranking in its ranking systems
-   * @throws \App\Exceptions\ValueNotSet the ranking has no id
    */
   private function getEarliestEntityInfluence(RankingSystem $ranking, TournamentHierarchyInterface $entity,
                                               bool $parentIsRanked): ?\DateTime
@@ -448,7 +445,7 @@ abstract class RankingSystemService implements RankingSystemInterface
     return $result;
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */ //PropertyNotExistingException
   /**
    * Recomputes the given ranking list by using base as base list and applying the changes for the given entities
    * starting from the given index. If list is not the current list only the entities up to $list->getLastEntryTime()
@@ -457,7 +454,6 @@ abstract class RankingSystemService implements RankingSystemInterface
    * @param RankingSystemList $base the list to use as base
    * @param TournamentHierarchyEntity[] $entities the list of entities to use for the computation
    * @param int $nextEntityIndex the first index in the entities list to consider
-   * @throws \App\Exceptions\ValueNotSet at least one entry of base has no points or no player or a player with no id
    */
   private function recomputeBasedOn(RankingSystemList $list, RankingSystemList $base, array $entities,
                                     int &$nextEntityIndex)
@@ -471,19 +467,15 @@ abstract class RankingSystemService implements RankingSystemInterface
       }
       $changes = $this->getChanges($entities[$nextEntityIndex], $list);
       foreach ($changes as $change) {
-        /** @noinspection PhpUnhandledExceptionInspection change comes from getChanges which produces changes with a
-         * player which also has an id*/
         $entry = $this->getOrCreateRankingSystemListEntry($list, $change->getPlayer());
         $entry->setNumberRankedEntities($entry->getNumberRankedEntities() + 1);
-        /** @noinspection PhpUnhandledExceptionInspection change comes from getChanges which produces changes with a
-         * valid points change*/
         $pointsAfterwards = $entry->getPoints() + $change->getPointsChange();
         $entry->setPoints($pointsAfterwards);
         $change->setPointsAfterwards($pointsAfterwards);
         //apply further changes
         foreach ($this->getAdditionalFields() as $field => $value) {
-          /** @noinspection PhpUnhandledExceptionInspection all fields from getAdditionalFields got set for an entry
-           * from getOrCreateRankingSystemListEntry */
+          // PropertyNotExistingException => entry and field have exactly the static properties from getAdditionalFields
+          /** @noinspection PhpUnhandledExceptionInspection */
           $entry->setProperty($field, $entry->getProperty($field) + $change->getProperty($field));
         }
         if ($time > $list->getLastEntryTime()) {

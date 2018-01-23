@@ -12,7 +12,6 @@ namespace Tests\Unit\App\Entity;
 use App\Entity\Competition;
 use App\Entity\Tournament;
 use App\Entity\User;
-use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Tests\Helpers\UnitTestCase;
@@ -31,7 +30,6 @@ class TournamentTest extends UnitTestCase
    * @uses   \App\Entity\Competition::__construct
    * @uses   \App\Entity\Helpers\NameEntity::getName
    * @uses   \App\Entity\Helpers\NameEntity::setName
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -41,10 +39,8 @@ class TournamentTest extends UnitTestCase
     $competition = new Competition();
     $competition->setName('comp name');
     self::assertEquals($tournament->getCompetitions(), $tournament->getChildren());
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getCompetitions()->set($competition->getName(), $competition);
     self::assertEquals(1, $tournament->getCompetitions()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($competition, $tournament->getCompetitions()[$competition->getName()]);
     self::assertEquals($tournament->getCompetitions(), $tournament->getChildren());
   }
@@ -68,7 +64,6 @@ class TournamentTest extends UnitTestCase
    * @covers \App\Entity\Tournament::setCreator
    * @covers \App\Entity\Tournament::getCreator
    * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\User::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -77,32 +72,12 @@ class TournamentTest extends UnitTestCase
     $tournament = $this->tournament();
     $creator = new User();
     $tournament->setCreator($creator);
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($creator, $tournament->getCreator());
-  }
-
-  /**
-   * @covers \App\Entity\Tournament::getCreator
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testCreatorException()
-  {
-    $tournament = $this->tournament();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property creator of the class " . Tournament::class . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the constructor" .
-      "(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $tournament->getCreator();
   }
 
   /**
    * @covers \App\Entity\Tournament::getLocalIdentifier
    * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -111,27 +86,7 @@ class TournamentTest extends UnitTestCase
     $tournament = $this->tournament();
     /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($tournament), 'id')->setValue($tournament, 'user-id');
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($tournament->getId(), $tournament->getLocalIdentifier());
-  }
-
-  /**
-   * @covers \App\Entity\Tournament::getLocalIdentifier
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testGetLocalIdentifierException()
-  {
-    $tournament = $this->tournament();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property id of the class " . get_class($tournament) . " must be set before it " .
-      "can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $tournament->getLocalIdentifier();
   }
 
   /**
@@ -170,7 +125,6 @@ class TournamentTest extends UnitTestCase
   /**
    * @covers \App\Entity\Tournament::setUserIdentifier
    * @covers \App\Entity\Tournament::getUserIdentifier
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Entity\Tournament::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
@@ -178,26 +132,7 @@ class TournamentTest extends UnitTestCase
   {
     $tournament = $this->tournament();
     $tournament->setUserIdentifier("UserIdentifier");
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("UserIdentifier", $tournament->getUserIdentifier());
-  }
-
-  /**
-   * @covers \App\Entity\Tournament::getUserIdentifier
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   */
-  public function testUserIdentifierException()
-  {
-    $tournament = $this->tournament();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property userIdentifier of the class " . Tournament::class . " must be set " .
-      "before it can be accessed. Please set the property immediately after you call the constructor" .
-      "(Empty Constructor Pattern).");
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $tournament->getUserIdentifier();
   }
 //</editor-fold desc="Public Methods">
 

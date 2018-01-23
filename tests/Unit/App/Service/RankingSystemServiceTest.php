@@ -52,7 +52,6 @@ class RankingSystemServiceTest extends UnitTestCase
         return $mock;
       });
     /** @var DynamicServiceLoadingService $serviceLoader */
-
     /** @noinspection PhpParamsInspection */
     $service = new RankingSystemService($serviceLoader,
       $this->getMockForAbstractClass(EntityManagerInterface::class));
@@ -64,7 +63,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $ranking->method('getOpenSyncFrom')->willReturn(new \DateTime("2017-01-01 15:00:00"));
     $ranking->expects(self::once())->method('setOpenSyncFrom')->with(new \DateTime("2017-01-01"));
     /** @var RankingSystem $ranking */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking->getId(), $ranking);
 
     $ranking2 = $this->createStubWithId(RankingSystem::class, 'r2');
@@ -72,7 +70,6 @@ class RankingSystemServiceTest extends UnitTestCase
     $ranking2->method('getOpenSyncFrom')->willReturn(new \DateTime("2017-01-30 15:00:00"));
     $ranking2->expects(self::once())->method('setOpenSyncFrom')->with(new \DateTime("2017-01-30"));
     /** @var RankingSystem $ranking2 */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking2->getId(), $ranking2);
 
     $ranking3 = $this->createStubWithId(RankingSystem::class, 'r3');
@@ -104,19 +101,15 @@ class RankingSystemServiceTest extends UnitTestCase
     $tournament = new Tournament();
     /** @var RankingSystem $ranking2 */
     $ranking2 = $this->createStubWithId(RankingSystem::class, 's2');
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking2->getId(), $ranking2);
     /** @var RankingSystem $ranking3 */
     $ranking3 = $this->createStubWithId(RankingSystem::class, 's3');
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking3->getId(), $ranking3);
 
     /** @var RankingSystem $ranking4 */
     $ranking4 = $this->createStubWithId(RankingSystem::class, 's4');
 
-    /** @noinspection PhpUnhandledExceptionInspection */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $oldInfluences = [
       $ranking2->getId() => ["rankingSystem" => $ranking2, "earliestInfluence" => new \DateTime("2017-02-01")],
       $ranking4->getId() => ["rankingSystem" => $ranking4, "earliestInfluence" => new \DateTime("2017-04-01")]
@@ -134,7 +127,6 @@ class RankingSystemServiceTest extends UnitTestCase
       ->willReturn($mock);
 
     /** @var DynamicServiceLoadingService $serviceLoader */
-
     /** @noinspection PhpParamsInspection */
     $service = new RankingSystemService($serviceLoader,
       $this->getMockForAbstractClass(EntityManagerInterface::class));
@@ -167,7 +159,6 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Match
    * @uses   \App\Entity\Game
    * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Service\RankingSystemService::__construct
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
@@ -184,7 +175,6 @@ class RankingSystemServiceTest extends UnitTestCase
         return $mock;
       });
     /** @var DynamicServiceLoadingService $serviceLoader */
-
     /** @noinspection PhpParamsInspection */
     $service = new RankingSystemService($serviceLoader,
       $this->getMockForAbstractClass(EntityManagerInterface::class));
@@ -192,36 +182,28 @@ class RankingSystemServiceTest extends UnitTestCase
     $ranking2 = $this->createStubWithId(RankingSystem::class, 'r2');
     $ranking2->method('getServiceName')->willReturn("2017-04-01");
     /** @var RankingSystem $ranking2 */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $tournament->getRankingSystems()->set($ranking2->getId(), $ranking2);
 
     $competition = new Competition();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $competition->setName("TestCompetition")->setTournament($tournament);
     $phase = new Phase();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setPhaseNumber(1)->setCompetition($competition);
     $ranking3 = $this->createStubWithId(RankingSystem::class, 'r3');
     $ranking3->method('getServiceName')->willReturn("2017-02-01");
     /** @var RankingSystem $ranking3 */
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $phase->getRankingSystems()->set($ranking3->getId(), $ranking3);
 
     $match = new Match();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $match->setMatchNumber(1)->setPhase($phase);
     $game = new Game();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game->setGameNumber(1)->setMatch($match);
     $ranking4 = $this->createStubWithId(RankingSystem::class, 'r4');
     $ranking4->method('getServiceName')->willReturn("2017-03-01");
     /** @var RankingSystem $ranking4 */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $game->getRankingSystems()->set($ranking4->getId(), $ranking4);
 
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(
       [
         $ranking2->getId() => ["rankingSystem" => $ranking2, "earliestInfluence" => new \DateTime("2017-04-01")],

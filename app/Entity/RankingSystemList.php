@@ -31,7 +31,7 @@ class RankingSystemList extends BaseEntity
    * @ORM\ManyToOne(targetEntity="RankingSystem", inversedBy="lists")
    * @var RankingSystem
    */
-  protected $rankingSystem;
+  private $rankingSystem;
   /**
    * @ORM\Column(type="boolean")
    * @var bool
@@ -81,11 +81,9 @@ class RankingSystemList extends BaseEntity
 
   /**
    * @return RankingSystem
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getRankingSystem(): RankingSystem
   {
-    $this->ensureNotNull('rankingSystem');
     return $this->rankingSystem;
   }
 
@@ -120,7 +118,6 @@ class RankingSystemList extends BaseEntity
   /**
    * @param RankingSystem $rankingSystem
    * @return $this|RankingSystemList
-   * @throws \App\Exceptions\ValueNotSet if the id is not set
    */
   public function setRankingSystem(RankingSystem $rankingSystem): RankingSystemList
   {

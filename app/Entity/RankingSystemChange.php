@@ -40,32 +40,32 @@ class RankingSystemChange extends BaseEntity
    * @ORM\ManyToOne(targetEntity="RankingSystem", inversedBy="changes")
    * @var RankingSystem
    */
-  protected $rankingSystem;
+  private $rankingSystem;
 
   /**
    * @ORM\Column(type="float")
    * @var float
    */
-  protected $pointsChange;
+  private $pointsChange;
 
   /**
    * @ORM\Column(type="float")
    * @var float
    */
-  protected $pointsAfterwards;
+  private $pointsAfterwards;
 
   /**
    * @ORM\ManyToOne(targetEntity="Player")
    * @ORM\JoinColumn(referencedColumnName="player_id")
    * @var Player
    */
-  protected $player;
+  private $player;
 
   /**
    * @ORM\ManyToOne(targetEntity="\App\Entity\Helpers\TournamentHierarchyEntity")
    * @var TournamentHierarchyEntity
    */
-  protected $hierarchyEntity;
+  private $hierarchyEntity;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -82,51 +82,41 @@ class RankingSystemChange extends BaseEntity
 //<editor-fold desc="Public Methods">
   /**
    * @return TournamentHierarchyEntity
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getHierarchyEntity(): TournamentHierarchyEntity
   {
-    $this->ensureNotNull('hierarchyEntity');
     return $this->hierarchyEntity;
   }
 
   /**
    * @return Player
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPlayer(): Player
   {
-    $this->ensureNotNull('player');
     return $this->player;
   }
 
   /**
    * @return float
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPointsAfterwards(): float
   {
-    $this->ensureNotNull('pointsAfterwards');
     return $this->pointsAfterwards;
   }
 
   /**
    * @return float
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPointsChange(): float
   {
-    $this->ensureNotNull('pointsChange');
     return $this->pointsChange;
   }
 
   /**
    * @return RankingSystem
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getRankingSystem(): RankingSystem
   {
-    $this->ensureNotNull('rankingSystem');
     return $this->rankingSystem;
   }
 

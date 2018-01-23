@@ -27,7 +27,6 @@ class PlayerTest extends AuthenticatedTestCase
     /** @var Player $player1 */
     $player1 = entity(Player::class)->create();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $playerArray1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName(),
       'birthday' => $player1->getBirthday()->format('Y-m-d')];
     $playerArray2 = ['firstName' => $this->faker->firstName, 'lastName' => $this->faker->lastName,
@@ -66,7 +65,6 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(2, count($players));
     foreach ($players as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       self::assertInternalType('int', $player->getPlayerId());
     }
   }
@@ -100,13 +98,9 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(1, count($players));
     $player = $players[0];
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($playerArray['firstName'], $player->getFirstName());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($playerArray['lastName'], $player->getLastName());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(new \DateTime($playerArray['birthday']), $player->getBirthday());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertInternalType('int', $player->getPlayerId());
   }
 
@@ -134,7 +128,6 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(4, count($players));
     foreach ($players as $player) {
-      /** @noinspection PhpUnhandledExceptionInspection */
       self::assertInternalType('int', $player->getPlayerId());
     }
   }
@@ -143,7 +136,6 @@ class PlayerTest extends AuthenticatedTestCase
   {
     /** @var Player $player */
     $player = entity(Player::class)->create();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search = ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
       'birthday' => $player->getBirthday()->format('Y-m-d')];
     $this->jsonAuth('GET', '/searchPlayers', [$search])->assertResponseOk();
@@ -154,7 +146,6 @@ class PlayerTest extends AuthenticatedTestCase
   {
     /** @var Player $player */
     $player = entity(Player::class)->create();
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search = ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName()];
     $this->jsonAuth('GET', '/searchPlayers', [$search])->assertResponseOk();
     $this->seeJsonEquals([["found" => [$this->getResultArray($player)], "search" => $search]]);
@@ -174,23 +165,17 @@ class PlayerTest extends AuthenticatedTestCase
 
     /** @var Player $player1SameName */
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $player1SameName = entity(Player::class)->create(['firstName' => $player1->getFirstName(),
       'lastName' => $player1->getLastName()]);
 
     /** @var Player $player2 */
     $player2 = entity(Player::class)->create();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search1 = ['firstName' => $player1->getFirstName(), 'lastName' => $player1->getLastName()];
     $search2 = $search1;
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search2['birthday'] = $player1->getBirthday()->format('Y-m-d');
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search3 = ['firstName' => $player2->getFirstName(), 'lastName' => "wrong last name"];
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search4 = ['firstName' => "wrong first name", 'lastName' => $player2->getLastName()];
-    /** @noinspection PhpUnhandledExceptionInspection */
     $search5 = ['firstName' => strtoupper($player2->getFirstName()),
       'lastName' => strtoupper($player2->getLastName())];
 
@@ -206,7 +191,6 @@ class PlayerTest extends AuthenticatedTestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Creates a result array which is to expect from the searchPlayers method for a given player
    * @param Player $player the player for who to create the results array
@@ -214,7 +198,6 @@ class PlayerTest extends AuthenticatedTestCase
    */
   private function getResultArray(Player $player)
   {
-    /** @noinspection PhpUnhandledExceptionInspection */
     return ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
       'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getPlayerId()];
   }

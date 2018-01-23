@@ -38,37 +38,37 @@ class Phase extends TournamentHierarchyEntity
    * @ORM\ManyToOne(targetEntity="Competition", inversedBy="phases")
    * @var Competition
    */
-  protected $competition;
+  private $competition;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $phaseNumber;
+  private $phaseNumber;
 
   /**
    * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="nextPhase")
    * @var Collection|QualificationSystem[]
    */
-  protected $preQualifications;
+  private $preQualifications;
 
   /**
    * @ORM\OneToMany(targetEntity="QualificationSystem", mappedBy="previousPhase")
    * @var Collection|QualificationSystem[]
    */
-  protected $postQualifications;
+  private $postQualifications;
 
   /**
    * @ORM\OneToMany(targetEntity="Ranking", mappedBy="group", indexBy="uniqueRank")
    * @var Collection|Ranking[]
    */
-  protected $rankings;
+  private $rankings;
 
   /**
    * @ORM\OneToMany(targetEntity="Match", mappedBy="phase", indexBy="matchNumber")
    * @var Collection|Match[]
    */
-  protected $matches;
+  private $matches;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -97,11 +97,9 @@ class Phase extends TournamentHierarchyEntity
 
   /**
    * @return Competition
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getCompetition(): Competition
   {
-    $this->ensureNotNull('competition');
     return $this->competition;
   }
 
@@ -139,11 +137,9 @@ class Phase extends TournamentHierarchyEntity
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPhaseNumber(): int
   {
-    $this->ensureNotNull('phaseNumber');
     return $this->phaseNumber;
   }
 
@@ -174,7 +170,6 @@ class Phase extends TournamentHierarchyEntity
   /**
    * @param Competition $competition
    * @return $this|Phase
-   * @throws \App\Exceptions\ValueNotSet if the phase number is not set
    */
   public function setCompetition(Competition $competition): Phase
   {

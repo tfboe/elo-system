@@ -34,7 +34,7 @@ class Game extends TournamentHierarchyEntity
    * @ORM\ManyToOne(targetEntity="Match", inversedBy="games")
    * @var Match
    */
-  protected $match;
+  private $match;
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
@@ -43,7 +43,7 @@ class Game extends TournamentHierarchyEntity
    *      inverseJoinColumns={@ORM\JoinColumn(name="player_id", referencedColumnName="player_id")})
    * @var Collection|Player
    */
-  protected $playersA;
+  private $playersA;
 
   /**
    * @ORM\ManyToMany(targetEntity="Player", indexBy="id")
@@ -52,13 +52,13 @@ class Game extends TournamentHierarchyEntity
    *      inverseJoinColumns={@ORM\JoinColumn(name="player_id", referencedColumnName="player_id")})
    * @var Collection|Player
    */
-  protected $playersB;
+  private $playersB;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $gameNumber;
+  private $gameNumber;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -84,11 +84,9 @@ class Game extends TournamentHierarchyEntity
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getGameNumber(): int
   {
-    $this->ensureNotNull('gameNumber');
     return $this->gameNumber;
   }
 
@@ -110,11 +108,9 @@ class Game extends TournamentHierarchyEntity
 
   /**
    * @return Match
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getMatch(): Match
   {
-    $this->ensureNotNull('match');
     return $this->match;
   }
 
@@ -155,7 +151,6 @@ class Game extends TournamentHierarchyEntity
   /**
    * @param Match $match
    * @return $this|Game
-   * @throws \App\Exceptions\ValueNotSet the game number is not yet set
    */
   public function setMatch(Match $match): Game
   {

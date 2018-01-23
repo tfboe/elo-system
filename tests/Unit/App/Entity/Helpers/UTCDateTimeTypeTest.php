@@ -27,7 +27,6 @@ class UTCDateTimeTypeTest extends UnitTestCase
    */
   public function testConvertToDatabaseValue()
   {
-    /** @noinspection PhpUnhandledExceptionInspection */
     //$type = Type::getType("datetime");
     /** @var UTCDateTimeType $type */
     $type = $this->getMockForAbstractClass(UTCDateTimeType::class, [], '', false);

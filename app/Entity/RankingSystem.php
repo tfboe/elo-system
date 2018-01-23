@@ -41,18 +41,18 @@ class RankingSystem extends BaseEntity
    *
    * @var string
    */
-  protected $serviceName;
+  private $serviceName;
   /**
    * @ORM\Column(type="smallint", nullable=true)
    * @var int|null
    */
-  protected $defaultForLevel;
+  private $defaultForLevel;
 
   /**
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $generationInterval;
+  private $generationInterval;
 
   /**
    * @ORM\ManyToMany(
@@ -135,11 +135,9 @@ class RankingSystem extends BaseEntity
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getServiceName(): string
   {
-    $this->ensureNotNull('serviceName');
     return $this->serviceName;
   }
 

@@ -109,7 +109,6 @@ class SubClassDataTest extends UnitTestCase
     self::assertFalse($entity->hasProperty("NOTEXISTING"));
     /** @noinspection SpellCheckingInspection */
     self::assertFalse($entity->hasProperty("NOTexistING"));
-    /** @noinspection SpellCheckingInspection */
     self::assertTrue($entity->hasProperty("subClassData"));
     /** @noinspection SpellCheckingInspection */
     self::assertFalse($entity->hasProperty("SUBCLASSDATA"));

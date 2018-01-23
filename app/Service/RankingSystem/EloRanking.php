@@ -118,7 +118,6 @@ class EloRanking extends GameRankingSystemService implements EloRankingInterface
    * @param Collection|Player[] $players
    * @param TournamentHierarchyEntity $entity
    * @param \App\Entity\RankingSystem $ranking
-   * @throws \App\Exceptions\ValueNotSet either entity, ranking or at least one player has no id
    */
   private function addNotRatedChanges(array &$changes, Collection $players, TournamentHierarchyEntity $entity,
                                       RankingSystem $ranking)
@@ -133,7 +132,7 @@ class EloRanking extends GameRankingSystemService implements EloRankingInterface
     }
   }
 
-  /** @noinspection PhpTooManyParametersInspection */
+  /** @noinspection PhpTooManyParametersInspection */ //TODO refactor this method
   /**
    * @param array $changes
    * @param RankingSystemListEntry[] $entries
@@ -144,8 +143,6 @@ class EloRanking extends GameRankingSystemService implements EloRankingInterface
    * @param float $opponentAverage
    * @param bool $teamHasProvisory
    * @param bool $opponentHasProvisory
-   * @throws \App\Exceptions\ValueNotSet at least one of the entries has no player or no ranking system list or its
-   *                                     ranking system list has no ranking system
    */
   private function computeChanges(array &$changes, array $entries, float $result, float $expectationDiff, Game $game,
                                   float $teamAverage, float $opponentAverage, bool $teamHasProvisory,
@@ -204,7 +201,6 @@ class EloRanking extends GameRankingSystemService implements EloRankingInterface
    * Computes the average rating of the given entries
    * @param RankingSystemListEntry[] $entries must be nonempty
    * @return float
-   * @throws \App\Exceptions\ValueNotSet at least one of the entries has no points set
    */
   private function getEloAverage(array $entries): float
   {

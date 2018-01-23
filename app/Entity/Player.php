@@ -32,65 +32,57 @@ class Player extends BaseEntity
    * @ORM\Column(type="integer")
    * @var int
    */
-  protected $playerId;
+  private $playerId;
 
   /**
    * @ORM\Column(type="string", nullable=false)
    * @var string
    */
-  protected $firstName;
+  private $firstName;
 
   /**
    * @ORM\Column(type="string", nullable=false)
    * @var string
    */
-  protected $lastName;
+  private $lastName;
 
   /**
    * @ORM\Column(type="date", nullable=true)
    * @var \DateTime
    */
-  protected $birthday;
+  private $birthday;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return \DateTime
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getBirthday(): \DateTime
   {
-    $this->ensureNotNull("birthday");
     return $this->birthday;
   }
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getFirstName(): string
   {
-    $this->ensureNotNull("firstName");
     return $this->firstName;
   }
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getLastName(): string
   {
-    $this->ensureNotNull("lastName");
     return $this->lastName;
   }
 
   /**
    * @return int
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPlayerId(): int
   {
-    $this->ensureNotNull("playerId");
     return $this->playerId;
   }
 

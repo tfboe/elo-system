@@ -147,7 +147,6 @@ class EloRankingTest extends UnitTestCase
     self::assertEquals(['playedGames' => 0, 'ratedGames' => 0, 'provisoryRanking' => 1200.0], $additionalFields);
   }
 
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * @dataProvider providerEloChanges
    * @covers       \App\Service\RankingSystem\EloRanking::getChanges
@@ -159,7 +158,6 @@ class EloRankingTest extends UnitTestCase
    * @uses         \App\Entity\Helpers\SubClassData::getProperty
    * @uses         \App\Entity\Helpers\SubClassData::initSubClassData
    * @uses         \App\Entity\Helpers\SubClassData::setProperty
-   * @uses         \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses         \App\Entity\RankingSystemChange
    * @uses         \App\Entity\RankingSystemListEntry
    * @uses         \App\Service\RankingSystem\EloRanking::getAdditionalFields
@@ -208,7 +206,6 @@ class EloRankingTest extends UnitTestCase
     /** @var $list RankingSystemList */
     foreach ($entries as $entry) {
       /** @var $entry RankingSystemListEntry */
-      /** @noinspection PhpUnhandledExceptionInspection */
       $entry->setRankingSystemList($list);
     }
     for ($i = 0; $i < count($playerInfos); $i++) {
@@ -228,7 +225,6 @@ class EloRankingTest extends UnitTestCase
     foreach ($players as $player) {
       $exists = false;
       foreach ($changes as $change) {
-        /** @noinspection PhpUnhandledExceptionInspection */
         if ($change->getPlayer() === $player) {
           $exists = true;
           break;
@@ -253,7 +249,6 @@ class EloRankingTest extends UnitTestCase
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
-  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * @param RankingSystemChange[] $changes
    * @param array $playerInfos
@@ -263,9 +258,7 @@ class EloRankingTest extends UnitTestCase
   {
     for ($i = 0; $i < count($changes); $i++) {
       $change = $changes[$i];
-      /** @noinspection PhpUnhandledExceptionInspection */
       self::assertEquals($entity, $change->getHierarchyEntity());
-      /** @noinspection PhpUnhandledExceptionInspection */
       self::assertEquals($playerInfos[$i]["pointChange"], $change->getPointsChange(), '', 0.01);
       self::assertEquals($playerInfos[$i]["ratedGamesChange"], $change->getRatedGames());
       self::assertEquals($playerInfos[$i]["playedChange"], $change->getPlayedGames());

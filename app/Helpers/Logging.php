@@ -28,7 +28,7 @@ abstract class Logging
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
-  /** @noinspection PhpDocMissingThrowsInspection */
+  /** @noinspection PhpDocMissingThrowsInspection */ //InvalidArgumentException, Exception
   /**
    * Logs the given message in the given logger
    * @param string $message the message to log
@@ -45,7 +45,9 @@ abstract class Logging
     Logs::ensureValidValue($logger);
     if (!array_key_exists($logger, self::$loggers)) {
       self::$loggers[$logger] = new Logger($logger);
-      /** @noinspection PhpUnhandledExceptionInspection */ //stream is a string
+      // InvalidArgumentException => stream is a string
+      // Exception => path is static and it is ensured that it is valid
+      /** @noinspection PhpUnhandledExceptionInspection */
       self::$loggers[$logger]->pushHandler(
         new StreamHandler((self::$storagePathFunction)() . '/logs/' . $logger . '.log'));
     }

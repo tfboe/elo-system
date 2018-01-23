@@ -26,7 +26,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password . "wrong-password"
@@ -37,7 +36,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     }
     $content1 = $this->response->content();
 
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail() . "wrong-email",
       'password' => $password . "wrong-password"
@@ -87,7 +85,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $property = self::getProperty(User::class, 'id');
     $property->setValue($user, "\x84invalid");
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password . "wrong-password"
@@ -122,7 +119,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $property = self::getProperty(User::class, 'id');
     $property->setValue($user, "\x84invalid");
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
@@ -146,8 +142,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
-    /** @noinspection PhpUnhandledExceptionInspection */
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password
@@ -190,7 +184,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 16511233
@@ -210,7 +203,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail()
     ])->seeStatusCode(422)->seeJsonEquals(["errors" => ["password" => ["The password field is required."]],
@@ -253,7 +245,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   {
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => 'short'
@@ -267,7 +258,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
       'password' => $password . "wrong-password"
@@ -280,7 +270,6 @@ class UserUnauthenticatedTest extends DatabaseTestCase
     $password = $this->newPassword();
     /** @var \App\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $this->json('POST', '/login', [
       'email' => $user->getEmail() . "wrong-email",
       'password' => $password

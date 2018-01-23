@@ -124,8 +124,9 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     /** @var TournamentHierarchyInterface $entity2 */
     $result = $service->compareEntities($entity1, $entity2);
     self::assertEquals($expectedResult, $result);
-  }/** @noinspection PhpDocMissingThrowsInspection */
+  }
 
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider timePairProvider
    * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
@@ -145,8 +146,9 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareEntityTimes')->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }/** @noinspection PhpDocMissingThrowsInspection */
+  }
 
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider timePairProvider
    * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
@@ -165,8 +167,9 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareEntityTimes')->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }/** @noinspection PhpDocMissingThrowsInspection */
+  }
 
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProviderWithoutZero
    * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
@@ -190,8 +193,9 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $result = self::getMethod(get_class($service), 'compareLocalIdentifiersWithinTournament')
       ->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }/** @noinspection PhpDocMissingThrowsInspection */
+  }
 
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProvider
    * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
@@ -211,8 +215,9 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $result = self::getMethod(get_class($service), 'compareLocalIdentifiersWithinTournament')
       ->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }/** @noinspection PhpDocMissingThrowsInspection */
+  }
 
+  /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProviderWithoutZero
    * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier

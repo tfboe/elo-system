@@ -30,6 +30,7 @@ class GameRankingSystemTest extends UnitTestCase
   /**
    * @covers \App\Service\RankingSystem\GameRankingSystemService::getEntitiesQueryBuilder
    * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntityManager
    */
   public function testGetEntitiesQueryBuilder()
   {
@@ -42,7 +43,6 @@ class GameRankingSystemTest extends UnitTestCase
     /** @var QueryBuilder $builder */
     $builder = self::callProtectedMethod($system, "getEntitiesQueryBuilder",
       [$rankingSystem, new \DateTime("2000-01-01")]);
-    /** @noinspection LongLine */
     self::assertEquals(
       'SELECT g FROM App\Entity\Game g LEFT JOIN g.rankingSystems grs WITH grs = :ranking INNER JOIN g.match ' .
       'm LEFT JOIN m.rankingSystems mrs WITH mrs = :ranking INNER JOIN m.phase p LEFT JOIN p.rankingSystems prs WITH ' .

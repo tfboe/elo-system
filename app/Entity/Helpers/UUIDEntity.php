@@ -23,17 +23,15 @@ trait UUIDEntity
    * @ORM\Column(type="guid")
    * @var string
    */
-  protected $id;
+  private $id;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getId(): string
   {
-    $this->ensureNotNull('id');
     return $this->id;
   }
 //</editor-fold desc="Public Methods">

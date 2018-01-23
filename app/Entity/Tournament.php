@@ -35,23 +35,23 @@ class Tournament extends TournamentHierarchyEntity
    * @ORM\Column(type="string")
    * @var string
    */
-  protected $userIdentifier;
+  private $userIdentifier;
 
   /**
    * @ORM\Column(type="string")
    * @var string
    */
-  protected $tournamentListId;
+  private $tournamentListId;
   /**
    * @ORM\ManyToOne(targetEntity="User")
    * @var User
    */
-  protected $creator;
+  private $creator;
   /**
    * @ORM\OneToMany(targetEntity="Competition", mappedBy="tournament",indexBy="name")
    * @var Collection|Competition[]
    */
-  protected $competitions;
+  private $competitions;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -85,11 +85,9 @@ class Tournament extends TournamentHierarchyEntity
 
   /**
    * @return User
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getCreator(): User
   {
-    $this->ensureNotNull('creator');
     return $this->creator;
   }
 
@@ -127,11 +125,9 @@ class Tournament extends TournamentHierarchyEntity
 
   /**
    * @return string
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getUserIdentifier(): string
   {
-    $this->ensureNotNull('userIdentifier');
     return $this->userIdentifier;
   }
 

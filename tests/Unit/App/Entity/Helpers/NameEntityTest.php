@@ -24,13 +24,11 @@ class NameEntityTest extends UnitTestCase
   /**
    * @covers \App\Entity\Helpers\NameEntity::getName
    * @covers \App\Entity\Helpers\NameEntity::setName
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testName()
   {
     $entity = $this->mock();
     $entity->setName("Name");
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("Name", $entity->getName());
   }
 //</editor-fold desc="Public Methods">
@@ -41,7 +39,7 @@ class NameEntityTest extends UnitTestCase
    */
   private function mock(): MockObject
   {
-    return $this->getMockForTrait(NameEntity::class, [], '', true, true, true, ['ensureNotNull']);
+    return $this->getMockForTrait(NameEntity::class);
   }
 //</editor-fold desc="Private Methods">
 }

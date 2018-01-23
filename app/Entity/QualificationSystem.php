@@ -29,33 +29,29 @@ class QualificationSystem extends BaseEntity
    * @ORM\ManyToOne(targetEntity="Phase", inversedBy="postQualifications")
    * @var Phase
    */
-  protected $previousPhase;
+  private $previousPhase;
 
   /**
    * @ORM\ManyToOne(targetEntity="Phase", inversedBy="preQualifications")
    * @var Phase
    */
-  protected $nextPhase;
+  private $nextPhase;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Public Methods">
   /**
    * @return Phase
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getNextPhase(): Phase
   {
-    $this->ensureNotNull("nextPhase");
     return $this->nextPhase;
   }
 
   /**
    * @return Phase
-   * @throws \App\Exceptions\ValueNotSet
    */
   public function getPreviousPhase(): Phase
   {
-    $this->ensureNotNull("previousPhase");
     return $this->previousPhase;
   }
 

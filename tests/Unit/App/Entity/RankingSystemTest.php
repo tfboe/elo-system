@@ -14,7 +14,6 @@ use App\Entity\Helpers\AutomaticInstanceGeneration;
 use App\Entity\Helpers\TournamentHierarchyEntity;
 use App\Entity\RankingSystem;
 use App\Entity\RankingSystemList;
-use App\Exceptions\ValueNotSet;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
@@ -93,10 +92,8 @@ class RankingSystemTest extends UnitTestCase
     $entity = $this->instance();
     /** @var RankingSystemList $entity2 */
     $entity2 = $this->createStubWithId(RankingSystemList::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->getLists()->set($entity2->getId(), $entity2);
     self::assertEquals(1, $entity->getLists()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($entity2, $entity->getLists()[$entity2->getId()]);
   }
 
@@ -110,7 +107,6 @@ class RankingSystemTest extends UnitTestCase
   {
     $entity = $this->instance();
     $entity->setOpenSyncFrom(new \DateTime("2017-01-01"));
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals(new \DateTime("2017-01-01"), $entity->getOpenSyncFrom());
   }
 
@@ -119,33 +115,12 @@ class RankingSystemTest extends UnitTestCase
    * @covers \App\Entity\RankingSystem::getServiceName
    * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
    * @uses   \App\Entity\RankingSystem::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    */
   public function testServiceName()
   {
     $entity = $this->instance();
     $entity->setServiceName("serviceName");
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals("serviceName", $entity->getServiceName());
-  }
-
-  /**
-   * @covers \App\Entity\RankingSystem::getServiceName
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
-   * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
-   * @uses   \App\Exceptions\ValueNotSet::__construct
-   */
-  public function testServiceNameException()
-  {
-    $entity = $this->instance();
-    $this->expectException(ValueNotSet::class);
-    $this->expectExceptionMessage("The property serviceName of the class " . get_class($entity) . " must be set " .
-      "before it can be accessed. Please set the property immediately after you call the " .
-      "constructor(Empty Constructor Pattern)."
-    );
-    /** @noinspection PhpUnhandledExceptionInspection */
-    $entity->getServiceName();
   }
 
   /**
@@ -158,10 +133,8 @@ class RankingSystemTest extends UnitTestCase
     $entity = $this->instance();
     /** @var TournamentHierarchyEntity $entity2 */
     $entity2 = $this->createStubWithId(TournamentHierarchyEntity::class);
-    /** @noinspection PhpUnhandledExceptionInspection */
     $entity->getHierarchyEntries()->set($entity2->getId(), $entity2);
     self::assertEquals(1, $entity->getHierarchyEntries()->count());
-    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($entity2, $entity->getHierarchyEntries()[$entity2->getId()]);
   }
 //</editor-fold desc="Public Methods">
