@@ -31,6 +31,7 @@ class DynamicServiceLoadingServiceTest extends UnitTestCase
     /** @var Container $app */
     $entity = new DynamicServiceLoadingService($app);
     self::assertInstanceOf(DynamicServiceLoadingService::class, $entity);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($app, self::getProperty(get_class($entity), 'app')->getValue($entity));
   }
 

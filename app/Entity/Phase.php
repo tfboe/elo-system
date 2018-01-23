@@ -12,7 +12,7 @@ namespace App\Entity;
 
 use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Method hint for getName, since it will never throw an exception (name gets initialized empty)
  * @method string getName()
  */
-class Phase extends TournamentHierarchyEntity implements TreeStructureEntityInterface
+class Phase extends TournamentHierarchyEntity
 {
   use NameEntity;
 
@@ -132,7 +132,7 @@ class Phase extends TournamentHierarchyEntity implements TreeStructureEntityInte
   /**
    * @inheritDoc
    */
-  public function getParent(): ?TreeStructureEntityInterface
+  public function getParent(): ?TournamentHierarchyInterface
   {
     return $this->getCompetition();
   }

@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace Tests\Unit\App\Entity;
 
 
+use App\Entity\Player;
 use App\Entity\RankingSystem;
 use App\Entity\RankingSystemList;
+use App\Entity\RankingSystemListEntry;
 use App\Exceptions\ValueNotSet;
 use Tests\Helpers\UnitTestCase;
 
@@ -60,6 +62,24 @@ class RankingSystemListTest extends UnitTestCase
   }
 
   /**
+   * @covers \App\Entity\RankingSystemList::getEntries
+   * @uses   \App\Entity\RankingSystemList::__construct
+   */
+  public function testLists()
+  {
+    $entity = $this->instance();
+    $entity2 = $this->createMock(RankingSystemListEntry::class);
+    $player = $this->createStubWithId(Player::class, 5, 'getPlayerId');
+    /** @var Player $player */
+    $entity2->method('getPlayer')->willReturn($player);
+    /** @noinspection PhpUnhandledExceptionInspection */
+    $entity->getEntries()->set($player->getPlayerId(), $entity2);
+    self::assertEquals(1, $entity->getEntries()->count());
+    /** @noinspection PhpUnhandledExceptionInspection */
+    self::assertEquals($entity2, $entity->getEntries()[$player->getPlayerId()]);
+  }
+
+  /**
    * @covers \App\Entity\RankingSystemList::setRankingSystem
    * @covers \App\Entity\RankingSystemList::getRankingSystem
    * @uses   \App\Entity\RankingSystemList::__construct
@@ -71,6 +91,7 @@ class RankingSystemListTest extends UnitTestCase
   public function testRankingSystem()
   {
     $instance = $this->instance();
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($instance), 'id')->setValue($instance, 'list-id');
     $rankingSystem = new RankingSystem([]);
     /** @noinspection PhpUndefinedMethodInspection */

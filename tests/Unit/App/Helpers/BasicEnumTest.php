@@ -125,7 +125,9 @@ class BasicEnumTest extends UnitTestCase
    */
   protected function clearStaticVariables()
   {
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(BasicEnum::class, 'constCacheArray')->setValue(NULL);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(BasicEnum::class, 'constCacheArrayCaseMapping')->setValue(NULL);
   }
 //</editor-fold desc="Protected Methods">

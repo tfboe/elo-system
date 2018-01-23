@@ -19,11 +19,9 @@ use App\Service\DynamicServiceLoadingService;
 use App\Service\DynamicServiceLoadingServiceInterface;
 use App\Service\RankingSystem\RankingSystemInterface;
 use App\Service\RankingSystemService;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Tests\Helpers\UnitTestCase;
+
 
 /**
  * Class EloRankingTest
@@ -39,7 +37,7 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Tournament
    * @uses   \App\Service\RankingSystemService::getRankingSystems
    * @uses   \App\Service\RankingSystemService::getRankingSystemsEarliestInfluences
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
@@ -49,7 +47,7 @@ class RankingSystemServiceTest extends UnitTestCase
     $serviceLoader->expects(self::exactly(2))
       ->method("loadRankingSystemService")
       ->willReturnCallback(function ($earliestInfluence) {
-        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystem::class);
+        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
         $mock->method("getEarliestInfluence")->willReturn(new \DateTime($earliestInfluence));
         return $mock;
       });
@@ -97,7 +95,7 @@ class RankingSystemServiceTest extends UnitTestCase
    * @covers \App\Service\RankingSystemService::getRankingSystems
    * @uses   \App\Entity\Tournament
    * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
@@ -125,7 +123,7 @@ class RankingSystemServiceTest extends UnitTestCase
     ];
 
     $serviceLoader = $this->createMock(DynamicServiceLoadingService::class);
-    $mock = $this->createMock(\App\Service\RankingSystem\RankingSystem::class);
+    $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
     $mock->expects(self::exactly(3))->method("updateRankingForTournament")->withConsecutive(
       [$ranking2, $tournament, self::equalTo(new \DateTime("2017-02-01"))],
       [$ranking4, $tournament, self::equalTo(new \DateTime("2017-04-01"))],
@@ -154,7 +152,9 @@ class RankingSystemServiceTest extends UnitTestCase
     /** @var EntityManagerInterface $entityManager */
     $system = new RankingSystemService($dsls, $entityManager);
     self::assertInstanceOf(RankingSystemService::class, $system);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($entityManager, self::getProperty(get_class($system), 'entityManager')->getValue($system));
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($dsls, self::getProperty(get_class($system), 'dsls')->getValue($system));
   }
 
@@ -169,7 +169,7 @@ class RankingSystemServiceTest extends UnitTestCase
    * @uses   \App\Entity\Helpers\NameEntity
    * @uses   \App\Entity\Helpers\UnsetProperty::ensureNotNull
    * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
    * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
@@ -179,7 +179,7 @@ class RankingSystemServiceTest extends UnitTestCase
     $serviceLoader->expects(self::exactly(3))
       ->method("loadRankingSystemService")
       ->willReturnCallback(function ($earliestInfluence) {
-        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystem::class);
+        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
         $mock->method("getEarliestInfluence")->willReturn(new \DateTime($earliestInfluence));
         return $mock;
       });
@@ -245,25 +245,12 @@ class RankingSystemServiceTest extends UnitTestCase
     $rs2->expects(self::once())->method('getServiceName')->willReturn('service');
     $rs2->expects(self::once())->method('getOpenSyncFrom')->willReturn(new \DateTime("2017-05-01"));
     $rs2->expects(self::once())->method('setOpenSyncFrom')->with(null);
-    $entityManager = $this->getMockForAbstractClass(EntityManager::class, [], '',
-      false, true, true, ['createQueryBuilder']);
-    $queryBuilder = $this->getMockForAbstractClass(QueryBuilder::class, [$entityManager],
-      '', true, true, true, ['getQuery']);
-    $query = $this->createMock(AbstractQuery::class);
-    $query->expects(static::once())->method('getResult')->willReturn([$rs1, $rs2]);
-    $queryBuilder->expects(static::once())->method('getQuery')->willReturnCallback(
-      function () use ($queryBuilder, $query) {
-        $slash = '\\';
-        $first = 'SELECT s';
-        $second = ' FROM App';
-        $rest = 'RankingSystem s WHERE s.openSyncFrom IS NOT NULL';
-        /** @var $queryBuilder QueryBuilder */
-        self::assertEquals(
-          $first . $second . $slash . 'Entity' . $slash . $rest,
-          $queryBuilder->getDQL());
-        return $query;
-      });
-    $entityManager->expects(static::once())->method('createQueryBuilder')->willReturn($queryBuilder);
+    $slash = '\\';
+    $first = 'SELECT s';
+    $second = ' FROM App';
+    $rest = 'RankingSystem s WHERE s.openSyncFrom IS NOT NULL';
+    $entityManager = $this->getEntityManagerMockForQuery([$rs1, $rs2],
+      $first . $second . $slash . 'Entity' . $slash . $rest);
     $dsls = $this->getMockForAbstractClass(DynamicServiceLoadingServiceInterface::class);
     $service = $this->getMockForAbstractClass(RankingSystemInterface::class);
     $service->expects(self::exactly(2))->method('updateRankingFrom')

@@ -13,7 +13,7 @@ namespace App\Entity;
 use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\TimestampableEntity;
 use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="tournaments",indexes={@ORM\Index(name="user_id_idx", columns={"user_identifier","creator_id"})})
  */
-class Tournament extends TournamentHierarchyEntity implements TreeStructureEntityInterface
+class Tournament extends TournamentHierarchyEntity
 {
   use TimestampableEntity;
   use NameEntity;
@@ -112,7 +112,7 @@ class Tournament extends TournamentHierarchyEntity implements TreeStructureEntit
   /**
    * @inheritDoc
    */
-  public function getParent(): ?TreeStructureEntityInterface
+  public function getParent(): ?TournamentHierarchyInterface
   {
     return null;
   }

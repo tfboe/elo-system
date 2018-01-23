@@ -134,6 +134,7 @@ abstract class BasicEnum
     return self::$constCacheArrayCaseMapping[$calledClass];
   }
 
+  /** @noinspection PhpDocMissingThrowsInspection */
   /**
    * Gets a dictionary of all constants in this enum
    * @return mixed[]
@@ -145,6 +146,7 @@ abstract class BasicEnum
     }
     $calledClass = get_called_class();
     if (!array_key_exists($calledClass, self::$constCacheArray)) {
+      /** @noinspection PhpUnhandledExceptionInspection */ //whe know that calledClass is a valid class
       $reflect = new \ReflectionClass($calledClass);
       $array = $reflect->getConstants();
       asort($array);

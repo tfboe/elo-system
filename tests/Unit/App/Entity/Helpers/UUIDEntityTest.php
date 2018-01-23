@@ -29,6 +29,7 @@ class UUIDEntityTest extends UnitTestCase
   public function testId()
   {
     $entity = $this->mock();
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($entity), 'id')->setValue($entity, 'test-id');
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals('test-id', $entity->getId());

@@ -12,7 +12,7 @@ namespace App\Service\RankingSystem;
 
 /**
  * Interface GameRankingSystemInterface
- * @package App\Service\RankingSystem
+ * @package App\Service\RankingSystemListService
  */
 interface GameRankingSystemInterface extends RankingSystemInterface
 {

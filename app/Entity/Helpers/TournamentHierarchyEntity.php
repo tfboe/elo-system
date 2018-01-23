@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discriminator", type="string")
  */
-abstract class TournamentHierarchyEntity extends BaseEntity
+abstract class TournamentHierarchyEntity extends BaseEntity implements TournamentHierarchyInterface
 {
   use GameMode;
   use TeamMode;

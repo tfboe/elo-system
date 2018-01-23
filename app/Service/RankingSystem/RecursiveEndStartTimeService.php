@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace App\Service\RankingSystem;
 
 
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Entity\Tournament;
 
 /**
  * Class RecursiveEndStartTimeService
- * @package App\Service\RankingSystem
+ * @package App\Service\RankingSystemListService
  */
 class RecursiveEndStartTimeService implements TimeServiceInterface
 {
@@ -36,7 +36,7 @@ class RecursiveEndStartTimeService implements TimeServiceInterface
   /**
    * @inheritDoc
    */
-  public function getTime(TreeStructureEntityInterface $entity)
+  public function getTime(TournamentHierarchyInterface $entity)
   {
     $entityId = $entity->getId();
     if (!array_key_exists($entityId, $this->times)) {

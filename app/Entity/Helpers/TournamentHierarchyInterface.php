@@ -14,14 +14,14 @@ use App\Entity\RankingSystem;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface TreeStructureEntityInterface
+ * Interface TournamentHierarchyInterface
  * @package App\Entity\Helpers
  */
-interface TreeStructureEntityInterface
+interface TournamentHierarchyInterface
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @return Collection|TreeStructureEntityInterface[]
+   * @return Collection|TournamentHierarchyInterface[]
    */
   public function getChildren(): Collection;
 
@@ -49,9 +49,9 @@ interface TreeStructureEntityInterface
   public function getLocalIdentifier();
 
   /**
-   * @return TreeStructureEntityInterface
+   * @return TournamentHierarchyInterface
    */
-  public function getParent(): ?TreeStructureEntityInterface;
+  public function getParent(): ?TournamentHierarchyInterface;
 
   /**
    * @return RankingSystem[]|Collection

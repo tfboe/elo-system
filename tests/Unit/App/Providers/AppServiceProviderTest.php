@@ -29,7 +29,7 @@ class AppServiceProviderTest extends UnitTestCase
   /**
    * @covers \App\Providers\AppServiceProvider::register
    * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    * @uses   \App\Service\DynamicServiceLoadingService::__construct
    * @uses   \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
    */

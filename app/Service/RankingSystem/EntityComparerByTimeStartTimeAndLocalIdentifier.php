@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace App\Service\RankingSystem;
 
 
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 
 
 /**
  * Class EntityComparerByTimeStartTimeAndLocalIdentifier
- * @package App\Service\RankingSystem
+ * @package App\Service\RankingSystemListService
  */
 class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerInterface
 {
@@ -40,7 +40,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerI
   /**
    * @inheritDoc
    */
-  public function compareEntities(TreeStructureEntityInterface $entity1, TreeStructureEntityInterface $entity2): int
+  public function compareEntities(TournamentHierarchyInterface $entity1, TournamentHierarchyInterface $entity2): int
   {
     $tmpE1 = $entity1;
     $tmpE2 = $entity2;
@@ -60,13 +60,13 @@ class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerI
 //<editor-fold desc="Protected Methods">
   /**
    * Compares the times of the two entities using the time array and using their start times
-   * @param TreeStructureEntityInterface $entity1 the first entity to compare
-   * @param TreeStructureEntityInterface $entity2 the second entity to compare
+   * @param TournamentHierarchyInterface $entity1 the first entity to compare
+   * @param TournamentHierarchyInterface $entity2 the second entity to compare
    * @return int returns -1 if the relevant times of entity1 are before the relevant times of entity2, 1 if the times of
    *             entity2 are before the times of entity1 and 0 if they have the same times
    */
-  protected function compareEntityTimes(TreeStructureEntityInterface $entity1,
-                                        TreeStructureEntityInterface $entity2)
+  protected function compareEntityTimes(TournamentHierarchyInterface $entity1,
+                                        TournamentHierarchyInterface $entity2)
   {
     $time1 = $this->timeService->getTime($entity1);
     $time2 = $this->timeService->getTime($entity2);
@@ -87,13 +87,13 @@ class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerI
 
   /**
    * Compares the local identifiers of the predecessors of the given entities, beginning from the tournament level
-   * @param TreeStructureEntityInterface $entity1 the first entity to compare
-   * @param TreeStructureEntityInterface $entity2 the second entity to compare
+   * @param TournamentHierarchyInterface $entity1 the first entity to compare
+   * @param TournamentHierarchyInterface $entity2 the second entity to compare
    * @return int returns -1 if the first predecessor with a lower local identifier is of entity1, 1 if it is of entity2
    *             and 0 if the two entities are equal (<=> all predecessors have same local identifiers)
    */
-  protected function compareLocalIdentifiersWithinTournament(TreeStructureEntityInterface $entity1,
-                                                             TreeStructureEntityInterface $entity2)
+  protected function compareLocalIdentifiersWithinTournament(TournamentHierarchyInterface $entity1,
+                                                             TournamentHierarchyInterface $entity2)
   {
     //compare unique identifiers within tournament
     $predecessors1 = $this->getPredecessors($entity1);
@@ -113,10 +113,10 @@ class EntityComparerByTimeStartTimeAndLocalIdentifier implements EntityComparerI
 //<editor-fold desc="Private Methods">
   /**
    * Gets a list of all predecessors of the given entity $entity (inclusive $entity itself).
-   * @param TreeStructureEntityInterface $entity the entity for which to get the predecessors
-   * @return TreeStructureEntityInterface[] the predecessors of $entity inclusive $entity
+   * @param TournamentHierarchyInterface $entity the entity for which to get the predecessors
+   * @return TournamentHierarchyInterface[] the predecessors of $entity inclusive $entity
    */
-  private function getPredecessors(TreeStructureEntityInterface $entity): array
+  private function getPredecessors(TournamentHierarchyInterface $entity): array
   {
     $res = [];
     while ($entity !== null) {

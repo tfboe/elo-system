@@ -12,7 +12,7 @@ namespace Tests\Unit\App\Service\RankingSystem;
 use App\Entity\RankingSystem;
 use App\Helpers\Level;
 use App\Service\RankingSystem\EntityComparerInterface;
-use App\Service\RankingSystem\GameRankingSystem;
+use App\Service\RankingSystem\GameRankingSystemService;
 use App\Service\RankingSystem\TimeServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,20 +21,20 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class GameRankingSystemTest
- * @package Tests\Unit\App\Service\RankingSystem
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects
+ * @package Tests\Unit\App\Service\RankingSystemService
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class GameRankingSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Service\RankingSystem\GameRankingSystem::getEntitiesQueryBuilder
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @covers \App\Service\RankingSystem\GameRankingSystemService::getEntitiesQueryBuilder
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetEntitiesQueryBuilder()
   {
     $entityManager = $this->getMockForAbstractClass(EntityManager::class, [], '', false);
-    $system = $this->getMockForAbstractClass(GameRankingSystem::class, [$entityManager,
+    $system = $this->getMockForAbstractClass(GameRankingSystemService::class, [$entityManager,
       $this->createMock(TimeServiceInterface::class),
       $this->createMock(EntityComparerInterface::class)]);
     $rankingSystem = $this->createMock(RankingSystem::class);
@@ -68,12 +68,12 @@ class GameRankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\GameRankingSystem::getLevel
-   * @uses   \App\Service\RankingSystem\RankingSystem::__construct
+   * @covers \App\Service\RankingSystem\GameRankingSystemService::getLevel
+   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testLevel()
   {
-    $system = $this->getMockForAbstractClass(GameRankingSystem::class,
+    $system = $this->getMockForAbstractClass(GameRankingSystemService::class,
       [$this->createMock(EntityManagerInterface::class),
         $this->createMock(TimeServiceInterface::class),
         $this->createMock(EntityComparerInterface::class)]);

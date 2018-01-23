@@ -64,6 +64,25 @@ class SubClassDataTest extends UnitTestCase
   }
 
   /**
+   * @covers \App\Entity\Helpers\SubClassData::cloneSubClassDataFrom
+   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   */
+  public function testCloneSubClassDataFrom()
+  {
+    $entity = $this->mock();
+    $other = $this->getMockForTrait(SubClassData::class, [], get_class($entity));
+    /** @var SubClassData $other */
+    $other->initSubClassData(['test']);
+    $entity->initSubClassData(['other']);
+    self::assertFalse($entity->hasProperty('test'));
+    self::assertTrue($entity->hasProperty('other'));
+    $entity->cloneSubClassDataFrom($other);
+    self::assertTrue($entity->hasProperty('test'));
+    self::assertFalse($entity->hasProperty('other'));
+  }
+
+  /**
    * @covers \App\Entity\Helpers\SubClassData::initSubClassData
    * @covers \App\Entity\Helpers\SubClassData::hasProperty
    */

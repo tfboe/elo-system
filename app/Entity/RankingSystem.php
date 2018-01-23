@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class RankingSystem
+ * Class RankingSystemService
  * @package App\Entity
  * @ORM\Entity
  * @ORM\Table(name="rankingSystems")

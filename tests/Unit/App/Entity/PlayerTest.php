@@ -83,6 +83,7 @@ class PlayerTest extends UnitTestCase
   public function testId()
   {
     $player = $this->player();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $idProperty = self::getProperty(Player::class, 'playerId');
     $idProperty->setValue($player, 0);
     /** @noinspection PhpUnhandledExceptionInspection */

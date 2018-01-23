@@ -17,7 +17,7 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 
 /**
- * Class RankingSystemTest
+ * Class RankingSystemServiceTest
  * @package Tests\Integration
  */
 class RankingSystemTest extends AuthenticatedTestCase

@@ -29,6 +29,38 @@ trait SubClassData
 
 //</editor-fold desc="Fields">
 
+//<editor-fold desc="Public Final Methods">
+  /**
+   * Gets a property or throws an error if the property does not exist.
+   * @param string $name the name of the property
+   * @return mixed the value of the property
+   * @throws PropertyNotExistingException
+   */
+  public final function getProperty($name)
+  {
+    if (!array_key_exists(strtolower($name), $this->subClassData)) {
+      throw new PropertyNotExistingException(get_class($this), strtolower($name), "getProperty");
+    }
+    return $this->subClassData[strtolower($name)];
+  }
+
+  /**
+   * Sets a property with the given name and the given value
+   * @param string $name the name of the property to set
+   * @param mixed $value the new value for the property
+   * @return $this|SubClassData
+   * @throws PropertyNotExistingException
+   */
+  public final function setProperty(string $name, $value)
+  {
+    if (!array_key_exists(strtolower($name), $this->subClassData)) {
+      throw new PropertyNotExistingException(get_class($this), strtolower($name), "setProperty");
+    }
+    $this->subClassData[strtolower($name)] = $value;
+    return $this;
+  }
+//</editor-fold desc="Public Final Methods">
+
 //<editor-fold desc="Public Methods">
   /**
    * Magic function call for getters and setters of subclass data.
@@ -63,6 +95,15 @@ trait SubClassData
       $this->subClassData[strtolower($name)] = $default;
     }
     return $this;
+  }
+
+  /**
+   * clones the subclass data from other into this
+   * @param SubClassData $other
+   */
+  public function cloneSubClassDataFrom($other)
+  {
+    $this->subClassData = $other->subClassData;
   }
 
   /**
@@ -113,34 +154,5 @@ trait SubClassData
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
-  /**
-   * Gets a property or throws an error if the property does not exist.
-   * @param string $name the name of the property
-   * @return mixed the value of the property
-   * @throws PropertyNotExistingException
-   */
-  private function getProperty($name)
-  {
-    if (!array_key_exists(strtolower($name), $this->subClassData)) {
-      throw new PropertyNotExistingException(get_class($this), strtolower($name), "getProperty");
-    }
-    return $this->subClassData[strtolower($name)];
-  }
-
-  /**
-   * Sets a property with the given name and the given value
-   * @param string $name the name of the property to set
-   * @param mixed $value the new value for the property
-   * @return $this|SubClassData
-   * @throws PropertyNotExistingException
-   */
-  private function setProperty(string $name, $value)
-  {
-    if (!array_key_exists(strtolower($name), $this->subClassData)) {
-      throw new PropertyNotExistingException(get_class($this), strtolower($name), "setProperty");
-    }
-    $this->subClassData[strtolower($name)] = $value;
-    return $this;
-  }
 //</editor-fold desc="Private Methods">
 }

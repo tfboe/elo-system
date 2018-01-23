@@ -10,11 +10,11 @@ declare(strict_types=1);
 namespace App\Service\RankingSystem;
 
 
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 
 /**
  * Interface TimeService
- * @package App\Service\RankingSystem\TimeService
+ * @package App\Service\RankingSystemService\TimeService
  */
 interface TimeServiceInterface
 {
@@ -27,9 +27,9 @@ interface TimeServiceInterface
 
   /**
    * Gets the relevant time for the given entity for ordering purposes
-   * @param TreeStructureEntityInterface $entity
+   * @param TournamentHierarchyInterface $entity
    * @return \DateTime
    */
-  public function getTime(TreeStructureEntityInterface $entity);
+  public function getTime(TournamentHierarchyInterface $entity);
 //</editor-fold desc="Public Methods">
 }

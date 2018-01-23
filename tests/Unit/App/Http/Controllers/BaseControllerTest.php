@@ -39,6 +39,7 @@ class BaseControllerTest extends UnitTestCase
       $entityManager
     ]);
     self::assertInstanceOf(BaseController::class, $controller);
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals($entityManager, self::getProperty(get_class($controller), 'entityManager')
       ->getValue($controller));
   }
@@ -50,6 +51,7 @@ class BaseControllerTest extends UnitTestCase
   public function testDatetimetzTransformer()
   {
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $closure = self::getMethod(BaseController::class, 'datetimetzTransformer')
       ->invokeArgs($controller, [TestEnum::class]);
     $string = "2017-01-01 00:00:00 Europe/Vienna";
@@ -68,6 +70,7 @@ class BaseControllerTest extends UnitTestCase
   public function testEnumTransformer()
   {
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $closure = self::getMethod(BaseController::class, 'enumTransformer')->invokeArgs($controller, [TestEnum::class]);
     self::assertEquals(1, $closure('INT_KEY'));
     self::assertEquals('value', $closure('KEY'));
@@ -85,6 +88,7 @@ class BaseControllerTest extends UnitTestCase
     $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setProp']);
     $object->expects(static::once())->method('setProp')->with($value)->willReturnSelf();
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, []]);
   }
@@ -101,6 +105,7 @@ class BaseControllerTest extends UnitTestCase
     $object = self::getMockForAbstractClass(BaseEntity::class, [], '', true, true, true, ['setProp']);
     $object->expects(static::once())->method('setProp')->with($value)->willReturnSelf();
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'setFromSpecification');
     $method->invokeArgs($controller, [$object, $specification, ['attr' => $value]]);
   }
@@ -118,6 +123,7 @@ class BaseControllerTest extends UnitTestCase
     $entityManager = $this->createMock(EntityManagerInterface::class);
     $entityManager->expects(static::once())->method('find')->with(User::class, 'user-id')->willReturn($user);
     $controller = $this->getMockForAbstractClass(BaseController::class, [$entityManager]);
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'transformValue');
     /** @noinspection PhpUnhandledExceptionInspection */
     $method->invokeArgs($controller, [&$value, $specification]);
@@ -139,6 +145,7 @@ class BaseControllerTest extends UnitTestCase
     $specification = ['transformer' => $transformer];
 
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'transformValue');
     $method->invokeArgs($controller, [&$value, $specification]);
 
@@ -157,6 +164,7 @@ class BaseControllerTest extends UnitTestCase
     $specification = ['type' => 'datetime'];
 
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'transformValue');
     $method->invokeArgs($controller, [&$value, $specification]);
 
@@ -174,6 +182,7 @@ class BaseControllerTest extends UnitTestCase
     $specification = ['type' => 'default'];
 
     $controller = $this->controller();
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'transformValue');
     $method->invokeArgs($controller, [&$value, $specification]);
 
@@ -196,6 +205,7 @@ class BaseControllerTest extends UnitTestCase
       'noValidation' => ['default' => 5],
       'withValidation' => ['validation' => 'required|string|min:2']
     ];
+    /** @noinspection PhpUnhandledExceptionInspection */
     $method = self::getMethod(UserController::class, 'validateBySpecification');
     $method->invokeArgs($controller, [$request, $specification]);
   }

@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Service\RankingSystem;
 
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier;
 use App\Service\RankingSystem\RecursiveEndStartTimeService;
 use App\Service\RankingSystem\TimeServiceInterface;
@@ -15,7 +15,7 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class EntityComparerByTimeStartTimeAndLocalIdentifierTest
- * @package Tests\Unit\App\Service\RankingSystem
+ * @package Tests\Unit\App\Service\RankingSystemListService
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
@@ -65,8 +65,8 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getEndTime' => $commonEndTime, 'getParent' => $parent1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getEndTime' => $commonEndTime, 'getParent' => $parent2]);
 
-    /** @var TreeStructureEntityInterface $entity1 */
-    /** @var TreeStructureEntityInterface $entity2 */
+    /** @var TournamentHierarchyInterface $entity1 */
+    /** @var TournamentHierarchyInterface $entity2 */
     $result = $service->compareEntities($entity1, $entity2);
     self::assertEquals($expectedResult, $result);
   }
@@ -91,8 +91,8 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getEndTime' => $time1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getEndTime' => $time2]);
 
-    /** @var TreeStructureEntityInterface $entity1 */
-    /** @var TreeStructureEntityInterface $entity2 */
+    /** @var TournamentHierarchyInterface $entity1 */
+    /** @var TournamentHierarchyInterface $entity2 */
     $result = $service->compareEntities($entity1, $entity2);
     self::assertEquals($expectedResult, $result);
   }
@@ -120,11 +120,11 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity2 = $this->createTreeStructureEntity('e2',
       ['getEndTime' => $commonEndTime, 'getLocalIdentifier' => $localIdentifier2]);
 
-    /** @var TreeStructureEntityInterface $entity1 */
-    /** @var TreeStructureEntityInterface $entity2 */
+    /** @var TournamentHierarchyInterface $entity1 */
+    /** @var TournamentHierarchyInterface $entity2 */
     $result = $service->compareEntities($entity1, $entity2);
     self::assertEquals($expectedResult, $result);
-  }
+  }/** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * @dataProvider timePairProvider
@@ -142,9 +142,10 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getEndTime' => $commonEndTime, 'getStartTime' => $time1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getEndTime' => $commonEndTime, 'getStartTime' => $time2]);
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareEntityTimes')->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }
+  }/** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * @dataProvider timePairProvider
@@ -161,9 +162,10 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getEndTime' => $time1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getEndTime' => $time2]);
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareEntityTimes')->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }
+  }/** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * @dataProvider localIdentifierProviderWithoutZero
@@ -184,10 +186,11 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getLocalIdentifier' => "4", 'getParent' => $parent1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getLocalIdentifier' => "2", 'getParent' => $parent2]);
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareLocalIdentifiersWithinTournament')
       ->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }
+  }/** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * @dataProvider localIdentifierProvider
@@ -204,10 +207,11 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getLocalIdentifier' => $localIdentifier1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getLocalIdentifier' => $localIdentifier2]);
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareLocalIdentifiersWithinTournament')
       ->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
-  }
+  }/** @noinspection PhpDocMissingThrowsInspection */
 
   /**
    * @dataProvider localIdentifierProviderWithoutZero
@@ -230,6 +234,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
     $entity1 = $this->createTreeStructureEntity('e1', ['getLocalIdentifier' => "3", 'getParent' => $parent1]);
     $entity2 = $this->createTreeStructureEntity('e2', ['getLocalIdentifier' => "5", 'getParent' => $parent2]);
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     $result = self::getMethod(get_class($service), 'compareLocalIdentifiersWithinTournament')
       ->invokeArgs($service, [$entity1, $entity2]);
     self::assertEquals($expectedResult, $result);
@@ -279,7 +284,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
    */
   private function createTreeStructureEntity(string $entityId, array $otherMethods = []): MockObject
   {
-    return $this->createStub(TreeStructureEntityInterface::class, array_merge($otherMethods, ['getId' => $entityId]));
+    return $this->createStub(TournamentHierarchyInterface::class, array_merge($otherMethods, ['getId' => $entityId]));
   }
 //</editor-fold desc="Private Methods">
 }

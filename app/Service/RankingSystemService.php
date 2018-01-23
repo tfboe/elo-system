@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Entity\RankingSystem;
 use App\Entity\Tournament;
 use Doctrine\ORM\EntityManagerInterface;
@@ -136,10 +136,10 @@ class RankingSystemService implements RankingSystemServiceInterface
 
 //<editor-fold desc="Private Methods">
   /**
-   * @param TreeStructureEntityInterface $entity
+   * @param TournamentHierarchyInterface $entity
    * @return RankingSystem[]
    */
-  private function getRankingSystems(TreeStructureEntityInterface $entity): array
+  private function getRankingSystems(TournamentHierarchyInterface $entity): array
   {
     $result = $entity->getRankingSystems()->toArray();
     foreach ($entity->getChildren() as $child) {

@@ -12,6 +12,9 @@ namespace App\Entity\Helpers;
 
 use App\Exceptions\ValueNotSet;
 
+//TODO don't use this since an error gets thrown anyway when null is returned instead of the wanted value, also remove
+//all PhpUnhandledExceptionInspection ignores and make properties private
+
 /**
  * Trait UnsetProperty
  * @package App\Entity\Helpers

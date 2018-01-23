@@ -12,6 +12,8 @@ namespace App\Entity;
 
 use App\Entity\Helpers\BaseEntity;
 use App\Entity\Helpers\UUIDEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,12 @@ class RankingSystemList extends BaseEntity
    * @var \DateTime
    */
   private $lastEntryTime;
+
+  /**
+   * @ORM\OneToMany(targetEntity="RankingSystemListEntry", mappedBy="rankingSystemList", indexBy="player_id")
+   * @var RankingSystemListEntry[]|Collection
+   */
+  private $entries;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -50,10 +58,19 @@ class RankingSystemList extends BaseEntity
   {
     $this->lastEntryTime = new \DateTime("2000-01-01");
     $this->current = false;
+    $this->entries = new ArrayCollection();
   }
 //</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
+  /**
+   * @return RankingSystemListEntry[]|Collection
+   */
+  public function getEntries(): Collection
+  {
+    return $this->entries;
+  }
+
   /**
    * @return \DateTime
    */

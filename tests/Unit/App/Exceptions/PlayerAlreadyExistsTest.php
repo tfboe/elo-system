@@ -46,6 +46,7 @@ class PlayerAlreadyExistsTest extends UnitTestCase
     $player->setFirstName('first');
     $player->setLastName('last');
     $player->setBirthday(new \DateTime('1990-02-02'));
+    /** @noinspection PhpUnhandledExceptionInspection */
     $idProperty = self::getProperty(Player::class, 'playerId');
     $idProperty->setValue($player, 0);
 

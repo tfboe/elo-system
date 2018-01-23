@@ -11,21 +11,23 @@ namespace App\Service\RankingSystem;
 
 
 use App\Entity\Game;
+use App\Entity\RankingSystem;
 use App\Helpers\Level;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
+
 /**
- * Class GameRankingSystem
- * @package App\Service\RankingSystem
+ * Class GameRankingSystemService
+ * @package App\Service\RankingSystemService
  */
-abstract class GameRankingSystem extends RankingSystem implements GameRankingSystemInterface
+abstract class GameRankingSystemService extends RankingSystemService implements GameRankingSystemInterface
 {
 //<editor-fold desc="Protected Methods">
   /**
    * @inheritDoc
    */
-  protected function getEntitiesQueryBuilder(\App\Entity\RankingSystem $ranking, \DateTime $from): QueryBuilder
+  protected function getEntitiesQueryBuilder(RankingSystem $ranking, \DateTime $from): QueryBuilder
   {
     // query all relevant games
     $query = $this->entityManager->createQueryBuilder();

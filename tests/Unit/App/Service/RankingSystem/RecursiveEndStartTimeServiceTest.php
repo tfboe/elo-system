@@ -21,7 +21,7 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class RecursiveEndStartTimeServiceTest
- * @package Tests\Unit\App\Service\RankingSystem
+ * @package Tests\Unit\App\Service\RankingSystemListService
  */
 class RecursiveEndStartTimeServiceTest extends UnitTestCase
 {
@@ -38,6 +38,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   public function testClearTimes()
   {
     $tournament = new Tournament();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Tournament::class, 'id')->setValue($tournament, 't1');
     $service = new RecursiveEndStartTimeService();
     $endedAt = new \DateTime("2017-03-01");
@@ -69,22 +70,27 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   public function testGetTimeGame()
   {
     $tournament = new Tournament();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Tournament::class, 'id')->setValue($tournament, 't1');
     $endedAt = new \DateTime("2017-05-01");
     $tournament->setEndTime($endedAt);
     $competition = new Competition();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Competition::class, 'id')->setValue($competition, 'c1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $competition->setName("TestCompetition")->setTournament($tournament);
     $phase = new Phase();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Phase::class, 'id')->setValue($phase, 'p1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setPhaseNumber(1)->setCompetition($competition);
     $match = new Match();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Match::class, 'id')->setValue($match, 'm1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $match->setMatchNumber(1)->setPhase($phase);
     $game = new Game();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Game::class, 'id')->setValue($game, 'g1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $game->setGameNumber(1)->setMatch($match);
@@ -122,14 +128,17 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   public function testGetTimePhase()
   {
     $tournament = new Tournament();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Tournament::class, 'id')->setValue($tournament, 't1');
     $endedAt = new \DateTime("2017-04-01");
     $tournament->setEndTime($endedAt);
     $competition = new Competition();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Competition::class, 'id')->setValue($competition, 'c1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $competition->setName("TestCompetition")->setTournament($tournament);
     $phase = new Phase();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Phase::class, 'id')->setValue($phase, 'p1');
     /** @noinspection PhpUnhandledExceptionInspection */
     $phase->setPhaseNumber(1)->setCompetition($competition);
@@ -160,6 +169,7 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   public function testGetTimeTournament()
   {
     $tournament = new Tournament();
+    /** @noinspection PhpUnhandledExceptionInspection */
     static::getProperty(Tournament::class, 'id')->setValue($tournament, 't1');
     $updatedAt = new \DateTime("2017-04-01");
     $tournament->setUpdatedAt($updatedAt);

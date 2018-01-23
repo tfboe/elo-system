@@ -12,7 +12,7 @@ namespace App\Entity;
 
 use App\Entity\Helpers\NameEntity;
 use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="competitions",indexes={@ORM\Index(name="unique_name_idx", columns={"tournament_id","name"})})
  */
-class Competition extends TournamentHierarchyEntity implements TreeStructureEntityInterface
+class Competition extends TournamentHierarchyEntity
 {
   use NameEntity;
 
@@ -88,7 +88,7 @@ class Competition extends TournamentHierarchyEntity implements TreeStructureEnti
   /**
    * @inheritDoc
    */
-  public function getParent(): ?TreeStructureEntityInterface
+  public function getParent(): ?TournamentHierarchyInterface
   {
     return $this->getTournament();
   }

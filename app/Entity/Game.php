@@ -12,7 +12,7 @@ namespace App\Entity;
 
 use App\Entity\Helpers\ResultEntity;
 use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Helpers\TreeStructureEntityInterface;
+use App\Entity\Helpers\TournamentHierarchyInterface;
 use App\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="games")
  */
-class Game extends TournamentHierarchyEntity implements TreeStructureEntityInterface
+class Game extends TournamentHierarchyEntity
 {
   use ResultEntity;
 
@@ -121,13 +121,13 @@ class Game extends TournamentHierarchyEntity implements TreeStructureEntityInter
   /**
    * @inheritDoc
    */
-  public function getParent(): ?TreeStructureEntityInterface
+  public function getParent(): ?TournamentHierarchyInterface
   {
     return $this->getMatch();
   }
 
   /**
-   * @return Player|Collection
+   * @return Player[]|Collection
    */
   public function getPlayersA()
   {
@@ -135,7 +135,7 @@ class Game extends TournamentHierarchyEntity implements TreeStructureEntityInter
   }
 
   /**
-   * @return Player|Collection
+   * @return Player[]|Collection
    */
   public function getPlayersB()
   {

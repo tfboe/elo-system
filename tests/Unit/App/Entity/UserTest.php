@@ -87,6 +87,7 @@ class UserTest extends UnitTestCase
   public function testJWTIdentifier()
   {
     $user = $this->user();
+    /** @noinspection PhpUnhandledExceptionInspection */
     self::getProperty(get_class($user), 'id')->setValue($user, 'user-id');
     /** @noinspection PhpUnhandledExceptionInspection */
     self::assertEquals('user-id', $user->getJWTIdentifier());
