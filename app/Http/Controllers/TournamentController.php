@@ -3,27 +3,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Entity\Categories\GameMode;
-use App\Entity\Categories\OrganizingMode;
-use App\Entity\Categories\ScoreMode;
-use App\Entity\Categories\Table;
-use App\Entity\Categories\TeamMode;
-use App\Entity\Competition;
-use App\Entity\Game;
-use App\Entity\Helpers\Result;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\Player;
-use App\Entity\QualificationSystem;
-use App\Entity\Ranking;
-use App\Entity\RankingSystem;
-use App\Entity\Team;
-use App\Entity\Tournament;
-use App\Exceptions\DuplicateException;
-use App\Exceptions\ReferenceException;
-use App\Exceptions\UnorderedPhaseNumberException;
-use App\Helpers\Level;
-use App\Service\RankingSystemServiceInterface;
+use Tfboe\FmLib\Entity\Categories\GameMode;
+use Tfboe\FmLib\Entity\Categories\OrganizingMode;
+use Tfboe\FmLib\Entity\Categories\ScoreMode;
+use Tfboe\FmLib\Entity\Categories\Table;
+use Tfboe\FmLib\Entity\Categories\TeamMode;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Helpers\Result;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\QualificationSystem;
+use Tfboe\FmLib\Entity\Ranking;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\Team;
+use Tfboe\FmLib\Entity\Tournament;
+use Tfboe\FmLib\Exceptions\DuplicateException;
+use Tfboe\FmLib\Exceptions\ReferenceException;
+use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
+use Tfboe\FmLib\Helpers\Level;
+use Tfboe\FmLib\Http\Controllers\BaseController;
+use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 use Doctrine\Common\Collections\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -128,7 +129,8 @@ class TournamentController extends BaseController
       'competitions.*.teams.*.rank' => ['validation' => 'required|integer'],
       'competitions.*.teams.*.startNumber' => ['validation' => 'required|integer|min:1'],
       'competitions.*.teams.*.players' => ['validation' => 'required|array|min:1', 'ignore' => True],
-      'competitions.*.teams.*.players.*' => ['validation' => 'exists:App\Entity\Player,playerId', 'ignore' => True],
+      'competitions.*.teams.*.players.*' => ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId',
+        'ignore' => True],
     ];
 
     $this->phaseSpecification = [
@@ -176,11 +178,11 @@ class TournamentController extends BaseController
       'competitions.*.phases.*.matches.*.games.*.playersA' =>
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersA.*' =>
-        ['validation' => 'exists:App\Entity\Player,playerId', 'ignore' => True],
+        ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB' =>
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB.*' =>
-        ['validation' => 'exists:App\Entity\Player,playerId', 'ignore' => True]
+        ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId', 'ignore' => True]
     ];
 
     $this->gameSpecification = array_merge($this->gameSpecification,

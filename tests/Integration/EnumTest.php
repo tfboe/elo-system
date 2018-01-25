@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Entity\Categories\GameMode;
-use App\Entity\Categories\OrganizingMode;
-use App\Entity\Categories\ScoreMode;
-use App\Entity\Categories\Table;
-use App\Entity\Categories\TeamMode;
-use App\Entity\Helpers\AutomaticInstanceGeneration;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Categories\GameMode;
+use Tfboe\FmLib\Entity\Categories\OrganizingMode;
+use Tfboe\FmLib\Entity\Categories\ScoreMode;
+use Tfboe\FmLib\Entity\Categories\Table;
+use Tfboe\FmLib\Entity\Categories\TeamMode;
+use Tfboe\FmLib\Entity\Helpers\AutomaticInstanceGeneration;
+use Tfboe\FmLib\Helpers\Level;
 use Tests\Helpers\LumenTestCase;
 
 /**

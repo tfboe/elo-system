@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\App\Entity\QualificationSystem::class, function (/** @noinspection PhpUnusedParameterInspection */
-  \Faker\Generator $faker, /** @noinspection PhpUnusedParameterInspection */
+$factory->define(\Tfboe\FmLib\Entity\QualificationSystem::class, function (
+  /** @noinspection PhpUnusedParameterInspection */
+  \Faker\Generator $faker,
+  /** @noinspection PhpUnusedParameterInspection */
   array $attributes) {
   return [
   ];

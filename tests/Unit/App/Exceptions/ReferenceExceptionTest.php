@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\ReferenceException;
+use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class ReferenceExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\ReferenceException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\ReferenceException::__construct
    */
   public function testConstructor()
   {
@@ -31,8 +31,8 @@ class ReferenceExceptionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\ReferenceException::getJsonMessage
-   * @uses   \App\Exceptions\ReferenceException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\ReferenceException::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\ReferenceException::__construct
    */
   public function testJsonMessage()
   {

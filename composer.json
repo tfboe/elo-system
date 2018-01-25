@@ -8,6 +8,12 @@
   ],
   "license": "MIT",
   "type": "project",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/tfboe/fm-lib"
+    }
+  ],
   "require": {
     "php": ">=7.1",
     "laravel/lumen-framework": "5.5.*",
@@ -16,7 +22,8 @@
     "irazasyed/jwt-auth-guard": "dev-master",
     "laravel-doctrine/orm": "^1.2.12",
     "laravel-doctrine/extensions": "^1.0.12",
-    "gedmo/doctrine-extensions": "^2.4.30"
+    "gedmo/doctrine-extensions": "^2.4.30",
+    "tfboe/fm-lib": "master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 3:53 PM
  */
 
-namespace Tests\Unit\App\Service;
+namespace Tests\Tfboe\FmLib\Service;
 
-use App\Service\DynamicServiceLoadingService;
-use App\Service\RankingSystem\RankingSystemInterface;
+use Tfboe\FmLib\Service\DynamicServiceLoadingService;
+use Tfboe\FmLib\Service\RankingSystem\RankingSystemInterface;
 use Illuminate\Contracts\Container\Container;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class EloRankingTest
- * @package Tests\Unit\App\Service
+ * @package Tests\Tfboe\FmLib\Service
  */
 class DynamicServiceLoadingServiceTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Service\DynamicServiceLoadingService::__construct
+   * @covers \Tfboe\FmLib\Service\DynamicServiceLoadingService::__construct
    */
   public function testConstruct()
   {
@@ -37,22 +37,23 @@ class DynamicServiceLoadingServiceTest extends UnitTestCase
 
 
   /**
-   * @covers \App\Service\DynamicServiceLoadingService::loadRankingSystemService
-   * @covers \App\Service\DynamicServiceLoadingService::getClassWithNamespace
-   * @uses   \App\Service\DynamicServiceLoadingService::__construct
+   * @covers \Tfboe\FmLib\Service\DynamicServiceLoadingService::loadRankingSystemService
+   * @covers \Tfboe\FmLib\Service\DynamicServiceLoadingService::getClassWithNamespace
+   * @uses   \Tfboe\FmLib\Service\DynamicServiceLoadingService::__construct
    */
   public function testLoadRankingSystemService()
   {
     $app = $this->getMockForAbstractClass(Container::class);
     $instance = $this->getMockForAbstractClass(RankingSystemInterface::class);
-    $app->expects(self::exactly(4))->method('make')->with('App\Service\RankingSystem\TestInterface')
+    $app->expects(self::exactly(4))->method('make')->with('Tfboe\FmLib\Service\RankingSystem\TestInterface')
       ->willReturn($instance);
     /** @var Container $app */
     $entity = new DynamicServiceLoadingService($app);
     self::assertTrue($instance === $entity->loadRankingSystemService("Test"));
     self::assertTrue($instance === $entity->loadRankingSystemService("TestInterface"));
-    self::assertTrue($instance === $entity->loadRankingSystemService("App\Service\RankingSystem\Test"));
-    self::assertTrue($instance === $entity->loadRankingSystemService("App\Service\RankingSystem\TestInterface"));
+    self::assertTrue($instance === $entity->loadRankingSystemService("Tfboe\FmLib\Service\RankingSystem\Test"));
+    self::assertTrue($instance ===
+      $entity->loadRankingSystemService("Tfboe\FmLib\Service\RankingSystem\TestInterface"));
   }
 //</editor-fold desc="Public Methods">
 }

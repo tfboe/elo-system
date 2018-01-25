@@ -3,18 +3,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Service\DynamicServiceLoadingService;
-use App\Service\DynamicServiceLoadingServiceInterface;
-use App\Service\RankingSystem\EloRanking;
-use App\Service\RankingSystem\EloRankingInterface;
-use App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier;
-use App\Service\RankingSystem\RecursiveEndStartTimeService;
-use App\Service\RankingSystemService;
-use App\Service\RankingSystemServiceInterface;
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Doctrine\ORM\EntityManagerInterface;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use LaravelDoctrine\Migrations\MigrationsServiceProvider;
+use Tfboe\FmLib\Providers\FmLibServiceProvider;
 
 /**
  * Class AppServiceProvider
@@ -30,24 +21,12 @@ class AppServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    if ($this->app->environment() !== 'production') {
-      $this->app->register(IdeHelperServiceProvider::class);
+    $this->app->register(FmLibServiceProvider::class);
+    try {
+      //optional service providers
+      $this->app->register(MigrationsServiceProvider::class);
+    } catch (\Exception $e) {
     }
-
-    $this->app->singleton(DynamicServiceLoadingServiceInterface::class, function (Container $app) {
-      return new DynamicServiceLoadingService($app);
-    });
-
-    $this->app->singleton(RankingSystemServiceInterface::class, function (Container $app) {
-      return new RankingSystemService($app->make(DynamicServiceLoadingServiceInterface::class),
-        $app->make(EntityManagerInterface::class));
-    });
-
-    $this->app->singleton(EloRankingInterface::class, function (Container $app) {
-      $timeService = new RecursiveEndStartTimeService();
-      $entityComparer = new EntityComparerByTimeStartTimeAndLocalIdentifier($timeService);
-      return new EloRanking($app->make(EntityManagerInterface::class), $timeService, $entityComparer);
-    });
   }
 //</editor-fold desc="Public Methods">
 }

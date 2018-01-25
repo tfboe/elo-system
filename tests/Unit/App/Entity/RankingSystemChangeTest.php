@@ -7,19 +7,19 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
 
-use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Player;
-use App\Entity\RankingSystem;
-use App\Entity\RankingSystemChange;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\RankingSystemChange;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BaseEntityChangeTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RankingSystemChangeTest extends UnitTestCase
@@ -27,8 +27,8 @@ class RankingSystemChangeTest extends UnitTestCase
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\RankingSystemChange::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
    */
   public function testConstructor()
   {
@@ -37,9 +37,9 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::hasProperty
    */
   public function testConstructorWithAdditionalKeys()
   {
@@ -49,10 +49,10 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::getPlayer
-   * @covers \App\Entity\RankingSystemChange::setPlayer
-   * @uses   \App\Entity\RankingSystemChange::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::getPlayer
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::setPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
    */
   public function testPlayer()
   {
@@ -64,10 +64,10 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::setPointsAfterwards
-   * @covers \App\Entity\RankingSystemChange::getPointsAfterwards
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::setPointsAfterwards
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::getPointsAfterwards
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
    */
   public function testPointsAfterwards()
   {
@@ -78,10 +78,10 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::setPointsChange
-   * @covers \App\Entity\RankingSystemChange::getPointsChange
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::setPointsChange
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::getPointsChange
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
    */
   public function testPointsChange()
   {
@@ -92,10 +92,10 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::setRankingSystem
-   * @covers \App\Entity\RankingSystemChange::getRankingSystem
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::setRankingSystem
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::getRankingSystem
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
    */
   public function testRankingSystem()
   {
@@ -107,10 +107,10 @@ class RankingSystemChangeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemChange::setHierarchyEntity
-   * @covers \App\Entity\RankingSystemChange::getHierarchyEntity
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::setHierarchyEntity
+   * @covers \Tfboe\FmLib\Entity\RankingSystemChange::getHierarchyEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
    */
   public function testTournamentHierarchyEntity()
   {

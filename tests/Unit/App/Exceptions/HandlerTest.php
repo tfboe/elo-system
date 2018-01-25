@@ -7,15 +7,15 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\AuthenticationException;
-use App\Exceptions\DuplicateException;
-use App\Exceptions\Handler;
-use App\Exceptions\PlayerAlreadyExists;
-use App\Exceptions\ReferenceException;
-use App\Exceptions\UnorderedPhaseNumberException;
+use Tfboe\FmLib\Exceptions\AuthenticationException;
+use Tfboe\FmLib\Exceptions\DuplicateException;
+use Tfboe\FmLib\Exceptions\Handler;
+use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
+use Tfboe\FmLib\Exceptions\ReferenceException;
+use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -26,22 +26,22 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class HandlerTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class HandlerTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\Handler::render
-   * @covers \App\Exceptions\Handler::getExceptionHTTPStatusCode
-   * @covers \App\Exceptions\Handler::getExceptionName
-   * @covers \App\Exceptions\Handler::getJsonMessage
-   * @uses   \App\Exceptions\AuthenticationException
-   * @uses   \App\Exceptions\DuplicateException
-   * @uses   \App\Exceptions\PlayerAlreadyExists
-   * @uses   \App\Exceptions\ReferenceException
-   * @uses   \App\Exceptions\UnorderedPhaseNumberException
+   * @covers \Tfboe\FmLib\Exceptions\Handler::render
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getExceptionHTTPStatusCode
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getExceptionName
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\AuthenticationException
+   * @uses   \Tfboe\FmLib\Exceptions\DuplicateException
+   * @uses   \Tfboe\FmLib\Exceptions\PlayerAlreadyExists
+   * @uses   \Tfboe\FmLib\Exceptions\ReferenceException
+   * @uses   \Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException
    */
   public function testRender()
   {
@@ -98,10 +98,10 @@ class HandlerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\Handler::render
-   * @covers \App\Exceptions\Handler::getExceptionHTTPStatusCode
-   * @covers \App\Exceptions\Handler::getExceptionName
-   * @covers \App\Exceptions\Handler::getJsonMessage
+   * @covers \Tfboe\FmLib\Exceptions\Handler::render
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getExceptionHTTPStatusCode
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getExceptionName
+   * @covers \Tfboe\FmLib\Exceptions\Handler::getJsonMessage
    */
   public function testRenderValidationErrors()
   {

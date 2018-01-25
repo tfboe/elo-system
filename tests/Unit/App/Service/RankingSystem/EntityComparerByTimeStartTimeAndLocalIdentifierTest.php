@@ -4,18 +4,18 @@ declare(strict_types=1);
  * 2018-01-09: Note first time trying to implement "good" unit tests according to "The Art of Unit Testing"
  */
 
-namespace Tests\Unit\App\Service\RankingSystem;
+namespace Tests\Tfboe\FmLib\Service\RankingSystem;
 
-use App\Entity\Helpers\TournamentHierarchyInterface;
-use App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier;
-use App\Service\RankingSystem\RecursiveEndStartTimeService;
-use App\Service\RankingSystem\TimeServiceInterface;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyInterface;
+use Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier;
+use Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService;
+use Tfboe\FmLib\Service\RankingSystem\TimeServiceInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class EntityComparerByTimeStartTimeAndLocalIdentifierTest
- * @package Tests\Unit\App\Service\RankingSystemListService
+ * @package Tests\Tfboe\FmLib\Service\RankingSystemListService
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
@@ -42,13 +42,14 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
 
   /**
    * @dataProvider timePairProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
-   * @uses         \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   *       ::compareEntityTimes
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *       ::compareLocalIdentifiersWithinTournament
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
    * @param \DateTime $time1
    * @param \DateTime $time2
    * @param int $expectedResult
@@ -73,13 +74,14 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
 
   /**
    * @dataProvider timePairProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
-   * @uses         \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   *       ::compareEntityTimes
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *       ::compareLocalIdentifiersWithinTournament
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
    * @param \DateTime $time1
    * @param \DateTime $time2
    * @param int $expectedResult
@@ -99,13 +101,14 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
 
   /**
    * @dataProvider localIdentifierProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntities
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   *        ::compareEntityTimes
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *               ::compareLocalIdentifiersWithinTournament
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
-   * @uses         \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::getPredecessors
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
    * @param mixed $localIdentifier1 the local identifier of entity1
    * @param mixed $localIdentifier2 the local identifier of entity2
    * @param int $expectedResult
@@ -129,9 +132,10 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider timePairProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
-   * @uses         \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   *        ::compareEntityTimes
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
    * @param \DateTime $time1 the start time of the first entity
    * @param \DateTime $time2 the start time of the second entity
    * @param int $expectedResult the expected result of the method
@@ -151,9 +155,10 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider timePairProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::compareEntityTimes
-   * @uses         \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
-   * @uses         \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   *        ::compareEntityTimes
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
    * @param \DateTime $time1 the end time of the first entity
    * @param \DateTime $time2 the end time of the second entity
    * @param int $expectedResult the expected result of the method
@@ -172,7 +177,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProviderWithoutZero
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *         ::compareLocalIdentifiersWithinTournament
    * @param mixed $localIdentifier1 the local identifier of grand parent 1
    * @param mixed $localIdentifier2 the local identifier of grand parent 2
@@ -198,7 +203,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProvider
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *         ::compareLocalIdentifiersWithinTournament
    * @param mixed $localIdentifier1 the local identifier of entity1
    * @param mixed $localIdentifier2 the local identifier of entity2
@@ -220,7 +225,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   /** @noinspection PhpDocMissingThrowsInspection */ //ReflectionException
   /**
    * @dataProvider localIdentifierProviderWithoutZero
-   * @covers       \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier
    *         ::compareLocalIdentifiersWithinTournament
    * @param mixed $localIdentifier1 the local identifier of parent 1
    * @param mixed $localIdentifier2 the local identifier of parent 2
@@ -246,7 +251,7 @@ class EntityComparerByTimeStartTimeAndLocalIdentifierTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\EntityComparerByTimeStartTimeAndLocalIdentifier::__construct
    */
   public function testConstruct()
   {

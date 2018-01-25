@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\MethodNotExistingException;
+use Tfboe\FmLib\Exceptions\MethodNotExistingException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class MethodNotExistingExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\MethodNotExistingException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\MethodNotExistingException::__construct
    */
   public function testConstructor()
   {
@@ -31,8 +31,8 @@ class MethodNotExistingExceptionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\MethodNotExistingException::getJsonMessage
-   * @uses   \App\Exceptions\MethodNotExistingException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\MethodNotExistingException::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\MethodNotExistingException::__construct
    */
   public function testJsonMessage()
   {

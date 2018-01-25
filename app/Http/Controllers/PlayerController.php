@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 
-use App\Entity\Player;
-use App\Exceptions\PlayerAlreadyExists;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tfboe\FmLib\Http\Controllers\BaseController;
 
 
 /**

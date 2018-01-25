@@ -7,17 +7,17 @@ declare(strict_types=1);
  * Time: 11:03 AM
  */
 
-namespace Tests\Unit\App\Helpers;
+namespace Tests\Tfboe\FmLib\Helpers;
 
 
-use App\Helpers\Logging;
-use App\Helpers\Logs;
+use Tfboe\FmLib\Helpers\Logging;
+use Tfboe\FmLib\Helpers\Logs;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BasicEnumTest
- * @package Tests\Unit\App\Helpers
+ * @package Tests\Tfboe\FmLib\Helpers
  */
 class LoggingTest extends UnitTestCase
 {
@@ -35,8 +35,8 @@ class LoggingTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\Logging::log
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Helpers\Logging::log
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testLog()
   {
@@ -50,7 +50,7 @@ class LoggingTest extends UnitTestCase
 
     ;
 
-    Logging::$storagePathFunction = 'Tests\Unit\App\Helpers\storage_path_function';
+    Logging::$storagePathFunction = 'Tests\Tfboe\FmLib\Helpers\storage_path_function';
     /** @noinspection PhpUnhandledExceptionInspection */
     Logging::log("invalid", "INVALID LOG");
     /** @noinspection PhpUnhandledExceptionInspection */

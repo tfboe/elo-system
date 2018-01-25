@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\TimeEntity;
+use Tfboe\FmLib\Entity\Helpers\TimeEntity;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class TimeEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\TimeEntity::setEndTime
-   * @covers \App\Entity\Helpers\TimeEntity::getEndTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::setEndTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::getEndTime
    */
   public function testEndTime()
   {
@@ -32,7 +32,7 @@ class TimeEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TimeEntity::getEndTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::getEndTime
    */
   public function testGetEndTimeNotLocalized()
   {
@@ -52,7 +52,7 @@ class TimeEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TimeEntity::getStartTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::getStartTime
    */
   public function testGetStartTimeNotLocalized()
   {
@@ -71,7 +71,7 @@ class TimeEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TimeEntity
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity
    */
   public function testInitialState()
   {
@@ -81,8 +81,8 @@ class TimeEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TimeEntity::setStartTime
-   * @covers \App\Entity\Helpers\TimeEntity::getStartTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::setStartTime
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimeEntity::getStartTime
    */
   public function testStartTime()
   {

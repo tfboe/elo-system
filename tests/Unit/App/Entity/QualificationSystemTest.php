@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Phase;
-use App\Entity\QualificationSystem;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\QualificationSystem;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  */
 class QualificationSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\QualificationSystem::setNextPhase
-   * @covers \App\Entity\QualificationSystem::getNextPhase
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\QualificationSystem::setNextPhase
+   * @covers \Tfboe\FmLib\Entity\QualificationSystem::getNextPhase
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testNextPhase()
   {
@@ -46,10 +46,10 @@ class QualificationSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\QualificationSystem::setPreviousPhase
-   * @covers \App\Entity\QualificationSystem::getPreviousPhase
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\QualificationSystem::setPreviousPhase
+   * @covers \Tfboe\FmLib\Entity\QualificationSystem::getPreviousPhase
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPreviousPhase()
   {

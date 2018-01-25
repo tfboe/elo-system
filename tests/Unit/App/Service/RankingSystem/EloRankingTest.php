@@ -7,18 +7,18 @@ declare(strict_types=1);
  * Time: 3:53 PM
  */
 
-namespace Tests\Unit\App\Service\RankingSystem;
+namespace Tests\Tfboe\FmLib\Service\RankingSystem;
 
-use App\Entity\Game;
-use App\Entity\Helpers\Result;
-use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Player;
-use App\Entity\RankingSystemChange;
-use App\Entity\RankingSystemList;
-use App\Entity\RankingSystemListEntry;
-use App\Service\RankingSystem\EloRanking;
-use App\Service\RankingSystem\EntityComparerInterface;
-use App\Service\RankingSystem\TimeServiceInterface;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Helpers\Result;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\RankingSystemChange;
+use Tfboe\FmLib\Entity\RankingSystemList;
+use Tfboe\FmLib\Entity\RankingSystemListEntry;
+use Tfboe\FmLib\Service\RankingSystem\EloRanking;
+use Tfboe\FmLib\Service\RankingSystem\EntityComparerInterface;
+use Tfboe\FmLib\Service\RankingSystem\TimeServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +26,7 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class EloRankingTest
- * @package Tests\Unit\App\Service\RankingSystemService
+ * @package Tests\Tfboe\FmLib\Service\RankingSystemService
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class EloRankingTest extends UnitTestCase
@@ -137,8 +137,8 @@ class EloRankingTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\EloRanking::getAdditionalFields
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\EloRanking::getAdditionalFields
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetAdditionalFields()
   {
@@ -149,22 +149,22 @@ class EloRankingTest extends UnitTestCase
 
   /**
    * @dataProvider providerEloChanges
-   * @covers       \App\Service\RankingSystem\EloRanking::getChanges
-   * @covers       \App\Service\RankingSystem\EloRanking::computeChanges
-   * @covers       \App\Service\RankingSystem\EloRanking::getEloAverage
-   * @covers       \App\Service\RankingSystem\EloRanking::hasProvisoryEntry
-   * @covers       \App\Service\RankingSystem\EloRanking::addNotRatedChanges
-   * @uses         \App\Entity\Helpers\SubClassData::__call
-   * @uses         \App\Entity\Helpers\SubClassData::getProperty
-   * @uses         \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses         \App\Entity\Helpers\SubClassData::setProperty
-   * @uses         \App\Entity\RankingSystemChange
-   * @uses         \App\Entity\RankingSystemListEntry
-   * @uses         \App\Service\RankingSystem\EloRanking::getAdditionalFields
-   * @uses         \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses         \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @uses         \App\Service\RankingSystem\RankingSystemService::getEntriesOfPlayers
-   * @uses         \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EloRanking::getChanges
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EloRanking::computeChanges
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EloRanking::getEloAverage
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EloRanking::hasProvisoryEntry
+   * @covers       \Tfboe\FmLib\Service\RankingSystem\EloRanking::addNotRatedChanges
+   * @uses         \Tfboe\FmLib\Entity\Helpers\SubClassData::__call
+   * @uses         \Tfboe\FmLib\Entity\Helpers\SubClassData::getProperty
+   * @uses         \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses         \Tfboe\FmLib\Entity\Helpers\SubClassData::setProperty
+   * @uses         \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses         \Tfboe\FmLib\Entity\RankingSystemListEntry
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\EloRanking::getAdditionalFields
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntriesOfPlayers
+   * @uses         \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
    * @SuppressWarnings(PHPMD.CyclomaticComplexity)
    * @param bool $isPlayed if game was played
    * @param int $gameResult the game result
@@ -237,8 +237,8 @@ class EloRankingTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\EloRanking::startPoints
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\EloRanking::startPoints
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testStartPoints()
   {

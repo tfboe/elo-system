@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
 use Tests\Helpers\TestEnum;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class ValueNotValidTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\ValueNotValid::__construct
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testConstructor()
   {

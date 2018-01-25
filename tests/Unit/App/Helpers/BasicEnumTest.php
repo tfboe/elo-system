@@ -7,26 +7,26 @@ declare(strict_types=1);
  * Time: 11:03 AM
  */
 
-namespace Tests\Unit\App\Helpers;
+namespace Tests\Tfboe\FmLib\Helpers;
 
-use App\Exceptions\ValueNotValid;
-use App\Helpers\BasicEnum;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Helpers\BasicEnum;
 use Tests\Helpers\TestEnum;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BasicEnumTest
- * @package Tests\Unit\App\Helpers
+ * @package Tests\Tfboe\FmLib\Helpers
  */
 class BasicEnumTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Helpers\BasicEnum::ensureValidValue
-   * @uses   \App\Exceptions\ValueNotValid::__construct
-   * @uses   \App\Helpers\BasicEnum::getConstants
-   * @uses   \App\Helpers\BasicEnum::getValues
-   * @uses   \App\Helpers\BasicEnum::isValidValue
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::ensureValidValue
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getValues
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::isValidValue
    */
   public function testEnsureValidValueException()
   {
@@ -40,8 +40,8 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::getNames
-   * @covers \App\Helpers\BasicEnum::getConstants
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getNames
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getConstants
    */
   public function testGetNames()
   {
@@ -49,10 +49,10 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::getValue
-   * @covers \App\Helpers\BasicEnum::getCaseMapping
-   * @uses   \App\Helpers\BasicEnum::getConstants
-   * @uses   \App\Helpers\BasicEnum::getNames
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getValue
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getCaseMapping
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getNames
    */
   public function testGetValue()
   {
@@ -65,10 +65,10 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::getValue
-   * @uses   \App\Exceptions\ValueNotValid::__construct
-   * @uses   \App\Helpers\BasicEnum::getConstants
-   * @uses   \App\Helpers\BasicEnum::getValues
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getValue
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getValues
    */
   public function testGetValueException()
   {
@@ -80,8 +80,8 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::getValues
-   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::getValues
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
    */
   public function testGetValues()
   {
@@ -89,8 +89,8 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::isValidName
-   * @uses   \App\Helpers\BasicEnum::getConstants
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::isValidName
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
    */
   public function testIsValidName()
   {
@@ -103,9 +103,9 @@ class BasicEnumTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Helpers\BasicEnum::isValidValue
-   * @uses   \App\Helpers\BasicEnum::getConstants
-   * @uses   \App\Helpers\BasicEnum::getValues
+   * @covers \Tfboe\FmLib\Helpers\BasicEnum::isValidValue
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getConstants
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum::getValues
    */
   public function testIsValidValue()
   {

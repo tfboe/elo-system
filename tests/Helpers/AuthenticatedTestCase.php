@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
-use App\Entity\User;
+use Tfboe\FmLib\Entity\User;
 use Doctrine\DBAL\Connection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
@@ -29,7 +29,7 @@ class AuthenticatedTestCase extends DatabaseTestCase
 
   /**
    * User corresponding to authentication token if logged in
-   * @var \App\Entity\User
+   * @var \Tfboe\FmLib\Entity\User
    */
   protected $user;
 //</editor-fold desc="Fields">

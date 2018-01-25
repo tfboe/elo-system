@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\App\Http\Controllers;
 
-use App\Entity\Helpers\BaseEntity;
-use App\Entity\User;
+use Tfboe\FmLib\Entity\Helpers\BaseEntity;
+use Tfboe\FmLib\Entity\User;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\UserController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,7 +64,7 @@ class BaseControllerTest extends UnitTestCase
 
   /**
    * @covers \App\Http\Controllers\BaseController::enumTransformer
-   * @uses   \App\Helpers\BasicEnum
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    * @uses   \App\Http\Controllers\BaseController::__construct
    */
   public function testEnumTransformer()
@@ -78,7 +78,7 @@ class BaseControllerTest extends UnitTestCase
 
   /**
    * @covers \App\Http\Controllers\BaseController::setFromSpecification
-   * @uses   \App\Entity\Helpers\BaseEntity::methodExists
+   * @uses   \Tfboe\FmLib\Entity\Helpers\BaseEntity::methodExists
    * @uses   \App\Http\Controllers\BaseController::__construct
    */
   public function testSetFromSpecificationWithDefault()

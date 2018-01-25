@@ -7,20 +7,20 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
-use App\Exceptions\UnorderedPhaseNumberException;
+use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class UnorderedPhaseNumberExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\UnorderedPhaseNumberException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException::__construct
    */
   public function testConstructor()
   {
@@ -31,8 +31,8 @@ class UnorderedPhaseNumberExceptionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\UnorderedPhaseNumberException::getJsonMessage
-   * @uses   \App\Exceptions\UnorderedPhaseNumberException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException::__construct
    */
   public function testJsonMessage()
   {

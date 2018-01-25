@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Entity\Player;
+use Tfboe\FmLib\Entity\Player;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 

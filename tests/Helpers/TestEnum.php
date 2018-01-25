@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Tests\Helpers;
 
 
-use App\Helpers\BasicEnum;
+use Tfboe\FmLib\Helpers\BasicEnum;
 
 /**
  * Class TestEnum

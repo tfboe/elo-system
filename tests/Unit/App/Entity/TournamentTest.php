@@ -7,31 +7,31 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Competition;
-use App\Entity\Tournament;
-use App\Entity\User;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Tournament;
+use Tfboe\FmLib\Entity\User;
+use Tfboe\FmLib\Helpers\Level;
 use Doctrine\Common\Collections\ArrayCollection;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class TournamentTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Tournament::getCompetitions
-   * @covers \App\Entity\Tournament::getChildren
-   * @uses   \App\Entity\Competition::__construct
-   * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Entity\Helpers\NameEntity::setName
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::getCompetitions
+   * @covers \Tfboe\FmLib\Entity\Tournament::getChildren
+   * @uses   \Tfboe\FmLib\Entity\Competition::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity::getName
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity::setName
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetitionsAndChildren()
   {
@@ -46,10 +46,10 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Tournament::getCompetitions
-   * @uses   \App\Entity\Tournament::getTournamentListId
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Tournament::getCompetitions
+   * @uses   \Tfboe\FmLib\Entity\Tournament::getTournamentListId
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testConstructor()
   {
@@ -61,11 +61,11 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::setCreator
-   * @covers \App\Entity\Tournament::getCreator
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::setCreator
+   * @covers \Tfboe\FmLib\Entity\Tournament::getCreator
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCreator()
   {
@@ -76,10 +76,10 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::getLocalIdentifier
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::getLocalIdentifier
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetLocalIdentifier()
   {
@@ -90,9 +90,9 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::getLevel
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::getLevel
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -100,9 +100,9 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::getParent
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::getParent
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testParent()
   {
@@ -110,10 +110,10 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::setTournamentListId
-   * @covers \App\Entity\Tournament::getTournamentListId
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::setTournamentListId
+   * @covers \Tfboe\FmLib\Entity\Tournament::getTournamentListId
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testTournamentListId()
   {
@@ -123,10 +123,10 @@ class TournamentTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Tournament::setUserIdentifier
-   * @covers \App\Entity\Tournament::getUserIdentifier
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Tournament::setUserIdentifier
+   * @covers \Tfboe\FmLib\Entity\Tournament::getUserIdentifier
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testUserIdentifier()
   {

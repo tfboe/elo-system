@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Entity\Tournament;
+use Tfboe\FmLib\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\DatabaseTestCase;
 

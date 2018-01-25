@@ -7,30 +7,30 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Game;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\Ranking;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\Ranking;
+use Tfboe\FmLib\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MatchTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Match::getGames
-   * @uses   \App\Entity\Match::getRankingsA
-   * @uses   \App\Entity\Match::getRankingsB
+   * @covers \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Match::getGames
+   * @uses   \Tfboe\FmLib\Entity\Match::getRankingsA
+   * @uses   \Tfboe\FmLib\Entity\Match::getRankingsB
    */
   public function testConstructor()
   {
@@ -45,11 +45,11 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::getGames
-   * @covers \App\Entity\Match::getChildren
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Match::getGames
+   * @covers \Tfboe\FmLib\Entity\Match::getChildren
+   * @uses   \Tfboe\FmLib\Entity\Game
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGamesAndChildren()
   {
@@ -64,10 +64,10 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::getLevel
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Match::getLevel
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -75,11 +75,11 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::setMatchNumber
-   * @covers \App\Entity\Match::getMatchNumber
-   * @covers \App\Entity\Match::getLocalIdentifier
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Match::setMatchNumber
+   * @covers \Tfboe\FmLib\Entity\Match::getMatchNumber
+   * @covers \Tfboe\FmLib\Entity\Match::getLocalIdentifier
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testMatchNumberAndLocalIdentifier()
   {
@@ -91,14 +91,14 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::setPhase
-   * @covers \App\Entity\Match::getPhase
-   * @covers \App\Entity\Match::getParent
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Match::getMatchNumber
-   * @uses   \App\Entity\Match::setMatchNumber
-   * @uses   \App\Entity\Phase
+   * @covers \Tfboe\FmLib\Entity\Match::setPhase
+   * @covers \Tfboe\FmLib\Entity\Match::getPhase
+   * @covers \Tfboe\FmLib\Entity\Match::getParent
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Match::getMatchNumber
+   * @uses   \Tfboe\FmLib\Entity\Match::setMatchNumber
+   * @uses   \Tfboe\FmLib\Entity\Phase
    */
   public function testPhaseAndParent()
   {
@@ -122,10 +122,10 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::getRankingsA
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Ranking
+   * @covers \Tfboe\FmLib\Entity\Match::getRankingsA
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Ranking
    */
   public function testRankingsA()
   {
@@ -138,10 +138,10 @@ class MatchTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Match::getRankingsB
-   * @uses   \App\Entity\Match::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Ranking
+   * @covers \Tfboe\FmLib\Entity\Match::getRankingsB
+   * @uses   \Tfboe\FmLib\Entity\Match::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Ranking
    */
   public function testRankingsB()
   {

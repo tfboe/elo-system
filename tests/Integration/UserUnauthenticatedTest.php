@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Entity\User;
+use Tfboe\FmLib\Entity\User;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\DatabaseTestCase;
 
@@ -24,7 +24,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testCannotRecognizeExistingUsername()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -80,7 +80,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testInvalidCredentials()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     /** @noinspection PhpUnhandledExceptionInspection */
     $property = self::getProperty(User::class, 'id');
@@ -114,7 +114,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testInvalidId()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     /** @noinspection PhpUnhandledExceptionInspection */
     $property = self::getProperty(User::class, 'id');
@@ -140,7 +140,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testLogin()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -182,7 +182,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testNoStringPasswordLogin()
   {
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -201,7 +201,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testPasswordRequiredValidationLogin()
   {
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail()
@@ -225,7 +225,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
       'confirmedAGBVersion' => 5
     ])->seeJsonStructure(['id']);
     $result = json_decode($this->response->getContent(), true);
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     /** @noinspection PhpUndefinedMethodInspection */
     $user = EntityManager::find(User::class, $result['id']);
     self::assertEquals(5, $user->getConfirmedAGBVersion());
@@ -243,7 +243,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
 
   public function testTooShortPasswordLogin()
   {
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => 'testPassword']);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -256,7 +256,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testWrongPassword()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail(),
@@ -268,7 +268,7 @@ class UserUnauthenticatedTest extends DatabaseTestCase
   public function testWrongUsername()
   {
     $password = $this->newPassword();
-    /** @var \App\Entity\User $user */
+    /** @var \Tfboe\FmLib\Entity\User $user */
     $user = entity(User::class)->create(['originalPassword' => $password]);
     $this->json('POST', '/login', [
       'email' => $user->getEmail() . "wrong-email",

@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 12:05 PM
  */
 
-namespace Tests\Unit\App\Entity\CategoryTraits;
+namespace Tests\Tfboe\FmLib\Entity\CategoryTraits;
 
-use App\Entity\Categories\Table;
-use App\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Entity\Categories\Table;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TableTest
- * @package Tests\Unit\App\Entity\CategoryTraits
+ * @package Tests\Tfboe\FmLib\Entity\CategoryTraits
  */
 class TableTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\CategoryTraits\Table::getTable
-   * @covers \App\Entity\CategoryTraits\Table::setTable
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\Table::getTable
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\Table::setTable
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testProperty()
   {
@@ -39,16 +39,17 @@ class TableTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\CategoryTraits\Table::setTable
-   * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\Table::setTable
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
    */
   public function testPropertyException()
   {
     $mock = $this->mock();
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
-      'The following value is not valid: 100 in App\Entity\Categories\Table. Possible values: 0, 1, 2, 3, 4, 5.');
+      'The following value is not valid: 100 in Tfboe\FmLib\Entity\Categories\Table. ' .
+      'Possible values: 0, 1, 2, 3, 4, 5.');
     /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTable(100);
   }
@@ -56,11 +57,11 @@ class TableTest extends UnitTestCase
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return \PHPUnit_Framework_MockObject_MockObject|\App\Entity\CategoryTraits\Table
+   * @return \PHPUnit_Framework_MockObject_MockObject|\Tfboe\FmLib\Entity\CategoryTraits\Table
    */
   private function mock(): \PHPUnit_Framework_MockObject_MockObject
   {
-    return $this->getMockForTrait(\App\Entity\CategoryTraits\Table::class);
+    return $this->getMockForTrait(\Tfboe\FmLib\Entity\CategoryTraits\Table::class);
   }
 //</editor-fold desc="Private Methods">
 }

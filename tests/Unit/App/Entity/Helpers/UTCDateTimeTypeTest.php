@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 9:46 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
 
-use App\Entity\Helpers\UTCDateTimeType;
+use Tfboe\FmLib\Entity\Helpers\UTCDateTimeType;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class UTCDateTimeTypeTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class UTCDateTimeTypeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\UTCDateTimeType::convertToDatabaseValue
-   * @covers \App\Entity\Helpers\UTCDateTimeType::getUtc
+   * @covers \Tfboe\FmLib\Entity\Helpers\UTCDateTimeType::convertToDatabaseValue
+   * @covers \Tfboe\FmLib\Entity\Helpers\UTCDateTimeType::getUtc
    */
   public function testConvertToDatabaseValue()
   {

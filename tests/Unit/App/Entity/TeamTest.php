@@ -7,29 +7,29 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Competition;
-use App\Entity\Player;
-use App\Entity\Team;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\Team;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  */
 class TeamTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Team::setCompetition
-   * @covers \App\Entity\Team::getCompetition
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Team::__construct
-   * @uses   \App\Entity\Team::getStartNumber
-   * @uses   \App\Entity\Team::setStartNumber
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Team::setCompetition
+   * @covers \Tfboe\FmLib\Entity\Team::getCompetition
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Team::__construct
+   * @uses   \Tfboe\FmLib\Entity\Team::getStartNumber
+   * @uses   \Tfboe\FmLib\Entity\Team::setStartNumber
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetition()
   {
@@ -51,9 +51,9 @@ class TeamTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Team::__construct
-   * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Entity\Team::getPlayers
+   * @covers \Tfboe\FmLib\Entity\Team::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity::getName
+   * @uses   \Tfboe\FmLib\Entity\Team::getPlayers
    */
   public function testConstructor()
   {
@@ -65,8 +65,8 @@ class TeamTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Team::getPlayers
-   * @uses   \App\Entity\Team::__construct
+   * @covers \Tfboe\FmLib\Entity\Team::getPlayers
+   * @uses   \Tfboe\FmLib\Entity\Team::__construct
    */
   public function testPlayers()
   {
@@ -79,9 +79,9 @@ class TeamTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Team::setRank
-   * @covers \App\Entity\Team::getRank
-   * @uses   \App\Entity\Team::__construct
+   * @covers \Tfboe\FmLib\Entity\Team::setRank
+   * @covers \Tfboe\FmLib\Entity\Team::getRank
+   * @uses   \Tfboe\FmLib\Entity\Team::__construct
    */
   public function testRank()
   {
@@ -91,9 +91,9 @@ class TeamTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Team::setStartNumber
-   * @covers \App\Entity\Team::getStartNumber
-   * @uses   \App\Entity\Team::__construct
+   * @covers \Tfboe\FmLib\Entity\Team::setStartNumber
+   * @covers \Tfboe\FmLib\Entity\Team::getStartNumber
+   * @uses   \Tfboe\FmLib\Entity\Team::__construct
    */
   public function testStartNumber()
   {

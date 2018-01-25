@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 12:05 PM
  */
 
-namespace Tests\Unit\App\Entity\CategoryTraits;
+namespace Tests\Tfboe\FmLib\Entity\CategoryTraits;
 
-use App\Entity\Categories\TeamMode;
-use App\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Entity\Categories\TeamMode;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TeamModeTest
- * @package Tests\Unit\App\Entity\CategoryTraits
+ * @package Tests\Tfboe\FmLib\Entity\CategoryTraits
  */
 class TeamModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\CategoryTraits\TeamMode::getTeamMode
-   * @covers \App\Entity\CategoryTraits\TeamMode::setTeamMode
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\TeamMode::getTeamMode
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\TeamMode::setTeamMode
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testProperty()
   {
@@ -39,16 +39,16 @@ class TeamModeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\CategoryTraits\TeamMode::setTeamMode
-   * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\TeamMode::setTeamMode
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
    */
   public function testPropertyException()
   {
     $mock = $this->mock();
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
-      'The following value is not valid: 100 in App\Entity\Categories\TeamMode. Possible values: 0, 1, 2.');
+      'The following value is not valid: 100 in Tfboe\FmLib\Entity\Categories\TeamMode. Possible values: 0, 1, 2.');
     /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setTeamMode(100);
   }
@@ -56,11 +56,11 @@ class TeamModeTest extends UnitTestCase
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return \PHPUnit_Framework_MockObject_MockObject|\App\Entity\CategoryTraits\TeamMode
+   * @return \PHPUnit_Framework_MockObject_MockObject|\Tfboe\FmLib\Entity\CategoryTraits\TeamMode
    */
   private function mock(): \PHPUnit_Framework_MockObject_MockObject
   {
-    return $this->getMockForTrait(\App\Entity\CategoryTraits\TeamMode::class);
+    return $this->getMockForTrait(\Tfboe\FmLib\Entity\CategoryTraits\TeamMode::class);
   }
 //</editor-fold desc="Private Methods">
 }

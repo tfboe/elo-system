@@ -7,22 +7,22 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\IdGenerator;
+use Tfboe\FmLib\Entity\Helpers\IdGenerator;
 use Doctrine\ORM\EntityManager;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class IdGeneratorTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class IdGeneratorTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\Helpers\IdGenerator::createIdFrom
+   * @covers \Tfboe\FmLib\Entity\Helpers\IdGenerator::createIdFrom
    */
   public function testCreateIdFrom()
   {
@@ -36,14 +36,14 @@ class IdGeneratorTest extends UnitTestCase
     }
 
     self::assertEquals('test-guid',
-      IdGenerator::createIdFrom('Tests\Unit\App\Entity\Helpers\test_com_create_guid'));
+      IdGenerator::createIdFrom('Tests\Tfboe\FmLib\Entity\Helpers\test_com_create_guid'));
 
     self::assertRegExp('/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/', IdGenerator::createIdFrom());
   }
 
   /**
-   * @covers \App\Entity\Helpers\IdGenerator::generate
-   * @uses   \App\Entity\Helpers\IdGenerator::createIdFrom
+   * @covers \Tfboe\FmLib\Entity\Helpers\IdGenerator::generate
+   * @uses   \Tfboe\FmLib\Entity\Helpers\IdGenerator::createIdFrom
    */
   public function testGenerate()
   {

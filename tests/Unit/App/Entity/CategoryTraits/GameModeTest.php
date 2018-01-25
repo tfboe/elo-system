@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 12:05 PM
  */
 
-namespace Tests\Unit\App\Entity\CategoryTraits;
+namespace Tests\Tfboe\FmLib\Entity\CategoryTraits;
 
-use App\Entity\Categories\GameMode;
-use App\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Entity\Categories\GameMode;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class GameModeTest
- * @package Tests\Unit\App\Entity\CategoryTraits
+ * @package Tests\Tfboe\FmLib\Entity\CategoryTraits
  */
 class GameModeTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\CategoryTraits\GameMode::getGameMode
-   * @covers \App\Entity\CategoryTraits\GameMode::setGameMode
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\GameMode::getGameMode
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\GameMode::setGameMode
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testProperty()
   {
@@ -38,16 +38,16 @@ class GameModeTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\CategoryTraits\GameMode::setGameMode
-   * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Exceptions\ValueNotValid::__construct
+   * @covers \Tfboe\FmLib\Entity\CategoryTraits\GameMode::setGameMode
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
    */
   public function testPropertyException()
   {
     $mock = $this->mock();
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
-      'The following value is not valid: 100 in App\Entity\Categories\GameMode. Possible values: 0, 1, 2.');
+      'The following value is not valid: 100 in Tfboe\FmLib\Entity\Categories\GameMode. Possible values: 0, 1, 2.');
     /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setGameMode(100);
   }
@@ -55,11 +55,11 @@ class GameModeTest extends UnitTestCase
 
 //<editor-fold desc="Private Methods">
   /**
-   * @return \PHPUnit_Framework_MockObject_MockObject|\App\Entity\CategoryTraits\GameMode
+   * @return \PHPUnit_Framework_MockObject_MockObject|\Tfboe\FmLib\Entity\CategoryTraits\GameMode
    */
   private function mock(): \PHPUnit_Framework_MockObject_MockObject
   {
-    return $this->getMockForTrait(\App\Entity\CategoryTraits\GameMode::class);
+    return $this->getMockForTrait(\Tfboe\FmLib\Entity\CategoryTraits\GameMode::class);
   }
 //</editor-fold desc="Private Methods">
 }

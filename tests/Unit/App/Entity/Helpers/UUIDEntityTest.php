@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
 
-use App\Entity\Helpers\UUIDEntity;
+use Tfboe\FmLib\Entity\Helpers\UUIDEntity;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class UUIDEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Helpers\IdGenerator::createIdFrom
+   * @covers \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Entity\Helpers\IdGenerator::createIdFrom
    */
   public function testId()
   {

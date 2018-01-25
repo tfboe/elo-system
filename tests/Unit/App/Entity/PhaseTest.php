@@ -7,34 +7,34 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Competition;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\QualificationSystem;
-use App\Entity\Ranking;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\QualificationSystem;
+use Tfboe\FmLib\Entity\Ranking;
+use Tfboe\FmLib\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class TournamentTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class PhaseTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Phase::setCompetition
-   * @covers \App\Entity\Phase::getCompetition
-   * @covers \App\Entity\Phase::getParent
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Phase::getPhaseNumber
-   * @uses   \App\Entity\Phase::setPhaseNumber
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::setCompetition
+   * @covers \Tfboe\FmLib\Entity\Phase::getCompetition
+   * @covers \Tfboe\FmLib\Entity\Phase::getParent
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Phase::getPhaseNumber
+   * @uses   \Tfboe\FmLib\Entity\Phase::setPhaseNumber
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testCompetitionAndParent()
   {
@@ -58,12 +58,12 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Helpers\NameEntity::getName
-   * @uses   \App\Entity\Phase::getPostQualifications
-   * @uses   \App\Entity\Phase::getPreQualifications
-   * @uses   \App\Entity\Phase::getRankings
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity::getName
+   * @uses   \Tfboe\FmLib\Entity\Phase::getPostQualifications
+   * @uses   \Tfboe\FmLib\Entity\Phase::getPreQualifications
+   * @uses   \Tfboe\FmLib\Entity\Phase::getRankings
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testConstructor()
   {
@@ -79,9 +79,9 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getLevel
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::getLevel
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -89,11 +89,11 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getMatches
-   * @covers \App\Entity\Phase::getChildren
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Match
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::getMatches
+   * @covers \Tfboe\FmLib\Entity\Phase::getChildren
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Match
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testMatchesAndChildren()
   {
@@ -108,10 +108,10 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getPostQualifications
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\QualificationSystem
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::getPostQualifications
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\QualificationSystem
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testNextQualificationSystems()
   {
@@ -123,11 +123,11 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::setPhaseNumber
-   * @covers \App\Entity\Phase::getPhaseNumber
-   * @covers \App\Entity\Phase::getLocalIdentifier
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::setPhaseNumber
+   * @covers \Tfboe\FmLib\Entity\Phase::getPhaseNumber
+   * @covers \Tfboe\FmLib\Entity\Phase::getLocalIdentifier
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPhaseNumberAndLocalIdentifier()
   {
@@ -138,10 +138,10 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getPreQualifications
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\QualificationSystem
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::getPreQualifications
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\QualificationSystem
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPreviousQualificationSystems()
   {
@@ -153,10 +153,10 @@ class PhaseTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Phase::getRankings
-   * @uses   \App\Entity\Phase::__construct
-   * @uses   \App\Entity\Ranking
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Phase::getRankings
+   * @uses   \Tfboe\FmLib\Entity\Phase::__construct
+   * @uses   \Tfboe\FmLib\Entity\Ranking
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testRankings()
   {

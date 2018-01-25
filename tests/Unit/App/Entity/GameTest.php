@@ -7,28 +7,28 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Game;
-use App\Entity\Match;
-use App\Entity\Player;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class GameTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class GameTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Game::getChildren
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Game::getChildren
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testChildren()
   {
@@ -36,10 +36,10 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Game::getPlayersA
-   * @uses   \App\Entity\Game::getPlayersB
+   * @covers \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Game::getPlayersA
+   * @uses   \Tfboe\FmLib\Entity\Game::getPlayersB
    */
   public function testConstructor()
   {
@@ -52,11 +52,11 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::setGameNumber
-   * @covers \App\Entity\Game::getGameNumber
-   * @covers \App\Entity\Game::getLocalIdentifier
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Game::setGameNumber
+   * @covers \Tfboe\FmLib\Entity\Game::getGameNumber
+   * @covers \Tfboe\FmLib\Entity\Game::getLocalIdentifier
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGameNumberAndLocalIdentifier()
   {
@@ -68,9 +68,9 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::getLevel
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Game::getLevel
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testLevel()
   {
@@ -78,14 +78,14 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::setMatch
-   * @covers \App\Entity\Game::getMatch
-   * @covers \App\Entity\Game::getParent
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Game::getGameNumber
-   * @uses   \App\Entity\Game::setGameNumber
-   * @uses   \App\Entity\Match
+   * @covers \Tfboe\FmLib\Entity\Game::setMatch
+   * @covers \Tfboe\FmLib\Entity\Game::getMatch
+   * @covers \Tfboe\FmLib\Entity\Game::getParent
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Game::getGameNumber
+   * @uses   \Tfboe\FmLib\Entity\Game::setGameNumber
+   * @uses   \Tfboe\FmLib\Entity\Match
    */
   public function testMatchAndParent()
   {
@@ -110,9 +110,9 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::getPlayersA
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Game::getPlayersA
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPlayersA()
   {
@@ -125,9 +125,9 @@ class GameTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Game::getPlayersB
-   * @uses   \App\Entity\Game::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Game::getPlayersB
+   * @uses   \Tfboe\FmLib\Entity\Game::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testPlayersB()
   {

@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\Player;
+use Tfboe\FmLib\Entity\Player;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class PlayerTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  */
 class PlayerTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Player::setBirthday
-   * @covers \App\Entity\Player::getBirthday
+   * @covers \Tfboe\FmLib\Entity\Player::setBirthday
+   * @covers \Tfboe\FmLib\Entity\Player::getBirthday
    */
   public function testBirthday()
   {
@@ -31,8 +31,8 @@ class PlayerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Player::setFirstName
-   * @covers \App\Entity\Player::getFirstName
+   * @covers \Tfboe\FmLib\Entity\Player::setFirstName
+   * @covers \Tfboe\FmLib\Entity\Player::getFirstName
    */
   public function testFirstName()
   {
@@ -42,7 +42,7 @@ class PlayerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Player::getPlayerId
+   * @covers \Tfboe\FmLib\Entity\Player::getPlayerId
    */
   public function testId()
   {
@@ -54,8 +54,8 @@ class PlayerTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Player::setLastName
-   * @covers \App\Entity\Player::getLastName
+   * @covers \Tfboe\FmLib\Entity\Player::setLastName
+   * @covers \Tfboe\FmLib\Entity\Player::getLastName
    */
   public function testLastName()
   {

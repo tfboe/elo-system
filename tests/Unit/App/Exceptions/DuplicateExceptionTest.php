@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\DuplicateException;
+use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class DuplicateExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\DuplicateException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\DuplicateException::__construct
    */
   public function testConstructor()
   {
@@ -31,8 +31,8 @@ class DuplicateExceptionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\DuplicateException::getJsonMessage
-   * @uses   \App\Exceptions\DuplicateException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\DuplicateException::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\DuplicateException::__construct
    */
   public function testJsonMessage()
   {

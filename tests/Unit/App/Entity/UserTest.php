@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 1:11 PM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
-use App\Entity\User;
+use Tfboe\FmLib\Entity\User;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class UserTest
- * @package Tests\Unit\App\Entity
+ * @package Tests\Tfboe\FmLib\Entity
  */
 class UserTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\User::__construct
-   * @uses   \App\Entity\User::getJWTCustomClaims
-   * @uses   \App\Entity\User::getJwtVersion
-   * @uses   \App\Entity\User::getConfirmedAGBVersion
+   * @covers \Tfboe\FmLib\Entity\User::__construct
+   * @uses   \Tfboe\FmLib\Entity\User::getJWTCustomClaims
+   * @uses   \Tfboe\FmLib\Entity\User::getJwtVersion
+   * @uses   \Tfboe\FmLib\Entity\User::getConfirmedAGBVersion
    */
   public function testConstructor()
   {
@@ -35,9 +35,9 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::setEmail
-   * @covers \App\Entity\User::getEmail
-   * @uses   \App\Entity\User::__construct
+   * @covers \Tfboe\FmLib\Entity\User::setEmail
+   * @covers \Tfboe\FmLib\Entity\User::getEmail
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
    */
   public function testEmail()
   {
@@ -47,9 +47,9 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::getJWTCustomClaims
-   * @uses   \App\Entity\User::setJwtVersion
-   * @uses   \App\Entity\User::__construct
+   * @covers \Tfboe\FmLib\Entity\User::getJWTCustomClaims
+   * @uses   \Tfboe\FmLib\Entity\User::setJwtVersion
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
    */
   public function testJWTCustomClaims()
   {
@@ -59,9 +59,9 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::getJWTIdentifier
-   * @uses   \App\Entity\User::__construct
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
+   * @covers \Tfboe\FmLib\Entity\User::getJWTIdentifier
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
    */
   public function testJWTIdentifier()
   {
@@ -73,9 +73,9 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::getJwtVersion()
-   * @covers \App\Entity\User::setJwtVersion
-   * @uses   \App\Entity\User::__construct
+   * @covers \Tfboe\FmLib\Entity\User::getJwtVersion()
+   * @covers \Tfboe\FmLib\Entity\User::setJwtVersion
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
    */
   public function testJwtVersion()
   {
@@ -85,9 +85,9 @@ class UserTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\User::getConfirmedAGBVersion
-   * @covers \App\Entity\User::setConfirmedAGBVersion
-   * @uses   \App\Entity\User::__construct
+   * @covers \Tfboe\FmLib\Entity\User::getConfirmedAGBVersion
+   * @covers \Tfboe\FmLib\Entity\User::setConfirmedAGBVersion
+   * @uses   \Tfboe\FmLib\Entity\User::__construct
    */
   public function testLastConfirmedAGBVersion()
   {

@@ -7,9 +7,9 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
-use App\Entity\Player;
-use App\Entity\Team;
-use App\Entity\User;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\Team;
+use Tfboe\FmLib\Entity\User;
 use Faker\Factory;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 

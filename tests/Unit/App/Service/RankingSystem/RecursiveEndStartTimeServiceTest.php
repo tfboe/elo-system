@@ -7,32 +7,32 @@ declare(strict_types=1);
  * Time: 1:56 PM
  */
 
-namespace Tests\Unit\App\Service\RankingSystem;
+namespace Tests\Tfboe\FmLib\Service\RankingSystem;
 
 
-use App\Entity\Competition;
-use App\Entity\Game;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\Tournament;
-use App\Service\RankingSystem\RecursiveEndStartTimeService;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\Tournament;
+use Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class RecursiveEndStartTimeServiceTest
- * @package Tests\Unit\App\Service\RankingSystemListService
+ * @package Tests\Tfboe\FmLib\Service\RankingSystemListService
  */
 class RecursiveEndStartTimeServiceTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Entity\Tournament::__construct
-   * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Entity\Tournament::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testClearTimes()
   {
@@ -53,17 +53,17 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Match
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Game
+   * @uses   \Tfboe\FmLib\Entity\Match
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimeGame()
   {
@@ -108,15 +108,15 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimePhase()
   {
@@ -148,13 +148,13 @@ class RecursiveEndStartTimeServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RecursiveEndStartTimeService::getTime
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::getTime
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RecursiveEndStartTimeService::clearTimes
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testGetTimeTournament()
   {

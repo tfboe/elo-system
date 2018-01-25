@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\TimestampableEntity;
+use Tfboe\FmLib\Entity\Helpers\TimestampableEntity;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class TimestampableEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\TimestampableEntity::setCreatedAt
-   * @covers \App\Entity\Helpers\TimestampableEntity::getCreatedAt
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimestampableEntity::setCreatedAt
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimestampableEntity::getCreatedAt
    */
   public function testCreatedAt()
   {
@@ -32,8 +32,8 @@ class TimestampableEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TimestampableEntity::setUpdatedAt
-   * @covers \App\Entity\Helpers\TimestampableEntity::getUpdatedAt
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimestampableEntity::setUpdatedAt
+   * @covers \Tfboe\FmLib\Entity\Helpers\TimestampableEntity::getUpdatedAt
    */
   public function testUpdateAt()
   {

@@ -7,20 +7,20 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\BaseEntity;
+use Tfboe\FmLib\Entity\Helpers\BaseEntity;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class BaseEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\BaseEntity::methodExists
+   * @covers \Tfboe\FmLib\Entity\Helpers\BaseEntity::methodExists
    */
   public function testMethodExists()
   {

@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\Result;
-use App\Entity\Helpers\ResultEntity;
-use App\Exceptions\ValueNotValid;
+use Tfboe\FmLib\Entity\Helpers\Result;
+use Tfboe\FmLib\Entity\Helpers\ResultEntity;
+use Tfboe\FmLib\Exceptions\ValueNotValid;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class ResultEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\ResultEntity::setPlayed
-   * @covers \App\Entity\Helpers\ResultEntity::isPlayed
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::setPlayed
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::isPlayed
    */
   public function testPlayed()
   {
@@ -35,9 +35,9 @@ class ResultEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\ResultEntity::setResult
-   * @covers \App\Entity\Helpers\ResultEntity::getResult
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::setResult
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::getResult
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testResult()
   {
@@ -48,8 +48,8 @@ class ResultEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\ResultEntity::setResultA
-   * @covers \App\Entity\Helpers\ResultEntity::getResultA
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::setResultA
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::getResultA
    */
   public function testResultA()
   {
@@ -60,8 +60,8 @@ class ResultEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\ResultEntity::setResultB
-   * @covers \App\Entity\Helpers\ResultEntity::getResultB
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::setResultB
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::getResultB
    */
   public function testResultB()
   {
@@ -72,16 +72,16 @@ class ResultEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\ResultEntity::setResult
-   * @uses   \App\Exceptions\ValueNotValid::__construct
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\Helpers\ResultEntity::setResult
+   * @uses   \Tfboe\FmLib\Exceptions\ValueNotValid::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testResultNotValidException()
   {
     $mock = $this->mock();
     $this->expectException(ValueNotValid::class);
     $this->expectExceptionMessage(
-      'The following value is not valid: 100 in App\Entity\Helpers\Result. Possible values: 0, 1, 2, 3, 4.');
+      'The following value is not valid: 100 in Tfboe\FmLib\Entity\Helpers\Result. Possible values: 0, 1, 2, 3, 4.');
     /** @noinspection PhpUnhandledExceptionInspection */
     $mock->setResult(100);
   }

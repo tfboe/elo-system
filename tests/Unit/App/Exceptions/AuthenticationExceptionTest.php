@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\AuthenticationException;
+use Tfboe\FmLib\Exceptions\AuthenticationException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class AuthenticationExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\AuthenticationException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\AuthenticationException::__construct
    */
   public function testConstructor()
   {

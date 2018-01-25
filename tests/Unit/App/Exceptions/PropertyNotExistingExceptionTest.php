@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Exceptions\PropertyNotExistingException;
+use Tfboe\FmLib\Exceptions\PropertyNotExistingException;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class AuthenticationExceptionTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class PropertyNotExistingExceptionTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\PropertyNotExistingException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\PropertyNotExistingException::__construct
    */
   public function testConstructor()
   {
@@ -31,8 +31,8 @@ class PropertyNotExistingExceptionTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\PropertyNotExistingException::getJsonMessage
-   * @uses   \App\Exceptions\PropertyNotExistingException::__construct
+   * @covers \Tfboe\FmLib\Exceptions\PropertyNotExistingException::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\PropertyNotExistingException::__construct
    */
   public function testJsonMessage()
   {

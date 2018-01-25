@@ -7,21 +7,21 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
 
-use App\Entity\Helpers\AutomaticInstanceGeneration;
-use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\RankingSystem;
-use App\Entity\RankingSystemList;
-use App\Helpers\Level;
+use Tfboe\FmLib\Entity\Helpers\AutomaticInstanceGeneration;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\RankingSystemList;
+use Tfboe\FmLib\Helpers\Level;
 use Doctrine\Common\Collections\Collection;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RankingSystemTest extends UnitTestCase
@@ -29,11 +29,11 @@ class RankingSystemTest extends UnitTestCase
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\RankingSystem::setGenerationInterval
-   * @covers \App\Entity\RankingSystem::getGenerationInterval
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::setGenerationInterval
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getGenerationInterval
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testAutomaticInstanceGeneration()
   {
@@ -44,14 +44,14 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Helpers\BasicEnum
-   * @uses   \App\Entity\RankingSystem::getGenerationInterval
-   * @uses   \App\Entity\RankingSystem::getDefaultForLevel
-   * @uses   \App\Entity\RankingSystem::getLists
-   * @uses   \App\Entity\RankingSystem::getOpenSyncFrom
-   * @uses   \App\Entity\RankingSystem::getHierarchyEntries
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::getGenerationInterval
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::getDefaultForLevel
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::getLists
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::getOpenSyncFrom
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::getHierarchyEntries
    */
   public function testConstructor()
   {
@@ -67,11 +67,11 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::setDefaultForLevel
-   * @covers \App\Entity\RankingSystem::getDefaultForLevel
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
-   * @uses   \App\Helpers\BasicEnum
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::setDefaultForLevel
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getDefaultForLevel
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
+   * @uses   \Tfboe\FmLib\Helpers\BasicEnum
    */
   public function testDefaultForLevel()
   {
@@ -83,9 +83,9 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::getLists
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getLists
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
    */
   public function testLists()
   {
@@ -98,10 +98,10 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::setOpenSyncFrom
-   * @covers \App\Entity\RankingSystem::getOpenSyncFrom
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::setOpenSyncFrom
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getOpenSyncFrom
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
    */
   public function testOpenSyncFrom()
   {
@@ -111,10 +111,10 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::setServiceName
-   * @covers \App\Entity\RankingSystem::getServiceName
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::setServiceName
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getServiceName
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
    */
   public function testServiceName()
   {
@@ -124,9 +124,9 @@ class RankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystem::getHierarchyEntries
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystem::getHierarchyEntries
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem::__construct
    */
   public function testTournamentRankingEntities()
   {

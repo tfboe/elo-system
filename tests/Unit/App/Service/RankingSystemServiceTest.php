@@ -7,39 +7,39 @@ declare(strict_types=1);
  * Time: 3:53 PM
  */
 
-namespace Tests\Unit\App\Service;
+namespace Tests\Tfboe\FmLib\Service;
 
-use App\Entity\Competition;
-use App\Entity\Game;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\RankingSystem;
-use App\Entity\Tournament;
-use App\Service\DynamicServiceLoadingService;
-use App\Service\DynamicServiceLoadingServiceInterface;
-use App\Service\RankingSystem\RankingSystemInterface;
-use App\Service\RankingSystemService;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\Tournament;
+use Tfboe\FmLib\Service\DynamicServiceLoadingService;
+use Tfboe\FmLib\Service\DynamicServiceLoadingServiceInterface;
+use Tfboe\FmLib\Service\RankingSystem\RankingSystemInterface;
+use Tfboe\FmLib\Service\RankingSystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class EloRankingTest
- * @package Tests\Unit\App\Service
+ * @package Tests\Tfboe\FmLib\Service
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class RankingSystemServiceTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Service\RankingSystemService::adaptOpenSyncFromValues
-   * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystemService::getRankingSystems
-   * @uses   \App\Service\RankingSystemService::getRankingSystemsEarliestInfluences
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::adaptOpenSyncFromValues
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::getRankingSystems
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::getRankingSystemsEarliestInfluences
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testAdaptOpenSyncFromValues()
   {
@@ -47,7 +47,7 @@ class RankingSystemServiceTest extends UnitTestCase
     $serviceLoader->expects(self::exactly(2))
       ->method("loadRankingSystemService")
       ->willReturnCallback(function ($earliestInfluence) {
-        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
+        $mock = $this->createMock(\Tfboe\FmLib\Service\RankingSystem\RankingSystemService::class);
         $mock->method("getEarliestInfluence")->willReturn(new \DateTime($earliestInfluence));
         return $mock;
       });
@@ -88,13 +88,13 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystemService::applyRankingSystems
-   * @covers \App\Service\RankingSystemService::getRankingSystems
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::applyRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::getRankingSystems
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testApplyRankingSystems()
   {
@@ -116,7 +116,7 @@ class RankingSystemServiceTest extends UnitTestCase
     ];
 
     $serviceLoader = $this->createMock(DynamicServiceLoadingService::class);
-    $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
+    $mock = $this->createMock(\Tfboe\FmLib\Service\RankingSystem\RankingSystemService::class);
     $mock->expects(self::exactly(3))->method("updateRankingForTournament")->withConsecutive(
       [$ranking2, $tournament, self::equalTo(new \DateTime("2017-02-01"))],
       [$ranking4, $tournament, self::equalTo(new \DateTime("2017-04-01"))],
@@ -134,7 +134,7 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::__construct
    */
   public function testConstruct()
   {
@@ -151,18 +151,18 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystemService::getRankingSystemsEarliestInfluences
-   * @covers \App\Service\RankingSystemService::getRankingSystems
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Match
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Service\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::getRankingSystemsEarliestInfluences
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::getRankingSystems
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Match
+   * @uses   \Tfboe\FmLib\Entity\Game
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetRankingSystemsEarliestInfluences()
   {
@@ -170,7 +170,7 @@ class RankingSystemServiceTest extends UnitTestCase
     $serviceLoader->expects(self::exactly(3))
       ->method("loadRankingSystemService")
       ->willReturnCallback(function ($earliestInfluence) {
-        $mock = $this->createMock(\App\Service\RankingSystem\RankingSystemService::class);
+        $mock = $this->createMock(\Tfboe\FmLib\Service\RankingSystem\RankingSystemService::class);
         $mock->method("getEarliestInfluence")->willReturn(new \DateTime($earliestInfluence));
         return $mock;
       });
@@ -214,8 +214,8 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystemService::recalculateRankingSystems
-   * @uses   \App\Service\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystemService::recalculateRankingSystems
+   * @uses   \Tfboe\FmLib\Service\RankingSystemService::__construct
    */
   public function testRecalculateRankingSystems()
   {
@@ -229,10 +229,11 @@ class RankingSystemServiceTest extends UnitTestCase
     $rs2->expects(self::once())->method('setOpenSyncFrom')->with(null);
     $slash = '\\';
     $first = 'SELECT s';
-    $second = ' FROM App';
+    $second = ' FROM Tfboe';
+    $third = 'FmLib';
     $rest = 'RankingSystem s WHERE s.openSyncFrom IS NOT NULL';
     $entityManager = $this->getEntityManagerMockForQuery([$rs1, $rs2],
-      $first . $second . $slash . 'Entity' . $slash . $rest);
+      $first . $second . $slash . $third . $slash . 'Entity' . $slash . $rest);
     $dsls = $this->getMockForAbstractClass(DynamicServiceLoadingServiceInterface::class);
     $service = $this->getMockForAbstractClass(RankingSystemInterface::class);
     $service->expects(self::exactly(2))->method('updateRankingFrom')

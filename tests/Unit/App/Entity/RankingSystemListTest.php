@@ -7,27 +7,27 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
 
-use App\Entity\Player;
-use App\Entity\RankingSystem;
-use App\Entity\RankingSystemList;
-use App\Entity\RankingSystemListEntry;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\RankingSystemList;
+use Tfboe\FmLib\Entity\RankingSystemListEntry;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class RankingSystemListTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\RankingSystemList::__construct
-   * @uses   \App\Entity\RankingSystemList::getLastEntryTime
-   * @uses   \App\Entity\RankingSystemList::isCurrent
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::__construct
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::getLastEntryTime
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::isCurrent
    */
   public function testConstructor()
   {
@@ -37,9 +37,9 @@ class RankingSystemListTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemList::setCurrent
-   * @covers \App\Entity\RankingSystemList::isCurrent
-   * @uses   \App\Entity\RankingSystemList::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::setCurrent
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::isCurrent
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::__construct
    */
   public function testCurrent()
   {
@@ -49,9 +49,9 @@ class RankingSystemListTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemList::setLastEntryTime
-   * @covers \App\Entity\RankingSystemList::getLastEntryTime
-   * @uses   \App\Entity\RankingSystemList::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::setLastEntryTime
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::getLastEntryTime
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::__construct
    */
   public function testLastEntry()
   {
@@ -61,8 +61,8 @@ class RankingSystemListTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemList::getEntries
-   * @uses   \App\Entity\RankingSystemList::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::getEntries
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::__construct
    */
   public function testLists()
   {
@@ -77,12 +77,12 @@ class RankingSystemListTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemList::setRankingSystem
-   * @covers \App\Entity\RankingSystemList::getRankingSystem
-   * @uses   \App\Entity\RankingSystemList::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystem
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::setRankingSystem
+   * @covers \Tfboe\FmLib\Entity\RankingSystemList::getRankingSystem
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystem
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
    */
   public function testRankingSystem()
   {

@@ -7,13 +7,13 @@ declare(strict_types=1);
  * Time: 3:53 PM
  */
 
-namespace Tests\Unit\App\Service\RankingSystem;
+namespace Tests\Tfboe\FmLib\Service\RankingSystem;
 
-use App\Entity\RankingSystem;
-use App\Helpers\Level;
-use App\Service\RankingSystem\EntityComparerInterface;
-use App\Service\RankingSystem\GameRankingSystemService;
-use App\Service\RankingSystem\TimeServiceInterface;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Helpers\Level;
+use Tfboe\FmLib\Service\RankingSystem\EntityComparerInterface;
+use Tfboe\FmLib\Service\RankingSystem\GameRankingSystemService;
+use Tfboe\FmLib\Service\RankingSystem\TimeServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -21,16 +21,16 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class GameRankingSystemTest
- * @package Tests\Unit\App\Service\RankingSystemService
+ * @package Tests\Tfboe\FmLib\Service\RankingSystemService
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class GameRankingSystemTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Service\RankingSystem\GameRankingSystemService::getEntitiesQueryBuilder
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntityManager
+   * @covers \Tfboe\FmLib\Service\RankingSystem\GameRankingSystemService::getEntitiesQueryBuilder
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntityManager
    */
   public function testGetEntitiesQueryBuilder()
   {
@@ -44,7 +44,7 @@ class GameRankingSystemTest extends UnitTestCase
     $builder = self::callProtectedMethod($system, "getEntitiesQueryBuilder",
       [$rankingSystem, new \DateTime("2000-01-01")]);
     self::assertEquals(
-      'SELECT g FROM App\Entity\Game g LEFT JOIN g.rankingSystems grs WITH grs = :ranking INNER JOIN g.match ' .
+      'SELECT g FROM Tfboe\FmLib\Entity\Game g LEFT JOIN g.rankingSystems grs WITH grs = :ranking INNER JOIN g.match ' .
       'm LEFT JOIN m.rankingSystems mrs WITH mrs = :ranking INNER JOIN m.phase p LEFT JOIN p.rankingSystems prs WITH ' .
       'prs = :ranking INNER JOIN p.competition c LEFT JOIN c.rankingSystems crs WITH crs = :ranking INNER JOIN ' .
       'c.tournament t LEFT JOIN t.rankingSystems trs WITH trs = :ranking WHERE (g.endTime > :from OR (g.startTime > ' .
@@ -68,8 +68,8 @@ class GameRankingSystemTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\GameRankingSystemService::getLevel
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\GameRankingSystemService::getLevel
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testLevel()
   {

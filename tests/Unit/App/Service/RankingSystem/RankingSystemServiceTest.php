@@ -7,25 +7,25 @@ declare(strict_types=1);
  * Time: 3:54 PM
  */
 
-namespace Tests\Unit\App\Service\RankingSystem;
+namespace Tests\Tfboe\FmLib\Service\RankingSystem;
 
-use App\Entity\Competition;
-use App\Entity\Game;
-use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\Helpers\TournamentHierarchyInterface;
-use App\Entity\Match;
-use App\Entity\Phase;
-use App\Entity\Player;
-use App\Entity\RankingSystem;
-use App\Entity\RankingSystemChange;
-use App\Entity\RankingSystemList;
-use App\Entity\RankingSystemListEntry;
-use App\Entity\Tournament;
-use App\Exceptions\PreconditionFailedException;
-use App\Helpers\Level;
-use App\Service\RankingSystem\EntityComparerInterface;
-use App\Service\RankingSystem\RankingSystemService;
-use App\Service\RankingSystem\TimeServiceInterface;
+use Tfboe\FmLib\Entity\Competition;
+use Tfboe\FmLib\Entity\Game;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyInterface;
+use Tfboe\FmLib\Entity\Match;
+use Tfboe\FmLib\Entity\Phase;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\RankingSystemChange;
+use Tfboe\FmLib\Entity\RankingSystemList;
+use Tfboe\FmLib\Entity\RankingSystemListEntry;
+use Tfboe\FmLib\Entity\Tournament;
+use Tfboe\FmLib\Exceptions\PreconditionFailedException;
+use Tfboe\FmLib\Helpers\Level;
+use Tfboe\FmLib\Service\RankingSystem\EntityComparerInterface;
+use Tfboe\FmLib\Service\RankingSystem\RankingSystemService;
+use Tfboe\FmLib\Service\RankingSystem\TimeServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -39,7 +39,7 @@ use Tests\Helpers\UnitTestCase;
 
 /**
  * Class RankingSystemServiceTest
- * @package Tests\Unit\App\Service\RankingSystemService
+ * @package Tests\Tfboe\FmLib\Service\RankingSystemService
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -50,7 +50,7 @@ class RankingSystemServiceTest extends UnitTestCase
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testConstruct()
   {
@@ -69,7 +69,7 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getAverage
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getAverage
    */
   public function testGetAverage()
   {
@@ -85,18 +85,18 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Match
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Game
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Match
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetEarliestInfluenceGameLevel()
   {
@@ -145,18 +145,18 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Entity\Competition
-   * @uses   \App\Entity\Game
-   * @uses   \App\Entity\Helpers\NameEntity
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Match
-   * @uses   \App\Entity\Phase
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Entity\Competition
+   * @uses   \Tfboe\FmLib\Entity\Game
+   * @uses   \Tfboe\FmLib\Entity\Helpers\NameEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Match
+   * @uses   \Tfboe\FmLib\Entity\Phase
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
    */
   public function testGetEarliestInfluenceGameLevelWithDifferentImpactLevels()
@@ -249,14 +249,14 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testGetEarliestInfluenceTournamentLevel()
   {
@@ -281,7 +281,7 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getAverage
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getAverage
    */
   public function testGetEmptyAverage()
   {
@@ -292,8 +292,8 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetEntities()
   {
@@ -322,8 +322,8 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getEntriesOfPlayers
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntriesOfPlayers
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
    */
   public function testGetEntriesOfPlayers()
   {
@@ -347,11 +347,11 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::setProperty
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::setProperty
    */
   public function testGetOrCreateChangeCreateNewOne()
   {
@@ -374,10 +374,10 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetOrCreateChangeCreateTwice()
   {
@@ -394,10 +394,10 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetOrCreateChangeFindInRepo()
   {
@@ -415,17 +415,17 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @covers \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
-   * @uses   \App\Entity\RankingSystemChange
-   * @uses   \App\Entity\RankingSystemList
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @uses   \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
    */
   public function testGetOrCreateGetDeletedChange()
   {
@@ -445,17 +445,17 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateChange
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemChange::__construct
-   * @uses   \App\Entity\RankingSystemChange
-   * @uses   \App\Entity\RankingSystemList
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @uses   \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateChange
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange::__construct
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
    */
   public function testGetOrCreateGetDeletedChangeTwice()
   {
@@ -477,11 +477,11 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
-   * @covers \App\Service\RankingSystem\RankingSystemService::startPoints
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::startPoints
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
    */
   public function testGetOrCreateRankingSystemListEntryExistingEntry()
   {
@@ -499,12 +499,12 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
-   * @covers \App\Service\RankingSystem\RankingSystemService::startPoints
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::setProperty
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::startPoints
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::setProperty
    */
   public function testGetOrCreateRankingSystemListEntryNewEntry()
   {
@@ -536,15 +536,15 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingForTournament
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingForTournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsEarlier()
   {
@@ -574,14 +574,14 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingForTournament
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingForTournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNotNullAndTournamentNotRanked()
   {
@@ -605,15 +605,15 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingForTournament
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingForTournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNull()
   {
@@ -642,14 +642,14 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingForTournament
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingForTournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentOldEarliestIsNullAndTournamentNotRanked()
   {
@@ -670,15 +670,15 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingForTournament
-   * @uses   \App\Entity\Helpers\TimeEntity
-   * @uses   \App\Entity\Helpers\TimestampableEntity
-   * @uses   \App\Entity\Tournament
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEarliestInfluence
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingForTournament
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimeEntity
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TimestampableEntity
+   * @uses   \Tfboe\FmLib\Entity\Tournament
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestEntityInfluence
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEarliestInfluence
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testUpdateRankingForTournamentTournamentIsEarlier()
   {
@@ -710,19 +710,19 @@ class RankingSystemServiceTest extends UnitTestCase
   //TODO split this up in multiple unit tests!!!
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
-   * @covers \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @covers \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
-   * @uses   \App\Entity\RankingSystemListEntry
-   * @uses   \App\Entity\Helpers\SubClassData::cloneSubClassDataFrom
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
-   * @uses   \App\Entity\Helpers\SubClassData::getProperty
-   * @uses   \App\Entity\Helpers\SubClassData::setProperty
-   * @uses   \App\Entity\RankingSystemChange
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::cloneSubClassDataFrom
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getOrCreateRankingSystemListEntry
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::getProperty
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::setProperty
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemChange
    */
   public function testUpdateRankingFrom()
   {
@@ -776,7 +776,7 @@ class RankingSystemServiceTest extends UnitTestCase
         return $entity1->getEndTime() <=> $entity2->getEndTime();
       });
     $entityManager = $this->getEntityManagerMockForQuery([],
-      'SELECT c FROM App\Entity\RankingSystemChange c WHERE c.hierarchyEntity IN(:entities)', ['persist',
+      'SELECT c FROM Tfboe\FmLib\Entity\RankingSystemChange c WHERE c.hierarchyEntity IN(:entities)', ['persist',
         'remove']);
     $service = $this->getMockForAbstractClass(RankingSystemService::class,
       [$entityManager,
@@ -822,13 +822,13 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
-   * @covers \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @covers \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Entity\RankingSystemList
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
    */
   public function testUpdateRankingFromCalledTwice()
   {
@@ -847,14 +847,14 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
-   * @covers \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @covers \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Entity\RankingSystemList
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Entity\Helpers\UUIDEntity::getId
-   * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Entity\Helpers\UUIDEntity::getId
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
    */
   public function testUpdateRankingFromNoCurrent()
   {
@@ -876,7 +876,7 @@ class RankingSystemServiceTest extends UnitTestCase
 
     //create service mock
     $entityManager = $this->getEntityManagerMockForQuery([],
-      'SELECT c FROM App\Entity\RankingSystemChange c WHERE c.hierarchyEntity IN(:entities)', ['persist']);
+      'SELECT c FROM Tfboe\FmLib\Entity\RankingSystemChange c WHERE c.hierarchyEntity IN(:entities)', ['persist']);
     $entityManager->expects(static::once())->method('persist')->willReturnCallback(
       function (RankingSystemList $entity) {
         self::assertInstanceOf(RankingSystemList::class, $entity);
@@ -905,13 +905,13 @@ class RankingSystemServiceTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Service\RankingSystem\RankingSystemService::updateRankingFrom
-   * @covers \App\Service\RankingSystem\RankingSystemService::recomputeBasedOn
-   * @covers \App\Service\RankingSystem\RankingSystemService::cloneInto
-   * @uses   \App\Entity\RankingSystemList
-   * @uses   \App\Service\RankingSystem\RankingSystemService::__construct
-   * @uses   \App\Service\RankingSystem\RankingSystemService::getEntities
-   * @uses   \App\Service\RankingSystem\RankingSystemService::deleteOldChanges
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::updateRankingFrom
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::recomputeBasedOn
+   * @covers \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::cloneInto
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::__construct
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::getEntities
+   * @uses   \Tfboe\FmLib\Service\RankingSystem\RankingSystemService::deleteOldChanges
    */
   public function testUpdateRankingFromNoReusable()
   {

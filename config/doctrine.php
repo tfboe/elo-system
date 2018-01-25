@@ -27,10 +27,10 @@ return [
       'meta' => env('DOCTRINE_METADATA', 'annotations'),
       'connection' => env('DB_CONNECTION', 'mysql'),
       'namespaces' => [
-        'App\Entity'
+        'Tfboe\FmLib\Entity'
       ],
       'paths' => [
-        base_path('app/Entity')
+        base_path('vendor/tfboe/fm-lib/src/Entity'),
       ],
       'repository' => Doctrine\ORM\EntityRepository::class,
       'proxies' => [

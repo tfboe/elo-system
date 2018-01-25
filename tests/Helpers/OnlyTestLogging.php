@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Tests\Helpers;
 
 
-use App\Helpers\Logging;
+use Tfboe\FmLib\Helpers\Logging;
 
 /**
  * Trait OnlyTestLogging

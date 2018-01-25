@@ -3,20 +3,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (!function_exists('try_class_alias')) {
-  /**
-   * @param $alias
-   * @param $original
-   */
-  function try_class_alias($alias, /** @noinspection PhpUnusedParameterInspection */
-                           $original)
-  {
-    if (!class_exists($alias)) {
-      class_alias($original, $alias);
-    }
-  }
-}
-
 try {
   (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
@@ -40,11 +26,6 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
-/** @noinspection PhpUndefinedClassInspection */
-try_class_alias('Hash', \Illuminate\Support\Facades\Hash::class);
-
-// $app->withEloquent();
-
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -57,13 +38,8 @@ try_class_alias('Hash', \Illuminate\Support\Facades\Hash::class);
 */
 
 $app->singleton(
-  Illuminate\Contracts\Debug\ExceptionHandler::class,
-  App\Exceptions\Handler::class
-);
-
-$app->singleton(
   Illuminate\Contracts\Console\Kernel::class,
-  App\Console\Kernel::class
+  \Laravel\Lumen\Console\Kernel::class
 );
 
 /*
@@ -77,14 +53,6 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
-$app->routeMiddleware([
-  'auth' => App\Http\Middleware\Authenticate::class,
-]);
-
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -96,21 +64,7 @@ $app->routeMiddleware([
 |
 */
 
-/** @noinspection PhpUnhandledExceptionInspection */
-Doctrine\DBAL\Types\Type::overrideType('datetime', \App\Entity\Helpers\UTCDateTimeType::class);
-
 $app->register(App\Providers\AppServiceProvider::class);
-$app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-$app->register(\Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
-$app->register(LaravelDoctrine\ORM\DoctrineServiceProvider::class);
-$app->register(LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class);
-try {
-  //optional service providers
-  $app->register(LaravelDoctrine\Migrations\MigrationsServiceProvider::class);
-} catch (Exception $e) {
-}
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

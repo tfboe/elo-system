@@ -7,22 +7,22 @@ declare(strict_types=1);
  * Time: 2:08 PM
  */
 
-namespace Tests\Unit\App\Exceptions;
+namespace Tests\Tfboe\FmLib\Exceptions;
 
 
-use App\Entity\Player;
-use App\Exceptions\PlayerAlreadyExists;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class ValueNotValidTest
- * @package Tests\Unit\App\Exceptions
+ * @package Tests\Tfboe\FmLib\Exceptions
  */
 class PlayerAlreadyExistsTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Exceptions\PlayerAlreadyExists::__construct
+   * @covers \Tfboe\FmLib\Exceptions\PlayerAlreadyExists::__construct
    */
   public function testConstructor()
   {
@@ -32,9 +32,9 @@ class PlayerAlreadyExistsTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Exceptions\PlayerAlreadyExists::getJsonMessage
-   * @uses   \App\Exceptions\PlayerAlreadyExists::__construct
-   * @uses   \App\Entity\Player
+   * @covers \Tfboe\FmLib\Exceptions\PlayerAlreadyExists::getJsonMessage
+   * @uses   \Tfboe\FmLib\Exceptions\PlayerAlreadyExists::__construct
+   * @uses   \Tfboe\FmLib\Entity\Player
    */
   public function testJsonMessage()
   {

@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
-$factory->define(\App\Entity\Competition::class, function (/** @noinspection PhpUnusedParameterInspection */
+$factory->define(\Tfboe\FmLib\Entity\Competition::class, function (/** @noinspection PhpUnusedParameterInspection */
   \Faker\Generator $faker, array $attributes) {
   return [
     'name' => $attributes['name'],

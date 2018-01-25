@@ -7,24 +7,24 @@ declare(strict_types=1);
  * Time: 12:52 PM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
-use App\Entity\Helpers\TournamentHierarchyEntity;
-use App\Entity\RankingSystem;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\RankingSystem;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class TournamentHierarchyEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\TournamentHierarchyEntity::__construct
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @covers \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
    */
   public function testConstructor()
   {
@@ -34,8 +34,8 @@ class TournamentHierarchyEntityTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
-   * @uses   \App\Entity\Helpers\TournamentHierarchyEntity::__construct
+   * @covers \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::getRankingSystems
+   * @uses   \Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity::__construct
    */
   public function testRankingSystems()
   {

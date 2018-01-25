@@ -7,18 +7,18 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity;
+namespace Tests\Tfboe\FmLib\Entity;
 
 
-use App\Entity\Player;
-use App\Entity\RankingSystemList;
-use App\Entity\RankingSystemListEntry;
+use Tfboe\FmLib\Entity\Player;
+use Tfboe\FmLib\Entity\RankingSystemList;
+use Tfboe\FmLib\Entity\RankingSystemListEntry;
 use Tests\Helpers\UnitTestCase;
 
 
 /**
  * Class BaseEntityChangeTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RankingSystemListEntryTest extends UnitTestCase
@@ -26,8 +26,8 @@ class RankingSystemListEntryTest extends UnitTestCase
 //<editor-fold desc="Public Methods">
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
    */
   public function testConstructor()
   {
@@ -36,9 +36,9 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\Helpers\SubClassData::hasProperty
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::hasProperty
    */
   public function testConstructorWithAdditionalKeys()
   {
@@ -48,10 +48,10 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::setNumberRankedEntities
-   * @covers \App\Entity\RankingSystemListEntry::getNumberRankedEntities
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::setNumberRankedEntities
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::getNumberRankedEntities
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
    */
   public function testNumberOfRankedEntities()
   {
@@ -62,10 +62,10 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::getPlayer
-   * @covers \App\Entity\RankingSystemListEntry::setPlayer
-   * @uses   \App\Entity\RankingSystemListEntry::__construct
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::getPlayer
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::setPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
    */
   public function testPlayer()
   {
@@ -77,10 +77,10 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::setPoints
-   * @covers \App\Entity\RankingSystemListEntry::getPoints
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry::__construct
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::setPoints
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::getPoints
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
    */
   public function testPoints()
   {
@@ -91,13 +91,13 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::setRankingSystemList
-   * @covers \App\Entity\RankingSystemListEntry::getRankingSystemList
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry::__construct
-   * @uses   \App\Entity\RankingSystemListEntry::getPlayer
-   * @uses   \App\Entity\RankingSystemListEntry::setPlayer
-   * @uses   \App\Entity\RankingSystemList
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::setRankingSystemList
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::getRankingSystemList
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::getPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::setPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
    */
   public function testRankingSystemList()
   {
@@ -115,13 +115,13 @@ class RankingSystemListEntryTest extends UnitTestCase
   }
 
   /**
-   * @covers \App\Entity\RankingSystemListEntry::setRankingSystemList
-   * @covers \App\Entity\RankingSystemListEntry::getRankingSystemList
-   * @uses   \App\Entity\Helpers\SubClassData::initSubClassData
-   * @uses   \App\Entity\RankingSystemListEntry::__construct
-   * @uses   \App\Entity\RankingSystemListEntry::getPlayer
-   * @uses   \App\Entity\RankingSystemListEntry::setPlayer
-   * @uses   \App\Entity\RankingSystemList
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::setRankingSystemList
+   * @covers \Tfboe\FmLib\Entity\RankingSystemListEntry::getRankingSystemList
+   * @uses   \Tfboe\FmLib\Entity\Helpers\SubClassData::initSubClassData
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::__construct
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::getPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemListEntry::setPlayer
+   * @uses   \Tfboe\FmLib\Entity\RankingSystemList
    */
   public function testRankingSystemListRemoveFromOld()
   {

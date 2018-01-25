@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\App\Entity\Tournament::class, function (\Faker\Generator $faker, array $attributes) {
+$factory->define(\Tfboe\FmLib\Entity\Tournament::class, function (\Faker\Generator $faker, array $attributes) {
   return [
     'name' => $faker->city . " Tournament",
     'userIdentifier' => $attributes['userIdentifier'],

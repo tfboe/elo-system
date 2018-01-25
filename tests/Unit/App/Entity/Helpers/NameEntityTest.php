@@ -7,23 +7,23 @@ declare(strict_types=1);
  * Time: 10:39 AM
  */
 
-namespace Tests\Unit\App\Entity\Helpers;
+namespace Tests\Tfboe\FmLib\Entity\Helpers;
 
 
-use App\Entity\Helpers\NameEntity;
+use Tfboe\FmLib\Entity\Helpers\NameEntity;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Helpers\UnitTestCase;
 
 /**
  * Class BaseEntityTest
- * @package Tests\Unit\App\Entity\Helpers
+ * @package Tests\Tfboe\FmLib\Entity\Helpers
  */
 class NameEntityTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Helpers\NameEntity::getName
-   * @covers \App\Entity\Helpers\NameEntity::setName
+   * @covers \Tfboe\FmLib\Entity\Helpers\NameEntity::getName
+   * @covers \Tfboe\FmLib\Entity\Helpers\NameEntity::setName
    */
   public function testName()
   {

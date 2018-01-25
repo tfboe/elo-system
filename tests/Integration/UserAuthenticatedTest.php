@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Entity\User;
+use Tfboe\FmLib\Entity\User;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\AuthenticatedTestCase;
 
@@ -31,11 +31,6 @@ class UserAuthenticatedTest extends AuthenticatedTestCase
     EntityManager::flush();
     $this->jsonAuth('GET', '/userId')->seeStatusCode(401);
     self::assertNull($this->response->headers->get('jwt-token'));
-  }
-
-  public function testUserId()
-  {
-    $this->jsonAuth('GET', '/userId')->seeJsonEquals(['id' => $this->user->getId()]);
   }
 //</editor-fold desc="Public Methods">
 }
