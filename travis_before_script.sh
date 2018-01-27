@@ -32,6 +32,6 @@ if [ "$INTEGRATION" = '1' ]; then
     cp .env.test .env
 
     # generate doctrine tables and proxies
-    php artisan doctrine:schema:create
+    php artisan doctrine:migrations:migrate
     php artisan doctrine:generate:proxies
 fi
