@@ -12,7 +12,7 @@ if [ "$WITH_LOCK" == "0" ]; then
     rm composer.lock
 fi
 
-additional_flags = ""
+additional_flags=""
 
 if [ "$GITHUB_OAUTH" != "" ]; then
     echo "using github OAUTH"
@@ -20,6 +20,8 @@ if [ "$GITHUB_OAUTH" != "" ]; then
 else
     additional_flags="-n --prefer-source" # see https://github.com/composer/composer/issues/1314
 fi
+
+composer config github-protocols https # force using https since anonymous git clones are not allowed
 
 composer install ${additional_flags}
 
