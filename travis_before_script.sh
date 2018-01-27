@@ -12,12 +12,16 @@ if [ "$WITH_LOCK" == "0" ]; then
     rm composer.lock
 fi
 
+additional_flags = ""
+
 if [ "$GITHUB_OAUTH" != "" ]; then
     echo "using github OAUTH"
     composer config -g github-oauth.github.com ${GITHUB_OAUTH}
+else
+    additional_flags="-n --prefer-source" # see https://github.com/composer/composer/issues/1314
 fi
 
-composer install
+composer install ${additional_flags}
 
 if [ "$INTEGRATION" = '1' ]; then
     # create test database
