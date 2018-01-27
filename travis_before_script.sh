@@ -18,10 +18,10 @@ if [ "$GITHUB_OAUTH" != "" ]; then
     echo "using github OAUTH"
     composer config -g github-oauth.github.com ${GITHUB_OAUTH}
 else
-    additional_flags="-n --prefer-source" # see https://github.com/composer/composer/issues/1314
+    additional_flags="-n" # see https://github.com/composer/composer/issues/1314
 fi
 
-composer config github-protocols https # force using https since anonymous git clones are not allowed
+composer config github-protocols https # force using https since anonymous ssh clones are not allowed
 
 composer install ${additional_flags}
 

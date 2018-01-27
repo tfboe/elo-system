@@ -6,12 +6,18 @@
     "laravel",
     "lumen"
   ],
-  "license": "MIT",
+  "authors": [
+    {
+      "name": "Benedikt Klocker",
+      "email": "blacktemplar@a1.net"
+    }
+  ],
+  "license": "GPL-3.0-or-later",
   "type": "project",
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/tfboe/fm-lib"
+      "url": "https://github.com/tfboe/fm-lib.git"
     }
   ],
   "require": {
