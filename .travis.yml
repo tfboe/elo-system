@@ -1,0 +1,23 @@
+language: php
+php:
+  - 7.1
+  - 7.2
+
+services:
+  - mysql
+
+env:
+  - UNIT=1 CODE_COVERAGE=1 WITH_LOCK=1
+  - UNIT=1 CODE_COVERAGE=1 WITH_LOCK=0
+  - INTEGRATION=1 CODE_COVERAGE=1 WITH_LOCK=1
+  - INTEGRATION=1 CODE_COVERAGE=1 WITH_LOCK=0
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+before_script:
+  - ./travis_before_script.sh
+
+script:
+  - ./travis.sh

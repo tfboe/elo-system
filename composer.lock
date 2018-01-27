@@ -3499,13 +3499,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tfboe/fm-lib.git",
-                "reference": "0e30bf4fb0b43a9bf06495955196ddb3e5c4fd59"
+                "url": "git@github.com:tfboe/fm-lib.git",
+                "reference": "379daea650d0d61de69c8ff8ff8f81c519687183"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/0e30bf4fb0b43a9bf06495955196ddb3e5c4fd59",
-                "reference": "0e30bf4fb0b43a9bf06495955196ddb3e5c4fd59",
+                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/379daea650d0d61de69c8ff8ff8f81c519687183",
+                "reference": "379daea650d0d61de69c8ff8ff8f81c519687183",
                 "shasum": ""
             },
             "require": {
@@ -3518,13 +3518,20 @@
             },
             "require-dev": {
                 "barryvdh/laravel-ide-helper": "^2.4.1",
+                "fzaninotto/faker": "^1.4",
                 "phpmd/phpmd": "^2.6",
-                "phpunit/phpcov": "^4.0"
+                "phpunit/phpcov": "^4.0",
+                "phpunit/phpunit": "^6.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Tfboe\\FmLib\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tfboe\\FmLib\\Tests\\": "tests/"
                 }
             },
             "license": [
@@ -3541,11 +3548,7 @@
                 "foosball",
                 "manager"
             ],
-            "support": {
-                "source": "https://github.com/tfboe/fm-lib/tree/master",
-                "issues": "https://github.com/tfboe/fm-lib/issues"
-            },
-            "time": "2018-01-25T00:39:18+00:00"
+            "time": "2018-01-27T12:15:49+00:00"
         },
         {
             "name": "tymon/jwt-auth",
@@ -4448,16 +4451,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "4.2.0",
+            "version": "4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "66465776cfc249844bde6d117abff1d22e06c2da"
+                "reference": "94fd0001232e47129dd3504189fa1c7225010d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/66465776cfc249844bde6d117abff1d22e06c2da",
-                "reference": "66465776cfc249844bde6d117abff1d22e06c2da",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/94fd0001232e47129dd3504189fa1c7225010d08",
+                "reference": "94fd0001232e47129dd3504189fa1c7225010d08",
                 "shasum": ""
             },
             "require": {
@@ -4495,7 +4498,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-11-27T17:38:31+00:00"
+            "time": "2017-11-30T07:14:17+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",

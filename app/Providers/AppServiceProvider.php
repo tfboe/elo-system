@@ -22,10 +22,9 @@ class AppServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->register(FmLibServiceProvider::class);
-    try {
-      //optional service providers
+    //optional service providers
+    if (class_exists('\LaravelDoctrine\Migrations\MigrationsServiceProvider')) {
       $this->app->register(MigrationsServiceProvider::class);
-    } catch (\Exception $e) {
     }
   }
 //</editor-fold desc="Public Methods">

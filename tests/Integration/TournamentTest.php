@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use Doctrine\Common\Collections\Collection;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+use Tests\Helpers\ApplicationGetter;
 use Tfboe\FmLib\Entity\Categories\GameMode;
 use Tfboe\FmLib\Entity\Categories\OrganizingMode;
 use Tfboe\FmLib\Entity\Categories\ScoreMode;
@@ -25,9 +28,7 @@ use Tfboe\FmLib\Entity\QualificationSystem;
 use Tfboe\FmLib\Entity\Ranking;
 use Tfboe\FmLib\Entity\Team;
 use Tfboe\FmLib\Entity\Tournament;
-use Doctrine\Common\Collections\Collection;
-use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\AuthenticatedTestCase;
+use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
  * Class TournamentTest
@@ -40,7 +41,9 @@ use Tests\Helpers\AuthenticatedTestCase;
  */
 class TournamentTest extends AuthenticatedTestCase
 {
+  use ApplicationGetter;
 //<editor-fold desc="Public Methods">
+
   /**
    * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
    */

@@ -7,13 +7,12 @@ declare(strict_types=1);
  * Time: 12:06 PM
  */
 
-namespace Tests\Tfboe\FmLib\Providers;
+namespace Tests\Unit\App\Providers;
 
 
 use App\Providers\AppServiceProvider;
-use Tfboe\FmLib\Providers\FmLibServiceProvider;
 use Illuminate\Contracts\Foundation\Application;
-use Tests\Helpers\UnitTestCase;
+use Tfboe\FmLib\TestHelpers\UnitTestCase;
 
 /**
  * Class AppServiceProviderTest
@@ -28,7 +27,7 @@ class AppServiceProviderTest extends UnitTestCase
   public function testRegister()
   {
     $app = $this->getMockForAbstractClass(Application::class);
-    $app->expects(static::once())->method('register')->with(FmLibServiceProvider::class);
+    $app->expects(static::exactly(2))->method('register');
     /** @var Application $app */
     $provider = new AppServiceProvider($app);
     $provider->register();
