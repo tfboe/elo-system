@@ -15,6 +15,7 @@ $factory->define(\Tfboe\FmLib\Entity\User::class, function (\Faker\Generator $fa
   } else {
     $password = $faker->password(8, 30);
   }
+  /** @noinspection PhpUndefinedClassInspection */
   return [
     'password' => \Illuminate\Support\Facades\Hash::make($password),
     'email' => $faker->email,

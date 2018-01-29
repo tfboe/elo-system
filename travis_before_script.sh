@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 #set environment default values
 CODE_COVERAGE="${CODE_COVERAGE:-0}"
 # by default no mysql root password

@@ -3,31 +3,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Entity\Competition;
+use App\Entity\Game;
+use App\Entity\Match;
+use App\Entity\Phase;
+use App\Entity\Tournament;
+use Doctrine\Common\Collections\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Tfboe\FmLib\Entity\Categories\GameMode;
 use Tfboe\FmLib\Entity\Categories\OrganizingMode;
 use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
-use Tfboe\FmLib\Entity\Competition;
-use Tfboe\FmLib\Entity\Game;
 use Tfboe\FmLib\Entity\Helpers\Result;
-use Tfboe\FmLib\Entity\Match;
-use Tfboe\FmLib\Entity\Phase;
 use Tfboe\FmLib\Entity\Player;
 use Tfboe\FmLib\Entity\QualificationSystem;
 use Tfboe\FmLib\Entity\Ranking;
 use Tfboe\FmLib\Entity\RankingSystem;
 use Tfboe\FmLib\Entity\Team;
-use Tfboe\FmLib\Entity\Tournament;
 use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
-use Doctrine\Common\Collections\Collection;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class TournamentController

@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Tests\Integration;
 
 
+use App\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\ApplicationGetter;
 use Tfboe\FmLib\Entity\RankingSystem;
-use Tfboe\FmLib\Entity\Tournament;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 

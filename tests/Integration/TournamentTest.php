@@ -10,6 +10,11 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use App\Entity\Competition;
+use App\Entity\Game;
+use App\Entity\Match;
+use App\Entity\Phase;
+use App\Entity\Tournament;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\ApplicationGetter;
@@ -18,16 +23,11 @@ use Tfboe\FmLib\Entity\Categories\OrganizingMode;
 use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
-use Tfboe\FmLib\Entity\Competition;
-use Tfboe\FmLib\Entity\Game;
 use Tfboe\FmLib\Entity\Helpers\Result;
-use Tfboe\FmLib\Entity\Match;
-use Tfboe\FmLib\Entity\Phase;
 use Tfboe\FmLib\Entity\Player;
 use Tfboe\FmLib\Entity\QualificationSystem;
 use Tfboe\FmLib\Entity\Ranking;
 use Tfboe\FmLib\Entity\Team;
-use Tfboe\FmLib\Entity\Tournament;
 use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**

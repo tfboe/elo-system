@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
-$factory->define(\Tfboe\FmLib\Entity\Phase::class, function (/** @noinspection PhpUnusedParameterInspection */
+$factory->define(\App\Entity\Phase::class, function (/** @noinspection PhpUnusedParameterInspection */
   \Faker\Generator $faker, array $attributes) {
   return [
     'name' => '',
