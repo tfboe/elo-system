@@ -329,6 +329,10 @@ class TournamentController extends BaseController
     $this->getEntityManager()->remove($match);
   }
 
+  /**
+   * Removes the given membership from the database
+   * @param TeamMembership $membership
+   */
   private function removeMembership(TeamMembership $membership)
   {
     $membership->getTeam()->getMemberships()->removeElement($membership);
@@ -491,7 +495,8 @@ class TournamentController extends BaseController
         foreach ($rankings as $ranking) {
           foreach ($ranking->getTeams() as $team) {
             if ($team->getMemberships()->exists(
-              function ($_, TeamMembershipInterface $m) use ($id) {
+              function (/** @noinspection PhpUnusedParameterInspection */
+                $_, TeamMembershipInterface $m) use ($id) {
                 return $m->getPlayer()->getId() == $id;
               }
             )) {
@@ -912,7 +917,9 @@ class TournamentController extends BaseController
         }
       } else {
         $membership = new TeamMembership();
-        $membership->setPlayer($this->getEntityManager()->find(Player::class, $playerId));
+        /** @var Player $player */
+        $player = $this->getEntityManager()->find(Player::class, $playerId);
+        $membership->setPlayer($player);
         $this->getEntityManager()->persist($membership);
         $membership->setTeam($team);
       }

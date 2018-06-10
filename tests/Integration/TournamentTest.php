@@ -2026,6 +2026,7 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertNull($tournament->getTeamMode());
     self::assertNull($tournament->getTable());
 
+    /** @noinspection PhpUndefinedMethodInspection */
     $request = [
       'name' => 'New Name',
       'userIdentifier' => 't1',
