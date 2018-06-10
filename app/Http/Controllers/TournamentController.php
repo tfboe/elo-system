@@ -307,13 +307,6 @@ class TournamentController extends BaseController
     $this->getEntityManager()->remove($competition);
   }
 
-  private function removeMembership(TeamMembership $membership)
-  {
-    $membership->getTeam()->getMemberships()->removeElement($membership);
-    $this->getEntityManager()->remove($membership);
-  }
-
-
   /**
    * Removes the given game from the database
    * @param Game $game
@@ -334,6 +327,12 @@ class TournamentController extends BaseController
     }
     $match->getGames()->clear();
     $this->getEntityManager()->remove($match);
+  }
+
+  private function removeMembership(TeamMembership $membership)
+  {
+    $membership->getTeam()->getMemberships()->removeElement($membership);
+    $this->getEntityManager()->remove($membership);
   }
 
   /**
