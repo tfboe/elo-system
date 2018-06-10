@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 
-use Tfboe\FmLib\Entity\Player;
-use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
+use App\Entity\Player;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 
 
@@ -74,7 +74,7 @@ class PlayerController extends BaseController
     $this->getEntityManager()->flush();
 
     return response()->json(array_map(function (Player $p) {
-      return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getPlayerId(),
+      return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getId(),
         "birthday" => $p->getBirthday()->format("Y-m-d")];
     }, $players));
   }
@@ -106,7 +106,7 @@ class PlayerController extends BaseController
       $found = [];
       foreach ($result as $p) {
         // criteria (findBy)
-        $found[] = ['id' => $p->getPlayerId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
+        $found[] = ['id' => $p->getId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
           'birthday' => $p->getBirthday()->format('Y-m-d')];
       }
       $results[] = ['search' => $player, 'found' => $found];

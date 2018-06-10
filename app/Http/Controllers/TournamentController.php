@@ -7,6 +7,12 @@ use App\Entity\Competition;
 use App\Entity\Game;
 use App\Entity\Match;
 use App\Entity\Phase;
+use App\Entity\Player;
+use App\Entity\QualificationSystem;
+use App\Entity\Ranking;
+use App\Entity\RankingSystem;
+use App\Entity\Team;
+use App\Entity\TeamMembership;
 use App\Entity\Tournament;
 use Doctrine\Common\Collections\Collection;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +23,7 @@ use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
 use Tfboe\FmLib\Entity\Helpers\Result;
-use Tfboe\FmLib\Entity\Player;
-use Tfboe\FmLib\Entity\QualificationSystem;
-use Tfboe\FmLib\Entity\Ranking;
-use Tfboe\FmLib\Entity\RankingSystem;
-use Tfboe\FmLib\Entity\Team;
+use Tfboe\FmLib\Entity\TeamMembershipInterface;
 use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
@@ -129,7 +131,7 @@ class TournamentController extends BaseController
       'competitions.*.teams.*.rank' => ['validation' => 'required|integer'],
       'competitions.*.teams.*.startNumber' => ['validation' => 'required|integer|min:1'],
       'competitions.*.teams.*.players' => ['validation' => 'required|array|min:1', 'ignore' => True],
-      'competitions.*.teams.*.players.*' => ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId',
+      'competitions.*.teams.*.players.*' => ['validation' => 'exists:App\Entity\Player,id',
         'ignore' => True],
     ];
 
@@ -178,11 +180,11 @@ class TournamentController extends BaseController
       'competitions.*.phases.*.matches.*.games.*.playersA' =>
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersA.*' =>
-        ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId', 'ignore' => True],
+        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB' =>
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB.*' =>
-        ['validation' => 'exists:Tfboe\FmLib\Entity\Player,playerId', 'ignore' => True]
+        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True]
     ];
 
     $this->gameSpecification = array_merge($this->gameSpecification,
@@ -302,6 +304,13 @@ class TournamentController extends BaseController
       $this->removeTeam($team);
     }
     $competition->getTeams()->clear();
+    $this->getEntityManager()->remove($competition);
+  }
+
+  private function removeMembership(TeamMembership $membership)
+  {
+    $membership->getTeam()->getMemberships()->removeElement($membership);
+    $this->getEntityManager()->remove($membership);
   }
 
 
@@ -375,6 +384,9 @@ class TournamentController extends BaseController
    */
   private function removeTeam(Team $team)
   {
+    foreach ($team->getMemberships() as $membership) {
+      $this->removeMembership($membership);
+    }
     $this->getEntityManager()->remove($team);
   }
 
@@ -479,7 +491,11 @@ class TournamentController extends BaseController
         $rankings = $game->getMatch()->$rankingsMethod();
         foreach ($rankings as $ranking) {
           foreach ($ranking->getTeams() as $team) {
-            if ($team->getPlayers()->containsKey($id)) {
+            if ($team->getMemberships()->exists(
+              function ($_, TeamMembershipInterface $m) use ($id) {
+                return $m->getPlayer()->getId() == $id;
+              }
+            )) {
               $found = true;
               break;
             }
@@ -885,24 +901,27 @@ class TournamentController extends BaseController
   private function replaceTeamPlayers(Team $team, array $playerValues)
   {
     $playerIds = [];
-    foreach ($team->getPlayers()->getKeys() as $id) {
-      $playerIds[$id] = false;
+    foreach ($team->getMemberships() as $m) {
+      $playerIds[$m->getPlayer()->getId()] = $m;
     }
     foreach ($playerValues as $playerId) {
       if (array_key_exists($playerId, $playerIds)) {
-        if ($playerIds[$playerId] == true) {
+        if ($playerIds[$playerId] === null) {
           //duplicate player!
           throw new DuplicateException($playerId, 'player id',
             'the player list of team ' . $team->getName());
         }
       } else {
-        $team->getPlayers()->set($playerId, $this->getEntityManager()->find(Player::class, $playerId));
+        $membership = new TeamMembership();
+        $membership->setPlayer($this->getEntityManager()->find(Player::class, $playerId));
+        $this->getEntityManager()->persist($membership);
+        $membership->setTeam($team);
       }
-      $playerIds[$playerId] = true;
+      $playerIds[$playerId] = null;
     }
-    foreach ($playerIds as $id => $used) {
-      if (!$used) {
-        $team->getPlayers()->remove($id);
+    foreach ($playerIds as $id => $m) {
+      if ($m !== null) {
+        $this->removeMembership($m);
       }
     }
   }

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\Tfboe\FmLib\Entity\RankingSystem::class, function (\Faker\Generator $faker, array $attributes) {
+$factory->define(\App\Entity\RankingSystem::class, function (\Faker\Generator $faker, array $attributes) {
   return [
     'defaultForLevel' => array_key_exists('defaultForLevel', $attributes) ? $attributes['defaultForLevel'] : null,
     'serviceName' => $attributes['serviceName'],

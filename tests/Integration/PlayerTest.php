@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
+use App\Entity\Player;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\ApplicationGetter;
-use Tfboe\FmLib\Entity\Player;
 use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
@@ -67,7 +67,7 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(2, count($players));
     foreach ($players as $player) {
-      self::assertInternalType('int', $player->getPlayerId());
+      self::assertInternalType('int', $player->getId());
     }
   }
 
@@ -103,7 +103,7 @@ class PlayerTest extends AuthenticatedTestCase
     self::assertEquals($playerArray['firstName'], $player->getFirstName());
     self::assertEquals($playerArray['lastName'], $player->getLastName());
     self::assertEquals(new \DateTime($playerArray['birthday']), $player->getBirthday());
-    self::assertInternalType('int', $player->getPlayerId());
+    self::assertInternalType('int', $player->getId());
   }
 
   public function testAddPlayerMultipleTimes()
@@ -130,7 +130,7 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(4, count($players));
     foreach ($players as $player) {
-      self::assertInternalType('int', $player->getPlayerId());
+      self::assertInternalType('int', $player->getId());
     }
   }
 
@@ -201,7 +201,7 @@ class PlayerTest extends AuthenticatedTestCase
   private function getResultArray(Player $player)
   {
     return ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
-      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getPlayerId()];
+      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getId()];
   }
 //</editor-fold desc="Private Methods">
 }

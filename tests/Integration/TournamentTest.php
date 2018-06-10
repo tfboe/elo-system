@@ -14,6 +14,10 @@ use App\Entity\Competition;
 use App\Entity\Game;
 use App\Entity\Match;
 use App\Entity\Phase;
+use App\Entity\Player;
+use App\Entity\QualificationSystem;
+use App\Entity\Ranking;
+use App\Entity\Team;
 use App\Entity\Tournament;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -24,10 +28,6 @@ use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
 use Tfboe\FmLib\Entity\Helpers\Result;
-use Tfboe\FmLib\Entity\Player;
-use Tfboe\FmLib\Entity\QualificationSystem;
-use Tfboe\FmLib\Entity\Ranking;
-use Tfboe\FmLib\Entity\Team;
 use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
@@ -70,11 +70,11 @@ class TournamentTest extends AuthenticatedTestCase
           'teamMode' => 'SINGLE',
           'table' => 'MULTITABLE',
           'teams' => [
-            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId(),
-              $players[2]->getPlayerId()]],
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId(),
+              $players[2]->getId()]],
             ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' =>
-              [$players[2]->getPlayerId(), $players[3]->getPlayerId(), $players[4]->getPlayerId()]]
+              [$players[2]->getId(), $players[3]->getId(), $players[4]->getId()]]
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -113,8 +113,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -129,8 +129,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -163,8 +163,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[4]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[4]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -179,8 +179,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[3]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[3]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -213,8 +213,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[1]->getPlayerId()],
-                      'playersB' => [$players[2]->getPlayerId()],
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[2]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -229,8 +229,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[1]->getPlayerId()],
-                      'playersB' => [$players[4]->getPlayerId()],
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[4]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -281,8 +281,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[3]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -297,8 +297,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -350,8 +350,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -366,8 +366,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -419,8 +419,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -435,8 +435,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[3]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -488,8 +488,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[2]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -504,8 +504,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[3]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[3]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -557,8 +557,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[4]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[4]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -573,8 +573,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[2]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[2]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -602,9 +602,9 @@ class TournamentTest extends AuthenticatedTestCase
           'teamMode' => 'DYP',
           'table' => 'GARLANDO',
           'teams' => [
-            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId()]],
-            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getPlayerId()]]
+            ['name' => 'Team 1', 'rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['name' => 'Team 2', 'rank' => 1, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
+            ['name' => 'Team 3', 'rank' => 4, 'startNumber' => 2, 'players' => [$players[2]->getId()]]
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -643,8 +643,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -659,8 +659,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[2]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
                       'resultA' => 1,
                       'resultB' => 1,
                       'result' => 'DRAW',
@@ -704,8 +704,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -726,8 +726,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -762,8 +762,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -784,8 +784,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -793,8 +793,8 @@ class TournamentTest extends AuthenticatedTestCase
                     ],
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -830,8 +830,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -852,8 +852,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -872,8 +872,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[1]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -909,8 +909,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -932,8 +932,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -961,8 +961,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[1]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -998,8 +998,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1020,8 +1020,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1049,8 +1049,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1086,8 +1086,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1108,8 +1108,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId(), $players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId(), $players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1126,7 +1126,7 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getPlayerId(),
+        "duplicateValue" => $players[0]->getId(),
         "arrayName" => "the players A list of the game with game number 1 of the match with match number 1 of the " .
           "phase 1 of the competition Test Competition", "name" => "DuplicateException", "status" => 409]);
 
@@ -1146,8 +1146,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1168,8 +1168,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId(), $players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[0]->getId(), $players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1186,7 +1186,7 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getPlayerId(), "status" => 409,
+        "duplicateValue" => $players[0]->getId(), "status" => 409,
         "arrayName" => "the players A and players B lists of the game with game number 1 of the match with match " .
           "number 1 of the phase 1 of the competition Test Competition", "name" => "DuplicateException"]);
 
@@ -1207,8 +1207,8 @@ class TournamentTest extends AuthenticatedTestCase
           'name' => 'Test Competition',
           'teams' => [
             ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
-              'players' => [$players[0]->getPlayerId(), $players[0]->getPlayerId()]],
-            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+              'players' => [$players[0]->getId(), $players[0]->getId()]],
+            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1229,8 +1229,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1247,7 +1247,7 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
-        "duplicateValue" => $players[0]->getPlayerId(), "arrayName" => "the player list of team duplicate team",
+        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team",
         "name" => "DuplicateException", "status" => 409]);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -1266,8 +1266,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1288,8 +1288,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1325,8 +1325,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1347,8 +1347,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1384,8 +1384,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1406,8 +1406,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1443,8 +1443,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1465,8 +1465,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1502,8 +1502,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 1, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1525,8 +1525,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1562,8 +1562,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1584,8 +1584,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1621,8 +1621,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1643,8 +1643,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1680,8 +1680,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1703,8 +1703,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1740,9 +1740,9 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
-            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1764,8 +1764,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[2]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1782,7 +1782,7 @@ class TournamentTest extends AuthenticatedTestCase
 
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
       ->seeStatusCode(409)->seeJsonEquals(["message" => "Reference Exception",
-        "referenceValue" => $players[2]->getPlayerId(),
+        "referenceValue" => $players[2]->getId(),
         "referenceName" => "player id in players B in game 1 of match 1 of phase 1 of competition Test Competition, " .
           "which is not in the players lists of the teams of team B", "name" => "ReferenceException", "status" => 409]);
 
@@ -1802,8 +1802,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -1824,8 +1824,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -1957,30 +1957,42 @@ class TournamentTest extends AuthenticatedTestCase
     /** @var Game[][][][] $games */
     $games = [];
     $games[0] = [[
-      [$this->createGame([$teams[0][0]->getPlayers()->first()], [$teams[0][1]->getPlayers()->first()], 1, 7, 5,
+      [$this->createGame([$teams[0][0]->getMemberships()->first()->getPlayer()],
+        [$teams[0][1]->getMemberships()->first()->getPlayer()], 1, 7, 5,
         Result::TEAM_A_WINS, true, new \DateTime('2017-12-31 15:00', new \DateTimeZone('Europe/Vienna')),
         new \DateTime('2017-12-31 16:00', new \DateTimeZone('Europe/Vienna')))],
-      [$this->createGame([$teams[0][0]->getPlayers()->first()], [$teams[0][1]->getPlayers()->first()], 1)]
+      [$this->createGame([$teams[0][0]->getMemberships()->first()->getPlayer()],
+        [$teams[0][1]->getMemberships()->first()->getPlayer()], 1)]
     ]];
     $games[1] = [
-      [[$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)]],
+      [[$this->createGame([$teams[1][0]->getMemberships()->first()->getPlayer()],
+        [$teams[1][1]->getMemberships()->first()->getPlayer()], 1)]],
       [
-        [$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)],
-        [$this->createGame([$teams[1][2]->getPlayers()->first()], [$teams[1][3]->getPlayers()->first()], 1)]
+        [$this->createGame([$teams[1][0]->getMemberships()->first()->getPlayer()],
+          [$teams[1][1]->getMemberships()->first()->getPlayer()], 1)],
+        [$this->createGame([$teams[1][2]->getMemberships()->first()->getPlayer()],
+          [$teams[1][3]->getMemberships()->first()->getPlayer()], 1)]
       ],
       [[
-        $this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1),
-        $this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 2),
+        $this->createGame([$teams[1][0]->getMemberships()->first()->getPlayer()],
+          [$teams[1][1]->getMemberships()->first()->getPlayer()], 1),
+        $this->createGame([$teams[1][0]->getMemberships()->first()->getPlayer()],
+          [$teams[1][1]->getMemberships()->first()->getPlayer()], 2),
       ]],
-      [[$this->createGame([$teams[1][0]->getPlayers()->first()], [$teams[1][1]->getPlayers()->first()], 1)]]
+      [[$this->createGame([$teams[1][0]->getMemberships()->first()->getPlayer()],
+        [$teams[1][1]->getMemberships()->first()->getPlayer()], 1)]]
     ];
     $games[2] = [[
-      [$this->createGame([$teams[2][0]->getPlayers()->first()], [$teams[2][1]->getPlayers()->first()], 1)],
-      [$this->createGame([$teams[2][1]->getPlayers()->first()], [$teams[2][0]->getPlayers()->first()], 1)]
+      [$this->createGame([$teams[2][0]->getMemberships()->first()->getPlayer()],
+        [$teams[2][1]->getMemberships()->first()->getPlayer()], 1)],
+      [$this->createGame([$teams[2][1]->getMemberships()->first()->getPlayer()],
+        [$teams[2][0]->getMemberships()->first()->getPlayer()], 1)]
     ]];
     $games[3] = [[
-      [$this->createGame([$teams[3][0]->getPlayers()->first()], [$teams[3][1]->getPlayers()->first()], 1)],
-      [$this->createGame([$teams[3][0]->getPlayers()->first()], [$teams[3][1]->getPlayers()->first()], 1)]
+      [$this->createGame([$teams[3][0]->getMemberships()->first()->getPlayer()],
+        [$teams[3][1]->getMemberships()->first()->getPlayer()], 1)],
+      [$this->createGame([$teams[3][0]->getMemberships()->first()->getPlayer()],
+        [$teams[3][1]->getMemberships()->first()->getPlayer()], 1)]
     ]];
 
 
@@ -2025,10 +2037,14 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 4, 'startNumber' => 1, 'players' => [$teams[0][0]->getPlayers()->first()->getPlayerId()]],
-            ['rank' => 3, 'startNumber' => 2, 'players' => [$teams[0][1]->getPlayers()->first()->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 3, 'players' => [$teams[0][2]->getPlayers()->first()->getPlayerId()]],
-            ['rank' => 1, 'startNumber' => 4, 'players' => [$teams[0][3]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 4, 'startNumber' => 1, 'players' =>
+              [$teams[0][0]->getMemberships()->first()->getPlayer()->getId()]],
+            ['rank' => 3, 'startNumber' => 2, 'players' =>
+              [$teams[0][1]->getMemberships()->first()->getPlayer()->getId()]],
+            ['rank' => 2, 'startNumber' => 3, 'players' =>
+              [$teams[0][2]->getMemberships()->first()->getPlayer()->getId()]],
+            ['rank' => 1, 'startNumber' => 4, 'players' =>
+              [$teams[0][3]->getMemberships()->first()->getPlayer()->getId()]],
           ],
           'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
           'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
@@ -2054,8 +2070,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$teams[0][1]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[0][1]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[0][0]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2084,8 +2100,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[0][3]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[0][3]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[0][0]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2104,8 +2120,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[0][0]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[0][3]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[0][0]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[0][3]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2121,15 +2137,15 @@ class TournamentTest extends AuthenticatedTestCase
           'name' => 'Test Competition 2',
           'teams' => [
             ['rank' => 1, 'startNumber' => 1, 'players' => [
-              $teams[1][0]->getPlayers()[0]->getPlayerId(),
-              $teams[1][0]->getPlayers()[2]->getPlayerId(),
-              $teams[1][1]->getPlayers()[0]->getPlayerId()]],
+              $teams[1][0]->getMemberships()->getValues()[0]->getPlayer()->getId(),
+              $teams[1][0]->getMemberships()->getValues()[2]->getPlayer()->getId(),
+              $teams[1][1]->getMemberships()->getValues()[0]->getPlayer()->getId()]],
             ['rank' => 2, 'startNumber' => 2, 'players' => [
-              $teams[1][1]->getPlayers()[1]->getPlayerId(),
-              $teams[1][1]->getPlayers()[2]->getPlayerId()]
+              $teams[1][1]->getMemberships()->getValues()[1]->getPlayer()->getId(),
+              $teams[1][1]->getMemberships()->getValues()[2]->getPlayer()->getId()]
             ],
             ['rank' => 2, 'startNumber' => 3, 'players' => [
-              $teams[1][2]->getPlayers()[0]->getPlayerId()]
+              $teams[1][2]->getMemberships()->getValues()[0]->getPlayer()->getId()]
             ],
           ],
           'phases' => [
@@ -2152,8 +2168,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[1][0]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[1][2]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[1][0]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2183,8 +2199,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[1][0]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[1][2]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[1][0]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2215,8 +2231,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[1][1]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[1][2]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[1][1]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2246,8 +2262,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$teams[1][2]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[1][1]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[1][2]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[1][1]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2262,9 +2278,12 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition 3',
           'teams' => [
-            ['rank' => 3, 'startNumber' => 1, 'players' => [$teams[2][0]->getPlayers()->first()->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$teams[2][1]->getPlayers()->first()->getPlayerId()]],
-            ['rank' => 1, 'startNumber' => 3, 'players' => [$teams[2][2]->getPlayers()->first()->getPlayerId()]],
+            ['rank' => 3, 'startNumber' => 1, 'players' =>
+              [$teams[2][0]->getMemberships()->first()->getPlayer()->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' =>
+              [$teams[2][1]->getMemberships()->first()->getPlayer()->getId()]],
+            ['rank' => 1, 'startNumber' => 3, 'players' =>
+              [$teams[2][2]->getMemberships()->first()->getPlayer()->getId()]],
           ],
           'phases' => [
             [
@@ -2286,8 +2305,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 2,
-                      'playersA' => [$teams[2][2]->getPlayers()->first()->getPlayerId()],
-                      'playersB' => [$teams[2][0]->getPlayers()->first()->getPlayerId()],
+                      'playersA' => [$teams[2][2]->getMemberships()->first()->getPlayer()->getId()],
+                      'playersB' => [$teams[2][0]->getMemberships()->first()->getPlayer()->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2324,8 +2343,8 @@ class TournamentTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -2347,8 +2366,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2376,8 +2395,8 @@ class TournamentTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[1]->getPlayerId()],
-                      'playersB' => [$players[0]->getPlayerId()],
+                      'playersA' => [$players[1]->getId()],
+                      'playersB' => [$players[0]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',
@@ -2454,12 +2473,12 @@ class TournamentTest extends AuthenticatedTestCase
           'rank' => null,
           'startNumber' => null
         ]);
-        self::assertInstanceOf(Collection::class, $team->getPlayers());
-        self::assertEquals(count($teamData['players']), $team->getPlayers()->count());
+        self::assertInstanceOf(Collection::class, $team->getMemberships());
+        self::assertEquals(count($teamData['players']), $team->getMemberships()->count());
         foreach ($teamData['players'] as $id) {
           $exists = false;
-          foreach ($team->getPlayers() as $player) {
-            if ($player->getPlayerId() == $id) {
+          foreach ($team->getMemberships() as $membership) {
+            if ($membership->getPlayer()->getId() == $id) {
               $exists = true;
               break;
             }
@@ -2569,7 +2588,7 @@ class TournamentTest extends AuthenticatedTestCase
               self::assertEquals(count($playersData), $players->count());
               foreach ($playersData as $id) {
                 self::assertTrue($players->containsKey($id));
-                self::assertTrue($players[$id]->getPlayerId() == $id);
+                self::assertTrue($players[$id]->getId() == $id);
               }
             }
           }
@@ -2606,11 +2625,11 @@ class TournamentTest extends AuthenticatedTestCase
       'startTime' => $startTime,
       'endTime' => $endTime]);
     foreach ($playersA as $player) {
-      $game->getPlayersA()->set($player->getPlayerId(), $player);
+      $game->getPlayersA()->set($player->getId(), $player);
     }
 
     foreach ($playersB as $player) {
-      $game->getPlayersB()->set($player->getPlayerId(), $player);
+      $game->getPlayersB()->set($player->getId(), $player);
     }
 
     return $game;

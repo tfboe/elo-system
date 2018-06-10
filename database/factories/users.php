@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\Tfboe\FmLib\Entity\User::class, function (\Faker\Generator $faker, array $attributes) {
+$factory->define(\App\Entity\User::class, function (\Faker\Generator $faker, array $attributes) {
   if (array_key_exists('originalPassword', $attributes)) {
     $password = $attributes['originalPassword'];
   } else {

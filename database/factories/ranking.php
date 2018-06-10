@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\Tfboe\FmLib\Entity\Ranking::class, function (/** @noinspection PhpUnusedParameterInspection */
+$factory->define(\App\Entity\Ranking::class, function (/** @noinspection PhpUnusedParameterInspection */
   \Faker\Generator $faker, array $attributes) {
   return [
     'rank' => $attributes['rank'] !== null ? $attributes['rank'] : $attributes['uniqueRank'],

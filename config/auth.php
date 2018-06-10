@@ -18,7 +18,7 @@ return [
   'providers' => [
     'users' => [
       'driver' => 'doctrine',
-      'model' => \Tfboe\FmLib\Entity\User::class
+      'model' => \App\Entity\User::class
     ],
   ],
 ];

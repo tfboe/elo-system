@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 /** @var \LaravelDoctrine\ORM\Testing\Factory $factory */
 
-$factory->define(\App\Entity\Team::class, function (/** @noinspection PhpUnusedParameterInspection */
+$factory->define(\App\Entity\TeamMembership::class, function (/** @noinspection PhpUnusedParameterInspection */
   \Faker\Generator $faker, array $attributes) {
   return [
-    'name' => '',
-    'startNumber' => $attributes['startNumber'],
-    'rank' => $attributes['rank']
+    'team' => $attributes['team'],
+    'player' => $attributes['player'],
   ];
 });

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
 use Tfboe\FmLib\Entity\TournamentInterface;
 
@@ -23,6 +22,12 @@ class Tournament extends TournamentHierarchyEntity implements TournamentInterfac
 {
   use \Tfboe\FmLib\Entity\Traits\Tournament;
 
+  /**
+   * @ORM\Column(type="string")
+   * @var string
+   */
+  private $userIdentifier;
+
 //<editor-fold desc="Constructor">
 
   /**
@@ -32,6 +37,24 @@ class Tournament extends TournamentHierarchyEntity implements TournamentInterfac
   {
     parent::__construct();
     $this->init();
+  }
+
+  /**
+   * @return string
+   */
+  public function getUserIdentifier(): string
+  {
+    return $this->userIdentifier;
+  }
+
+  /**
+   * @param string $userIdentifier
+   * @return $this|Tournament
+   */
+  public function setUserIdentifier(string $userIdentifier): Tournament
+  {
+    $this->userIdentifier = $userIdentifier;
+    return $this;
   }
 //</editor-fold desc="Constructor">
 }

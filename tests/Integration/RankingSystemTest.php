@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Tests\Integration;
 
 
+use App\Entity\RankingSystem;
 use App\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tests\Helpers\ApplicationGetter;
-use Tfboe\FmLib\Entity\RankingSystem;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
@@ -54,8 +54,8 @@ class RankingSystemTest extends AuthenticatedTestCase
         [
           'name' => 'Test Competition',
           'teams' => [
-            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getPlayerId()]],
-            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getPlayerId()]],
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 1, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [
             [
@@ -76,8 +76,8 @@ class RankingSystemTest extends AuthenticatedTestCase
                   'games' => [
                     [
                       'gameNumber' => 1,
-                      'playersA' => [$players[0]->getPlayerId()],
-                      'playersB' => [$players[1]->getPlayerId()],
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
                       'resultA' => 1,
                       'resultB' => 0,
                       'result' => 'TEAM_A_WINS',

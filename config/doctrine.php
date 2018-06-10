@@ -27,7 +27,6 @@ return [
       'meta' => env('DOCTRINE_METADATA', 'annotations'),
       'connection' => env('DB_CONNECTION', 'mysql'),
       'namespaces' => [
-        'Tfboe\FmLib\Entity',
         'App\Entity'
       ],
       'paths' => [
