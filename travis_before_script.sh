@@ -24,9 +24,9 @@ if [ "$INTEGRATION" = '1' ]; then
     # create test database
     if [ "$MYSQL_ROOT_PASSWORD" = "" ]; then
         # don't use a password
-        mysql -h localhost -u root -e "CREATE DATABASE \`elo-system-test\`"
+        mysql -h localhost -u root -e "CREATE DATABASE \`elo-system-integration-tests\`"
     else
-        mysql -h localhost -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE \`elo-system-test\`"
+        mysql -h localhost -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE \`elo-system-integration-tests\`"
     fi
 
     #create testing environment
