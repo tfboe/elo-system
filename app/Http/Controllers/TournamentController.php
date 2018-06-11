@@ -14,6 +14,7 @@ use App\Entity\RankingSystem;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\Tournament;
+use App\Exceptions\GameHasMissingModes;
 use Doctrine\Common\Collections\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -100,6 +101,7 @@ class TournamentController extends BaseController
    *                            rankings lists of a match does not exist in the rankings of the corresponding phase or
    *                            a player of a team is not in the players lists of this team
    * @throws UnorderedPhaseNumberException
+   * @throws GameHasMissingModes At least one game has a missing mode
    */
   public function createOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): JsonResponse
   {
@@ -119,7 +121,7 @@ class TournamentController extends BaseController
 
     $this->competitionSpecification = [
       'competitions.*.name' => ['validation' => 'required|string|distinct'],
-      'competitions.*.teams' => ['validation' => 'required|array|min:2', 'ignore' => True],
+      'competitions.*.teams' => ['validation' => 'present|array', 'ignore' => True],
       'competitions.*.phases' => ['validation' => 'required|array|min:1', 'ignore' => True]
     ];
     $this->competitionSpecification = array_merge($this->competitionSpecification,
@@ -136,12 +138,12 @@ class TournamentController extends BaseController
     ];
 
     $this->phaseSpecification = [
-      'competitions.*.phases.*.phaseNumber' => ['validation' => 'required|integer|min:1'],
+      'competitions.*.phases.*.phaseNumber' => ['validation' => 'required|integer|min:-1'],
       'competitions.*.phases.*.name' => ['validation' => 'string', 'default' => ''],
       'competitions.*.phases.*.nextPhaseNumbers' => ['validation' => 'array', 'ignore' => True],
-      'competitions.*.phases.*.nextPhaseNumbers.*' => ['validation' => 'integer|min:1', 'ignore' => True],
-      'competitions.*.phases.*.rankings' => ['validation' => 'required|array|min:2', 'ignore' => True],
-      'competitions.*.phases.*.matches' => ['validation' => 'required|array|min:1', 'ignore' => True]
+      'competitions.*.phases.*.nextPhaseNumbers.*' => ['validation' => 'integer|min:0', 'ignore' => True],
+      'competitions.*.phases.*.rankings' => ['validation' => 'present|array', 'ignore' => True],
+      'competitions.*.phases.*.matches' => ['validation' => 'present|array', 'ignore' => True]
     ];
     $this->phaseSpecification = array_merge($this->phaseSpecification,
       $this->categoriesSpecifications('competitions.*.phases.*.'),
@@ -167,7 +169,7 @@ class TournamentController extends BaseController
         ['validation' => 'required|array|min:1', 'ignore' => True],
       'competitions.*.phases.*.matches.*.rankingsBUniqueRanks.*' =>
         ['validation' => 'required|integer|min:1', 'ignore' => True],
-      'competitions.*.phases.*.matches.*.games' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'competitions.*.phases.*.matches.*.games' => ['validation' => 'present|array', 'ignore' => True],
     ];
 
     $this->matchSpecification = array_merge($this->matchSpecification,
@@ -178,11 +180,13 @@ class TournamentController extends BaseController
     $this->gameSpecification = [
       'competitions.*.phases.*.matches.*.games.*.gameNumber' => ['validation' => 'required|integer|min:1'],
       'competitions.*.phases.*.matches.*.games.*.playersA' =>
-        ['validation' => 'required|array|min:1', 'ignore' => True],
+        ['validation' => 'present|array|required_if:competitions.*.phases.*.matches.*.games.*.played,true',
+          'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersA.*' =>
         ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB' =>
-        ['validation' => 'required|array|min:1', 'ignore' => True],
+        ['validation' => 'present|array|required_if:competitions.*.phases.*.matches.*.games.*.played,true',
+          'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB.*' =>
         ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True]
     ];
@@ -202,11 +206,72 @@ class TournamentController extends BaseController
       $this->matchSpecification,
       $this->gameSpecification));
 
+    //check if each game has a descendant for each mode
+    $this->checkModes($request);
+
     return response()->json(['type' => $this->doCreateOrReplaceTournament($request, $rss)]);
   }
 //</editor-fold desc="Public Methods">
 
 //<editor-fold desc="Private Methods">
+
+  /**
+   * Checks if every game has at least one predecessor who set the mode for each of the 5 modes
+   * @param Request $request
+   * @throws GameHasMissingModes at least one game has a missing mode
+   */
+  private function checkModes(Request $request)
+  {
+    $input = $request->input();
+    $activeModes = $this->addActiveModes([], $input);
+    if (count($activeModes) == 5) {
+      return;
+    }
+    foreach ($request['competitions'] as $competition) {
+      $compActiveModes = $this->addActiveModes($activeModes, $competition);
+      if (count($compActiveModes) == 5) {
+        continue;
+      }
+      foreach ($competition['phases'] as $phase) {
+        $phaseActiveModes = $this->addActiveModes($compActiveModes, $phase);
+        if (count($phaseActiveModes) == 5) {
+          continue;
+        }
+        foreach ($phase['matches'] as $match) {
+          $matchActiveMode = $this->addActiveModes($phaseActiveModes, $match);
+          if (count($matchActiveMode) == 5) {
+            continue;
+          }
+          foreach ($match['games'] as $game) {
+            $gameActiveMode = $this->addActiveModes($matchActiveMode, $game);
+            if (count($gameActiveMode) < 5) {
+              throw new GameHasMissingModes("The game with number " . $game['gameNumber'] .
+                " misses some modes, the following modes are given: "
+                . implode(", ", array_keys($gameActiveMode)));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Checks if input has set one of the 5 modes and if it has adds it to the active modes array and returns it
+   * @param array $activeModes the input array of active modes
+   * @param array $input the input array
+   * @return mixed the modified active modes array
+   */
+  private function addActiveModes($activeModes, $input)
+  {
+    $modes = ['gameMode', 'organizingMode', 'scoreMode', 'table', 'teamMode'];
+    foreach ($modes as $mode) {
+      if (array_key_exists($mode, $input) && $input[$mode] !== null) {
+        $activeModes[$mode] = true;
+      }
+    }
+    return $activeModes;
+  }
+
   /**
    * Returns a query input specification for the categories which are used in multiple entities (see CategoryTraits)
    * @param string $prefix the prefix for the keys, used if the category parameters are deeper in the input structure

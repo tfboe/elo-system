@@ -53,6 +53,13 @@ $app->singleton(
 |
 */
 
+$app->routeMiddleware([
+  'can' => App\Http\Middleware\Authorize::class,
+]);
+
+/** @noinspection PhpParamsInspection */
+$app->middleware(\App\Http\Middleware\Cors::class);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -65,6 +72,7 @@ $app->singleton(
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

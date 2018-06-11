@@ -36,7 +36,7 @@ class PlayerController extends BaseController
   {
     $specification = [
       '*.firstName' => ['validation' => 'required|string|min:2'],
-      '*.lastName' => ['validation' => 'required|string|min:2'],
+      '*.lastName' => ['validation' => 'required|string|min:1'],
       '*.birthday' => ['validation' => 'required|date'],
     ];
 
@@ -89,7 +89,7 @@ class PlayerController extends BaseController
   {
     $specification = [
       '*.firstName' => ['validation' => 'required|string|min:2'],
-      '*.lastName' => ['validation' => 'required|string|min:2'],
+      '*.lastName' => ['validation' => 'required|string|min:1'],
       '*.birthday' => ['validation' => 'date'],
     ];
 

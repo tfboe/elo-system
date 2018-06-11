@@ -21,5 +21,6 @@ $factory->define(\App\Entity\User::class, function (\Faker\Generator $faker, arr
     'email' => $faker->email,
     'jwtVersion' => 1,
     'confirmedAGBVersion' => 0,
+    'activated' => array_key_exists('activated', $attributes) ? $attributes['activated'] : true
   ];
 });

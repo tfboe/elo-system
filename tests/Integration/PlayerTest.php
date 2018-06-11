@@ -140,7 +140,7 @@ class PlayerTest extends AuthenticatedTestCase
     $player = entity(Player::class)->create();
     $search = ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
       'birthday' => $player->getBirthday()->format('Y-m-d')];
-    $this->jsonAuth('GET', '/searchPlayers', [$search])->assertResponseOk();
+    $this->jsonAuth('POST', '/searchPlayers', [$search])->assertResponseOk();
     $this->seeJsonEquals([["found" => [$this->getResultArray($player)], "search" => $search]]);
   }
 
@@ -149,14 +149,14 @@ class PlayerTest extends AuthenticatedTestCase
     /** @var Player $player */
     $player = entity(Player::class)->create();
     $search = ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName()];
-    $this->jsonAuth('GET', '/searchPlayers', [$search])->assertResponseOk();
+    $this->jsonAuth('POST', '/searchPlayers', [$search])->assertResponseOk();
     $this->seeJsonEquals([["found" => [$this->getResultArray($player)], "search" => $search]]);
   }
 
   public function testSearchNonExistentPlayer()
   {
     $search = ['firstName' => 'James', 'lastName' => 'Smith', 'birthday' => '1974-04-28'];
-    $this->jsonAuth('GET', '/searchPlayers', [$search])->assertResponseOk();
+    $this->jsonAuth('POST', '/searchPlayers', [$search])->assertResponseOk();
     $this->seeJsonEquals([["found" => [], "search" => $search]]);
   }
 
@@ -181,7 +181,7 @@ class PlayerTest extends AuthenticatedTestCase
     $search5 = ['firstName' => strtoupper($player2->getFirstName()),
       'lastName' => strtoupper($player2->getLastName())];
 
-    $this->jsonAuth('GET', '/searchPlayers', [$search1, $search2, $search3, $search4, $search5])
+    $this->jsonAuth('POST', '/searchPlayers', [$search1, $search2, $search3, $search4, $search5])
       ->assertResponseOk();
     $this->seeJsonEquals([
       ["found" => [$this->getResultArray($player1), $this->getResultArray($player1SameName)], "search" => $search1],

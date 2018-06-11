@@ -24,6 +24,10 @@ declare(strict_types=1);
  *
  */
 
+$router->post('register', [
+  'as' => 'register', 'uses' => 'UserController@register'
+]);
+
 $router->group(['middleware' => 'auth:api'], function () use ($router) {
   /**
    * @api {post} /createOrReplaceTournament Create or Replace a Tournament
@@ -207,11 +211,13 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiSuccess {string} type the type of the successful operation either "create" or "replace"
    */
   $router->post('createOrReplaceTournament', [
-    'as' => 'createOrReplaceTournament', 'uses' => 'TournamentController@createOrReplaceTournament'
+    'middleware' => 'can:create,App\Entity\Tournament',
+    'as' => 'createOrReplaceTournament',
+    'uses' => 'TournamentController@createOrReplaceTournament'
   ]);
 
   /**
-   * @api {get} /searchPlayers Search for players in the database
+   * @api {post} /searchPlayers Search for players in the database
    * @apiUse AuthenticatedRequest
    * @apiVersion 0.1.0
    * @apiDescription Searches in the database for the given players and returns possible candidates if they exist
@@ -234,8 +240,9 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiSuccess {string} -.found.lastName the last name of the found player
    * @apiSuccess {date} -.found.birthday the birthday of the found player
    */
-  $router->get('searchPlayers', [
-    'as' => 'searchPlayers', 'uses' => 'PlayerController@searchPlayers'
+  $router->post('searchPlayers', [
+    'as' => 'searchPlayers',
+    'uses' => 'PlayerController@searchPlayers'
   ]);
 
   /**
@@ -265,6 +272,8 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiSuccess {date} -.birthday the birthday of the added player
    */
   $router->post('addPlayers', [
-    'as' => 'addPlayers', 'uses' => 'PlayerController@addPlayers'
+    'middleware' => 'can:create,App\Entity\Player',
+    'as' => 'addPlayers',
+    'uses' => 'PlayerController@addPlayers'
   ]);
 });

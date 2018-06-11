@@ -23,7 +23,8 @@
     "laravel-doctrine/orm": "^1.2.12",
     "laravel-doctrine/extensions": "^1.0.12",
     "gedmo/doctrine-extensions": "^2.4.30",
-    "tfboe/fm-lib": "0.1.15"
+    "tfboe/fm-lib": "0.1.19",
+    "palanik/lumen-cors": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

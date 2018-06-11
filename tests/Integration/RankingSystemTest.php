@@ -50,6 +50,11 @@ class RankingSystemTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',

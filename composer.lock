@@ -4,7 +4,7 @@
       "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-  "content-hash": "95c0ef27c41322dd1aa13a08f492180c",
+  "content-hash": "394a83fbc9fd486364c2004c6eb21898",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2492,8 +2492,50 @@
           "time": "2018-02-13T20:26:39+00:00"
         },
         {
+          "name": "palanik/lumen-cors",
+          "version": "dev-master",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/palanik/lumen-cors.git",
+            "reference": "5cd7a1efff091b6e7247a08e57ab39cc418af466"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/palanik/lumen-cors/zipball/5cd7a1efff091b6e7247a08e57ab39cc418af466",
+            "reference": "5cd7a1efff091b6e7247a08e57ab39cc418af466",
+            "shasum": ""
+          },
+          "type": "library",
+          "autoload": {
+            "psr-4": {
+              "palanik\\lumen\\Middleware\\": "."
+            }
+          },
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "MIT"
+          ],
+          "authors": [
+            {
+              "name": "palanik"
+            }
+          ],
+          "description": "Cross-origin resource sharing (CORS) middleware for Lumen micro-framework.",
+          "homepage": "https://github.com/palanik/lumen-cors",
+          "keywords": [
+            "cors",
+            "corslumen",
+            "cross-origin",
+            "laravel",
+            "lumen",
+            "lumencors",
+            "preflight"
+          ],
+          "time": "2017-06-24T03:53:36+00:00"
+        },
+      {
             "name": "paragonie/random_compat",
-          "version": "v2.0.15",
+        "version": "v2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
@@ -2538,7 +2580,7 @@
                 "pseudorandom",
                 "random"
             ],
-          "time": "2018-06-08T15:26:40+00:00"
+        "time": "2018-06-08T15:26:40+00:00"
         },
         {
             "name": "psr/container",
@@ -3623,16 +3665,16 @@
         },
         {
             "name": "tfboe/fm-lib",
-          "version": "v0.1.15",
+          "version": "v0.1.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-              "reference": "002f18d7b40062a2d49a4a91c78042d825807c59"
+              "reference": "21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f"
             },
             "dist": {
                 "type": "zip",
-              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/002f18d7b40062a2d49a4a91c78042d825807c59",
-              "reference": "002f18d7b40062a2d49a4a91c78042d825807c59",
+              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f",
+              "reference": "21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f",
                 "shasum": ""
             },
             "require": {
@@ -3671,7 +3713,7 @@
                 "foosball",
                 "manager"
             ],
-          "time": "2018-02-27T23:26:59+00:00"
+          "time": "2018-06-11T01:19:33+00:00"
         },
         {
             "name": "tymon/jwt-auth",
@@ -6329,7 +6371,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "irazasyed/jwt-auth-guard": 20
+      "irazasyed/jwt-auth-guard": 20,
+      "palanik/lumen-cors": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

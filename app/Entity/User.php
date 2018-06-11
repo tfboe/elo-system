@@ -22,6 +22,19 @@ class User extends BaseEntity implements UserInterface
 {
   use \Tfboe\FmLib\Entity\Traits\User;
 
+  /**
+   * @ORM\Column(type="boolean", nullable=false)
+   * @var bool
+   */
+  private $activated;
+
+  /**
+   * @return mixed
+   */
+  public function isActivated()
+  {
+    return $this->activated;
+  }
 //<editor-fold desc="Constructor">
 
   /**
@@ -29,6 +42,7 @@ class User extends BaseEntity implements UserInterface
    */
   public function __construct()
   {
+    $this->activated = false;
     $this->init();
   }
 //</editor-fold desc="Constructor">

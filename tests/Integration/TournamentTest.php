@@ -700,8 +700,13 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
       'competitions' => [
         [
+          'table' => 'ROBERTO_SPORT',
           'name' => 'Test Competition',
           'teams' => [
             ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
@@ -758,6 +763,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -826,6 +836,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -905,6 +920,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -994,6 +1014,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1082,6 +1107,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1142,6 +1172,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1202,6 +1237,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1262,6 +1302,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1321,6 +1366,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1380,6 +1430,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1439,6 +1494,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1498,6 +1558,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1558,6 +1623,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1617,6 +1687,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1676,6 +1751,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1736,6 +1816,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -1792,12 +1877,187 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
+
+  public function testMissingModeException()
+  {
+    $players = $this->createPlayers(3);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'competitions' => [
+        [
+          'table' => 'ROBERTO_SPORT',
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[2]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'name' => 'Test Competition 2',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+            ['rank' => 3, 'startNumber' => 3, 'players' => [$players[2]->getId()]],
+          ],
+          'phases' => [
+            [
+              'table' => 'ROBERTO_SPORT',
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              'phaseNumber' => 2,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+                ['rank' => 1, 'teamStartNumbers' => [3], 'uniqueRank' => 3],
+              ],
+              'matches' => [
+                [
+                  'table' => 'ROBERTO_SPORT',
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ],
+                [
+                  'matchNumber' => 2,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'table' => 'ROBERTO_SPORT',
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ],
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[2]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(504)->seeJsonEquals(["message" => "The game with number 1 misses some modes, the " .
+        "following modes are given: gameMode, organizingMode, scoreMode, teamMode",
+        "name" => "GameHasMissingModes", "status" => 504]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+
   public function testTeamStartNumberReferenceException()
   {
     $players = $this->createPlayers(2);
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
@@ -2031,7 +2291,10 @@ class TournamentTest extends AuthenticatedTestCase
       'name' => 'New Name',
       'userIdentifier' => 't1',
       'gameMode' => 'OFFICIAL',
-      'table' => 'GARLANDO',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'startTime' => '2017-12-19 15:01:31 Europe/Vienna',
       'endTime' => '2017-12-19 16:01:05 Europe/Vienna',
       'competitions' => [
@@ -2340,6 +2603,11 @@ class TournamentTest extends AuthenticatedTestCase
     $request = [
       'name' => 'Test Tournament',
       'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
       'competitions' => [
         [
           'name' => 'Test Competition',
