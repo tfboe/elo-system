@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\MatchInterface;
  * Class Match
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="matches")
+ * @ORM\Table(name="elo_matches")
  */
 class Match extends TournamentHierarchyEntity implements MatchInterface
 {

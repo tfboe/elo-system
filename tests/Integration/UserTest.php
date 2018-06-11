@@ -9,18 +9,12 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-
-use Tests\Helpers\ApplicationGetter;
-use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
-
 /**
  * Class UserTest
  * @package Tests\Integration
  */
 class UserTest extends AuthenticatedTestCase
 {
-  use ApplicationGetter;
-
 //<editor-fold desc="Public Methods">
   public function testRegisterUser()
   {

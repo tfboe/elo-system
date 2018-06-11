@@ -12,8 +12,6 @@ namespace Tests\Integration;
 
 use App\Entity\Player;
 use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\ApplicationGetter;
-use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
  * Class TournamentTest
@@ -21,8 +19,6 @@ use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
  */
 class PlayerTest extends AuthenticatedTestCase
 {
-  use ApplicationGetter;
-
 //<editor-fold desc="Public Methods">
   public function testAddAlreadyExistingPlayers()
   {

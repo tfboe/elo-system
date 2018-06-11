@@ -13,9 +13,7 @@ namespace Tests\Integration;
 use App\Entity\RankingSystem;
 use App\Entity\Tournament;
 use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\ApplicationGetter;
 use Tfboe\FmLib\Helpers\Level;
-use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
  * Class RankingSystemServiceTest
@@ -23,7 +21,6 @@ use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
  */
 class RankingSystemTest extends AuthenticatedTestCase
 {
-  use ApplicationGetter;
 //<editor-fold desc="Public Methods">
   public function testCreateTournamentWithEloRankings()
   {

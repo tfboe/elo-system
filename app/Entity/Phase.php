@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\PhaseInterface;
  * Class Phase
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="phases")
+ * @ORM\Table(name="elo_phases")
  */
 class Phase extends TournamentHierarchyEntity implements PhaseInterface
 {

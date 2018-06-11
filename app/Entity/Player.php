@@ -19,7 +19,7 @@ use Tfboe\FmLib\Entity\PlayerInterface;
  * Class Player
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="players",indexes={@ORM\Index(name="unique_names_birthday",
+ * @ORM\Table(name="elo_players",indexes={@ORM\Index(name="unique_names_birthday",
  *   columns={"first_name","last_name","birthday"})})
  */
 class Player extends BaseEntity implements PlayerInterface

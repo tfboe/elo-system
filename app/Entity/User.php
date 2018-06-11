@@ -16,7 +16,7 @@ use Tfboe\FmLib\Entity\UserInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="elo_users")
  */
 class User extends BaseEntity implements UserInterface
 {

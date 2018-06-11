@@ -4,7 +4,7 @@
       "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-  "content-hash": "394a83fbc9fd486364c2004c6eb21898",
+  "content-hash": "112365803c5b8bd58d9998cd8b6d079c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3665,16 +3665,16 @@
         },
         {
             "name": "tfboe/fm-lib",
-          "version": "v0.1.19",
+          "version": "v0.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-              "reference": "21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f"
+              "reference": "500671ab734b3ae31f0195cee3ff2b93f25c4194"
             },
             "dist": {
                 "type": "zip",
-              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f",
-              "reference": "21e5ae4f6366ad7f6f910e6a4ed0d74d2967fc5f",
+              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/500671ab734b3ae31f0195cee3ff2b93f25c4194",
+              "reference": "500671ab734b3ae31f0195cee3ff2b93f25c4194",
                 "shasum": ""
             },
             "require": {
@@ -3713,7 +3713,7 @@
                 "foosball",
                 "manager"
             ],
-          "time": "2018-06-11T01:19:33+00:00"
+          "time": "2018-06-11T07:04:56+00:00"
         },
         {
             "name": "tymon/jwt-auth",

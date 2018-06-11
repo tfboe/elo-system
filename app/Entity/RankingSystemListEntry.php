@@ -18,7 +18,7 @@ use Tfboe\FmLib\Entity\RankingSystemListEntryInterface;
  * Class RankingSystemList
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="rankingSystemListEntry")
+ * @ORM\Table(name="elo_rankingSystemListEntry")
  *
  *
  * Dynamic method hints for Elo ranking

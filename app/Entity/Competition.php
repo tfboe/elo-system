@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
  * Class Competition
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="competitions",indexes={@ORM\Index(name="unique_name_idx", columns={"tournament_id","name"})})
+ * @ORM\Table(name="elo_competitions",indexes={@ORM\Index(name="unique_name_idx", columns={"tournament_id","name"})})
  */
 class Competition extends TournamentHierarchyEntity implements CompetitionInterface
 {

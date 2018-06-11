@@ -18,7 +18,7 @@ use Tfboe\FmLib\Entity\QualificationSystemInterface;
  * Class QualificationSystem
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="qualificationSystems")
+ * @ORM\Table(name="elo_qualificationSystems")
  */
 class QualificationSystem extends BaseEntity implements QualificationSystemInterface
 {

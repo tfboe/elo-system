@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\RankingSystemInterface;
  * Class RankingSystemService
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="rankingSystems")
+ * @ORM\Table(name="elo_rankingSystems")
  */
 class RankingSystem extends BaseEntity implements RankingSystemInterface
 {

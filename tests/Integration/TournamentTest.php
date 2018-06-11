@@ -21,14 +21,12 @@ use App\Entity\Team;
 use App\Entity\Tournament;
 use Doctrine\Common\Collections\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
-use Tests\Helpers\ApplicationGetter;
 use Tfboe\FmLib\Entity\Categories\GameMode;
 use Tfboe\FmLib\Entity\Categories\OrganizingMode;
 use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
 use Tfboe\FmLib\Entity\Helpers\Result;
-use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
 
 /**
  * Class TournamentTest
@@ -41,7 +39,6 @@ use Tfboe\FmLib\TestHelpers\AuthenticatedTestCase;
  */
 class TournamentTest extends AuthenticatedTestCase
 {
-  use ApplicationGetter;
 //<editor-fold desc="Public Methods">
 
   /**

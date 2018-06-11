@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
  * Class Game
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="games")
+ * @ORM\Table(name="elo_games")
  */
 class Game extends TournamentHierarchyEntity implements GameInterface
 {

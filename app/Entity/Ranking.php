@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\RankingInterface;
  * Class Ranking
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="rankings")
+ * @ORM\Table(name="elo_rankings")
  *
  * Method hint for getName, since it will never throw an exception (name gets initialized empty)
  * @method string getName()

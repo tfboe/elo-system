@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\TeamInterface;
  * Class Team
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="teams")
+ * @ORM\Table(name="elo_teams")
  */
 class Team extends BaseEntity implements TeamInterface
 {

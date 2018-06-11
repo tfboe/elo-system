@@ -17,7 +17,7 @@ use Tfboe\FmLib\Entity\TournamentInterface;
  * Class Tournament
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="tournaments",indexes={@ORM\Index(name="user_id_idx", columns={"user_identifier","creator_id"})})
+ * @ORM\Table(name="elo_tournaments",indexes={@ORM\Index(name="user_id_idx", columns={"user_identifier","creator_id"})})
  */
 class Tournament extends TournamentHierarchyEntity implements TournamentInterface
 {
