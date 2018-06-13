@@ -27,7 +27,7 @@ class AppServiceProviderTest extends UnitTestCase
   public function testRegister()
   {
     $app = $this->getMockForAbstractClass(Application::class);
-    $app->expects(static::exactly(2))->method('register');
+    $app->expects(static::exactly(3))->method('register');
     /** @var Application $app */
     $provider = new AppServiceProvider($app);
     $provider->register();
