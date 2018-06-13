@@ -21,7 +21,7 @@ class Cors extends LumenCors
 //<editor-fold desc="Fields">
   protected $settings = [
     'origin' => '*',
-    'allowMethods' => 'GET,POST',
+    'allowMethods' => 'GET,POST,OPTIONS',
     'exposeHeaders' => 'jwt-token'
   ];
 //</editor-fold desc="Fields">
