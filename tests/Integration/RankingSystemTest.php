@@ -98,25 +98,28 @@ class RankingSystemTest extends AuthenticatedTestCase
     /** @var \Doctrine\ORM\EntityRepository $repo */
     /** @noinspection PhpUndefinedMethodInspection */
     $repo = EntityManager::getRepository(Tournament::class);
+    $idMap = function ($r) {
+      return $r->getId();
+    };
     /** @var Tournament $tournament */
     $tournament = $repo->findOneBy(['creator' => $this->user, 'userIdentifier' => 'id0']);
     self::assertEquals(
-      [$ranking1->getId() => $ranking1, $ranking6->getId() => $ranking6],
-      $tournament->getRankingSystems()->toArray());
+      [$ranking1->getId() => $ranking1->getId(), $ranking6->getId() => $ranking6->getId()],
+      $tournament->getRankingSystems()->map($idMap)->toArray());
     self::assertEquals(
-      [$ranking2->getId() => $ranking2],
-      $tournament->getCompetitions()['Test Competition']->getRankingSystems()->toArray());
+      [$ranking2->getId() => $ranking2->getId()],
+      $tournament->getCompetitions()['Test Competition']->getRankingSystems()->map($idMap)->toArray());
     self::assertEquals(
-      [$ranking3->getId() => $ranking3],
-      $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getRankingSystems()->toArray());
+      [$ranking3->getId() => $ranking3->getId()],
+      $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getRankingSystems()->map($idMap)->toArray());
     self::assertEquals(
-      [$ranking4->getId() => $ranking4],
+      [$ranking4->getId() => $ranking4->getId()],
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getMatches()[1]
-        ->getRankingSystems()->toArray());
+        ->getRankingSystems()->map($idMap)->toArray());
     self::assertEquals(
-      [$ranking5->getId() => $ranking5],
+      [$ranking5->getId() => $ranking5->getId()],
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getMatches()[1]->getGames()[1]
-        ->getRankingSystems()->toArray());
+        ->getRankingSystems()->map($idMap)->toArray());
   }
 //</editor-fold desc="Public Methods">
 }

@@ -2590,7 +2590,7 @@ class TournamentTest extends AuthenticatedTestCase
     $tournaments = $repo->findAll();
     self::assertEquals(1, count($tournaments));
     $newTournament = $tournaments[0];
-    self::assertEquals($tournament, $newTournament);
+    self::assertEquals($tournament->getId(), $newTournament->getId());
     $this->assertTournamentInfoByRequest($request, $tournament);
   }
 
