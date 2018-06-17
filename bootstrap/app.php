@@ -55,6 +55,7 @@ $app->singleton(
 
 $app->routeMiddleware([
   'can' => App\Http\Middleware\Authorize::class,
+  'admin' => App\Http\Middleware\Admin::class
 ]);
 
 /** @noinspection PhpParamsInspection */

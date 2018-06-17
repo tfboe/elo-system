@@ -22,6 +22,7 @@ class User extends BaseEntity implements UserInterface
 {
   use \Tfboe\FmLib\Entity\Traits\User;
 
+//<editor-fold desc="Fields">
   /**
    * @ORM\Column(type="boolean", nullable=false)
    * @var bool
@@ -29,21 +30,39 @@ class User extends BaseEntity implements UserInterface
   private $activated;
 
   /**
-   * @return mixed
+   * @ORM\Column(type="boolean", nullable=false)
+   * @var bool
    */
-  public function isActivated()
-  {
-    return $this->activated;
-  }
-//<editor-fold desc="Constructor">
+  private $admin;
+//</editor-fold desc="Fields">
 
+//<editor-fold desc="Constructor">
   /**
    * RankingSystem constructor.
    */
   public function __construct()
   {
     $this->activated = false;
+    $this->admin = false;
     $this->init();
   }
 //</editor-fold desc="Constructor">
+
+//<editor-fold desc="Public Methods">
+  /**
+   * @return mixed
+   */
+  public function isActivated()
+  {
+    return $this->activated;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isAdmin(): bool
+  {
+    return $this->admin;
+  }
+//</editor-fold desc="Public Methods">
 }

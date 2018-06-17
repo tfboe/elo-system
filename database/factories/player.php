@@ -13,6 +13,7 @@ $factory->define(\App\Entity\Player::class, function (\Faker\Generator $faker, a
   return [
     'firstName' => array_key_exists('firstName', $attributes) ? $attributes['firstName'] : $faker->firstName,
     'lastName' => array_key_exists('lastName', $attributes) ? $attributes['lastName'] : $faker->lastName,
-    'birthday' => new \DateTime($faker->date())
+    'birthday' => new \DateTime($faker->date()),
+    'mergedInto' => array_key_exists('mergedInto', $attributes) ? $attributes['mergedInto'] : null
   ];
 });

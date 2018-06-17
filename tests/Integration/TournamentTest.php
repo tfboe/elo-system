@@ -27,6 +27,7 @@ use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
 use Tfboe\FmLib\Entity\Helpers\Result;
+use Tfboe\FmLib\Entity\PlayerInterface;
 
 /**
  * Class TournamentTest
@@ -1163,6 +1164,72 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
+  public function testDuplicatePlayerWithMergedPlayerInGamePlayersA()
+  {
+    $players = $this->createPlayers(2);
+    $mergedPlayer = entity($this->resolveEntity(PlayerInterface::class))->create(['mergedInto' => $players[0]]);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId(), $mergedPlayer->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(),
+        "arrayName" => "the players A list of the game with game number 1 of the match with match number 1 of the " .
+          "phase 1 of the competition Test Competition", "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
   public function testDuplicatePlayerIdInGamePlayersAAndB()
   {
     $players = $this->createPlayers(2);
@@ -1228,6 +1295,72 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(0, count($repo->findAll()));
   }
 
+  public function testDuplicatePlayerWithMergedPlayerInGamePlayersAAndB()
+  {
+    $players = $this->createPlayers(2);
+    $mergedPlayer = entity($this->resolveEntity(PlayerInterface::class))->create(['mergedInto' => $players[0]]);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['rank' => 1, 'startNumber' => 1, 'players' => [$players[0]->getId()]],
+            ['rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$mergedPlayer->getId(), $players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(), "status" => 409,
+        "arrayName" => "the players A and players B lists of the game with game number 1 of the match with match " .
+          "number 1 of the phase 1 of the competition Test Competition", "name" => "DuplicateException"]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
   public function testDuplicatePlayerInTeam()
   {
     $players = $this->createPlayers(2);
@@ -1245,6 +1378,72 @@ class TournamentTest extends AuthenticatedTestCase
           'teams' => [
             ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
               'players' => [$players[0]->getId(), $players[0]->getId()]],
+            ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
+          ],
+          'phases' => [
+            [
+              'phaseNumber' => 1,
+              'rankings' => [
+                ['rank' => 1, 'teamStartNumbers' => [1], 'uniqueRank' => 1],
+                ['rank' => 1, 'teamStartNumbers' => [2], 'uniqueRank' => 2],
+              ],
+              'matches' => [
+                [
+                  'matchNumber' => 1,
+                  'rankingsAUniqueRanks' => [1],
+                  'rankingsBUniqueRanks' => [2],
+                  'resultA' => 1,
+                  'resultB' => 0,
+                  'result' => 'TEAM_A_WINS',
+                  'played' => true,
+                  'games' => [
+                    [
+                      'gameNumber' => 1,
+                      'playersA' => [$players[0]->getId()],
+                      'playersB' => [$players[1]->getId()],
+                      'resultA' => 1,
+                      'resultB' => 0,
+                      'result' => 'TEAM_A_WINS',
+                      'played' => true,
+                    ]
+                  ]
+                ]
+              ]
+            ],
+          ]
+        ]
+      ],
+    ];
+
+    $this->jsonAuth('POST', '/createOrReplaceTournament', $request)
+      ->seeStatusCode(409)->seeJsonEquals(["message" => "Duplicate Exception",
+        "duplicateValue" => $players[0]->getId(), "arrayName" => "the player list of team duplicate team",
+        "name" => "DuplicateException", "status" => 409]);
+
+    /** @var \Doctrine\ORM\EntityRepository $repo */
+    /** @noinspection PhpUndefinedMethodInspection */
+    $repo = EntityManager::getRepository(Tournament::class);
+    self::assertEquals(0, count($repo->findAll()));
+  }
+
+  public function testDuplicateMergedPlayerInTeam()
+  {
+    $players = $this->createPlayers(2);
+    $mergedPlayer = entity($this->resolveEntity(PlayerInterface::class))->create(['mergedInto' => $players[0]]);
+    $request = [
+      'name' => 'Test Tournament',
+      'userIdentifier' => 'id0',
+      'gameMode' => 'OFFICIAL',
+      'organizingMode' => 'ELIMINATION',
+      'scoreMode' => 'BEST_OF_FIVE',
+      'teamMode' => 'DOUBLE',
+      'table' => 'ROBERTO_SPORT',
+      'competitions' => [
+        [
+          'name' => 'Test Competition',
+          'teams' => [
+            ['name' => 'duplicate team', 'rank' => 1, 'startNumber' => 1,
+              'players' => [$players[0]->getId(), $mergedPlayer->getId()]],
             ['name' => 'other team', 'rank' => 2, 'startNumber' => 2, 'players' => [$players[1]->getId()]],
           ],
           'phases' => [

@@ -552,33 +552,52 @@ class TournamentController extends BaseController
           ' of the competition ' . $phase->getCompetition()->getName());
       }
       if (!array_key_exists($id, $internalPlayerIds)) {
-        $found = false;
-        $rankingsMethod = 'getRankings' . $teamLetter;
-        /** @var Ranking[] $rankings */
-        $rankings = $game->getMatch()->$rankingsMethod();
-        foreach ($rankings as $ranking) {
-          foreach ($ranking->getTeams() as $team) {
-            if ($team->getMemberships()->exists(
-              function (/** @noinspection PhpUnusedParameterInspection */
-                $_, TeamMembershipInterface $m) use ($id) {
-                return $m->getPlayer()->getId() == $id;
+        /** @var Player $player */
+        $player = $this->getEntityManager()->find(Player::class, $id);
+        $player = $player->getPlayer();
+        $id = $player->getId();
+        if (array_key_exists($id, $internalPlayerIds) && $internalPlayerIds[$id] == true) {
+          //duplicate player!
+          throw new DuplicateException($id, 'player id',
+            'the players ' . $teamLetter . ' list of the game with game number ' . $game->getGameNumber() .
+            ' of the match with match number ' . $match->getMatchNumber() . ' of the phase ' . $phase->getPhaseNumber() .
+            ' of the competition ' . $phase->getCompetition()->getName());
+        } else if (array_key_exists($id, $otherPlayerIds)) {
+          //duplicate player!
+          throw new DuplicateException($id, 'player id',
+            'the players A and players B lists of the game with game number ' . $game->getGameNumber() .
+            ' of the match with match number ' . $match->getMatchNumber() . ' of the phase ' . $phase->getPhaseNumber() .
+            ' of the competition ' . $phase->getCompetition()->getName());
+        }
+        if (!array_key_exists($id, $internalPlayerIds)) {
+          $found = false;
+          $rankingsMethod = 'getRankings' . $teamLetter;
+          /** @var Ranking[] $rankings */
+          $rankings = $game->getMatch()->$rankingsMethod();
+          foreach ($rankings as $ranking) {
+            foreach ($ranking->getTeams() as $team) {
+              if ($team->getMemberships()->exists(
+                function (/** @noinspection PhpUnusedParameterInspection */
+                  $_, TeamMembershipInterface $m) use ($id) {
+                  return $m->getPlayer()->getId() == $id;
+                }
+              )) {
+                $found = true;
+                break;
               }
-            )) {
-              $found = true;
+            }
+            if ($found) {
               break;
             }
           }
-          if ($found) {
-            break;
+          if (!$found) {
+            throw new ReferenceException($id, "player id in players " . $teamLetter . " in game " .
+              $game->getGameNumber() . " of match " . $match->getMatchNumber() . " of phase " . $phase->getPhaseNumber() .
+              " of competition " . $phase->getCompetition()->getName() . ", which is not in the players lists of the "
+              . "teams of team " . $teamLetter);
           }
+          $players->set($id, $player);
         }
-        if (!$found) {
-          throw new ReferenceException($id, "player id in players " . $teamLetter . " in game " .
-            $game->getGameNumber() . " of match " . $match->getMatchNumber() . " of phase " . $phase->getPhaseNumber() .
-            " of competition " . $phase->getCompetition()->getName() . ", which is not in the players lists of the "
-            . "teams of team " . $teamLetter);
-        }
-        $players->set($id, $this->getEntityManager()->find(Player::class, $id));
       }
       $otherPlayerIds[$id] = true;
       $internalPlayerIds[$id] = true;
@@ -980,12 +999,22 @@ class TournamentController extends BaseController
             'the player list of team ' . $team->getName());
         }
       } else {
-        $membership = new TeamMembership();
         /** @var Player $player */
         $player = $this->getEntityManager()->find(Player::class, $playerId);
-        $membership->setPlayer($player);
-        $this->getEntityManager()->persist($membership);
-        $membership->setTeam($team);
+        $player = $player->getPlayer();
+        $playerId = $player->getId();
+        if (array_key_exists($playerId, $playerIds)) {
+          if ($playerIds[$playerId] === null) {
+            //duplicate player!
+            throw new DuplicateException($playerId, 'player id',
+              'the player list of team ' . $team->getName());
+          }
+        } else {
+          $membership = new TeamMembership();
+          $membership->setPlayer($player);
+          $this->getEntityManager()->persist($membership);
+          $membership->setTeam($team);
+        }
       }
       $playerIds[$playerId] = null;
     }

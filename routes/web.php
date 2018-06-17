@@ -276,4 +276,11 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'as' => 'addPlayers',
     'uses' => 'PlayerController@addPlayers'
   ]);
+
+  $router->group(['middleware' => 'admin', 'prefix' => 'admin'], function () use ($router) {
+    $router->post('mergePlayers', [
+      'as' => 'mergePlayers',
+      'uses' => 'AdminController@mergePlayers'
+    ]);
+  });
 });

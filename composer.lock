@@ -4,7 +4,7 @@
       "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-  "content-hash": "112365803c5b8bd58d9998cd8b6d079c",
+  "content-hash": "adb74a84b95a0812541f20fa983af460",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3665,16 +3665,16 @@
         },
         {
             "name": "tfboe/fm-lib",
-          "version": "v0.1.21",
+          "version": "v0.1.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-              "reference": "500671ab734b3ae31f0195cee3ff2b93f25c4194"
+              "reference": "4bca05d9572924deb568b8202033dbdd1988a9d4"
             },
             "dist": {
                 "type": "zip",
-              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/500671ab734b3ae31f0195cee3ff2b93f25c4194",
-              "reference": "500671ab734b3ae31f0195cee3ff2b93f25c4194",
+              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/4bca05d9572924deb568b8202033dbdd1988a9d4",
+              "reference": "4bca05d9572924deb568b8202033dbdd1988a9d4",
                 "shasum": ""
             },
             "require": {
@@ -3713,7 +3713,7 @@
                 "foosball",
                 "manager"
             ],
-          "time": "2018-06-11T07:04:56+00:00"
+          "time": "2018-06-17T18:33:35+00:00"
         },
         {
             "name": "tymon/jwt-auth",
@@ -4260,16 +4260,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-          "version": "1.8.0",
+          "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-              "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
+              "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-              "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
-              "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
+              "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+              "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
                 "shasum": ""
             },
             "require": {
@@ -4304,7 +4304,7 @@
                 "object",
                 "object graph"
             ],
-          "time": "2018-05-29T17:25:09+00:00"
+          "time": "2018-06-11T23:09:50+00:00"
         },
         {
             "name": "ocramius/package-versions",
