@@ -348,7 +348,6 @@ class TournamentController extends BaseController
     $this->replaceCompetitions($request, $tournament);
 
     $rss->adaptOpenSyncFromValues($tournament, $earliestInfluence);
-    $rss->recalculateRankingSystems();
     $this->getEntityManager()->flush();
 
     return $type;

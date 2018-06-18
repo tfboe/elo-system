@@ -121,5 +121,10 @@ class RankingSystemTest extends AuthenticatedTestCase
       $tournament->getCompetitions()['Test Competition']->getPhases()[1]->getMatches()[1]->getGames()[1]
         ->getRankingSystems()->map($idMap)->toArray());
   }
+
+  public function testGetRankings()
+  {
+    $this->json('GET', '/rankings')->assertResponseOk();
+  }
 //</editor-fold desc="Public Methods">
 }

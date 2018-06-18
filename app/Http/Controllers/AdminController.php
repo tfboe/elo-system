@@ -15,11 +15,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 use Tfboe\FmLib\Service\PlayerServiceInterface;
+use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
 class AdminController extends BaseController
 {
 //<editor-fold desc="Public Methods">
-  public function mergePlayers(Request $request, EntityManagerInterface $em, PlayerServiceInterface $ps): JsonResponse
+  public function mergePlayers(Request $request, EntityManagerInterface $em, PlayerServiceInterface $ps,
+                               RankingSystemServiceInterface $rs): JsonResponse
   {
     $this->validate($request, [
       'player1' => 'required|exists:App\Entity\Player,id',
@@ -33,6 +35,10 @@ class AdminController extends BaseController
     $player2 = $this->getEntityManager()->find(Player::class, $request->input('player2'));
 
     $result = $ps->mergePlayers($player1, $player2);
+
+    if ($result !== true) {
+      return response()->json($result);
+    }
 
     $player2->setMergedInto($player1);
 

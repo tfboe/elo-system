@@ -9,7 +9,11 @@
 namespace Tests\Integration;
 
 
+use App\Entity\Competition;
 use App\Entity\Player;
+use App\Entity\Team;
+use App\Entity\Tournament;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 use Tfboe\FmLib\Entity\PlayerInterface;
 
 class AdminTest extends AuthenticatedTestCase
@@ -42,6 +46,34 @@ class AdminTest extends AuthenticatedTestCase
     self::assertEquals($players[0]->getId(), $players[1]->getMergedInto()->getId());
     self::assertEmpty($players[1]->getMergedPlayers());
     self::assertCount(2, $players[0]->getMergedPlayers());
+  }
+
+  public function testUnsuccessfullMerge()
+  {
+    /** @var Tournament $tournament */
+    $tournament = entity(Tournament::class)->create([
+      'userIdentifier' => 't1',
+      'creator' => $this->user,
+      'startTime' => new \DateTime('2017-12-30 15:00', new \DateTimeZone('Europe/Vienna')),
+    ]);
+    /** @var Competition[] $competitions */
+    $competition = entity(Competition::class)->create(['name' => 'Test Competition']);
+    $competition->setTournament($tournament);
+
+    /** @var Team[] $teams */
+    $teams = $this->createTeams(2);
+    $teams[0]->setCompetition($competition);
+    $teams[1]->setCompetition($competition);
+
+    EntityManager::flush();
+
+    /** @var Player[] $players */
+    $this->jsonAuth("POST", "/admin/mergePlayers", [
+      'player1' => $teams[0]->getMemberships()->first()->getPlayer()->getId(),
+      'player2' => $teams[1]->getMemberships()->first()->getPlayer()->getId()
+    ])->seeStatusCode(200);
+    self::assertEquals("Player 1 and player 2 both attended the tournament " . $tournament->getName() .
+      "(30.12.2017 15:00, id='1b68126e-7661-499d-a66a-7c98b9fb933e')", json_decode($this->response->content()));
   }
 //</editor-fold desc="Public Methods">
 
