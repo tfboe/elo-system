@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
+use LaravelDoctrine\Extensions\BeberleiExtensionsServiceProvider;
 use LaravelDoctrine\Migrations\MigrationsServiceProvider;
 use Tfboe\FmLib\Providers\FmLibServiceProvider;
 
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
    */
   public function register()
   {
+    $this->app->register(BeberleiExtensionsServiceProvider::class);
     $this->app->register(FmLibServiceProvider::class);
 
     $this->app->singleton(

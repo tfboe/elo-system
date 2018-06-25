@@ -22,9 +22,10 @@
     "irazasyed/jwt-auth-guard": "dev-master",
     "laravel-doctrine/orm": "^1.2.12",
     "laravel-doctrine/extensions": "^1.0.12",
-    "gedmo/doctrine-extensions": "^2.4.30",
+    "gedmo/doctrine-extensionsmv ": "^2.4.30",
     "tfboe/fm-lib": "0.1.28",
-    "palanik/lumen-cors": "dev-master"
+    "palanik/lumen-cors": "dev-master",
+    "beberlei/DoctrineExtensions": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
