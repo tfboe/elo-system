@@ -29,6 +29,12 @@ class Tournament extends TournamentHierarchyEntity implements TournamentInterfac
    * @var string
    */
   private $userIdentifier;
+
+  /**
+   * @ORM\Column(type="boolean")
+   * @var bool
+   */
+  private $finished;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -40,6 +46,24 @@ class Tournament extends TournamentHierarchyEntity implements TournamentInterfac
   {
     parent::__construct();
     $this->init();
+  }
+
+  /**
+   * @return bool
+   */
+  public function isFinished(): bool
+  {
+    return $this->finished;
+  }
+
+  /**
+   * @param bool $finished
+   * @return $this|Tournament
+   */
+  public function setFinished(bool $finished): Tournament
+  {
+    $this->finished = $finished;
+    return $this;
   }
 //</editor-fold desc="Constructor">
 

@@ -32,6 +32,11 @@ $router->get('rankings', [
   'as' => 'rankings', 'uses' => 'RankingController@rankings'
 ]);
 
+$router->get('tournamentProfile/{id}', [
+  'as' => 'tournamentProfile', 'uses' => 'RankingController@tournamentProfile'
+]);
+
+
 $router->group(['middleware' => 'auth:api'], function () use ($router) {
   /**
    * @api {post} /createOrReplaceTournament Create or Replace a Tournament
