@@ -122,7 +122,7 @@ class RankingController extends BaseController
         $tInfo['name'] = $tournament->getName();
         $tInfo['start'] = $tournament->getStartTime() === null ? null : $tournament->getStartTime()->getTimestamp();
         $team = $this->getTeam($isTeamA ? $match->getRankingsA() : $match->getRankingsB(), $player);
-        $tInfo['ownRank'] = (!$tournament->isFinished()) ? null : $team === null ? null : $team->getRank();
+        $tInfo['ownRank'] = (!$tournament->isFinished()) ? null : ($team === null ? null : $team->getRank());
         $partner = $this->getPartnerFromTeam($team, $player);
         $tInfo['partner'] = $team->getName() ?:
           ($partner !== null ? $partner->getFirstName() . " " . $partner->getLastName() : null);

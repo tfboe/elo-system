@@ -110,6 +110,7 @@ class TournamentController extends BaseController
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string', 'default' => ''],
       'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True],
+      'finished' => ['validation' => 'boolean', 'default' => true],
       'startTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
         'transformer' => $this->datetimetzTransformer(), 'default' => null],
       'endTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
