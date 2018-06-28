@@ -39,7 +39,7 @@ $app->withFacades();
 
 $app->singleton(
   Illuminate\Contracts\Console\Kernel::class,
-  \Laravel\Lumen\Console\Kernel::class
+  App\Console\Kernel::class
 );
 
 /*

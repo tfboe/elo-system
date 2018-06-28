@@ -45,11 +45,8 @@ class RankingController extends BaseController
    * @param RankingSystemServiceInterface $rss
    * @return JsonResponse
    */
-  public function rankings(RankingSystemServiceInterface $rss): JsonResponse
+  public function rankings(): JsonResponse
   {
-    ignore_user_abort(true);
-    $rss->recalculateRankingSystems();
-    $this->getEntityManager()->flush();
     $qb = $this->getEntityManager()->createQueryBuilder();
     $result = $qb->from(RankingSystemListEntry::class, 'rse')
       ->select('rse.points AS points')
@@ -70,12 +67,8 @@ class RankingController extends BaseController
     return response()->json($result);
   }
 
-  public function tournamentProfile(Request $request, string $id, RankingSystemServiceInterface $rss,
-                                    LoadingServiceInterface $ls): JsonResponse
+  public function tournamentProfile(Request $request, string $id, LoadingServiceInterface $ls): JsonResponse
   {
-    ignore_user_abort(true);
-    $rss->recalculateRankingSystems();
-    $this->getEntityManager()->flush();
     /** @var Player $player */
     $player = $this->getEntityManager()->find(Player::class, $id);
     $qb = $this->getEntityManager()->createQueryBuilder();

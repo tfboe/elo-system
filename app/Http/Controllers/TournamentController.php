@@ -30,6 +30,7 @@ use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\Http\Controllers\BaseController;
+use Tfboe\FmLib\Service\AsyncExecuterServiceInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
 /**
@@ -88,6 +89,7 @@ class TournamentController extends BaseController
    *
    * @param Request $request the http request
    * @param RankingSystemServiceInterface $rss ranking system service
+   * @param AsyncExecuterServiceInterface $aes async executer service
    * @return JsonResponse
    * @throws DuplicateException two competitions have the same name or a team start number is occurring twice or
    *                            a player is specified twice for a team or two phases of a competition have the same
@@ -103,7 +105,8 @@ class TournamentController extends BaseController
    * @throws UnorderedPhaseNumberException
    * @throws GameHasMissingModes At least one game has a missing mode
    */
-  public function createOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): JsonResponse
+  public function createOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss,
+                                            AsyncExecuterServiceInterface $aes): JsonResponse
   {
     $this->tournamentSpecification = [
       'userIdentifier' => ['validation' => 'required|string'],
@@ -210,7 +213,11 @@ class TournamentController extends BaseController
     //check if each game has a descendant for each mode
     $this->checkModes($request);
 
-    return response()->json(['type' => $this->doCreateOrReplaceTournament($request, $rss)]);
+    $result = $this->doCreateOrReplaceTournament($request, $rss);
+    //start process to recalculate rankings
+    $aes->runBashCommand('php ../artisan recompute-rankings');
+    //$aes->runBashCommand('pwd >> /tmp/test');
+    return response()->json(['type' => $result]);
   }
 //</editor-fold desc="Public Methods">
 

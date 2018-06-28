@@ -18,5 +18,6 @@ return [
     'Tfboe\\FmLib\\Entity\\TournamentInterface' => 'App\\Entity\\Tournament',
     'Tfboe\\FmLib\\Entity\\UserInterface' => 'App\\Entity\\User',
     'Tfboe\\FmLib\\Entity\\TeamMembershipInterface' => 'App\\Entity\\TeamMembership',
+    'Tfboe\\FmLib\\Entity\\LastRecalculationInterface' => 'App\\Entity\\LastRecalculation',
   ]
 ];

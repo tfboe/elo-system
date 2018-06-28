@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-  "content-hash": "396050499cda4a398a36e558d10e7cbf",
+  "content-hash": "ab89075b3fa0473c327b275b22f982e3",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -3727,16 +3727,16 @@
         },
         {
             "name": "tfboe/fm-lib",
-          "version": "v0.1.29",
+          "version": "v0.1.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-              "reference": "898de0ac456d273d2be5d8953bcfa3897e190975"
+              "reference": "535c695eaf206f28f1c8011a1d9635fa4704749a"
             },
             "dist": {
                 "type": "zip",
-              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/898de0ac456d273d2be5d8953bcfa3897e190975",
-              "reference": "898de0ac456d273d2be5d8953bcfa3897e190975",
+              "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/535c695eaf206f28f1c8011a1d9635fa4704749a",
+              "reference": "535c695eaf206f28f1c8011a1d9635fa4704749a",
                 "shasum": ""
             },
             "require": {
@@ -3775,7 +3775,7 @@
                 "foosball",
                 "manager"
             ],
-          "time": "2018-06-26T21:43:43+00:00"
+          "time": "2018-06-28T14:43:16+00:00"
         },
         {
             "name": "tymon/jwt-auth",
