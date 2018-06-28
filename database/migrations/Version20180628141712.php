@@ -26,7 +26,7 @@ class Version20180628141712 extends AbstractMigration
     $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
     $this->addSql('CREATE TABLE elo_lastRecalculation (id INT AUTO_INCREMENT NOT NULL, version INT NOT NULL, start_time DATETIME DEFAULT NULL, end_time DATETIME DEFAULT NULL, start_timezone VARCHAR(255) NOT NULL, end_timezone VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-    $this->addSql('INSERT INTO elo_lastRecalculcation (version) (0)');
+    $this->addSql('INSERT INTO elo_lastRecalculation (version) VALUES (0)');
   }
 //</editor-fold desc="Public Methods">
 }

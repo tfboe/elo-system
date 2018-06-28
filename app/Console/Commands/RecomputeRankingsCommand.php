@@ -37,7 +37,6 @@ class RecomputeRankingsCommand extends Command
    */
   public function handle(RankingSystemServiceInterface $rss)
   {
-    sleep(10);
     $rss->recalculateRankingSystems();
   }
 //</editor-fold desc="Public Methods">

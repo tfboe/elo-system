@@ -215,7 +215,7 @@ class TournamentController extends BaseController
 
     $result = $this->doCreateOrReplaceTournament($request, $rss);
     //start process to recalculate rankings
-    $aes->runBashCommand('php ../artisan recompute-rankings');
+    $aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan recompute-rankings');
     //$aes->runBashCommand('pwd >> /tmp/test');
     return response()->json(['type' => $result]);
   }
