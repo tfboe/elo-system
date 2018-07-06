@@ -62,6 +62,27 @@ class RankingController extends BaseController
       ->where('l.current = 1')
       ->groupBy('rse.id')
       ->getQuery()->getResult();
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    $dateMinusThreeMonth = date("Y-m-d H:i:s", strtotime("-3 months"));
+    $lastThreeMonthChanges = $qb->from(RankingSystemChange::class, 'c')
+      ->select('SUM(c.pointsChange) AS change')
+      ->addSelect('IDENTITY(c.player) AS player_id')
+      ->innerJoin('c.hierarchyEntity', 'e')
+      ->where($qb->expr()->gte('e.startTime', "'" . $dateMinusThreeMonth . "'"))
+      ->andWhere('c.pointsChange < 1200')
+      ->groupBy('player_id')
+      ->getQuery()->getResult();
+
+    $idMap = [];
+    for ($i = 0; $i < count($result); $i++) {
+      $idMap[$result[$i]['playerId']] = $i;
+      $result[$i]['threeMonthChange'] = 0;
+    }
+    foreach ($lastThreeMonthChanges as $change) {
+      if (array_key_exists($change['player_id'], $idMap)) {
+        $result[$idMap[$change['player_id']]]['threeMonthChange'] = floatval($change['change']);
+      }
+    }
 
 
     return response()->json($result);
