@@ -20,8 +20,9 @@ use Tfboe\FmLib\Entity\PlayerInterface;
  * Class Player
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="elo_players",indexes={@ORM\Index(name="unique_names_birthday",
- *   columns={"first_name","last_name","birthday"})})
+ * @ORM\Table(name="elo_players",indexes={
+ *   @ORM\Index(name="unique_names_birthday",columns={"first_name","last_name","birthday"}),
+ *   @ORM\Index(name="itsf_license_number",columns={"itsf_license_number"})})
  */
 class Player extends BaseEntity implements PlayerInterface
 {
@@ -40,6 +41,12 @@ class Player extends BaseEntity implements PlayerInterface
    * @var Player|null
    */
   private $mergedInto;
+
+  /**
+   * @ORM\Column(type="integer", nullable=true)
+   * @var int|null
+   */
+  private $itsfLicenseNumber;
 
   /**
    * Player constructor.
@@ -63,6 +70,24 @@ class Player extends BaseEntity implements PlayerInterface
   public function getMergedInto(): ?Player
   {
     return $this->mergedInto;
+  }
+
+  /**
+   * @return int|null
+   */
+  public function getItsfLicenseNumber(): ?int
+  {
+    return $this->itsfLicenseNumber;
+  }
+
+  /**
+   * @param int|null $itsfLicenseNumber
+   * @return $this|Player
+   */
+  public function setItsfLicenseNumber(?int $itsfLicenseNumber): Player
+  {
+    $this->itsfLicenseNumber = $itsfLicenseNumber;
+    return $this;
   }
 
   /**

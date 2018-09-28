@@ -2319,6 +2319,7 @@ class TournamentTest extends AuthenticatedTestCase
       'gameMode' => GameMode::CLASSIC,
       'startTime' => new \DateTime('2017-12-30 15:00', new \DateTimeZone('Europe/Vienna')),
       'endTime' => new \DateTime('2017-12-31 18:35', new \DateTimeZone('Europe/Vienna')),
+      'finished' => true,
     ]);
     /** @var Competition[] $competitions */
     $competitions = [

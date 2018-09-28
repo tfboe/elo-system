@@ -197,7 +197,8 @@ class PlayerTest extends AuthenticatedTestCase
   private function getResultArray(Player $player)
   {
     return ['firstName' => $player->getFirstName(), 'lastName' => $player->getLastName(),
-      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getId()];
+      'birthday' => $player->getBirthday()->format('Y-m-d'), 'id' => $player->getId(),
+      'itsfLicenseNumber' => $player->getItsfLicenseNumber()];
   }
 //</editor-fold desc="Private Methods">
 }

@@ -55,6 +55,7 @@ class AdminTest extends AuthenticatedTestCase
       'userIdentifier' => 't1',
       'creator' => $this->user,
       'startTime' => new \DateTime('2017-12-30 15:00', new \DateTimeZone('Europe/Vienna')),
+      'finished' => true
     ]);
     /** @var Competition[] $competitions */
     $competition = entity(Competition::class)->create(['name' => 'Test Competition']);

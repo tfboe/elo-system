@@ -267,6 +267,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
    * @apiParam {string{2..}} -.firstName the first name of the player to add
    * @apiParam {string{2..}} -.lastName the last name of the player to add
    * @apiParam {date} -.birthday the birthday of the player to add
+   * @apiParam {integer} [-.itsfLicenseNumber] the itsf license number of the player to add
    *
    * @apiError ValidationException A first name is missing or too short (at least 2 characters) or a last name is
    *                               missing or too short (at least 2 characters) or a birthday is missing or does not
@@ -284,6 +285,33 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'middleware' => 'can:create,App\Entity\Player',
     'as' => 'addPlayers',
     'uses' => 'PlayerController@addPlayers'
+  ]);
+
+  /**
+   * @api {post} /updatePlayers Updates players in the database
+   * @apiUse AuthenticatedRequest
+   * @apiVersion 0.1.0
+   * @apiDescription Updates players in the database. Checks if the changed values of the players already exist for
+   *                 another player and if they do returns an error without adding any players.
+   * @apiName PostUpdatePlayers
+   * @apiGroup Player
+   *
+   * @apiParam {Object[]} - list of players to update
+   * @apiParam {integer{>=1}} -.id the id of the player to update
+   * @apiParam {string{2..}} [-.firstName] the first name of the player to update
+   * @apiParam {string{2..}} [-.lastName] the last name of the player to update
+   * @apiParam {date} [-.birthday] the birthday of the player to update
+   * @apiParam {integer} [-.itsfLicenseNumber] the itsf license number of the player to update
+   *
+   * @apiError DuplicateException  A player id is listed twice.
+   * @apiError PlayerAlreadyExists The changed values of at least one player already exist for another player.
+   *
+   * @apiSuccess {true} - Success
+   */
+  $router->post('updatePlayers', [
+    'middleware' => 'can:create,App\Entity\Player',
+    'as' => 'updatePlayers',
+    'uses' => 'PlayerController@updatePlayers'
   ]);
 
   $router->group(['middleware' => 'admin', 'prefix' => 'admin'], function () use ($router) {

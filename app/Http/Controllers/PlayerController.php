@@ -13,6 +13,7 @@ namespace App\Http\Controllers;
 use App\Entity\Player;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tfboe\FmLib\Exceptions\PlayerAlreadyExists;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 
@@ -38,6 +39,7 @@ class PlayerController extends BaseController
       '*.firstName' => ['validation' => 'required|string|min:2'],
       '*.lastName' => ['validation' => 'required|string|min:1'],
       '*.birthday' => ['validation' => 'required|date'],
+      '*.itsfLicenseNumber' => ['validation' => 'integer|min:1']
     ];
 
     $this->validateBySpecification($request, $specification);
@@ -45,6 +47,8 @@ class PlayerController extends BaseController
     $existingPlayers = [];
     $input = $request->input();
     $players = [];
+    /** @var Player[] $playerEntities */
+    $playerEntities = [];
     $inputPlayerData = [];
     foreach ($input as $player) {
       //ignore duplicate players
@@ -57,14 +61,32 @@ class PlayerController extends BaseController
       if (!array_key_exists($player['birthday'], $inputPlayerData[$player['firstName']][$player['lastName']])) {
         $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = true;
         $player['birthday'] = new \DateTime($player['birthday']);
+        $itsfLicenseNumber = null;
+        if (array_key_exists('itsfLicenseNumber', $player)) {
+          $itsfLicenseNumber = $player['itsfLicenseNumber'];
+        }
         //check if player already exists
-        $result = $this->getEntityManager()->getRepository(Player::class)->findBy($player);
+        $result = $this->getEntityManager()->getRepository(Player::class)
+          ->findBy($this->extract($player, ['firstName', 'lastName', 'birthday']));
         if (count($result) > 0) {
           $existingPlayers[] = $result[0];
         } else {
-          $p = $this->setFromSpecification(new Player(), $specification, $player);
-          $this->getEntityManager()->persist($p);
-          $players[] = $p;
+          $alreadyExists = false;
+          if ($itsfLicenseNumber !== null) {
+            $result = $this->getEntityManager()->getRepository(Player::class)
+              ->findBy(['itsfLicenseNumber' => $itsfLicenseNumber]);
+            if (count($result) > 0) {
+              $existingPlayers[] = $result[0];
+              $alreadyExists = true;
+            }
+          }
+          if (!$alreadyExists) {
+            /** @var Player $p */
+            $p = $this->setFromSpecification(new Player(), $specification, $player);
+            $this->getEntityManager()->persist($p);
+            $players[] = $player;
+            $playerEntities[] = $p;
+          }
         }
       }
     }
@@ -73,10 +95,78 @@ class PlayerController extends BaseController
     }
     $this->getEntityManager()->flush();
 
-    return response()->json(array_map(function (Player $p) {
-      return ["firstName" => $p->getFirstName(), "lastName" => $p->getLastName(), "id" => $p->getId(),
-        "birthday" => $p->getBirthday()->format("Y-m-d")];
-    }, $players));
+    for ($i = 0; $i < count($playerEntities); $i++) {
+      $players[$i]['id'] = $playerEntities[$i]->getId();
+    }
+
+    return response()->json($players);
+  }
+
+  /**
+   * @param Request $request
+   * @return JsonResponse
+   * @throws DuplicateException
+   * @throws PlayerAlreadyExists
+   */
+  public function updatePlayers(Request $request): JsonResponse
+  {
+    $specification = [
+      '*.id' => ['validation' => 'required|exists:App\Entity\Player,id'],
+      '*.firstName' => ['validation' => 'string|min:2'],
+      '*.lastName' => ['validation' => 'string|min:1'],
+      '*.birthday' => ['validation' => 'date'],
+      '*.itsfLicenseNumber' => ['validation' => 'integer|min:1']
+    ];
+
+    $this->validateBySpecification($request, $specification);
+
+    $input = $request->input();
+    $alreadyExistingPlayers = [];
+    $inputPlayerIds = [];
+    foreach ($input as $player) {
+      //throw error on duplicate updates
+      if (array_key_exists($player['id'], $inputPlayerIds)) {
+        throw new DuplicateException($player['id'], 'playerId', 'updatePlayers');
+      }
+      $inputPlayerData[$player['id']] = true;
+      if (array_key_exists('birthday', $player)) {
+        $player['birthday'] = new \DateTime($player['birthday']);
+      }
+
+      /** @var Player $p */
+      $p = $this->getEntityManager()->find(Player::class, $player['id']);
+      unset($player['id']);
+      //check if no other player contains the same itsfLicenseNumber or firstName/lastName/birthday
+      if (array_key_exists('itsfLicenseNumber', $player) &&
+        $player['itsfLicenseNumber'] !== $p->getItsfLicenseNumber()) {
+        $p2 = $this->getEntityManager()->getRepository(Player::class)
+          ->findOneBy(['itsfLicenseNumber' => $player['itsfLicenseNumber']]);
+        if ($p2 !== null) {
+          $alreadyExistingPlayers[$p->getId()] = $p2;
+        }
+      }
+      if ((array_key_exists('firstName', $player) && $player['firstName'] != $p->getFirstName()) ||
+        (array_key_exists('lastName', $player) && $player['lastName'] != $p->getLastName()) ||
+        (array_key_exists('birthday', $player) && $player['birthday'] != $p->getBirthday())
+      ) {
+        $p2 = $this->getEntityManager()->getRepository(Player::class)
+          ->findOneBy(['firstName' => $player['firstName'], 'lastName' => $player['lastName'],
+            'birthday' => $player['birthday']]);
+        if ($p2 !== null && $p2->getId() !== $p->getId()) {
+          $alreadyExistingPlayers[$p->getId()] = $p2;
+        }
+      }
+      if (!array_key_exists($p->getId(), $alreadyExistingPlayers)) {
+        $this->setFromSpecification($p, $specification, $player);
+      }
+    }
+
+    if (count($alreadyExistingPlayers) > 0) {
+      throw new PlayerAlreadyExists($alreadyExistingPlayers);
+    }
+    $this->getEntityManager()->flush();
+
+    return response()->json(true);
   }
 
   /**
@@ -88,9 +178,10 @@ class PlayerController extends BaseController
   public function searchPlayers(Request $request): JsonResponse
   {
     $specification = [
-      '*.firstName' => ['validation' => 'required|string|min:2'],
-      '*.lastName' => ['validation' => 'required|string|min:1'],
+      '*.firstName' => ['validation' => 'string|min:2'],
+      '*.lastName' => ['validation' => 'string|min:1'],
       '*.birthday' => ['validation' => 'date'],
+      '*.itsfLicenseNumber' => ['validation' => 'integer|min:1|required_without:*.firstName,*.lastName']
     ];
 
     $this->validateBySpecification($request, $specification);
@@ -98,21 +189,42 @@ class PlayerController extends BaseController
     $results = [];
     foreach ($request->input() as $player) {
       $criteria = $player;
-      if (array_key_exists('birthday', $criteria)) {
+      /** @var Player[] $result */
+      $result = [];
+      if (array_key_exists('itsfLicenseNumber', $player)) {
+        $result = $this->getEntityManager()->getRepository(Player::class)
+          ->findBy($this->extract($player, ['itsfLicenseNumber']));
+      }
+      if (array_key_exists('firstName', $player) && array_key_exists('lastName', $player) &&
+        array_key_exists('birthday', $player)) {
+        $search = $this->extract($player, ['firstName', 'lastName']);
+        $search['birthday'] = new \DateTime($player['birthday']);
+        $result = array_merge($result, $this->getEntityManager()->getRepository(Player::class)->findBy($search));
         $criteria['birthday'] = new \DateTime($criteria['birthday']);
       }
-      /** @var Player[] $result */
-      $result = $this->getEntityManager()->getRepository(Player::class)->findBy($criteria);
       $found = [];
       foreach ($result as $p) {
         // criteria (findBy)
         $found[] = ['id' => $p->getId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
-          'birthday' => $p->getBirthday()->format('Y-m-d')];
+          'birthday' => $p->getBirthday()->format('Y-m-d'), 'itsfLicenseNumber' => $p->getItsfLicenseNumber()];
       }
       $results[] = ['search' => $player, 'found' => $found];
     }
 
     return response()->json($results);
+  }
+
+  /**
+   * @param mixed[] $o
+   * @param string[] $keys
+   */
+  private function extract(array $o, array $keys)
+  {
+    $res = [];
+    foreach ($keys as $key) {
+      $res[$key] = $o[$key];
+    }
+    return $res;
   }
 //</editor-fold desc="Public Methods">
 }

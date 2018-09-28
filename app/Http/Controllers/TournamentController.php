@@ -126,7 +126,7 @@ class TournamentController extends BaseController
     $this->competitionSpecification = [
       'competitions.*.name' => ['validation' => 'required|string|distinct'],
       'competitions.*.teams' => ['validation' => 'present|array', 'ignore' => True],
-      'competitions.*.phases' => ['validation' => 'required|array|min:1', 'ignore' => True]
+      'competitions.*.phases' => ['validation' => 'array', 'ignore' => True]
     ];
     $this->competitionSpecification = array_merge($this->competitionSpecification,
       $this->categoriesSpecifications('competitions.*.'),
