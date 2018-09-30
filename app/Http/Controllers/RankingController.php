@@ -163,6 +163,7 @@ class RankingController extends BaseController
       $info['gameNumber'] = $game->getGameNumber();
       $info['phaseNumber'] = $phase->getPhaseNumber();
       $info['competitionIdentifier'] = $phase->getCompetition()->getLocalIdentifier();
+      $info['competitionName'] = $phase->getCompetition()->getName();
       $info['start'] = $game->getStartTime() === null ? null : $game->getStartTime()->getTimestamp();
       $result[$tournamentIdMap[$tournament->getId()]]["games"][] = $info;
     }

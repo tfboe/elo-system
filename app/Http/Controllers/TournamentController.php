@@ -15,6 +15,7 @@ use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\Tournament;
 use App\Exceptions\GameHasMissingModes;
+use App\Exceptions\ManualValidationException;
 use Doctrine\Common\Collections\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 use Tfboe\FmLib\Service\AsyncExecuterServiceInterface;
+use Tfboe\FmLib\Service\LoadingServiceInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
 /**
@@ -84,6 +86,130 @@ class TournamentController extends BaseController
 
 //<editor-fold desc="Public Methods">
 
+  private function checkRequired($data, $property, $dataName)
+  {
+    $this->checkPresent($data, $property, $dataName);
+    if ($data[$property] === "" || (is_array($data[$property]) && count($data[$property]) === 0)) {
+      throw new ManualValidationException("The property $property in $dataName must be non-empty");
+    }
+  }
+
+  private function checkPresent($data, $property, $dataName)
+  {
+    if (!array_key_exists($property, $data)) {
+      throw new ManualValidationException("The property $property is required in $dataName");
+    }
+  }
+
+  private function checkString($data, $property, $dataName)
+  {
+    if (array_key_exists($property, $data)) {
+      if (!is_string($data[$property])) {
+        throw new ManualValidationException("The property $property in $dataName must be a string");
+      }
+    }
+  }
+
+  private function checkInteger($data, $property, $dataName, $min = null)
+  {
+    if (array_key_exists($property, $data)) {
+      if (!is_integer($data[$property])) {
+        throw new ManualValidationException("The property $property in $dataName must be an integer");
+      }
+      if ($min !== null && $data[$property] < $min) {
+        throw new ManualValidationException(
+          "The property $property in $dataName must be at least $min");
+      }
+    }
+  }
+
+  private function checkBoolean($data, $property, $dataName)
+  {
+    if (array_key_exists($property, $data)) {
+      if (!is_bool($data[$property])) {
+        throw new ManualValidationException("The property $property in $dataName must be a boolean");
+      }
+    }
+  }
+
+  private function checkArray($data, $property, $dataName, $minElements = 0)
+  {
+    if (array_key_exists($property, $data)) {
+      if (!is_array($data[$property])) {
+        throw new ManualValidationException("The property $property in $dataName must be an array");
+      }
+      if (count($data[$property]) < $minElements) {
+        throw new ManualValidationException(
+          "The property $property in $dataName must be an array with at least $minElements elements");
+      }
+    }
+  }
+
+  private function checkDate($data, $property, $dataName, $format = null)
+  {
+    if (array_key_exists($property, $data)) {
+      if ($format === null) {
+        $format = $this->getDatetimetzFormat();
+      }
+      if (!is_string($data[$property])) {
+        throw new ManualValidationException("The property $property in $dataName must be a string representing a date");
+      }
+      if (\DateTime::createFromFormat($format, $data[$property]) === false) {
+        throw new ManualValidationException("The property $property in $dataName must be a date");
+      }
+    }
+  }
+
+  private function checkEnum($data, $property, $dataName, $enumClass)
+  {
+    if (array_key_exists($property, $data)) {
+      $this->checkString($data, $property, $dataName);
+      if (!call_user_func($enumClass . '::isValidName', $data[$property], true)) {
+        throw new ManualValidationException(
+          "The property $property in $dataName must be an enum value of class $enumClass");
+      }
+    }
+  }
+
+  private function checkCategories($data, $dataName)
+  {
+    $this->checkEnum($data, 'gameMode', $dataName, GameMode::class);
+    $this->checkEnum($data, 'organizingMode', $dataName, OrganizingMode::class);
+    $this->checkEnum($data, 'scoreMode', $dataName, ScoreMode::class);
+    $this->checkEnum($data, 'table', $dataName, Table::class);
+    $this->checkEnum($data, 'teamMode', $dataName, TeamMode::class);
+  }
+
+  private function checkTimes($data, $dataName)
+  {
+    $this->checkDate($data, 'startTime', $dataName);
+    $this->checkDate($data, 'endTime', $dataName);
+  }
+
+  private function checkDistinct($data, $property, $dataName, &$otherValues)
+  {
+    if (array_key_exists($property, $data)) {
+      if (array_key_exists($data[$property], $otherValues)) {
+        throw new ManualValidationException(
+          "The property $property in $dataName must be distinct");
+      } else {
+        $otherValues[$data[$property]] = true;
+      }
+    }
+  }
+
+  private function checkResults($data, $dataName)
+  {
+    $this->checkRequired($data, 'resultA', $dataName);
+    $this->checkInteger($data, 'resultA', $dataName, 0);
+    $this->checkRequired($data, 'resultB', $dataName);
+    $this->checkInteger($data, 'resultB', $dataName, 0);
+    $this->checkRequired($data, 'result', $dataName);
+    $this->checkEnum($data, 'result', $dataName, Result::class);
+    $this->checkRequired($data, 'played', $dataName);
+    $this->checkBoolean($data, 'played', $dataName);
+  }
+
   /**
    * creates or replaces an existing tournament
    *
@@ -106,18 +232,127 @@ class TournamentController extends BaseController
    * @throws GameHasMissingModes At least one game has a missing mode
    */
   public function createOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss,
-                                            AsyncExecuterServiceInterface $aes): JsonResponse
+                                            AsyncExecuterServiceInterface $aes,
+                                            LoadingServiceInterface $ls): JsonResponse
   {
+    //manual validation
+    $input = $request->input();
+    $current = "request body";
+    $this->checkRequired($input, 'userIdentifier', $current);
+    $this->checkString($input, 'userIdentifier', $current);
+    $this->checkRequired($input, 'name', $current);
+    $this->checkString($input, 'name', $current);
+    $this->checkString($input, 'tournamentListId', $current);
+    $this->checkRequired($input, 'competitions', $current);
+    $this->checkArray($input, 'competitions', $current, 1);
+    $this->checkBoolean($input, 'finished', $current);
+    $this->checkCategories($input, $current);
+    $this->checkTimes($input, $current);
+
+    $competitionNames = [];
+    $playerIds = [];
+    foreach ($input['competitions'] as $key => $competition) {
+      $current = "competitions[$key]";
+      $this->checkRequired($competition, 'name', $current);
+      $this->checkString($competition, 'name', $current);
+      $this->checkDistinct($competition, 'name', $current, $competitionNames);
+      $this->checkPresent($competition, 'teams', $current);
+      $this->checkArray($competition, 'teams', $current);
+      $this->checkArray($competition, 'phases', $current);
+      $this->checkCategories($competition, $current);
+      $this->checkTimes($competition, $current);
+      foreach ($competition['teams'] as $k2 => $team) {
+        $teamDesc = $current . "[teams][$k2]";
+        $this->checkString($team, 'name', $teamDesc);
+        $this->checkRequired($team, 'rank', $teamDesc);
+        $this->checkInteger($team, 'rank', $teamDesc);
+        $this->checkRequired($team, 'startNumber', $teamDesc);
+        $this->checkInteger($team, 'startNumber', $teamDesc, 1);
+        $this->checkPresent($team, 'players', $teamDesc);
+        $this->checkArray($team, 'players', $teamDesc);
+        foreach ($team['players'] as $id) {
+          $playerIds[$id] = true;
+        }
+      }
+      if (array_key_exists('phases', $competition)) {
+        foreach ($competition['phases'] as $k2 => $phase) {
+          $phaseDesc = $current . "[phases][$k2]";
+          $this->checkRequired($phase, 'phaseNumber', $phaseDesc);
+          $this->checkInteger($phase, 'phaseNumber', $phaseDesc, -1);
+          $this->checkString($phase, 'name', $phaseDesc);
+          $this->checkArray($phase, 'nextPhaseNumbers', $phaseDesc);
+          if (array_key_exists('nextPhaseNumbers', $phase)) {
+            foreach ($phase['nextPhaseNumbers'] as $k3 => $number) {
+              $this->checkInteger($phase['nextPhaseNumbers'], $k3, $phaseDesc . "[nextPhaseNumbers]", 0);
+            }
+          }
+          $this->checkPresent($phase, 'rankings', $phaseDesc);
+          $this->checkArray($phase, 'rankings', $phaseDesc);
+          $this->checkPresent($phase, 'matches', $phaseDesc);
+          $this->checkArray($phase, 'matches', $phaseDesc);
+          $this->checkCategories($phase, $phaseDesc);
+          $this->checkTimes($phase, $phaseDesc);
+          foreach ($phase['rankings'] as $k3 => $ranking) {
+            $rankingDesc = $phaseDesc . "[rankings][$k3]";
+            $this->checkRequired($ranking, 'uniqueRank', $rankingDesc);
+            $this->checkInteger($ranking, 'uniqueRank', $rankingDesc, 1);
+            $this->checkRequired($ranking, 'teamStartNumbers', $rankingDesc);
+            $this->checkArray($ranking, 'teamStartNumbers', $rankingDesc, 1);
+            foreach ($ranking['teamStartNumbers'] as $k4 => $number) {
+              $this->checkInteger($ranking['teamStartNumbers'], $k4, $rankingDesc . "[teamStartNumbers]", 1);
+            }
+            $this->checkString($ranking, 'name', $rankingDesc);
+            $this->checkRequired($ranking, 'rank', $rankingDesc);
+            $this->checkInteger($ranking, 'rank', $rankingDesc, 1);
+          }
+          foreach ($phase['matches'] as $k3 => $match) {
+            $matchDesc = $phaseDesc . "[matches][$k3]";
+            $this->checkRequired($match, 'matchNumber', $matchDesc);
+            $this->checkInteger($match, 'matchNumber', $matchDesc, 1);
+            $this->checkRequired($match, 'rankingsAUniqueRanks', $matchDesc);
+            $this->checkArray($match, 'rankingsAUniqueRanks', $matchDesc, 1);
+            foreach ($match['rankingsAUniqueRanks'] as $k4 => $number) {
+              $this->checkInteger($match['rankingsAUniqueRanks'], $k4, $matchDesc . "[rankingsAUniqueRanks]", 1);
+            }
+            $this->checkRequired($match, 'rankingsBUniqueRanks', $matchDesc);
+            $this->checkArray($match, 'rankingsBUniqueRanks', $matchDesc, 1);
+            foreach ($match['rankingsBUniqueRanks'] as $k4 => $number) {
+              $this->checkInteger($match['rankingsBUniqueRanks'], $k4, $matchDesc . "[rankingsBUniqueRanks]", 1);
+            }
+            $this->checkPresent($match, 'games', $matchDesc);
+            $this->checkArray($match, 'games', $matchDesc);
+            $this->checkCategories($match, $matchDesc);
+            $this->checkTimes($match, $matchDesc);
+            $this->checkResults($match, $matchDesc);
+            foreach ($match['games'] as $k4 => $game) {
+              $gameDesc = $matchDesc . "[games][$k4]";
+              $this->checkCategories($game, $gameDesc);
+              $this->checkTimes($game, $gameDesc);
+              $this->checkResults($game, $gameDesc);
+              $this->checkRequired($game, 'gameNumber', $gameDesc);
+              $this->checkInteger($game, 'gameNumber', $gameDesc, 1);
+              $this->checkPresent($game, 'playersA', $gameDesc);
+              $this->checkArray($game, 'playersA', $gameDesc, $game['played'] ? 1 : 0);
+              foreach ($game['playersA'] as $id) {
+                $playerIds[$id] = true;
+              }
+              $this->checkPresent($game, 'playersB', $gameDesc);
+              $this->checkArray($game, 'playersB', $gameDesc, $game['played'] ? 1 : 0);
+              foreach ($game['playersB'] as $id) {
+                $playerIds[$id] = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
     $this->tournamentSpecification = [
       'userIdentifier' => ['validation' => 'required|string'],
       'name' => ['validation' => 'required|string'],
       'tournamentListId' => ['validation' => 'string', 'default' => ''],
       'competitions' => ['validation' => 'required|array|min:1', 'ignore' => True],
-      'finished' => ['validation' => 'boolean', 'default' => true],
-      'startTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
-        'transformer' => $this->datetimetzTransformer(), 'default' => null],
-      'endTime' => ['validation' => 'date_format:' . $this->getDatetimetzFormat(),
-        'transformer' => $this->datetimetzTransformer(), 'default' => null],
+      'finished' => ['validation' => 'boolean', 'default' => true]
     ];
     $this->tournamentSpecification = array_merge(
       $this->tournamentSpecification, $this->categoriesSpecifications(''),
@@ -136,9 +371,8 @@ class TournamentController extends BaseController
       'competitions.*.teams.*.name' => ['validation' => 'string', 'default' => ''],
       'competitions.*.teams.*.rank' => ['validation' => 'required|integer'],
       'competitions.*.teams.*.startNumber' => ['validation' => 'required|integer|min:1'],
-      'competitions.*.teams.*.players' => ['validation' => 'required|array|min:1', 'ignore' => True],
-      'competitions.*.teams.*.players.*' => ['validation' => 'exists:App\Entity\Player,id',
-        'ignore' => True],
+      'competitions.*.teams.*.players' => ['validation' => 'present|array', 'ignore' => True],
+      'competitions.*.teams.*.players.*' => ['ignore' => True],
     ];
 
     $this->phaseSpecification = [
@@ -187,12 +421,12 @@ class TournamentController extends BaseController
         ['validation' => 'present|array|required_if:competitions.*.phases.*.matches.*.games.*.played,true',
           'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersA.*' =>
-        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True],
+        ['ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB' =>
         ['validation' => 'present|array|required_if:competitions.*.phases.*.matches.*.games.*.played,true',
           'ignore' => True],
       'competitions.*.phases.*.matches.*.games.*.playersB.*' =>
-        ['validation' => 'exists:App\Entity\Player,id', 'ignore' => True]
+        ['ignore' => True]
     ];
 
     $this->gameSpecification = array_merge($this->gameSpecification,
@@ -201,19 +435,19 @@ class TournamentController extends BaseController
       $this->timeSpecifications('competitions.*.phases.*.matches.*.games.*.'));
 
 
-    $this->validateBySpecification($request, array_merge(
+    /*$this->validateBySpecification($request, array_merge(
       $this->tournamentSpecification,
       $this->competitionSpecification,
       $this->teamSpecification,
       $this->phaseSpecification,
       $this->rankingSpecification,
       $this->matchSpecification,
-      $this->gameSpecification));
+      $this->gameSpecification));*/
 
     //check if each game has a descendant for each mode
     $this->checkModes($request);
 
-    $result = $this->doCreateOrReplaceTournament($request, $rss);
+    $result = $this->doCreateOrReplaceTournament($request, $rss, $ls);
     //start process to recalculate rankings
     $aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan recompute-rankings');
     //$aes->runBashCommand('pwd >> /tmp/test');
@@ -319,12 +553,16 @@ class TournamentController extends BaseController
    *                            a player of a team is not in the players lists of this team
    * @throws UnorderedPhaseNumberException
    */
-  private function doCreateOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss): string
+  private function doCreateOrReplaceTournament(Request $request, RankingSystemServiceInterface $rss,
+                                               LoadingServiceInterface $ls): string
   {
     assert(\Auth::user()->getId() != null);
     /** @var Tournament|null $tournament */
     $tournament = $this->getEntityManager()->getRepository(Tournament::class)->findOneBy(
       ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
+    if ($tournament !== null) {
+      $ls->loadEntities([$tournament]);
+    }
     $type = 'replace';
 
     $earliestInfluence = $tournament === null ? [] : $rss->getRankingSystemsEarliestInfluences($tournament);

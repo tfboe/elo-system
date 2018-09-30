@@ -18,5 +18,6 @@ abstract class ExceptionNames
 {
 //<editor-fold desc="Fields">
   const GAME_HAS_MISSING_MODES = "GameHasMissingModes";
+  const MANUAL_VALIDAION_EXCEPTION = "ManualValidationException";
 //</editor-fold desc="Fields">
 }

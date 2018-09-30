@@ -186,32 +186,80 @@ class PlayerController extends BaseController
 
     $this->validateBySpecification($request, $specification);
 
-    $results = [];
-    foreach ($request->input() as $player) {
-      $criteria = $player;
-      /** @var Player[] $result */
-      $result = [];
+    $parameters = [];
+    $subQuery = "";
+    $licenseNumbers = [];
+    $licenseNumbersQuery = "";
+    $input = $request->input();
+    foreach ($input as $key => $player) {
+      assert($key !== null);
       if (array_key_exists('itsfLicenseNumber', $player)) {
-        $result = $this->getEntityManager()->getRepository(Player::class)
-          ->findBy($this->extract($player, ['itsfLicenseNumber']));
+        $licenseNumbers[$player['itsfLicenseNumber']] = $key;
+        if ($licenseNumbersQuery !== "") {
+          $licenseNumbersQuery .= ',';
+        }
+        $licenseNumbersQuery .= '?';
       }
       if (array_key_exists('firstName', $player) && array_key_exists('lastName', $player) &&
         array_key_exists('birthday', $player)) {
-        $search = $this->extract($player, ['firstName', 'lastName']);
-        $search['birthday'] = new \DateTime($player['birthday']);
-        $result = array_merge($result, $this->getEntityManager()->getRepository(Player::class)->findBy($search));
-        $criteria['birthday'] = new \DateTime($criteria['birthday']);
+        $birthday = new \DateTime($player['birthday']);
+        if ($subQuery === "") {
+          $subQuery .= "SELECT ? as k, ? as firstName, ? as lastName, ? as year";
+        } else {
+          $subQuery .= " UNION ALL SELECT ?,?,?,?";
+        }
+        $parameters[] = $key;
+        $parameters[] = $player['firstName'];
+        $parameters[] = $player['lastName'];
+        $parameters[] = $birthday->format("Y");
       }
-      $found = [];
-      foreach ($result as $p) {
-        // criteria (findBy)
-        $found[] = ['id' => $p->getId(), 'firstName' => $p->getFirstName(), 'lastName' => $p->getLastName(),
-          'birthday' => $p->getBirthday()->format('Y-m-d'), 'itsfLicenseNumber' => $p->getItsfLicenseNumber()];
+    }
+    $metaData = $this->getEntityManager()->getClassMetadata(Player::class);
+    $playerTable = $metaData->getTableName();
+    $firstNameRow = $metaData->getColumnName("firstName");
+    $lastNameRow = $metaData->getColumnName("lastName");
+    $birthdayRow = $metaData->getColumnName("birthday");
+    $itsfNumberRow = $metaData->getColumnName("itsfLicenseNumber");
+    $mergedIntoId = $metaData->getAssociationMapping("mergedInto")['joinColumns'][0]['name'];
+    $idRow = $metaData->getSingleIdentifierColumnName();
+    $query = <<<SQL
+SELECT IFNULL(p2.$idRow, p.$idRow) as id, IFNULL(p2.$firstNameRow, p.$firstNameRow) as firstName, 
+       IFNULL(p2.$lastNameRow, p.$lastNameRow) as lastName, IFNULL(p2.$birthdayRow, p.$birthdayRow) as birthday, 
+       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, t.k as k
+FROM $playerTable AS p
+LEFT JOIN $playerTable AS p2
+  ON p2.$idRow = p.$mergedIntoId
+LEFT JOIN (
+  $subQuery
+) AS t
+  ON t.firstName = p.$firstNameRow AND t.lastName = p.$lastNameRow AND t.year = YEAR(p.$birthdayRow)
+WHERE t.k IS NOT NULL OR p.$itsfNumberRow IN ($licenseNumbersQuery)
+SQL;
+    $parameters = array_merge($parameters, array_keys($licenseNumbers));
+    $query = $this->getEntityManager()->getConnection()->prepare($query);
+    $query->execute($parameters);
+    $rows = $query->fetchAll();
+
+    $res = [];
+    foreach ($rows as $row) {
+      $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber']));
+      $keys = [];
+      if ($row['k'] !== null) {
+        $keys[] = $row['k'];
       }
-      $results[] = ['search' => $player, 'found' => $found];
+      if ($row['itsfLicenseNumber'] !== null) {
+        $keys[] = $licenseNumbers[$row['itsfLicenseNumber']];
+      }
+      assert(count($keys) > 0);
+      foreach ($keys as $key) {
+        if (!array_key_exists($key, $res)) {
+          $res[$key] = [];
+        }
+        $res[$key][$row['id']] = $f;
+      }
     }
 
-    return response()->json($results);
+    return response()->json($res);
   }
 
   /**

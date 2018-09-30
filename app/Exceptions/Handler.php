@@ -27,6 +27,9 @@ class Handler extends \Tfboe\FmLib\Exceptions\Handler
     if ($exception instanceof GameHasMissingModes) {
       return ExceptionNames::GAME_HAS_MISSING_MODES;
     }
+    if ($exception instanceof ManualValidationException) {
+      return ExceptionNames::MANUAL_VALIDAION_EXCEPTION;
+    }
     return parent::getExceptionName($exception);
   }
 //</editor-fold desc="Protected Methods">
