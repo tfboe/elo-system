@@ -41,6 +41,9 @@ class AdminController extends BaseController
     }
 
     $player2->setMergedInto($player1);
+    if ($player2->getItsfLicenseNumber() !== null && $player1->getItsfLicenseNumber() === null) {
+      $player1->setItsfLicenseNumber($player2->getItsfLicenseNumber());
+    }
 
     //flatten merged players relation
     foreach ($player2->getMergedPlayers()->toArray() as $subPlayer) {
