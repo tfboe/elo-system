@@ -2781,6 +2781,7 @@ class TournamentTest extends AuthenticatedTestCase
         ],
       ],
     ];
+
     $this->jsonAuth('POST', '/createOrReplaceTournament', $request)->seeJsonEquals(['type' => 'replace']);
 
     /** @var \Doctrine\ORM\EntityRepository $repo */
@@ -2791,7 +2792,7 @@ class TournamentTest extends AuthenticatedTestCase
     self::assertEquals(1, count($tournaments));
     $newTournament = $tournaments[0];
     self::assertEquals($tournament->getId(), $newTournament->getId());
-    $this->assertTournamentInfoByRequest($request, $tournament);
+    $this->assertTournamentInfoByRequest($request, $newTournament);
   }
 
   public function testUnorderedTestNumberException()

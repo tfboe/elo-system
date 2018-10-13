@@ -24,8 +24,11 @@ use Tfboe\FmLib\Entity\Categories\OrganizingMode;
 use Tfboe\FmLib\Entity\Categories\ScoreMode;
 use Tfboe\FmLib\Entity\Categories\Table;
 use Tfboe\FmLib\Entity\Categories\TeamMode;
+use Tfboe\FmLib\Entity\CompetitionInterface;
 use Tfboe\FmLib\Entity\Helpers\Result;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
 use Tfboe\FmLib\Entity\TeamMembershipInterface;
+use Tfboe\FmLib\Entity\TournamentInterface;
 use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
@@ -560,12 +563,14 @@ class TournamentController extends BaseController
     /** @var Tournament|null $tournament */
     $tournament = $this->getEntityManager()->getRepository(Tournament::class)->findOneBy(
       ['userIdentifier' => $request->input('userIdentifier'), 'creator' => \Auth::user()]);
-    if ($tournament !== null) {
+    /*if ($tournament !== null) {
       $ls->loadEntities([$tournament]);
-    }
+    }*/
     $type = 'replace';
 
-    $earliestInfluence = $tournament === null ? [] : $rss->getRankingSystemsEarliestInfluences($tournament);
+    //TODO $earliestInfluence = $tournament === null ? [] : $rss->getRankingSystemsEarliestInfluences($tournament);
+    //$earliestInfluence = [];
+
 
     /** @var RankingSystem[] $rankingSystems */
     $rankingSystems = $this->getEntityManager()->getRepository(RankingSystem::class)->findAll();
@@ -585,15 +590,18 @@ class TournamentController extends BaseController
       $this->getEntityManager()->persist($tournament);
       foreach ($this->rankingSystems[Level::TOURNAMENT] as $rankingSystem) {
         $tournament->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-        $rankingSystem->getHierarchyEntries()->set($tournament->getId(), $tournament);
+        $this->addInfluencingRankingSystem($tournament, $rankingSystem);
+        //$rankingSystem->getHierarchyEntries()->set($tournament->getId(), $tournament);
       }
       $type = 'create';
     }
 
     $this->setFromSpecification($tournament, $this->tournamentSpecification, $request->input());
-    $this->replaceCompetitions($request, $tournament);
+    $this->replaceCompetitions($request, $tournament, $ls);
+    /*$this->adaptEarliestInfluence($earliestInfluence,
+      $rss->getRankingSystemsEarliestInfluencesOfLazyTournament($tournament));*/
 
-    $rss->adaptOpenSyncFromValues($tournament, $earliestInfluence);
+    //$rss->adaptOpenSyncFromValues($tournament, $earliestInfluence);
     $this->getEntityManager()->flush();
 
     return $type;
@@ -702,6 +710,51 @@ class TournamentController extends BaseController
     $this->getEntityManager()->remove($team);
   }
 
+  /*private function adaptEarliestInfluence(array &$earliestInfluence, $newInfluence)
+  {
+    foreach ($newInfluence as $key => $influence) {
+      if (!array_key_exists($key, $earliestInfluence) ||
+        $influence['earliestInfluence'] < $earliestInfluence[$key]['earliestInfluence']) {
+        $earliestInfluence[$key] = $influence;
+      }
+    }
+  }
+
+  private function adaptEarliestInfluenceByCompetition(RankingSystemServiceInterface $rss, Competition $competition,
+                                                       array &$earliestInfluence) {
+    $this->adaptEarliestInfluence($earliestInfluence, $rss->getRankingSystemsEarliestInfluences($competition));
+  }*/
+
+  private function addInfluencingRankingSystem(TournamentHierarchyEntity $entity, $rankingSystem)
+  {
+    if ($entity->addInfluencingRankingSystem($rankingSystem) && $entity->getParent() !== null) {
+      $this->addInfluencingRankingSystem($entity, $rankingSystem);
+    }
+  }
+
+  private function initInfluencingRankingSystemsComplete(TournamentHierarchyEntity $entity)
+  {
+    $rankingSystems = [];
+    $tmp = $entity;
+    while ($tmp->getParent() !== null) {
+      $tmp = $tmp->getParent();
+      $rankingSystems = array_merge($rankingSystems, $tmp->getRankingSystems()->toArray());
+    }
+    $this->initInfluencingRankingSystemCompleteRecursiveDown($entity, $rankingSystems);
+  }
+
+  private function initInfluencingRankingSystemCompleteRecursiveDown(TournamentHierarchyEntity $entity,
+                                                                     array $rankingSystems)
+  {
+    $rankingSystems = array_merge($rankingSystems, $entity->getRankingSystems()->toArray());
+    foreach ($rankingSystems as $rankingSystem) {
+      $this->addInfluencingRankingSystem($entity, $rankingSystem);
+    }
+    foreach ($entity->getChildren() as $child) {
+      $this->initInfluencingRankingSystemCompleteRecursiveDown($child, $rankingSystems);
+    }
+  }
+
   /**
    * Replaces the competitions of the given tournament according to the request
    * @param Request $request the http request
@@ -719,40 +772,99 @@ class TournamentController extends BaseController
    *                            a player of a team is not in the players lists of this team
    * @throws UnorderedPhaseNumberException
    */
-  private function replaceCompetitions(Request $request, Tournament $tournament)
+  private function replaceCompetitions(Request $request, Tournament $tournament, LoadingServiceInterface $ls)
   {
     $competitionNames = [];
-    foreach ($tournament->getCompetitions() as $competition) {
+    $competitionsByName = [];
+
+    /** @var Competition[] $competitions */
+    $competitions = $this->getEntityManager()->getRepository(Competition::class)->findBy(
+      ['tournament' => $tournament]
+    );
+    assert(!$tournament->getCompetitions()->isInitialized());
+    foreach ($competitions as $competition) {
       $competitionNames[$competition->getName()] = false;
+      $competitionsByName[$competition->getName()] = $competition;
     }
+    unset($competitions);
     foreach ($request->input('competitions') as $competitionValues) {
       $competition = null;
       if (array_key_exists($competitionValues['name'], $competitionNames)) {
         // competition names are ensured to be unique by the request validation
         assert($competitionNames[$competitionValues['name']] === false);
-        $competition = $tournament->getCompetitions()->get($competitionValues['name']);
+        $competition = $competitionsByName[$competitionValues['name']];
+        $ls->loadEntities([$competition]);
+        $this->initInfluencingRankingSystemsComplete($competition);
+
+        //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
         $this->setFromSpecification($competition, $this->competitionSpecification, $competitionValues);
       } else {
         $competition = new Competition();
         $this->setFromSpecification($competition, $this->competitionSpecification, $competitionValues);
-        $competition->setTournament($tournament);
+        $competition->setTournamentWithoutInitializing($tournament);
         $this->getEntityManager()->persist($competition);
         foreach ($this->rankingSystems[Level::COMPETITION] as $rankingSystem) {
           $competition->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getHierarchyEntries()->set($competition->getId(), $competition);
+          $this->addInfluencingRankingSystem($competition, $rankingSystem);
+          //$rankingSystem->getHierarchyEntries()->set($competition->getId(), $competition);
         }
       }
       $competitionNames[$competitionValues['name']] = true;
+
+
       // request
       $this->replaceTeams($competition, $competitionValues['teams']);
       // request
       $this->replacePhases($competition, $competitionValues['phases']);
+      if (array_key_exists($competitionValues['name'], $competitionNames)) {
+        unset($competitionNames[$competitionValues['name']]);
+      }
+      //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
+      $this->flushAndForgetEntities();
+      $this->getEntityManager()->detach($competition);
     }
     foreach ($competitionNames as $key => $used) {
       if (!$used) {
-        $competition = $tournament->getCompetitions()->get($key);
-        $tournament->getCompetitions()->remove($key);
+        $competition = $competitionsByName[$key];
+        $ls->loadEntities([$competition]);
+        $this->initInfluencingRankingSystemsComplete($competition);
+        //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
         $this->removeCompetition($competition);
+        $this->flushAndForgetEntities();
+        unset($competitionsByName[$key]);
+      }
+    }
+  }
+
+  private function flushAndForgetEntities()
+  {
+    $this->getEntityManager()->flush();
+    static $toForgetClasses = null;
+    static $tournamentHierarchyEntity = null;
+    if ($toForgetClasses === null) {
+      $toForgetClasses = [Team::class, Phase::class,
+        TeamMembership::class, Player::class, QualificationSystem::class, Ranking::class,
+        Match::class, Game::class];
+      foreach ($toForgetClasses as &$class) {
+        $class = $this->getEntityManager()->getClassMetadata($class)->getReflectionClass()->getName();
+      }
+      $tournamentHierarchyEntity = $this->getEntityManager()->getClassMetadata(TournamentHierarchyEntity::class)
+        ->getReflectionClass()->getName();
+    }
+
+    $identityMap = $this->getEntityManager()->getUnitOfWork()->getIdentityMap();
+    foreach ($toForgetClasses as $class) {
+      if (array_key_exists($class, $identityMap)) {
+        foreach ($identityMap[$class] as $entity) {
+          $this->getEntityManager()->detach($entity);
+        }
+      }
+    }
+    if (array_key_exists($tournamentHierarchyEntity, $identityMap)) {
+      foreach ($identityMap[$tournamentHierarchyEntity] as $entity) {
+        if (!$entity instanceof TournamentInterface && !$entity instanceof CompetitionInterface) {
+          $this->getEntityManager()->detach($entity);
+        }
       }
     }
   }
@@ -888,7 +1000,8 @@ class TournamentController extends BaseController
         $this->getEntityManager()->persist($game);
         foreach ($this->rankingSystems[Level::GAME] as $rankingSystem) {
           $game->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getHierarchyEntries()->set($game->getId(), $game);
+          $this->addInfluencingRankingSystem($game, $rankingSystem);
+          //$rankingSystem->getHierarchyEntries()->set($game->getId(), $game);
         }
       }
       $gameNumbers[$gameValues['gameNumber']] = true;
@@ -998,7 +1111,8 @@ class TournamentController extends BaseController
         $this->getEntityManager()->persist($match);
         foreach ($this->rankingSystems[Level::MATCH] as $rankingSystem) {
           $match->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getHierarchyEntries()->set($match->getId(), $match);
+          $this->addInfluencingRankingSystem($match, $rankingSystem);
+          //$rankingSystem->getHierarchyEntries()->set($match->getId(), $match);
         }
       }
       $matchNumbers[$matchValues['matchNumber']] = true;
@@ -1111,7 +1225,8 @@ class TournamentController extends BaseController
         $this->getEntityManager()->persist($phase);
         foreach ($this->rankingSystems[Level::PHASE] as $rankingSystem) {
           $phase->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $rankingSystem->getHierarchyEntries()->set($phase->getId(), $phase);
+          $this->addInfluencingRankingSystem($phase, $rankingSystem);
+          //$rankingSystem->getHierarchyEntries()->set($phase->getId(), $phase);
         }
       }
       $phaseNumbers[$phaseValues['phaseNumber']] = true;

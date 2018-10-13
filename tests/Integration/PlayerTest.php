@@ -43,6 +43,9 @@ class PlayerTest extends AuthenticatedTestCase
     $players = $repo->findAll();
     self::assertEquals(1, count($players));
     $player = $players[0];
+    $player->getMergedPlayers()->toArray();
+    $player1->setUpdatedAt(new \DateTime($player1->getUpdatedAt()->format("Y-m-d H:i:s")));
+    $player1->setCreatedAt(new \DateTime($player1->getCreatedAt()->format("Y-m-d H:i:s")));
     self::assertEquals($player, $player1);
   }
 
