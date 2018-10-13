@@ -16,7 +16,7 @@ use Tfboe\FmLib\Entity\TournamentHierarchyEntityRankingTimeInterface;
  * Class Team
  * @package Tfboe\FmLib\Entity
  * @ORM\Entity
- * @ORM\Table(name="tournamentHierarchyEntityRankingTimes")
+ * @ORM\Table(name="elo_tournamentHierarchyEntityRankingTimes")
  */
 class TournamentHierarchyEntityRankingTime extends BaseEntity implements TournamentHierarchyEntityRankingTimeInterface
 {
