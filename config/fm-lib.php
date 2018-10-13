@@ -18,7 +18,7 @@ return [
     'Tfboe\\FmLib\\Entity\\TournamentInterface' => 'App\\Entity\\Tournament',
     'Tfboe\\FmLib\\Entity\\UserInterface' => 'App\\Entity\\User',
     'Tfboe\\FmLib\\Entity\\TeamMembershipInterface' => 'App\\Entity\\TeamMembership',
-    'Tfboe\\FmLib\\Entity\\LastRecalculationInterface' => 'App\\Entity\\Recalculation',
+    'Tfboe\\FmLib\\Entity\\RecalculationInterface' => 'App\\Entity\\Recalculation',
     'Tfboe\\FmLib\\Entity\\TournamentHierarchyEntityRankingTimeInterface' =>
       'App\\Entity\\TournamentHierarchyEntityRankingTime',
   ]
