@@ -11,15 +11,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Tfboe\FmLib\Entity\Helpers\BaseEntity;
-use Tfboe\FmLib\Entity\LastRecalculationInterface;
+use Tfboe\FmLib\Entity\RecalculationInterface;
 
 /**
  * Class LastRecalculation
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="elo_lastRecalculation")
+ * @ORM\Table(name="elo_recalculation")
  */
-class LastRecalculation extends BaseEntity implements LastRecalculationInterface
+class Recalculation extends BaseEntity implements RecalculationInterface
 {
-  use \Tfboe\FmLib\Entity\Traits\LastRecalculation;
+  use \Tfboe\FmLib\Entity\Traits\Recalculation;
 }

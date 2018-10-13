@@ -222,19 +222,36 @@ class PlayerController extends BaseController
     $itsfNumberRow = $metaData->getColumnName("itsfLicenseNumber");
     $mergedIntoId = $metaData->getAssociationMapping("mergedInto")['joinColumns'][0]['name'];
     $idRow = $metaData->getSingleIdentifierColumnName();
+    $additionalSelect = "null as k";
+    if ($subQuery != "") {
+      $additionalSelect = "t.k as k";
+    }
     $query = <<<SQL
 SELECT IFNULL(p2.$idRow, p.$idRow) as id, IFNULL(p2.$firstNameRow, p.$firstNameRow) as firstName, 
        IFNULL(p2.$lastNameRow, p.$lastNameRow) as lastName, IFNULL(p2.$birthdayRow, p.$birthdayRow) as birthday, 
-       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, t.k as k
+       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, $additionalSelect
 FROM $playerTable AS p
 LEFT JOIN $playerTable AS p2
-  ON p2.$idRow = p.$mergedIntoId
+  ON p2.$idRow = p.$mergedIntoId 
+SQL;
+    if ($subQuery !== "") {
+      $query .= <<<SQL
 LEFT JOIN (
   $subQuery
 ) AS t
   ON t.firstName = p.$firstNameRow AND t.lastName = p.$lastNameRow AND t.year = YEAR(p.$birthdayRow)
-WHERE t.k IS NOT NULL OR p.$itsfNumberRow IN ($licenseNumbersQuery)
+WHERE t.k IS NOT NULL
 SQL;
+    }
+
+    if ($licenseNumbersQuery != "") {
+      if ($subQuery === "") {
+        $query .= " WHERE";
+      } else {
+        $query .= " OR";
+      }
+      $query .= " p.$itsfNumberRow IN ($licenseNumbersQuery)";
+    }
     $parameters = array_merge($parameters, array_keys($licenseNumbers));
     $query = $this->getEntityManager()->getConnection()->prepare($query);
     $query->execute($parameters);
@@ -243,6 +260,7 @@ SQL;
     $res = [];
     foreach ($rows as $row) {
       $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber']));
+      $f['id'] = intval($f['id']);
       $keys = [];
       if ($row['k'] !== null) {
         $keys[] = $row['k'];
