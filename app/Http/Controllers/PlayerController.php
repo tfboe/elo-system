@@ -265,7 +265,7 @@ SQL;
       if ($row['k'] !== null) {
         $keys[] = $row['k'];
       }
-      if ($row['itsfLicenseNumber'] !== null) {
+      if ($row['itsfLicenseNumber'] !== null && array_key_exists($row['itsfLicenseNumber'], $licenseNumbers)) {
         $keys[] = $licenseNumbers[$row['itsfLicenseNumber']];
       }
       assert(count($keys) > 0);
