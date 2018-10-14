@@ -45,12 +45,12 @@ class TournamentController extends AsyncableController
       if (flock($dp, LOCK_EX)) {
         $files = scandir($destinationDir);
         $beginnings = [];
-        foreach ($files as $file) {
-          $pos = strpos($file, ".");
+        foreach ($files as $fileName) {
+          $pos = strpos($fileName, ".");
           if ($pos !== false) {
-            $file = substr($file, $pos);
+            $fileName = substr($fileName, $pos);
           }
-          $beginnings[$file] = true;
+          $beginnings[$fileName] = true;
         }
         $count = 1;
         $extension = $file->getExtension();
