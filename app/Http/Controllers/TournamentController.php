@@ -23,12 +23,16 @@ class TournamentController extends AsyncableController
    */
   public function createOrReplaceTournament(Request $request): JsonResponse
   {
+
     if ($request->hasFile('tournamentFile')) {
       $file = $request->file('tournamentFile');
       if (!$file->isValid()) {
         throw new PreconditionFailedException("Error during file upload!");
       }
-      $destinationDir = "../storage/file-uploads";
+      $this->validate($request, ['userIdentifier' => 'required|string']);
+      $userId = \Auth::user()->getId();
+      $destinationDir = "../storage/file-uploads/" . $userId;
+      mkdir($destinationDir, 0777, true);
       $dp = fopen($destinationDir, 'r');
       if (flock($dp, LOCK_EX)) {
         $files = scandir($destinationDir);
@@ -40,12 +44,13 @@ class TournamentController extends AsyncableController
           }
           $beginnings[$file] = true;
         }
-        $count = count($files) + 1;
+        $count = 1;
         $extension = $file->getExtension();
-        while (array_key_exists("upload-" . $count . "." . $extension, $beginnings)) {
+        $prefix = $request->get("userIdentifier");
+        while (array_key_exists($prefix . "-" . $count . "." . $extension, $beginnings)) {
           $count += 1;
         }
-        $file->move($destinationDir, "upload-" . $count . "." . $extension);
+        $file->move($destinationDir, $prefix . "-" . $count . "." . $extension);
         flock($dp, LOCK_UN);    // release the lock
       } else {
         throw new \Exception("Couldn't move uploaded file!");
