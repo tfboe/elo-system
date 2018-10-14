@@ -25,8 +25,7 @@ class Kernel extends ConsoleKernel
    * @var array
    */
   protected $commands = [
-    RecomputeRankingsCommand::class,
-    RunAsyncRequestCommand::class
+    RecomputeRankingsCommand::class
   ];
 //</editor-fold desc="Fields">
 }

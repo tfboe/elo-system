@@ -3,46 +3,44 @@
  * Created by PhpStorm.
  * User: benedikt
  * Date: 10/14/18
- * Time: 1:24 PM
+ * Time: 6:19 PM
  */
 
-namespace App\Console\Commands;
-
+namespace App\Jobs;
 
 use App\Entity\AsyncRequest;
 use App\Service\AsyncRunnerInterface;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Illuminate\Console\Command;
 
-class RunAsyncRequestCommand extends Command
+class RunAsyncRequest extends Job
 {
 //<editor-fold desc="Fields">
-  /**
-   * The console command signature.
-   *
-   * @var string
-   */
-  protected $signature = 'run-async-request {id}';
-  /**
-   * The console command description.
-   *
-   * @var string
-   */
-  protected $description = "Runs the given async request";
+  /** @var string */
+  private $id;
 //</editor-fold desc="Fields">
-//</editor-fold desc="Fields">
+
+//<editor-fold desc="Constructor">
+  /**
+   * RunAsyncRequest constructor.
+   * @param string $id the async request id
+   */
+  public function __construct(string $id)
+  {
+    $this->id = $id;
+  }
+//</editor-fold desc="Constructor">
 
 //<editor-fold desc="Public Methods">
   /**
-   * Execute the console command.
+   * Execute the job.
    *
    * @return void
    */
   public function handle(EntityManagerInterface $entityManager, AsyncRunnerInterface $asyncRunner)
   {
-    $id = $this->argument('id');
+    $id = $this->id;
     /** @var AsyncRequest $request */
     $entityManager->transactional(function (EntityManager $em) use ($id, $asyncRunner) {
       /** @var AsyncRequest $request */
@@ -63,4 +61,5 @@ class RunAsyncRequestCommand extends Command
     $request->setResult($result);
     $entityManager->flush();
   }
+//</editor-fold desc="Public Methods">
 }

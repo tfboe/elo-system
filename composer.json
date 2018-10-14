@@ -25,7 +25,8 @@
     "gedmo/doctrine-extensions": "^2.4.30",
     "tfboe/fm-lib": "dev-elo-system-dev",
     "palanik/lumen-cors": "dev-master",
-    "beberlei/DoctrineExtensions": "^1.0"
+    "beberlei/DoctrineExtensions": "^1.0",
+    "maxbrokman/safe-queue": "^0.3.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Entity\AsyncRequest;
+use App\Jobs\RunAsyncRequest;
 use App\Service\AsyncRunnerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Container\Container;
@@ -74,8 +75,9 @@ abstract class AsyncableController extends BaseController
     $asyncRequest = new AsyncRequest(["input" => $input], $serviceName);
     $this->getEntityManager()->persist($asyncRequest);
     $this->getEntityManager()->flush();
-    $this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan run-async-request ' .
-      $asyncRequest->getId());
+    dispatch(new RunAsyncRequest($asyncRequest->getId()));
+    /*$this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan run-async-request ' .
+      $asyncRequest->getId());*/
     return new JsonResponse(["type" => "async", "result" => "Started successfully",
       "async-id" => $asyncRequest->getId()]);
   }
