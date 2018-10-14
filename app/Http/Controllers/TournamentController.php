@@ -26,6 +26,23 @@ class TournamentController extends AsyncableController
   }
 
   /**
+   * @param $file
+   * @return false|string
+   */
+  private function getFileSafe($file)
+  {
+    // Remove anything which isn't a word, whitespace, number
+    // or any of the following caracters -_~,;[]().
+    // If you don't need to handle multi-byte characters
+    // you can use preg_replace rather than mb_ereg_replace
+    // Thanks Lukasz Rysiak!
+    $file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
+    // Remove any runs of periods (thanks falstro!)
+    $file = mb_ereg_replace("([\.]{2,})", '', $file);
+    return $file;
+  }
+
+  /**
    * @param Request $request
    * @return JsonResponse
    * @throws PreconditionFailedException
@@ -54,9 +71,9 @@ class TournamentController extends AsyncableController
           }
           $beginnings[$fileName] = true;
         }
+        $prefix = $this->getFileSafe(str_replace(" ", "-", $request->get("userIdentifier")));
         $count = 1;
         $extension = $request->get("extension");
-        $prefix = $request->get("userIdentifier");
         while (array_key_exists($prefix . "-" . $count, $beginnings)) {
           $count += 1;
         }
@@ -70,5 +87,6 @@ class TournamentController extends AsyncableController
       throw new PreconditionFailedException("No file uploaded!");
     }
   }
+
 //</editor-fold desc="Public Methods">
 }
