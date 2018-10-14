@@ -50,7 +50,7 @@ class TournamentController extends AsyncableController
         foreach ($files as $fileName) {
           $pos = strpos($fileName, ".");
           if ($pos !== false) {
-            $fileName = substr($fileName, $pos);
+            $fileName = substr($fileName, 0, $pos);
           }
           $beginnings[$fileName] = true;
         }
