@@ -231,7 +231,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'uses' => 'AsyncController@getAsyncRequestState'
   ]);
 
-  $router->get('uploadFile', [
+  $router->post('uploadFile', [
     'middleware' => 'can:create,App\Entity\Tournament',
     'as' => 'uploadFile',
     'uses' => 'TournamentController@uploadFile'
