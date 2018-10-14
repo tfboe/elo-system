@@ -225,6 +225,12 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'uses' => 'TournamentController@createOrReplaceTournament'
   ]);
 
+  $router->get('getAsyncRequestState', [
+    'middleware' => 'can:create,App\Entity\Tournament',
+    'as' => 'getAsyncRequestState',
+    'uses' => 'AsyncController@getAsyncRequestState'
+  ]);
+
   /**
    * @api {post} /searchPlayers Search for players in the database
    * @apiUse AuthenticatedRequest
