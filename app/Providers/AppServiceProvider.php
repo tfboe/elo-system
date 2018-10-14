@@ -4,11 +4,18 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Exceptions\Handler;
+use App\Service\AsyncRunner;
+use App\Service\AsyncRunnerInterface;
+use App\Service\AsyncServices\CreateOrReplaceTournament;
+use App\Service\AsyncServices\CreateOrReplaceTournamentInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Extensions\BeberleiExtensionsServiceProvider;
 use LaravelDoctrine\Migrations\MigrationsServiceProvider;
 use Tfboe\FmLib\Providers\FmLibServiceProvider;
+use Tfboe\FmLib\Service\LoadingServiceInterface;
 
 /**
  * Class AppServiceProvider
@@ -38,6 +45,17 @@ class AppServiceProvider extends ServiceProvider
     if (class_exists('\LaravelDoctrine\Migrations\MigrationsServiceProvider')) {
       $this->app->register(MigrationsServiceProvider::class);
     }
+
+    $this->app->singleton(CreateOrReplaceTournamentInterface::class, function (Container $app) {
+      return new CreateOrReplaceTournament(
+        $app->make(EntityManagerInterface::class),
+        $app->make(LoadingServiceInterface::class)
+      );
+    });
+
+    $this->app->singleton(AsyncRunnerInterface::class, function (Container $app) {
+      return new AsyncRunner($app);
+    });
   }
 //</editor-fold desc="Public Methods">
 }
