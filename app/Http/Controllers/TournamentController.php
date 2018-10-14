@@ -57,7 +57,7 @@ class TournamentController extends AsyncableController
         $count = 1;
         $extension = $request->get("extension");
         $prefix = $request->get("userIdentifier");
-        while (array_key_exists($prefix . "-" . $count . "." . $extension, $beginnings)) {
+        while (array_key_exists($prefix . "-" . $count, $beginnings)) {
           $count += 1;
         }
         $file->move($destinationDir, $prefix . "-" . $count . "." . $extension);
