@@ -40,7 +40,9 @@ class TournamentController extends AsyncableController
       }
       $userId = \Auth::user()->getId();
       $destinationDir = "../storage/file-uploads/" . $userId;
-      mkdir($destinationDir, 0777, true);
+      if (!is_dir($destinationDir)) {
+        mkdir($destinationDir, 0777, true);
+      }
       $dp = fopen($destinationDir, 'r');
       if (flock($dp, LOCK_EX)) {
         $files = scandir($destinationDir);
