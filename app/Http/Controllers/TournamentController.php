@@ -32,7 +32,7 @@ class TournamentController extends AsyncableController
    */
   public function uploadFile(Request $request): JsonResponse
   {
-    $this->validate($request, ['userIdentifier' => 'required|string']);
+    $this->validate($request, ['userIdentifier' => 'required|string', 'extension' => 'required|string']);
     if ($request->hasFile('tournamentFile')) {
       $file = $request->file('tournamentFile');
       if (!$file->isValid()) {
@@ -55,7 +55,7 @@ class TournamentController extends AsyncableController
           $beginnings[$fileName] = true;
         }
         $count = 1;
-        $extension = $file->getExtension();
+        $extension = $request->get("extension");
         $prefix = $request->get("userIdentifier");
         while (array_key_exists($prefix . "-" . $count . "." . $extension, $beginnings)) {
           $count += 1;
