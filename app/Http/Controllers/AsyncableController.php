@@ -52,22 +52,26 @@ abstract class AsyncableController extends BaseController
    */
   protected function checkAsync(Request $request, string $serviceName): JsonResponse
   {
+    $input = $request->input();
+    if (\Auth::user() !== null) {
+      $input['user'] = \Auth::user()->getId();
+    }
     if ($request->has('async') && $request->get('async') === true) {
-      return $this->runAsync($request, $serviceName);
+      return $this->runAsync($input, $serviceName);
     } else {
-      $result = $this->ars->runAsync($serviceName, $request->input());
+      $result = $this->ars->runAsync($serviceName, $input);
       return new JsonResponse($result['data'], $result['status']);
     }
   }
 
   /**
-   * @param Request $request
+   * @param $input
    * @param string $serviceName
    * @return JsonResponse
    */
-  protected function runAsync(Request $request, string $serviceName): JsonResponse
+  protected function runAsync($input, string $serviceName): JsonResponse
   {
-    $asyncRequest = new AsyncRequest(["input" => $request->input()], $serviceName);
+    $asyncRequest = new AsyncRequest(["input" => $input], $serviceName);
     $this->getEntityManager()->persist($asyncRequest);
     $this->getEntityManager()->flush();
     $this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan run-async-request ' .

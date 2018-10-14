@@ -20,6 +20,7 @@ use App\Entity\RankingSystem;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\Tournament;
+use App\Entity\User;
 use App\Exceptions\GameHasMissingModes;
 use App\Exceptions\ManualValidationException;
 use Doctrine\Common\Collections\Collection;
@@ -119,6 +120,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
   {
     //manual validation
     $current = "request body";
+    $this->checkRequired($input, 'user', $current);
     $this->checkRequired($input, 'userIdentifier', $current);
     $this->checkString($input, 'userIdentifier', $current);
     $this->checkRequired($input, 'name', $current);
@@ -633,10 +635,10 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
    */
   private function doCreateOrReplaceTournament($input, $reportProgress): string
   {
-    assert(\Auth::user()->getId() != null);
+    assert($input['user'] != null);
     /** @var Tournament|null $tournament */
     $tournament = $this->em->getRepository(Tournament::class)->findOneBy(
-      ['userIdentifier' => $input['userIdentifier'], 'creator' => \Auth::user()]);
+      ['userIdentifier' => $input['userIdentifier'], 'creator' => $input['user']]);
 
     $type = 'replace';
 
@@ -654,7 +656,9 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
 
     if ($tournament == null) {
       $tournament = new Tournament();
-      $tournament->setCreator(\Auth::user());
+      /** @var User $user */
+      $user = $this->em->find(User::class, $input['user']);
+      $tournament->setCreator($user);
       $this->em->persist($tournament);
       foreach ($this->rankingSystems[Level::TOURNAMENT] as $rankingSystem) {
         $tournament->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
