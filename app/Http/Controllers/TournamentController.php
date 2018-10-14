@@ -60,6 +60,7 @@ class TournamentController extends AsyncableController
         }
         $file->move($destinationDir, $prefix . "-" . $count . "." . $extension);
         flock($dp, LOCK_UN);    // release the lock
+        return new JsonResponse(true);
       } else {
         throw new PreconditionFailedException("Couldn't move uploaded file!");
       }
