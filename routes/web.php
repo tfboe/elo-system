@@ -231,6 +231,12 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'uses' => 'AsyncController@getAsyncRequestState'
   ]);
 
+  $router->get('uploadFile', [
+    'middleware' => 'can:create,App\Entity\Tournament',
+    'as' => 'uploadFile',
+    'uses' => 'TournamentController@uploadFile'
+  ]);
+
   /**
    * @api {post} /searchPlayers Search for players in the database
    * @apiUse AuthenticatedRequest

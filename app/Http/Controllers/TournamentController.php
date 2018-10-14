@@ -19,17 +19,25 @@ class TournamentController extends AsyncableController
    *
    * @param Request $request the http request
    * @return JsonResponse
-   * @throws PreconditionFailedException
    */
   public function createOrReplaceTournament(Request $request): JsonResponse
   {
+    return $this->checkAsync($request, CreateOrReplaceTournamentInterface::class);
+  }
 
+  /**
+   * @param Request $request
+   * @return JsonResponse
+   * @throws PreconditionFailedException
+   */
+  public function uploadFile(Request $request): JsonResponse
+  {
+    $this->validate($request, ['userIdentifier' => 'required|string']);
     if ($request->hasFile('tournamentFile')) {
       $file = $request->file('tournamentFile');
       if (!$file->isValid()) {
         throw new PreconditionFailedException("Error during file upload!");
       }
-      $this->validate($request, ['userIdentifier' => 'required|string']);
       $userId = \Auth::user()->getId();
       $destinationDir = "../storage/file-uploads/" . $userId;
       mkdir($destinationDir, 0777, true);
@@ -53,10 +61,11 @@ class TournamentController extends AsyncableController
         $file->move($destinationDir, $prefix . "-" . $count . "." . $extension);
         flock($dp, LOCK_UN);    // release the lock
       } else {
-        throw new \Exception("Couldn't move uploaded file!");
+        throw new PreconditionFailedException("Couldn't move uploaded file!");
       }
+    } else {
+      throw new PreconditionFailedException("No file uploaded!");
     }
-    return $this->checkAsync($request, CreateOrReplaceTournamentInterface::class);
   }
 //</editor-fold desc="Public Methods">
 }
