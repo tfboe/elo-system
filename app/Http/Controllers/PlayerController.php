@@ -193,7 +193,8 @@ class PlayerController extends BaseController
     $input = $request->input();
     foreach ($input as $key => $player) {
       assert($key !== null);
-      if (array_key_exists('itsfLicenseNumber', $player)) {
+      if (array_key_exists('itsfLicenseNumber', $player) &&
+        !array_key_exists($player['itsfLicenseNumber'], $licenseNumbers)) {
         $licenseNumbers[$player['itsfLicenseNumber']] = $key;
         if ($licenseNumbersQuery !== "") {
           $licenseNumbersQuery .= ',';
