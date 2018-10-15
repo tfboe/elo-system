@@ -10,11 +10,9 @@ namespace App\Jobs;
 
 use App\Entity\AsyncRequest;
 use App\Service\AsyncRunnerInterface;
-use Doctrine\DBAL\LockMode;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-class RunAsyncRequest extends Job
+abstract class RunAsyncRequestJob extends Job
 {
 //<editor-fold desc="Fields">
   /** @var string */
@@ -42,16 +40,9 @@ class RunAsyncRequest extends Job
   {
     $id = $this->id;
     /** @var AsyncRequest $request */
-    $entityManager->transactional(function (EntityManager $em) use ($id, $asyncRunner) {
-      /** @var AsyncRequest $request */
-      $request = $em->find(AsyncRequest::class, $id, LockMode::PESSIMISTIC_WRITE);
-      if ($request->getStartTime() !== null) {
-        throw new \Exception("Async Request is already running!");
-      }
-      $request->setStartTime(new \DateTime());
-      $em->flush();
-    });
     $request = $entityManager->find(AsyncRequest::class, $id);
+    $request->setStartTime(new \DateTime());
+    $entityManager->flush();
     $reportProgress = function ($progress) use ($request) {
       $request->setProgress($progress);
     };

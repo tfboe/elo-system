@@ -8,6 +8,8 @@
 
 namespace App\Service;
 
+use App\Jobs\RunAsyncRequestJob;
+
 interface AsyncServiceRunnerInterface
 {
 
@@ -18,5 +20,11 @@ interface AsyncServiceRunnerInterface
    * @return mixed[] dictionary with keys data and status
    */
   function run($input, $reportProgress): array;
+
+  /**
+   * @param string $id
+   * @return RunAsyncRequestJob
+   */
+  function getJob(string $id): RunAsyncRequestJob;
 //</editor-fold desc="Public Methods">
 }

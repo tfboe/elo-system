@@ -10,14 +10,13 @@ namespace App\Http\Controllers;
 
 
 use App\Entity\AsyncRequest;
-use App\Jobs\RunAsyncRequest;
 use App\Service\AsyncRunnerInterface;
+use App\Service\AsyncServiceRunnerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Container\Container;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tfboe\FmLib\Http\Controllers\BaseController;
-use Tfboe\FmLib\Service\AsyncExecuterService;
 
 abstract class AsyncableController extends BaseController
 {
@@ -25,23 +24,23 @@ abstract class AsyncableController extends BaseController
   /** @var AsyncRunnerInterface */
   private $ars;
 
-  /** @var AsyncExecuterService */
-  private $aes;
+  /** @var Container */
+  private $app;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
   /**
    * AsyncableController constructor.
    * @param EntityManagerInterface $entityManager
+   * @param AsyncRunnerInterface $ars
    * @param Container $app
-   * @param AsyncExecuterService $aes
    */
   public function __construct(EntityManagerInterface $entityManager, AsyncRunnerInterface $ars,
-                              AsyncExecuterService $aes)
+                              Container $app)
   {
     parent::__construct($entityManager);
     $this->ars = $ars;
-    $this->aes = $aes;
+    $this->app = $app;
   }
 //</editor-fold desc="Constructor">
 
@@ -75,7 +74,10 @@ abstract class AsyncableController extends BaseController
     $asyncRequest = new AsyncRequest(["input" => $input], $serviceName);
     $this->getEntityManager()->persist($asyncRequest);
     $this->getEntityManager()->flush();
-    dispatch(new RunAsyncRequest($asyncRequest->getId()));
+
+    /** @var AsyncServiceRunnerInterface $service */
+    $service = $this->app->make($serviceName);
+    dispatch($service->getJob($asyncRequest->getId()));
     /*$this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan run-async-request ' .
       $asyncRequest->getId());*/
     return new JsonResponse(["type" => "async", "result" => "Started successfully",

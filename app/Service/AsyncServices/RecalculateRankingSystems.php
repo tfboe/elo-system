@@ -9,6 +9,8 @@
 namespace App\Service\AsyncServices;
 
 
+use App\Jobs\RecalculateRankingSystemsJob;
+use App\Jobs\RunAsyncRequestJob;
 use Doctrine\ORM\EntityManagerInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
@@ -36,6 +38,15 @@ class RecalculateRankingSystems implements RecalculateRankingSystemsInterface
   }
 
 //<editor-fold desc="Public Methods">
+
+  /**
+   * @param string $id
+   * @return RunAsyncRequestJob
+   */
+  function getJob(string $id): RunAsyncRequestJob
+  {
+    return new RecalculateRankingSystemsJob($id);
+  }
 
   /**
    * @param mixed $input

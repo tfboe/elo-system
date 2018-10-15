@@ -24,7 +24,9 @@ use App\Entity\Tournament;
 use App\Entity\User;
 use App\Exceptions\GameHasMissingModes;
 use App\Exceptions\ManualValidationException;
-use App\Jobs\RunAsyncRequest;
+use App\Jobs\CreateOrReplaceTournamentJob;
+use App\Jobs\RecalculateRankingSystemsJob;
+use App\Jobs\RunAsyncRequestJob;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Tfboe\FmLib\Entity\Categories\GameMode;
@@ -327,7 +329,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     $asyncRequest = new AsyncRequest(["input" => []], RecalculateRankingSystemsInterface::class);
     $this->em->persist($asyncRequest);
     $this->em->flush();
-    dispatch(new RunAsyncRequest($asyncRequest->getId()));
+    dispatch(new RecalculateRankingSystemsJob($asyncRequest->getId()));
     //$this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan recompute-rankings');
     //$aes->runBashCommand('pwd >> /tmp/test');
     return ['data' => ['type' => $result], 'status' => 200];
@@ -1549,4 +1551,13 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     ];
   }
 //</editor-fold desc="Private Methods">
+
+  /**
+   * @param string $id
+   * @return RunAsyncRequestJob
+   */
+  function getJob(string $id): RunAsyncRequestJob
+  {
+    return new CreateOrReplaceTournamentJob($id);
+  }
 }
