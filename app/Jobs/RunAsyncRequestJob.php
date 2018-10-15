@@ -16,7 +16,7 @@ abstract class RunAsyncRequestJob extends Job
 {
 //<editor-fold desc="Fields">
   /** @var string */
-  private $id;
+  protected $id;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
