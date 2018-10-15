@@ -24,6 +24,7 @@ use App\Entity\Tournament;
 use App\Entity\User;
 use App\Exceptions\GameHasMissingModes;
 use App\Exceptions\ManualValidationException;
+use App\Jobs\RunAsyncRequest;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Tfboe\FmLib\Entity\Categories\GameMode;
@@ -326,7 +327,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     $asyncRequest = new AsyncRequest(["input" => []], RecalculateRankingSystemsInterface::class);
     $this->em->persist($asyncRequest);
     $this->em->flush();
-    dispatch($asyncRequest->getId());
+    dispatch(new RunAsyncRequest($asyncRequest->getId()));
     //$this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan recompute-rankings');
     //$aes->runBashCommand('pwd >> /tmp/test');
     return ['data' => ['type' => $result], 'status' => 200];
