@@ -11,6 +11,7 @@ namespace App\Service;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Tfboe\FmLib\Helpers\Logging;
 
 /**
  * Class AsyncRunner
@@ -49,6 +50,7 @@ class AsyncRunner implements AsyncRunnerInterface
       return $service->run($input, $reportProgress);
     } catch (\Exception $e) {
       /** @var ExceptionHandler $handler */
+      Logging::log("An error occurred: " . $e->getMessage() . " in " . $e->getTraceAsString());
       $handler = $this->app->make(ExceptionHandler::class);
       $resp = $handler->render(null, $e);
       if ($resp instanceof JsonResponse) {
