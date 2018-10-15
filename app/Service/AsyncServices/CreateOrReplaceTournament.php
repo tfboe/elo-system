@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\AsyncServices;
 
+use App\Entity\AsyncRequest;
 use App\Entity\Competition;
 use App\Entity\Game;
 use App\Entity\Match;
@@ -322,6 +323,10 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
 
     $result = $this->doCreateOrReplaceTournament($input, $reportProgress);
     //start process to recalculate rankings
+    $asyncRequest = new AsyncRequest(["input" => []], RecalculateRankingSystemsInterface::class);
+    $this->em->persist($asyncRequest);
+    $this->em->flush();
+    dispatch($asyncRequest->getId());
     //$this->aes->runBashCommand(env('PHP_COMMAND', 'php') . ' ../artisan recompute-rankings');
     //$aes->runBashCommand('pwd >> /tmp/test');
     return ['data' => ['type' => $result], 'status' => 200];
