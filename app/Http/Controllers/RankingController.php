@@ -23,7 +23,7 @@ use App\Entity\TeamMembership;
 use App\Entity\Tournament;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tfboe\FmLib\Entity\PlayerInterface;
@@ -90,25 +90,36 @@ class RankingController extends BaseController
 
   public function tournamentProfile(Request $request, string $id, LoadingServiceInterface $ls): JsonResponse
   {
+    //TODO distinguish between different ranking systems, what to do then? Furthemore what happens if associated hierarchyEntity is not a game?
     /** @var Player $player */
     $player = $this->getEntityManager()->find(Player::class, $id);
     $qb = $this->getEntityManager()->createQueryBuilder();
-    $changesAndGames = $qb->from(RankingSystemChange::class, 'rsc')
-      ->select(['rsc', 'g'])
+    $changes = $qb->from(RankingSystemChange::class, 'rsc')
+      ->select('rsc')
       ->where($qb->expr()->eq('rsc.player', ':player'))
-      ->innerJoin(Game::class, 'g', Join::WITH, 'g.id = rsc.hierarchyEntity')
       ->setParameter('player', $player)
-      ->getQuery()->getResult();
+      ->getQuery()->setHint(\Doctrine\ORM\Query::HINT_INCLUDE_META_COLUMNS, true)
+      ->getResult(Query::HYDRATE_ARRAY);
+    // DO NOT HYDRATE AS OBJECT SINCE RankingSystemChange WILL SEARCH ALL GAMES SINGULARLY
+    // (SEE Performance impact REMARK for Class Table Inheritance in
+    // https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/inheritance-mapping.html#performance-impact)
 
-    //every second element is a ranking system change the other one is the corresponding game
-    /** @var RankingSystemChange[] $changes */
-    $changes = [];
-    $games = [];
-    for ($i = 0; $i < count($changesAndGames); $i += 2) {
-      $changes[] = $changesAndGames[$i];
-      $games[] = $changesAndGames[$i + 1];
+    $changeIds = [];
+    $gameIds = [];
+    foreach ($changes as $change) {
+      $changeIds[] = $change['id'];
+      $gameIds[] = $change['hierarchy_entity_id'];
     }
 
+    //get games
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    /** @var Game[] $changes */
+    $games = $qb->from(Game::class, 'e')
+      ->select('e')
+      ->where($qb->expr()->in('e.id', $gameIds))
+      ->getQuery()->getResult();
+
+    //load games completely
     $ls->loadEntities($games, [
       Game::class => [['match', 'playersA', 'playersB']],
       Match::class => [['phase', 'rankingsA', 'rankingsB']],
@@ -118,6 +129,14 @@ class RankingController extends BaseController
       Phase::class => [['competition']],
       Competition::class => [['tournament']]
     ]);
+
+    //load ranking system changes as objects
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    /** @var RankingSystemChange[] $changes */
+    $changes = $qb->from(RankingSystemChange::class, 'e')
+      ->select('e')
+      ->where($qb->expr()->in('e.id', $changeIds))
+      ->getQuery()->getResult();
 
     $tournamentIdMap = [];
     $result = [];
