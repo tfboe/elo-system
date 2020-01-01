@@ -9,7 +9,9 @@
 namespace App\Providers;
 
 
-class CatchAllOptionsRequestsProvider
+use Illuminate\Support\ServiceProvider;
+
+class CatchAllOptionsRequestsProvider extends ServiceProvider
 {
 //<editor-fold desc="Public Methods">
   public function register()

@@ -1,14 +1,19 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Middleware\Cors;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-  (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+  $dotDir = __DIR__ . '/../';
+  if (basename($_SERVER['SCRIPT_FILENAME']) === 'index.php') {
+    $dotDir = realpath(dirname(dirname($_SERVER['SCRIPT_FILENAME'])));
+  }
+  (Dotenv\Dotenv::create($dotDir))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
   //
 }
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -59,7 +64,7 @@ $app->routeMiddleware([
 ]);
 
 /** @noinspection PhpParamsInspection */
-$app->middleware(\App\Http\Middleware\Cors::class);
+$app->middleware(Cors::class);
 
 /*
 |--------------------------------------------------------------------------
