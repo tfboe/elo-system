@@ -40,13 +40,13 @@ class AdminController extends BaseController
       return response()->json($result);
     }
 
-    $player2->setMergedInto($player1);
-
     //flatten merged players relation
     foreach ($player2->getMergedPlayers()->toArray() as $subPlayer) {
       /** @var Player $subPlayer */
       $subPlayer->setMergedInto($player1);
     }
+
+    $player2->setMergedInto($player1);
 
     $em->flush();
 
