@@ -30,9 +30,11 @@ class AdminController extends BaseController
 
     /** @var Player $player1 */
     $player1 = $this->getEntityManager()->find(Player::class, $request->input('player1'));
+    $player1 = $player1->getPlayer();
 
     /** @var Player $player2 */
     $player2 = $this->getEntityManager()->find(Player::class, $request->input('player2'));
+    $player2 = $player2->getPlayer();
 
     $result = $ps->mergePlayers($player1, $player2);
 
