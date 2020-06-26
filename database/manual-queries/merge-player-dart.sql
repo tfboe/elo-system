@@ -1,0 +1,3 @@
+SET @OLD_PLAYER_ID = '5261a282-1a7a-11e8-90b2-002590e2fecc';
+SET @NEW_PLAYER_ID = '3268d8a6-f0b1-4d90-83f3-553dc0a93a7b';
+UPDATE dart__attendant SET player_id = @NEW_PLAYER_ID WHERE player_id = @OLD_PLAYER_ID;
