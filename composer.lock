@@ -4763,12 +4763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-                "reference": "ae6d174bc3ff145d4c188b290143af14bb12f84c"
+                "reference": "6f0db7053bf74b1a5cba4a9843fcd18365b9deac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/ae6d174bc3ff145d4c188b290143af14bb12f84c",
-                "reference": "ae6d174bc3ff145d4c188b290143af14bb12f84c",
+                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/6f0db7053bf74b1a5cba4a9843fcd18365b9deac",
+                "reference": "6f0db7053bf74b1a5cba4a9843fcd18365b9deac",
                 "shasum": ""
             },
             "require": {
@@ -4811,7 +4811,7 @@
                 "foosball",
                 "manager"
             ],
-            "time": "2020-01-01T15:57:33+00:00"
+            "time": "2020-06-26T07:16:21+00:00"
         },
         {
             "name": "tymon/jwt-auth",
@@ -7542,5 +7542,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }
