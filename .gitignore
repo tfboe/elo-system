@@ -1,4 +1,4 @@
-/vendor
+/vendor*
 .env
 _ide_helper.php
 doc
