@@ -22,13 +22,13 @@ use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\Tournament;
 use App\Entity\User;
+use App\Service\AsyncServices\RecalculateRankingSystemsInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tfboe\FmLib\Entity\PlayerInterface;
 use Tfboe\FmLib\Entity\RankingInterface;
-use Tfboe\FmLib\Http\Controllers\BaseController;
 use Tfboe\FmLib\Service\LoadingServiceInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
@@ -37,7 +37,7 @@ use Tfboe\FmLib\Service\RankingSystemServiceInterface;
  * Class RankingController
  * @package App\Http\Controllers
  */
-class RankingController extends BaseController
+class RankingController extends AsyncableController
 {
 //<editor-fold desc="Public Methods">
 
@@ -188,6 +188,10 @@ class RankingController extends BaseController
     }
 
     return response()->json($result);
+  }
+
+  public function recalculateRankings(Request $request): JsonResponse {
+    return $this->checkAsync($request, RecalculateRankingSystemsInterface::class);
   }
 
   /**

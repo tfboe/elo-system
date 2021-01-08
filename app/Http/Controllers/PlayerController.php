@@ -51,7 +51,6 @@ class PlayerController extends BaseController
     $playerEntities = [];
     $inputPlayerData = [];
     foreach ($input as $player) {
-      //ignore duplicate players
       if (!array_key_exists($player['firstName'], $inputPlayerData)) {
         $inputPlayerData[$player['firstName']] = [];
       }
@@ -59,7 +58,8 @@ class PlayerController extends BaseController
         $inputPlayerData[$player['firstName']][$player['lastName']] = [];
       }
       if (!array_key_exists($player['birthday'], $inputPlayerData[$player['firstName']][$player['lastName']])) {
-        $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = true;
+        $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = [$player, null];
+        $birthdayString = $player['birthday'];
         $player['birthday'] = new \DateTime($player['birthday']);
         $itsfLicenseNumber = null;
         if (array_key_exists('itsfLicenseNumber', $player)) {
@@ -86,8 +86,12 @@ class PlayerController extends BaseController
             $this->getEntityManager()->persist($p);
             $players[] = $player;
             $playerEntities[] = $p;
+            $inputPlayerData[$player['firstName']][$player['lastName']][$birthdayString][1] = $p;
           }
         }
+      } else if ($inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][1] != null) {
+          $players[] = $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][0];
+          $playerEntities[] = $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][1];
       }
     }
     if (count($existingPlayers) > 0) {

@@ -15,7 +15,7 @@
   "license": "GPL-3.0-or-later",
   "type": "project",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.4",
     "ext-mbstring": "*",
     "laravel/lumen-framework": "5.5.*",
     "vlucas/phpdotenv": "~2.2",
@@ -24,9 +24,9 @@
     "laravel-doctrine/orm": "^1.2.12",
     "laravel-doctrine/extensions": "^1.0.12",
     "gedmo/doctrine-extensions": "^2.4.30",
-    "tfboe/fm-lib": "dev-elo-system-dev",
+    "tfboe/fm-lib": "dev-elo-system-old",
     "palanik/lumen-cors": "dev-master",
-    "beberlei/DoctrineExtensions": "^1.0",
+    "beberlei/doctrineextensions": "^1.0",
     "maxbrokman/safe-queue": "^0.3.0"
   },
   "require-dev": {

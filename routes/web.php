@@ -231,6 +231,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     'uses' => 'AsyncController@getAsyncRequestState'
   ]);
 
+  $router->post('recalculateRankings', [
+    'as' => 'recalculateRankings', 'uses' => 'RankingController@recalculateRankings'
+  ]);
+
   $router->post('uploadFile', [
     'middleware' => 'can:create,App\Entity\Tournament',
     'as' => 'uploadFile',

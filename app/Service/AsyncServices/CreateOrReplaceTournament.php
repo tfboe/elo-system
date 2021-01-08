@@ -37,6 +37,7 @@ use Tfboe\FmLib\Entity\Categories\TeamMode;
 use Tfboe\FmLib\Entity\CompetitionInterface;
 use Tfboe\FmLib\Entity\Helpers\Result;
 use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
+use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyInterface;
 use Tfboe\FmLib\Entity\TeamMembershipInterface;
 use Tfboe\FmLib\Entity\TournamentInterface;
 use Tfboe\FmLib\Exceptions\DuplicateException;
@@ -355,13 +356,13 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
   }
 
   /**
-   * @param TournamentHierarchyEntity $entity
+   * @param TournamentHierarchyInterface $entity
    * @param $rankingSystem
    */
-  private function addInfluencingRankingSystem(TournamentHierarchyEntity $entity, $rankingSystem)
+  private function addInfluencingRankingSystem(TournamentHierarchyInterface $entity, $rankingSystem)
   {
     if ($entity->addInfluencingRankingSystem($rankingSystem) && $entity->getParent() !== null) {
-      $this->addInfluencingRankingSystem($entity, $rankingSystem);
+      $this->addInfluencingRankingSystem($entity->getParent(), $rankingSystem);
     }
   }
 
