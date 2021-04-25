@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  core:
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ..:/workspace 
+      - /tmp/.X11-unix:/tmp/.X11-unix 
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      - /dev/shm:/dev/shm
+      - vscodeuserdata:/userdata
+      - user_home:/home/dev/
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+      - GIT_NAME=${GIT_NAME}
+      - GIT_EMAIL=${GIT_EMAIL}
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'wvDwS5j3xdhxgfbVQ97DxT9ikuCrhH'
+      MYSQL_ROOT_PASSWORD: '7SSC8dLKg5eK6cvNCoaVrpQ54M3EM4'
+    expose:
+      - '3306'
+    volumes:
+      - dbdata:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin 
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 58080:80
+volumes:
+  vscodeuserdata:
+  user_home:
+  dbdata:
