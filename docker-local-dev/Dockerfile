@@ -43,7 +43,7 @@ USER $USER
 RUN which codium
 
 # vscodium-extensions
-RUN /usr/bin/codium --install-extension felixfbecker.php-intellisense
+RUN /usr/bin/codium --install-extension bmewburn.vscode-intelephense-client
 RUN /usr/bin/codium --install-extension felixfbecker.php-debug
 
 RUN /usr/bin/codium --list-extensions
@@ -60,7 +60,7 @@ USER root
 ##
 
 RUN apt-get update \
-  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql
+  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip php-unzip
 
 # configure xdebug
 RUN echo "xdebug.remote_enable = 1\nxdebug.remote_autostart = 1" >> /etc/php/7.4/mods-available/xdebug.ini
@@ -71,7 +71,10 @@ RUN phpenmod mbstring \
   && phpenmod dom \
   && phpenmod xml \
   && phpenmod xdebug \
-  && phpenmod pdo_mysql
+  && phpenmod pdo_mysql \
+  && phpenmod curl \
+  && phpenmod zip \
+  && phpenmod unzip
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

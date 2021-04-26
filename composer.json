@@ -17,8 +17,8 @@
   "require": {
     "php": ">=7.4",
     "ext-mbstring": "*",
-    "laravel/lumen-framework": "5.5.*",
-    "vlucas/phpdotenv": "~2.2",
+    "laravel/lumen-framework": "5.8.*",
+    "vlucas/phpdotenv": "^3.3",
     "tymon/jwt-auth": "^1.0.0",
     "irazasyed/jwt-auth-guard": "dev-master",
     "laravel-doctrine/orm": "^1.2.12",

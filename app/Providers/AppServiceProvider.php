@@ -42,8 +42,6 @@ class AppServiceProvider extends ServiceProvider
       Handler::class
     );
 
-    $this->app->register(CatchAllOptionsRequestsProvider::class);
-
     //optional service providers
     if (class_exists('\LaravelDoctrine\Migrations\MigrationsServiceProvider')) {
       $this->app->register(MigrationsServiceProvider::class);

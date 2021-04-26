@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Entity\User;
 use App\Service\AsyncServices\CreateOrReplaceTournamentInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tfboe\FmLib\Exceptions\PreconditionFailedException;
 
 /**
@@ -55,7 +57,9 @@ class TournamentController extends AsyncableController
       if (!$file->isValid()) {
         throw new PreconditionFailedException("Error during file upload!");
       }
-      $userId = \Auth::user()->getId();
+      /** @var User $user */
+      $user = Auth::user();
+      $userId = $user->getId();
       $destinationDir = "../storage/file-uploads/" . $userId;
       if (!is_dir($destinationDir)) {
         mkdir($destinationDir, 0777, true);

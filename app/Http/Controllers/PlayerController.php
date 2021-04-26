@@ -58,7 +58,7 @@ class PlayerController extends BaseController
         $inputPlayerData[$player['firstName']][$player['lastName']] = [];
       }
       if (!array_key_exists($player['birthday'], $inputPlayerData[$player['firstName']][$player['lastName']])) {
-        $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = [$player, null];
+        $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = null;
         $birthdayString = $player['birthday'];
         $player['birthday'] = new \DateTime($player['birthday']);
         $itsfLicenseNumber = null;
@@ -84,14 +84,15 @@ class PlayerController extends BaseController
             /** @var Player $p */
             $p = $this->setFromSpecification(new Player(), $specification, $player);
             $this->getEntityManager()->persist($p);
+            $player['birthday'] = $birthdayString;
             $players[] = $player;
             $playerEntities[] = $p;
-            $inputPlayerData[$player['firstName']][$player['lastName']][$birthdayString][1] = $p;
+            $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] = $p;
           }
         }
-      } else if ($inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][1] != null) {
-          $players[] = $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][0];
-          $playerEntities[] = $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']][1];
+      } else if ($inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']] != null) {
+          $players[] = $player;
+          $playerEntities[] = $inputPlayerData[$player['firstName']][$player['lastName']][$player['birthday']];
       }
     }
     if (count($existingPlayers) > 0) {

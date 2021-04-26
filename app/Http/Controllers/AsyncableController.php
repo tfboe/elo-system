@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Container\Container;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 
 abstract class AsyncableController extends BaseController
@@ -53,8 +54,10 @@ abstract class AsyncableController extends BaseController
   protected function checkAsync(Request $request, string $serviceName): JsonResponse
   {
     $input = $request->input();
-    if (\Auth::user() !== null) {
-      $input['user'] = \Auth::user()->getId();
+    /** @var User $user */
+    $user = Auth::user();
+    if ($user !== null) {
+      $input['user'] = $user->getId();
     }
     if ($request->has('async') && $request->get('async') === true) {
       return $this->runAsync($input, $serviceName);

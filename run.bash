@@ -12,10 +12,6 @@ echo $SCRIPTPATH
 export GIT_NAME="`git config user.name`"
 export GIT_EMAIL="`git config user.email`"
 
-# clear logs
-echo "# clear logs"
-rm -rf userdata/logs/*
-
 # rebuild
 echo "rebuild docker-compose"
 cd docker-local-dev/
