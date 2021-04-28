@@ -194,17 +194,22 @@ class PlayerController extends BaseController
     $parameters = [];
     $subQuery = "";
     $licenseNumbers = [];
+    $keysOfLicenseNumber = [];
     $licenseNumbersQuery = "";
     $input = $request->input();
     foreach ($input as $key => $player) {
       assert($key !== null);
-      if (array_key_exists('itsfLicenseNumber', $player) &&
-        !array_key_exists($player['itsfLicenseNumber'], $licenseNumbers)) {
-        $licenseNumbers[$player['itsfLicenseNumber']] = $key;
-        if ($licenseNumbersQuery !== "") {
-          $licenseNumbersQuery .= ',';
+      if (array_key_exists('itsfLicenseNumber', $player)) {
+        if (!array_key_exists($player['itsfLicenseNumber'], $keysOfLicenseNumber)) {
+          $licenseNumbers[] = $player['itsfLicenseNumber'];
+          $keysOfLicenseNumber[$player['itsfLicenseNumber']] = [$key];
+          if ($licenseNumbersQuery !== "") {
+            $licenseNumbersQuery .= ',';
+          }
+          $licenseNumbersQuery .= '?';
+        } else {
+          $keysOfLicenseNumber[$player['itsfLicenseNumber']][] = $key;
         }
-        $licenseNumbersQuery .= '?';
       }
       if (array_key_exists('firstName', $player) && array_key_exists('lastName', $player) &&
         array_key_exists('birthday', $player)) {
@@ -258,7 +263,7 @@ SQL;
       }
       $query .= " p.$itsfNumberRow IN ($licenseNumbersQuery)";
     }
-    $parameters = array_merge($parameters, array_keys($licenseNumbers));
+    $parameters = array_merge($parameters, $licenseNumbers);
     $query = $this->getEntityManager()->getConnection()->prepare($query);
     $query->execute($parameters);
     $rows = $query->fetchAll();
@@ -271,8 +276,8 @@ SQL;
       if ($row['k'] !== null) {
         $keys[] = $row['k'];
       }
-      if ($row['itsfLicenseNumber'] !== null && array_key_exists($row['itsfLicenseNumber'], $licenseNumbers)) {
-        $keys[] = $licenseNumbers[$row['itsfLicenseNumber']];
+      if ($row['itsfLicenseNumber'] !== null && array_key_exists($row['itsfLicenseNumber'], $keysOfLicenseNumber)) {
+        $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumber']]);
       }
       assert(count($keys) > 0);
       foreach ($keys as $key) {
