@@ -86,6 +86,10 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
    * @var RankingSystem[][]
    */
   private $rankingSystems;
+    /**
+   * @var RankingSystem[]
+   */
+  private $rankingSystemsById;
 
   /**
    * @var EntityManagerInterface
@@ -136,6 +140,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     $this->checkBoolean($input, 'finished', $current);
     $this->checkCategories($input, $current);
     $this->checkTimes($input, $current);
+    $this->checkRankingSystems($input, $current);
 
     $competitionNames = [];
     $playerIds = [];
@@ -149,6 +154,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       $this->checkArray($competition, 'phases', $current);
       $this->checkCategories($competition, $current);
       $this->checkTimes($competition, $current);
+      $this->checkRankingSystems($competition, $current);
       foreach ($competition['teams'] as $k2 => $team) {
         $teamDesc = $current . "[teams][$k2]";
         $this->checkString($team, 'name', $teamDesc);
@@ -180,6 +186,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
           $this->checkArray($phase, 'matches', $phaseDesc);
           $this->checkCategories($phase, $phaseDesc);
           $this->checkTimes($phase, $phaseDesc);
+          $this->checkRankingSystems($phase, $current);
           foreach ($phase['rankings'] as $k3 => $ranking) {
             $rankingDesc = $phaseDesc . "[rankings][$k3]";
             $this->checkRequired($ranking, 'uniqueRank', $rankingDesc);
@@ -212,6 +219,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
             $this->checkCategories($match, $matchDesc);
             $this->checkTimes($match, $matchDesc);
             $this->checkResults($match, $matchDesc);
+            $this->checkRankingSystems($match, $current);
             foreach ($match['games'] as $k4 => $game) {
               $gameDesc = $matchDesc . "[games][$k4]";
               $this->checkCategories($game, $gameDesc);
@@ -229,6 +237,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
               foreach ($game['playersB'] as $id) {
                 $playerIds[$id] = true;
               }
+              $this->checkRankingSystems($game, $gameDesc);
             }
           }
         }
@@ -567,6 +576,17 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     }
   }
 
+  private function checkRankingSystems($data, $dataName) {
+    $this->checkArray($data, 'rankingSystems', $dataName);
+    if (array_key_exists('rankingSystems', $data)) {
+      foreach($data['rankingSystems'] as $index => $value) {
+        if (!is_string($value)) {
+          throw new ManualValidationException("$dataName[rankingSystems][$index] must be an integer");
+        }
+      }
+    }
+  }
+
   /**
    * @param $data
    * @param $property
@@ -654,6 +674,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     /** @var RankingSystem[] $rankingSystems */
     $rankingSystems = $this->em->getRepository(RankingSystem::class)->findAll();
     $this->rankingSystems = [];
+    $this->rankingSystemsById = [];
     foreach (Level::getValues() as $value) {
       $this->rankingSystems[$value] = [];
     }
@@ -661,6 +682,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       if ($rankingSystem->getDefaultForLevel() !== null) {
         $this->rankingSystems[$rankingSystem->getDefaultForLevel()][] = $rankingSystem;
       }
+      $this->rankingSystemsById[$rankingSystem->getId()] = $rankingSystem;
     }
 
     if ($tournament == null) {
@@ -669,12 +691,10 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       $user = $this->em->find(User::class, $input['user']);
       $tournament->setCreator($user);
       $this->em->persist($tournament);
-      foreach ($this->rankingSystems[Level::TOURNAMENT] as $rankingSystem) {
-        $tournament->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-        $this->addInfluencingRankingSystem($tournament, $rankingSystem);
-      }
       $type = 'create';
     }
+
+    $this->replaceRankingSystems($tournament, $input, Level::TOURNAMENT);
 
     Tools::setFromSpecification($tournament, $this->tournamentSpecification, $input, $this->em);
     $this->replaceCompetitions($input, $tournament, $reportProgress);
@@ -927,12 +947,10 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         Tools::setFromSpecification($competition, $this->competitionSpecification, $competitionValues, $this->em);
         $competition->setTournamentWithoutInitializing($tournament);
         $this->em->persist($competition);
-        foreach ($this->rankingSystems[Level::COMPETITION] as $rankingSystem) {
-          $competition->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $this->addInfluencingRankingSystem($competition, $rankingSystem);
-          //$rankingSystem->getHierarchyEntries()->set($competition->getId(), $competition);
-        }
       }
+
+      $this->replaceRankingSystems($competition, $competitionValues, Level::COMPETITION);
+
       $competitionNames[$competitionValues['name']] = true;
 
 
@@ -1091,12 +1109,8 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         // request
         $game->setMatch($match);
         $this->em->persist($game);
-        foreach ($this->rankingSystems[Level::GAME] as $rankingSystem) {
-          $game->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $this->addInfluencingRankingSystem($game, $rankingSystem);
-          //$rankingSystem->getHierarchyEntries()->set($game->getId(), $game);
-        }
       }
+      $this->replaceRankingSystems($game, $gameValues, Level::GAME);
       $gameNumbers[$gameValues['gameNumber']] = true;
 
       //the game has a match and a game number since it is required for the request
@@ -1202,12 +1216,8 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         // request
         $match->setPhase($phase);
         $this->em->persist($match);
-        foreach ($this->rankingSystems[Level::MATCH] as $rankingSystem) {
-          $match->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $this->addInfluencingRankingSystem($match, $rankingSystem);
-          //$rankingSystem->getHierarchyEntries()->set($match->getId(), $match);
-        }
       }
+      $this->replaceRankingSystems($match, $matchValues, Level::MATCH);
       $matchNumbers[$matchValues['matchNumber']] = true;
 
       //the ranking has a phase and a unique rank since it is required for the request
@@ -1316,12 +1326,8 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         // request
         $phase->setCompetition($competition);
         $this->em->persist($phase);
-        foreach ($this->rankingSystems[Level::PHASE] as $rankingSystem) {
-          $phase->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-          $this->addInfluencingRankingSystem($phase, $rankingSystem);
-          //$rankingSystem->getHierarchyEntries()->set($phase->getId(), $phase);
-        }
       }
+      $this->replaceRankingSystems($phase, $phaseValues, Level::PHASE);
       $phaseNumbers[$phaseValues['phaseNumber']] = true;
       $this->replaceRankings($phase, $phaseValues['rankings']);
       $this->replaceMatches($phase, $phaseValues['matches']);
@@ -1514,6 +1520,47 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         $team = $competition->getTeams()->get($key);
         $competition->getTeams()->remove($key);
         $this->removeTeam($team);
+      }
+    }
+  }
+
+    /**
+   * Replaces the ranking systems of the given tournament hierarchy entity
+   * @param TournamentHierarchyInterface $entity the entity to modify
+   * @param string[] $entityValues the given values of the entity (maybe containing the key rankingSystems)
+   * @param int $level the level for which to consider the default ranking systems
+   * @throws DuplicateException a ranking system id is occurring twice (or is default and appears in rankingSystemIds)
+   */
+  private function replaceRankingSystems(TournamentHierarchyInterface $entity, array $entityValues, int $level)
+  {
+    $oldRankingSystemIds = [];
+    foreach ($entity->getRankingSystems() as $rankingSystem) {
+      $oldRankingSystemIds[$rankingSystem->getId()] = false;
+    }
+    $rankingSystemIds = $this->rankingSystems[$level];
+    if (array_key_exists('rankingSystems', $entityValues)) {
+      $rankingSystemIds = array_merge($rankingSystemIds, $entityValues['rankingSystems']);
+    }
+    foreach ($rankingSystemIds as $rankingSystemId) {
+      if ($entity->getRankingSystems()->contains($rankingSystemId)) {
+        if ($oldRankingSystemIds[$rankingSystemId] == true) {
+          //duplicate ranking system id!
+          throw new DuplicateException($rankingSystemId, 'ranking system id',
+            'the ranking systems of ' . Level::getName($level) . ' ' . $entity->getId());
+        }
+      } else if (!array_key_exists($rankingSystemId, $this->rankingSystemsById)) {
+        throw new ReferenceException($rankingSystemId, 'rankingSystems of ' . Level::getName($level) . ' ' . $entity->getId());
+      } else {
+        $rankingSystem = $this->rankingSystemsById[$rankingSystemId];
+        $entity->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
+        $this->addInfluencingRankingSystem($entity, $rankingSystem);
+      }
+    }
+    foreach ($oldRankingSystemIds as $rankingSystemId => $used) {
+      if (!$used) {
+        $rankingSystem = $entity->getRankingSystems()->get($rankingSystemId);
+        $entity->getRankingSystems()->remove($rankingSystemId);
+        $this->addInfluencingRankingSystem($entity, $rankingSystem);
       }
     }
   }
