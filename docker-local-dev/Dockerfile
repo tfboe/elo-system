@@ -45,6 +45,7 @@ RUN which codium
 # vscodium-extensions
 RUN /usr/bin/codium --install-extension bmewburn.vscode-intelephense-client
 RUN /usr/bin/codium --install-extension felixfbecker.php-debug
+RUN /usr/bin/codium --install-extension mhutchie.git-graph
 
 RUN /usr/bin/codium --list-extensions
 
@@ -59,8 +60,9 @@ USER root
 ## php stuff
 ##
 
+# lftp is for uploading php projects to a server via ftp using scripts
 RUN apt-get update \
-  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip unzip
+  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip unzip lftp
 
 # configure xdebug
 RUN echo "xdebug.remote_enable = 1\nxdebug.remote_autostart = 1" >> /etc/php/7.4/mods-available/xdebug.ini
