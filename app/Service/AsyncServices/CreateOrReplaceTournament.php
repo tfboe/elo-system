@@ -45,6 +45,7 @@ use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tfboe\FmLib\Helpers\Level;
 use Tfboe\FmLib\Helpers\Tools;
+use Tfboe\FmLib\Service\DynamicServiceLoadingServiceInterface;
 use Tfboe\FmLib\Service\LoadingServiceInterface;
 
 /**
@@ -100,6 +101,11 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
    * @var LoadingServiceInterface
    */
   private $ls;
+
+    /**
+   * @var DynamicServiceLoadingServiceInterface
+   */
+  private $dsls;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -108,10 +114,11 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
    * @param EntityManagerInterface $em
    * @param LoadingServiceInterface $ls
    */
-  public function __construct(EntityManagerInterface $em, LoadingServiceInterface $ls)
+  public function __construct(EntityManagerInterface $em, LoadingServiceInterface $ls, DynamicServiceLoadingServiceInterface $dsls)
   {
     $this->em = $em;
     $this->ls = $ls;
+    $this->dsls = $dsls;
   }
 //</editor-fold desc="Constructor">
 
@@ -581,7 +588,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     if (array_key_exists('rankingSystems', $data)) {
       foreach($data['rankingSystems'] as $index => $value) {
         if (!is_string($value)) {
-          throw new ManualValidationException("$dataName[rankingSystems][$index] must be an integer");
+          throw new ManualValidationException($dataName . "[rankingSystems][$index] must be an integer");
         }
       }
     }
@@ -1542,18 +1549,26 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       $rankingSystemIds = array_merge($rankingSystemIds, $entityValues['rankingSystems']);
     }
     foreach ($rankingSystemIds as $rankingSystemId) {
-      if ($entity->getRankingSystems()->contains($rankingSystemId)) {
+      if (array_key_exists($rankingSystemId, $oldRankingSystemIds)) {
         if ($oldRankingSystemIds[$rankingSystemId] == true) {
           //duplicate ranking system id!
           throw new DuplicateException($rankingSystemId, 'ranking system id',
             'the ranking systems of ' . Level::getName($level) . ' ' . $entity->getId());
         }
+        $oldRankingSystemIds[$rankingSystemId] = true;
       } else if (!array_key_exists($rankingSystemId, $this->rankingSystemsById)) {
         throw new ReferenceException($rankingSystemId, 'rankingSystems of ' . Level::getName($level) . ' ' . $entity->getId());
       } else {
         $rankingSystem = $this->rankingSystemsById[$rankingSystemId];
         $entity->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
         $this->addInfluencingRankingSystem($entity, $rankingSystem);
+
+        $service = $this->dsls->loadRankingSystemService($rankingSystem->getServiceName());
+        $earliestInfluence = $service->getEarliestInfluence($rankingSystem, $entity);
+        if ($earliestInfluence !== null &&
+          ($rankingSystem->getOpenSyncFrom() === null || $rankingSystem->getOpenSyncFrom() > $earliestInfluence)) {
+          $rankingSystem->setOpenSyncFrom($earliestInfluence);
+        }
       }
     }
     foreach ($oldRankingSystemIds as $rankingSystemId => $used) {
@@ -1561,6 +1576,13 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         $rankingSystem = $entity->getRankingSystems()->get($rankingSystemId);
         $entity->getRankingSystems()->remove($rankingSystemId);
         $this->addInfluencingRankingSystem($entity, $rankingSystem);
+
+        $service = $this->dsls->loadRankingSystemService($rankingSystem->getServiceName());
+        $earliestInfluence = $service->getEarliestInfluence($rankingSystem, $entity);
+        if ($earliestInfluence !== null &&
+          ($rankingSystem->getOpenSyncFrom() === null || $rankingSystem->getOpenSyncFrom() > $earliestInfluence)) {
+          $rankingSystem->setOpenSyncFrom($earliestInfluence);
+        }
       }
     }
   }

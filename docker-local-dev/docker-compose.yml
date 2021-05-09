@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  core:
+  php-server:
     build: .
     ports:
       - 8000:8000
@@ -18,6 +18,8 @@ services:
       - GIT_NAME=${GIT_NAME}
       - GIT_EMAIL=${GIT_EMAIL}
       - SSH_AUTH_SOCK=/ssh-agent
+    networks:
+      - elo-system
   db:
     image: mysql:5.7
     restart: always
@@ -30,6 +32,8 @@ services:
       - '3306'
     volumes:
       - dbdata:/var/lib/mysql
+    networks:
+      - elo-system
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin 
@@ -42,7 +46,12 @@ services:
     restart: always
     ports:
       - 58080:80
+    networks:
+      - elo-system
 volumes:
   vscodeuserdata:
   user_home:
   dbdata:
+networks:
+  elo-system:
+    driver: bridge

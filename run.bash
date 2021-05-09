@@ -23,7 +23,7 @@ xhost +local:
 #make and run container
 echo "IMPORTANT: DONT close this terminal or vscode will close"
 
-docker-compose up --exit-code-from core
+docker-compose up --exit-code-from php-server
 
 echo "# disallow xHost"
 xhost -local:

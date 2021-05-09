@@ -45,21 +45,27 @@ class RankingController extends AsyncableController
    * @param RankingSystemServiceInterface $rss
    * @return JsonResponse
    */
-  public function rankings(): JsonResponse
+  public function rankings(Request $request): JsonResponse
   {
     $qb = $this->getEntityManager()->createQueryBuilder();
-    $result = $qb->from(RankingSystemListEntry::class, 'rse')
-      ->select('rse.points AS points')
-      ->addSelect('rse.numberRankedEntities AS nGames')
-      ->addSelect('rse.subClassData AS subClassData')
-      ->addSelect('p.firstName AS firstName')
-      ->addSelect('p.lastName AS lastName')
-      ->addSelect('p.id AS playerId')
-      ->addSelect('GROUP_CONCAT(mp.id) AS mergedPlayerIds')
-      ->innerJoin('rse.player', 'p')
-      ->innerJoin('rse.rankingSystemList', 'l')
-      ->leftJoin('p.mergedPlayers', 'mp')
-      ->where('l.current = 1')
+    $qb = $qb->from(RankingSystemListEntry::class, 'rse')
+    ->select('rse.points AS points')
+    ->addSelect('rse.numberRankedEntities AS nGames')
+    ->addSelect('rse.subClassData AS subClassData')
+    ->addSelect('p.firstName AS firstName')
+    ->addSelect('p.lastName AS lastName')
+    ->addSelect('p.id AS playerId')
+    ->addSelect('GROUP_CONCAT(mp.id) AS mergedPlayerIds')
+    ->innerJoin('rse.player', 'p')
+    ->innerJoin('rse.rankingSystemList', 'l')
+    ->leftJoin('p.mergedPlayers', 'mp')
+    ->where('l.current = 1');
+    if (array_key_exists("id", $request->input())) {
+      $id = $request->input("id");
+      $qb->andWhere($qb->expr()->eq('IDENTITY(l.rankingSystem)', ':id'))
+        ->setParameter("id", $id);
+    }
+    $result = $qb
       ->groupBy('rse.id')
       ->getQuery()->getResult();
     $qb = $this->getEntityManager()->createQueryBuilder();

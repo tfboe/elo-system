@@ -17,6 +17,7 @@ use Illuminate\Support\ServiceProvider;
 use LaravelDoctrine\Extensions\BeberleiExtensionsServiceProvider;
 use LaravelDoctrine\Migrations\MigrationsServiceProvider;
 use Tfboe\FmLib\Providers\FmLibServiceProvider;
+use Tfboe\FmLib\Service\DynamicServiceLoadingServiceInterface;
 use Tfboe\FmLib\Service\LoadingServiceInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
 
@@ -50,7 +51,8 @@ class AppServiceProvider extends ServiceProvider
     $this->app->singleton(CreateOrReplaceTournamentInterface::class, function (Container $app) {
       return new CreateOrReplaceTournament(
         $app->make(EntityManagerInterface::class),
-        $app->make(LoadingServiceInterface::class)
+        $app->make(LoadingServiceInterface::class),
+        $app->make(DynamicServiceLoadingServiceInterface::class),
       );
     });
 
