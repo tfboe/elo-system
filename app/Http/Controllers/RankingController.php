@@ -65,6 +65,11 @@ class RankingController extends AsyncableController
       $qb->andWhere($qb->expr()->eq('IDENTITY(l.rankingSystem)', ':id'))
         ->setParameter("id", $id);
     }
+    if (array_key_exists("min_birth_date", $request->input())) {
+      $minBirthDay = \DateTime::createFromFormat('Y-m-d', $request->input("min_birth_date"));
+      $qb->andWhere($qb->expr()->gte('p.birthday', ':min_birth_day'))
+      ->setParameter("min_birth_day", $minBirthDay);
+    }
     $result = $qb
       ->groupBy('rse.id')
       ->getQuery()->getResult();
