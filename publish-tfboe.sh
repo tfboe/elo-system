@@ -20,6 +20,8 @@ host="ftp://www94.world4you.com"
 
 git describe --tags > git-version/current
 
+php artisan doctrine:generate:proxies
+
 lftp <<EOF
 open -u $user,$password -p 21 $host
 $(cat upload-code-tfboe.x)

@@ -24,6 +24,17 @@ class TournamentPolicy
    */
   public function create(User $user): bool
   {
+    return $user->isAdmin();
+  }
+
+    /**
+   * Determine whether the user can view tournaments (and rankings).
+   *
+   * @param  User $user
+   * @return mixed
+   */
+  public function view(User $user): bool
+  {
     return $user->isActivated();
   }
 //</editor-fold desc="Public Methods">

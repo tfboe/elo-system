@@ -1,4 +1,6 @@
 /vendor
+/vendor-dev
+/vendor-dist
 .env
 _ide_helper.php
 doc

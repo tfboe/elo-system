@@ -5,6 +5,7 @@ mirror --verbose=1 -c -e -R --no-symlinks --upload-older ./git-version /tfboe-el
 mirror --verbose=1 -c -e -R --no-symlinks --upload-older ./public /tfboe-elo/public
 mirror --verbose=1 -c -e -R --no-symlinks --upload-older ./resources /tfboe-elo/resources
 mirror --verbose=1 -c -e -R --no-symlinks --upload-older ./routes /tfboe-elo/routes
+mirror --verbose=1 -c -e -R --no-symlinks --upload-older ./storage/proxies /tfboe-elo/storage/proxies
 mirror --verbose=1 -c -e -R --no-symlinks --upload-older -f ./composer.json -O /tfboe-elo
 mirror --verbose=1 -c -e -R --no-symlinks --upload-older -f ./composer.lock -O /tfboe-elo
 exit

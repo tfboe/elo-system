@@ -27,7 +27,8 @@
     "tfboe/fm-lib": "dev-elo-system-old",
     "palanik/lumen-cors": "dev-master",
     "beberlei/doctrineextensions": "^1.0",
-    "maxbrokman/safe-queue": "^0.3.0"
+    "maxbrokman/safe-queue": "^0.3.0",
+    "flipbox/lumen-generator": "^8.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
