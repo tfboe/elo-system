@@ -36,7 +36,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
       'as' => 'rankings', 'uses' => 'RankingController@rankings'
     ]);
 
-    $router->get('tournamentProfile/{id}', [
+    $router->get('tournamentProfile/{rankingId}/{playerId}', [
       'as' => 'tournamentProfile', 'uses' => 'RankingController@tournamentProfile'
     ]);
 

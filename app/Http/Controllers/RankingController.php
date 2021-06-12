@@ -99,16 +99,18 @@ class RankingController extends AsyncableController
     return response()->json($result);
   }
 
-  public function tournamentProfile(Request $request, string $id, LoadingServiceInterface $ls): JsonResponse
+  public function tournamentProfile(Request $request, string $rankingId, string $playerId, LoadingServiceInterface $ls): JsonResponse
   {
-    //TODO distinguish between different ranking systems, what to do then? Furthemore what happens if associated hierarchyEntity is not a game?
+    //TODO What happens if associated hierarchyEntity is not a game?
     /** @var Player $player */
-    $player = $this->getEntityManager()->find(Player::class, $id);
+    $player = $this->getEntityManager()->find(Player::class, $playerId);
     $qb = $this->getEntityManager()->createQueryBuilder();
     $changes = $qb->from(RankingSystemChange::class, 'rsc')
       ->select('rsc')
       ->where($qb->expr()->eq('rsc.player', ':player'))
       ->setParameter('player', $player)
+      ->andWhere($qb->expr()->eq('IDENTITY(rsc.rankingSystem)', ':rankingId'))
+      ->setParameter('rankingId', $rankingId)
       ->getQuery()->setHint(\Doctrine\ORM\Query::HINT_INCLUDE_META_COLUMNS, true)
       ->getResult(Query::HYDRATE_ARRAY);
     // DO NOT HYDRATE AS OBJECT SINCE RankingSystemChange WILL SEARCH ALL GAMES SINGULARLY
@@ -150,7 +152,7 @@ class RankingController extends AsyncableController
       ->getQuery()->getResult();
 
     $tournamentIdMap = [];
-    $result = [];
+    $result = ["playerName" => ["firstName" => $player->getFirstName(), "lastName" => $player->getLastName()], "tournaments" => []];
     /** @var User|null $user */
     $user = $request->user();
     foreach ($changes as $change) {
@@ -174,8 +176,8 @@ class RankingController extends AsyncableController
         if (!!$user && $tournament->getCreator()->getId() === $user->getId()) {
           $tInfo['localIdentifier'] = $tournament->getLocalIdentifier();
         }
-        $tournamentIdMap[$tournament->getId()] = count($result);
-        $result[] = ["info" => $tInfo, "games" => []];
+        $tournamentIdMap[$tournament->getId()] = count($result["tournaments"]);
+        $result["tournaments"][] = ["info" => $tInfo, "games" => []];
       }
       $info = [];
       $partner = $this->getPartner($isTeamA ? $game->getPlayersA() : $game->getPlayersB(), $player);
@@ -190,12 +192,13 @@ class RankingController extends AsyncableController
       $info['newElo'] = $change->getPointsAfterwards();
       $info['teamElo'] = $change->getTeamElo();
       $info['opponentElo'] = $change->getOpponentElo();
+      $info['matchNumber'] = $match->getMatchNumber();
       $info['gameNumber'] = $game->getGameNumber();
       $info['phaseNumber'] = $phase->getPhaseNumber();
       $info['competitionIdentifier'] = $phase->getCompetition()->getLocalIdentifier();
       $info['competitionName'] = $phase->getCompetition()->getName();
       $info['start'] = $game->getStartTime() === null ? null : $game->getStartTime()->getTimestamp();
-      $result[$tournamentIdMap[$tournament->getId()]]["games"][] = $info;
+      $result["tournaments"][$tournamentIdMap[$tournament->getId()]]["games"][] = $info;
     }
 
     return response()->json($result);
