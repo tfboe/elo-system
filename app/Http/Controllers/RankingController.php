@@ -168,7 +168,7 @@ class RankingController extends AsyncableController
         $tInfo = [];
         $tInfo['name'] = $tournament->getName();
         $tInfo['start'] = $tournament->getStartTime() === null ? null : $tournament->getStartTime()->getTimestamp();
-        $tInfo['ownRank'] = (!$tournament->isFinished()) ? null : ($team === null ? null : $team->getRank());
+        $tInfo['ownRank'] = $team === null ? null : $team->getRank();
         $partner = $this->getPartnerFromTeam($team, $player);
         $tInfo['partner'] = $team->getName() ?:
           ($partner !== null ? $partner->getFirstName() . " " . $partner->getLastName() : null);
@@ -198,7 +198,7 @@ class RankingController extends AsyncableController
       $info['competitionIdentifier'] = $phase->getCompetition()->getLocalIdentifier();
       $info['competitionName'] = $phase->getCompetition()->getName();
       $info['start'] = $game->getStartTime() === null ? null : $game->getStartTime()->getTimestamp();
-      $info['competitionRank'] = (!$tournament->isFinished()) ? null : ($team === null ? null : $team->getRank());
+      $info['competitionRank'] = $team === null ? null : $team->getRank();
       $result["tournaments"][$tournamentIdMap[$tournament->getId()]]["games"][] = $info;
     }
 
