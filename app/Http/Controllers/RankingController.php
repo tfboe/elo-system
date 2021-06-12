@@ -198,6 +198,7 @@ class RankingController extends AsyncableController
       $info['competitionIdentifier'] = $phase->getCompetition()->getLocalIdentifier();
       $info['competitionName'] = $phase->getCompetition()->getName();
       $info['start'] = $game->getStartTime() === null ? null : $game->getStartTime()->getTimestamp();
+      $info['competitionRank'] = (!$tournament->isFinished()) ? null : ($team === null ? null : $team->getRank());
       $result["tournaments"][$tournamentIdMap[$tournament->getId()]]["games"][] = $info;
     }
 
