@@ -163,11 +163,11 @@ class RankingController extends AsyncableController
       /** @var Tournament $tournament */
       $tournament = $phase->getCompetition()->getTournament();
       $isTeamA = $game->getPlayersA()->containsKey($player->getId());
+      $team = $this->getTeam($isTeamA ? $match->getRankingsA() : $match->getRankingsB(), $player);
       if (!array_key_exists($tournament->getId(), $tournamentIdMap)) {
         $tInfo = [];
         $tInfo['name'] = $tournament->getName();
         $tInfo['start'] = $tournament->getStartTime() === null ? null : $tournament->getStartTime()->getTimestamp();
-        $team = $this->getTeam($isTeamA ? $match->getRankingsA() : $match->getRankingsB(), $player);
         $tInfo['ownRank'] = (!$tournament->isFinished()) ? null : ($team === null ? null : $team->getRank());
         $partner = $this->getPartnerFromTeam($team, $player);
         $tInfo['partner'] = $team->getName() ?:
