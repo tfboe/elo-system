@@ -372,17 +372,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
   }
 
   /**
-   * @param TournamentHierarchyInterface $entity
-   * @param $rankingSystem
-   */
-  private function addInfluencingRankingSystem(TournamentHierarchyInterface $entity, $rankingSystem)
-  {
-    if ($entity->addInfluencingRankingSystem($rankingSystem) && $entity->getParent() !== null) {
-      $this->addInfluencingRankingSystem($entity->getParent(), $rankingSystem);
-    }
-  }
-
-  /**
    * Returns a query input specification for the categories which are used in multiple entities (see CategoryTraits)
    * @param string $prefix the prefix for the keys, used if the category parameters are deeper in the input structure
    * @return string[] the query specification
@@ -756,36 +745,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
   }
 
   /**
-   * @param TournamentHierarchyEntity $entity
-   * @param array $rankingSystems
-   */
-  private function initInfluencingRankingSystemCompleteRecursiveDown(TournamentHierarchyEntity $entity,
-                                                                     array $rankingSystems)
-  {
-    $rankingSystems = array_merge($rankingSystems, $entity->getRankingSystems()->toArray());
-    foreach ($rankingSystems as $rankingSystem) {
-      $this->addInfluencingRankingSystem($entity, $rankingSystem);
-    }
-    foreach ($entity->getChildren() as $child) {
-      $this->initInfluencingRankingSystemCompleteRecursiveDown($child, $rankingSystems);
-    }
-  }
-
-  /**
-   * @param TournamentHierarchyEntity $entity
-   */
-  private function initInfluencingRankingSystemsComplete(TournamentHierarchyEntity $entity)
-  {
-    $rankingSystems = [];
-    $tmp = $entity;
-    while ($tmp->getParent() !== null) {
-      $tmp = $tmp->getParent();
-      $rankingSystems = array_merge($rankingSystems, $tmp->getRankingSystems()->toArray());
-    }
-    $this->initInfluencingRankingSystemCompleteRecursiveDown($entity, $rankingSystems);
-  }
-
-  /**
    * Removes the given competition from the database
    * @param Competition $competition
    */
@@ -823,21 +782,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     $match->getGames()->clear();
     $this->em->remove($match);
   }
-
-  /*private function adaptEarliestInfluence(array &$earliestInfluence, $newInfluence)
-  {
-    foreach ($newInfluence as $key => $influence) {
-      if (!array_key_exists($key, $earliestInfluence) ||
-        $influence['earliestInfluence'] < $earliestInfluence[$key]['earliestInfluence']) {
-        $earliestInfluence[$key] = $influence;
-      }
-    }
-  }
-
-  private function adaptEarliestInfluenceByCompetition(RankingSystemServiceInterface $rss, Competition $competition,
-                                                       array &$earliestInfluence) {
-    $this->adaptEarliestInfluence($earliestInfluence, $rss->getRankingSystemsEarliestInfluences($competition));
-  }*/
 
   /**
    * Removes the given membership from the database
@@ -945,9 +889,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         assert($competitionNames[$competitionValues['name']] === false);
         $competition = $competitionsByName[$competitionValues['name']];
         $this->ls->loadEntities([$competition]);
-        $this->initInfluencingRankingSystemsComplete($competition);
 
-        //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
         Tools::setFromSpecification($competition, $this->competitionSpecification, $competitionValues, $this->em);
       } else {
         $competition = new Competition();
@@ -968,7 +910,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       if (array_key_exists($competitionValues['name'], $competitionsByName)) {
         unset($competitionsByName[$competitionValues['name']]);
       }
-      //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
       $count++;
       $reportProgress($count / ($numCompetitions + 1));
       $this->flushAndForgetEntities();
@@ -978,8 +919,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       if (!$used) {
         $competition = $competitionsByName[$key];
         $this->ls->loadEntities([$competition]);
-        $this->initInfluencingRankingSystemsComplete($competition);
-        //$this->adaptEarliestInfluenceByCompetition($rss, $competition, $earliestInfluence);
         $this->removeCompetition($competition);
         $this->flushAndForgetEntities();
         unset($competitionsByName[$key]);
@@ -1561,7 +1500,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       } else {
         $rankingSystem = $this->rankingSystemsById[$rankingSystemId];
         $entity->getRankingSystems()->set($rankingSystem->getId(), $rankingSystem);
-        $this->addInfluencingRankingSystem($entity, $rankingSystem);
 
         $service = $this->dsls->loadRankingSystemService($rankingSystem->getServiceName());
         $earliestInfluence = $service->getEarliestInfluence($rankingSystem, $entity);
@@ -1575,7 +1513,6 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       if (!$used) {
         $rankingSystem = $entity->getRankingSystems()->get($rankingSystemId);
         $entity->getRankingSystems()->remove($rankingSystemId);
-        $this->addInfluencingRankingSystem($entity, $rankingSystem);
 
         $service = $this->dsls->loadRankingSystemService($rankingSystem->getServiceName());
         $earliestInfluence = $service->getEarliestInfluence($rankingSystem, $entity);

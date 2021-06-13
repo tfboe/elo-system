@@ -30,6 +30,7 @@ class AdminController extends BaseController
 
     /** @var Player $player1 */
     $player1 = $this->getEntityManager()->find(Player::class, $request->input('player1'));
+    $player1 = $player1->getPlayer();
 
     /** @var Player $player2 */
     $player2 = $this->getEntityManager()->find(Player::class, $request->input('player2'));
@@ -42,7 +43,7 @@ class AdminController extends BaseController
 
     $player2->setMergedInto($player1);
     if ($player2->getItsfLicenseNumber() !== null && $player1->getItsfLicenseNumber() === null) {
-      $player1->setItsfLicenseNumber($player2->getItsfLicenseNumber());
+      $player2->setItsfLicenseNumber($player1->getItsfLicenseNumber());
     }
 
     //flatten merged players relation
