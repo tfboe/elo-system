@@ -41,6 +41,11 @@ class AdminController extends BaseController
       return response()->json($result);
     }
 
+    // we need to reload since mergePlayers might clear the entity manager
+    $player2 = $this->getEntityManager()->find(Player::class, $request->input('player2'));
+    $player1 = $this->getEntityManager()->find(Player::class, $request->input('player1'));
+    $player1 = $player1->getPlayer();
+
     $player2->setMergedInto($player1);
     if ($player2->getItsfLicenseNumber() !== null && $player1->getItsfLicenseNumber() === null) {
       $player2->setItsfLicenseNumber($player1->getItsfLicenseNumber());

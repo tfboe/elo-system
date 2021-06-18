@@ -6148,12 +6148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-                "reference": "6175b0755232dd5e016a008a818207f60210c70a"
+                "reference": "698a7827880b67b15e40585b257afae6fe0549c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/6175b0755232dd5e016a008a818207f60210c70a",
-                "reference": "6175b0755232dd5e016a008a818207f60210c70a",
+                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/698a7827880b67b15e40585b257afae6fe0549c7",
+                "reference": "698a7827880b67b15e40585b257afae6fe0549c7",
                 "shasum": ""
             },
             "require": {
@@ -6198,7 +6198,7 @@
                 "issues": "https://github.com/tfboe/fm-lib/issues",
                 "source": "https://github.com/tfboe/fm-lib/tree/elo-system-old"
             },
-            "time": "2021-06-14T20:42:52+00:00"
+            "time": "2021-06-18T23:43:33+00:00"
         },
         {
             "name": "tymon/jwt-auth",
