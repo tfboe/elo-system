@@ -12,38 +12,38 @@ if [ ! -z "$(git status --porcelain)" ]; then
 fi
 
 echo -n TFBW FTP-Password:
-read -s password
+read -s tfbw_password
 echo
 
-user="ftp3521666_bene"
-host="ftp://www94.world4you.com"
+tfbw_user="ftp3521666_bene"
+tfbw_host="ftp://www94.world4you.com"
+
+echo TFBÖ FTP-Password:
+read -s tfboe_password
+echo
+
+tfboe_user="ftp.tfboe.org"
+tfboe_host="199089-elo"
 
 git describe --tags > git-version/current
 
 php artisan doctrine:generate:proxies
 
 lftp <<EOF
-open -u $user,$password -p 21 $host
+open -u $tfbw_user,$tfbw_password -p 21 $tfbw_host
 $(cat upload-code-tfboe.x)
+EOF
+
+apidoc -i routes/
+
+lftp <<EOF
+open -u $tfboe_user,$tfboe_password -p 21 $tfboe_host
+$(cat upload-doc-tfboe.x)
 EOF
 
 ./prepare-tfboe-vendor.sh
 
 lftp <<EOF
-open -u $user,$password -p 21 $host
+open -u $tfbw_user,$tfbw_password -p 21 $tfbw_host
 $(cat upload-vendor-tfboe.x)
-EOF
-
-echo TFBÖ FTP-Password:
-read -s password
-echo
-
-user="ftp.tfboe.org"
-host="199089-elo"
-
-apidoc -i routes/
-
-lftp <<EOF
-open -u $user,$password -p 21 $host
-$(cat upload-doc-tfboe.x)
 EOF
