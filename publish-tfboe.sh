@@ -18,12 +18,12 @@ echo
 tfbw_user="ftp3521666_bene"
 tfbw_host="ftp://www94.world4you.com"
 
-echo TFBÖ FTP-Password:
+echo -n TFBÖ FTP-Password:
 read -s tfboe_password
 echo
 
-tfboe_user="ftp.tfboe.org"
-tfboe_host="199089-elo"
+tfboe_user="199089-elo"
+tfboe_host="ftp.tfboe.org"
 
 git describe --tags > git-version/current
 
