@@ -11,7 +11,7 @@ if [ ! -z "$(git status --porcelain)" ]; then
    exit 1
 fi
 
-echo -n FTP-Password:
+echo -n TFBW FTP-Password:
 read -s password
 echo
 
@@ -32,4 +32,18 @@ EOF
 lftp <<EOF
 open -u $user,$password -p 21 $host
 $(cat upload-vendor-tfboe.x)
+EOF
+
+echo TFBÖ FTP-Password:
+read -s password
+echo
+
+user="ftp.tfboe.org"
+host="199089-elo"
+
+apidoc -i routes/
+
+lftp <<EOF
+open -u $user,$password -p 21 $host
+$(cat upload-doc-tfboe.x)
 EOF

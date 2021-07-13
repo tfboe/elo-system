@@ -44,7 +44,25 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
      * @api {post} /createOrReplaceTournament Create or Replace a Tournament
      * @apiUse AuthenticatedRequest
      * @apiVersion 0.1.0
-     * @apiDescription Creates a new tournament or if the tournament already exists replaces it
+     * @apiDescription Creates a new tournament or if the tournament already exists replaces it.
+     * 
+     * 
+     * **Some general information:**
+     * 
+     * 
+     * A tournament consists of multiple Levels:
+     * 
+     * 1. tournament: A tournament consists of multiple competitions
+     * 2. competition: A competition has registered teams and phases
+     * 3. phase: A phase (for example a qualification phase or a single elimination phase) consists of a ranking and of matches
+     * 4. match: A match can consist of multiple games or only one game. Multiple games would be for example in the situation of a league where a team plays against another team and one match consists of multiple best-of-3 games.
+     * 5. game: A game represents the lowest level and represents one game of either one player against one player or two players against two players (double). A game can consist of sets (we don't see that as an own level though).
+     * 
+     * For each of the levels one can associate optional properties (gameMode, organizingMode, scoreMode, teamMode, table). 
+     * Those properties are assigned inherently, that means when a game has not specified a table but the associated match has a table associated, 4
+     * then the game inherits that property from match. If neither game, match, phase nor competition have specified table then all inherit from 
+     * the tournaments specified table. 
+     * *Note, that each game must be associated with all five properties (either by inheritance or direct specification)!*
      * @apiName PostCreateOrReplaceTournament
      * @apiGroup Tournament
      *
@@ -56,6 +74,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
      *                                where e is a timezone (for example Europe/Vienna)
      * @apiParam {string} [endTime] the end time of the tournament in the format 'YYYY-MM-DD HH:MM:SS e'
      *                              where e is a timezone (for example Europe/Vienna)
+     * @apiParam {boolean} [finished="true"] Whether the tournament is already finished or not (still running).
      * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [gameMode] The rule mode of the tournament. All games of the
      *                                                          tournament which do not specify another game mode will use
      *                                                          this game mode.
@@ -104,6 +123,20 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
      *                                                         all teams of a competition
      * @apiParam {string[]} competitions.teams.players list of player ids of this team
      * @apiParam {string} [competitions.teams.name="''"] the name of the team
+     * @apiParam {string[]} [competitions.rankingSystems] List of ids of all ranking systems that this tournament is part of.
+     *           A full list of the TFBOE elo ranking systems:
+     * 
+     * - Open Single: "d08eda56-a7ee-11eb-8243-0242ac140002"
+     * - Open Double: "dc264cb5-a7ee-11eb-8243-0242ac140002"
+     * - Women Single: "e6456a1e-a7ee-11eb-8243-0242ac140002"
+     * - Women Double: "e8fc01a0-a7ee-11eb-8243-0242ac140002"
+     * - Junior Single: "edba2a8b-a7ee-11eb-8243-0242ac140002"
+     * - Junior Double: "f06e92ce-a7ee-11eb-8243-0242ac140002"
+     * - Senior Single: "f4f95737-a7ee-11eb-8243-0242ac140002"
+     * - Senior Double: "f7972e41-a7ee-11eb-8243-0242ac140002"
+     * - Classic Double: "fbb021e4-a7ee-11eb-8243-0242ac140002"
+     * - Mixed: "fe9448f4-a7ee-11eb-8243-0242ac140002"
+     *
      * @apiParam {Object[]} competitions.phases list of phases of this competition
      * @apiParam {integer{>=1}} competitions.phases.phaseNumber the number of the phase
      * @apiParam {string} [competitions.phases.name="''"] the name of the phase
@@ -113,7 +146,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
      * @apiParam {string} [competitions.phases.endTime] the end time of the match in the format
      *                                                  'YYYY-MM-DD HH:MM:SS e' where e is a timezone
      *                                                  (for example Europe/Vienna)
-     * @apiParam {string[]} [competitions.phases.nextPhaseNumbers=[]] the list of next phase numbers (direct successor
+     * @apiParam {string[]} [competitions.phases.nextPhaseNumbers="[]"] the list of next phase numbers (direct successor
      *                                                                phases)
      * @apiParam {string=OFFICIAL,SPEEDBALL,CLASSIC} [competitions.phases.gameMode]
      *           The rule mode of the phase. All games of the phase which do not specify another game mode
@@ -134,7 +167,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
      *           tables. All games of the phase which do not specify another table will use this table.
      * @apiParam {Object[]{>=2}} competitions.phases.rankings list of rankings of the phase
      * @apiParam {integer{>=1}} competitions.phases.rankings.rank the rank of the ranking
-     * @apiParam {integer{>=1}} competitions.phases.rankings.uniqueRank the unique rank of the ranking
+     * @apiParam {integer{>=1}} competitions.phases.rankings.uniqueRank The unique rank of the ranking. 
+     *           The rank of a ranking may not be unique (for example in single elimination there can be four 5. places), 
+     *           the unique rank is used for identifying rankings and must be unique. In the case of single elimination
+     *           the four fifth ranks should then have rank 5, 6, 7, and 8.
      * @apiParam {integer[]} competitions.phases.rankings.teamStartNumbers list of the start numbers of the teams
      *                                                                            corresponding to this ranking
      * @apiParam {string} [competitions.phases.rankings.name] the name of the ranking

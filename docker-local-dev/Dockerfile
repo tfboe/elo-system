@@ -61,8 +61,9 @@ USER root
 ##
 
 # lftp is for uploading php projects to a server via ftp using scripts
+# nodejs for installing apidoc
 RUN apt-get update \
-  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip unzip lftp
+  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip unzip lftp nodejs npm
 
 # configure xdebug
 RUN echo "xdebug.remote_enable = 1\nxdebug.remote_autostart = 1" >> /etc/php/7.4/mods-available/xdebug.ini
@@ -79,6 +80,9 @@ RUN phpenmod mbstring \
 
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# apidoc cli
+RUN npm install apidoc -g
 
 ##
 ## /php stuff
