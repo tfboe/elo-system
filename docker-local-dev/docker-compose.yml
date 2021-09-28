@@ -36,7 +36,6 @@ services:
       - elo-system
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin 
     links:
       - db
     environment:

@@ -25,7 +25,7 @@ RUN mkdir /var/run/dbus
 
 RUN wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg | gpg --dearmor | dd of=/etc/apt/trusted.gpg.d/vscodium.gpg \
   && echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | tee --append /etc/apt/sources.list.d/vscodium.list \
-  && apt-get update && apt-get install -y codium
+  && apt-get update && apt-get install -y codium libxshmfence-dev
    
 # not sure what this does!
 #RUN cp /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/share/code/ \
