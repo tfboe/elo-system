@@ -24,7 +24,7 @@ class PlayerPolicy
    */
   public function create(User $user): bool
   {
-    return $user->isActivated();
+    return $user->canCreateTournaments();
   }
 //</editor-fold desc="Public Methods">
 }

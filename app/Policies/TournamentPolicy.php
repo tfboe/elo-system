@@ -24,10 +24,10 @@ class TournamentPolicy
    */
   public function create(User $user): bool
   {
-    return $user->isAdmin();
+    return $user->canCreateTournaments();
   }
 
-    /**
+  /**
    * Determine whether the user can view tournaments (and rankings).
    *
    * @param  User $user
@@ -35,7 +35,7 @@ class TournamentPolicy
    */
   public function view(User $user): bool
   {
-    return $user->isActivated();
+    return $user->canRead();
   }
 //</editor-fold desc="Public Methods">
 }

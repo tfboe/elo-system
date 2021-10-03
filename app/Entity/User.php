@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-
+use App\Entity\Helpers\UserRights;
 use Doctrine\ORM\Mapping as ORM;
 use Tfboe\FmLib\Entity\Helpers\BaseEntity;
 use Tfboe\FmLib\Entity\UserInterface;
@@ -24,16 +24,10 @@ class User extends BaseEntity implements UserInterface
 
 //<editor-fold desc="Fields">
   /**
-   * @ORM\Column(type="boolean", nullable=false)
-   * @var bool
+   * @ORM\Column(type="smallint", nullable=false)
+   * @var int
    */
-  private $activated;
-
-  /**
-   * @ORM\Column(type="boolean", nullable=false)
-   * @var bool
-   */
-  private $admin;
+  private $rights;
 //</editor-fold desc="Fields">
 
 //<editor-fold desc="Constructor">
@@ -42,8 +36,7 @@ class User extends BaseEntity implements UserInterface
    */
   public function __construct()
   {
-    $this->activated = false;
-    $this->admin = false;
+    $this->rights = UserRights::UNACTIVATED;
     $this->init();
   }
 //</editor-fold desc="Constructor">
@@ -52,9 +45,19 @@ class User extends BaseEntity implements UserInterface
   /**
    * @return mixed
    */
-  public function isActivated()
+  public function canRead()
   {
-    return $this->activated;
+    return $this->rights >= UserRights::READ_ONLY;
+  }
+
+  public function canCreateTournaments()
+  {
+    return $this->rights >= UserRights::CREATE_TOURNAMENTS;
+  }
+
+  public function canManage()
+  {
+    return $this->rights >= UserRights::MANAGEMENT;
   }
 
   /**
@@ -62,7 +65,7 @@ class User extends BaseEntity implements UserInterface
    */
   public function isAdmin(): bool
   {
-    return $this->admin;
+    return $this->rights >= UserRights::ADMIN;
   }
 //</editor-fold desc="Public Methods">
 }

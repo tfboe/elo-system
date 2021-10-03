@@ -368,7 +368,7 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
       'uses' => 'PlayerController@updatePlayers'
     ]);
 
-    $router->group(['middleware' => 'admin', 'prefix' => 'admin'], function () use ($router) {
+    $router->group(['middleware' => 'manage', 'prefix' => 'manage'], function () use ($router) {
       $router->post('mergePlayers', [
         'as' => 'mergePlayers',
         'uses' => 'AdminController@mergePlayers'
