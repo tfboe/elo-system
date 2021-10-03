@@ -374,5 +374,11 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
         'uses' => 'AdminController@mergePlayers'
       ]);
     });
+    $router->group(['middleware' => 'admin', 'prefix' => 'admin'], function () use ($router) {
+      $router->get('users', [
+        'as' => 'getUsers',
+        'uses' => 'AdminController@getUsers'
+      ]);
+    });
   });
 });

@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Entity\Player;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -60,6 +61,15 @@ class AdminController extends BaseController
     $em->flush();
 
     return response()->json($result);
+  }
+
+  public function getUsers(EntityManagerInterface $em): JsonResponse {
+    $users = $em->getRepository(User::class)->findBy(['activated' => true]);
+    $userData = [];
+    foreach ($users as $user) {
+      $userData[] = ["id" => $user->getId(), "email" => $user->getEmail()];
+    }
+    return response()->json($userData);
   }
 //</editor-fold desc="Public Methods">
 }
