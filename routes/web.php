@@ -31,6 +31,9 @@ $router->post('register', [
 
 
 $router->group(['middleware' => 'auth:api'], function () use ($router) {
+  $router->get('isAdmin', [
+    'as' => 'isAdmin', 'uses' => 'UserController@isAdmin'
+  ]);
   $router->group(['middleware' => 'can:view,App\Entity\Tournament'], function () use ($router) {
     $router->get('rankings', [
       'as' => 'rankings', 'uses' => 'RankingController@rankings'
@@ -378,6 +381,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
       $router->get('users', [
         'as' => 'getUsers',
         'uses' => 'AdminController@getUsers'
+      ]);
+      $router->post('loginAs', [
+        'as' => 'loginAs',
+        'uses' => 'AdminController@loginAs'
       ]);
     });
   });

@@ -44,6 +44,7 @@ use Tfboe\FmLib\Exceptions\DuplicateException;
 use Tfboe\FmLib\Exceptions\ReferenceException;
 use Tfboe\FmLib\Exceptions\UnorderedPhaseNumberException;
 use Tfboe\FmLib\Helpers\Level;
+use Tfboe\FmLib\Helpers\Logging;
 use Tfboe\FmLib\Helpers\Tools;
 use Tfboe\FmLib\Service\DynamicServiceLoadingServiceInterface;
 use Tfboe\FmLib\Service\LoadingServiceInterface;
@@ -1406,6 +1407,9 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
       } else {
         /** @var Player $player */
         $player = $this->em->find(Player::class, $playerId);
+        if (!$player) {
+          Logging::log("Player not found: " . $playerId);
+        }
         $player = $player->getPlayer();
         $playerId = $player->getId();
         if (array_key_exists($playerId, $playerIds)) {

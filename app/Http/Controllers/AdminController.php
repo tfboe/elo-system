@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Tfboe\FmLib\Http\Controllers\BaseController;
 use Tfboe\FmLib\Service\PlayerServiceInterface;
 use Tfboe\FmLib\Service\RankingSystemServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends BaseController
 {
@@ -64,12 +65,28 @@ class AdminController extends BaseController
   }
 
   public function getUsers(EntityManagerInterface $em): JsonResponse {
-    $users = $em->getRepository(User::class)->findBy(['activated' => true]);
+    $users = $em->createQueryBuilder()
+          ->select('u')
+          ->from(User::class, 'u')
+          ->where('u.rights > 0')
+          ->getQuery()
+          ->getResult();
     $userData = [];
     foreach ($users as $user) {
       $userData[] = ["id" => $user->getId(), "email" => $user->getEmail()];
     }
     return response()->json($userData);
+  }
+
+  public function loginAs(Request $request) {
+    $this->validate($request, [
+      'userId' => 'required|exists:App\Entity\User,id'
+    ]);
+
+    $user = $this->getEntityManager()->find(User::class, $request->input('userId'));
+    /** @noinspection PhpUndefinedMethodInspection */
+    $token = Auth::fromUser($user);
+    return response()->json(['id' => $user->getId()], 200, ['jwt-token' => $token]);
   }
 //</editor-fold desc="Public Methods">
 }

@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-
+use App\Entity\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Application;
 use Tfboe\FmLib\Entity\UserInterface;
+use Tfboe\FmLib\Helpers\Logging;
 
 /**
  * Class UserController
@@ -31,6 +33,12 @@ class UserController extends \Tfboe\FmLib\Http\Controllers\UserController
   {
     /** @noinspection PhpUnhandledExceptionInspection */
     return $this->login($request, $app);
+  }
+
+  public function isAdmin(Request $request)
+  {
+    $user = $request->user();
+    return response()->json(["isAdmin" => $user->isAdmin()], 200);
   }
 //</editor-fold desc="Protected Methods">
 }
