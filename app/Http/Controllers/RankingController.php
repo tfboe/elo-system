@@ -17,6 +17,7 @@ use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\Ranking;
 use App\Entity\RankingSystemChange;
+use App\Entity\RankingSystemList;
 use App\Entity\RankingSystemListEntry;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
@@ -58,17 +59,45 @@ class RankingController extends AsyncableController
     ->addSelect('GROUP_CONCAT(mp.id) AS mergedPlayerIds')
     ->innerJoin('rse.player', 'p')
     ->innerJoin('rse.rankingSystemList', 'l')
-    ->leftJoin('p.mergedPlayers', 'mp')
-    ->where('l.current = 1');
+    ->leftJoin('p.mergedPlayers', 'mp');
+    $maxDate = new \DateTime();
     if (array_key_exists("id", $request->input())) {
       $id = $request->input("id");
+      if (array_key_exists("max_date", $request->input())){
+        $maxDate = \DateTime::createFromFormat('Y-m-d', $request->input("max_date"));
+        $qb2 = $this->getEntityManager()->createQueryBuilder();
+        $lid = $qb2->from(RankingSystemList::class, 'rsl')
+          ->select('rsl.id')
+          ->where($qb2->expr()->eq('IDENTITY(rsl.rankingSystem)', ':id'))
+          ->setParameter("id", $id)
+          ->andWhere($qb2->expr()->lte('rsl.lastEntryTime', ':max_date'))
+          ->setParameter("max_date", $maxDate)
+          ->orderBy('rsl.lastEntryTime', 'DESC')
+          ->setMaxResults(1)
+          ->getQuery()
+          ->getSingleScalarResult();
+        $qb->where('l.id = :lid')
+          ->setParameter("lid", $lid);
+      } else {
+        $qb->where('l.current = 1');
+      }
       $qb->andWhere($qb->expr()->eq('IDENTITY(l.rankingSystem)', ':id'))
         ->setParameter("id", $id);
+    } else {
+      $qb->where('l.current = 1');
     }
     if (array_key_exists("min_birth_date", $request->input())) {
       $minBirthDay = \DateTime::createFromFormat('Y-m-d', $request->input("min_birth_date"));
       $qb->andWhere($qb->expr()->gte('p.birthday', ':min_birth_day'))
       ->setParameter("min_birth_day", $minBirthDay);
+    }
+    $includeInactive = array_key_exists("include_inactive", $request->input()) && $request->input("include_inactive");
+    $minActivityDate = $maxDate;
+    $minActivityDate->sub(new \DateInterval('P3Y')); // after 3 years a player is inactive
+    $qb->addSelect('rse.lastChange AS lastChange');
+    if (!$includeInactive) {
+      $qb->andWhere($qb->expr()->gte('rse.lastChange', ':min_activity_date'))
+        ->setParameter("min_activity_date", $minActivityDate);
     }
     $result = $qb
       ->groupBy('rse.id')
@@ -88,6 +117,8 @@ class RankingController extends AsyncableController
     for ($i = 0; $i < count($result); $i++) {
       $idMap[$result[$i]['playerId']] = $i;
       $result[$i]['threeMonthChange'] = 0;
+      $result[$i]['active'] = $result[$i]['lastChange'] >= $minActivityDate;
+      unset($result[$i]['lastChange']);
     }
     foreach ($lastThreeMonthChanges as $change) {
       if (array_key_exists($change['player_id'], $idMap)) {
