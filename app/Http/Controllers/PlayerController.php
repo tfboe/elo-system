@@ -271,7 +271,7 @@ SQL;
 
     $res = [];
     foreach ($rows as $row) {
-      $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber']));
+      $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber', 'itsfLicenseNumberBeforeMerge']));
       $f['id'] = intval($f['id']);
       $keys = [];
       if ($row['k'] !== null) {
