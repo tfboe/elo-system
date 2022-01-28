@@ -240,7 +240,8 @@ class PlayerController extends BaseController
     $query = <<<SQL
 SELECT IFNULL(p2.$idRow, p.$idRow) as id, IFNULL(p2.$firstNameRow, p.$firstNameRow) as firstName, 
        IFNULL(p2.$lastNameRow, p.$lastNameRow) as lastName, IFNULL(p2.$birthdayRow, p.$birthdayRow) as birthday, 
-       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, $additionalSelect
+       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, 
+       p.$itsfNumberRow as itsfLicenseNumberBeforeMerge, $additionalSelect
 FROM $playerTable AS p
 LEFT JOIN $playerTable AS p2
   ON p2.$idRow = p.$mergedIntoId 
@@ -276,8 +277,8 @@ SQL;
       if ($row['k'] !== null) {
         $keys[] = $row['k'];
       }
-      if ($row['itsfLicenseNumber'] !== null && array_key_exists($row['itsfLicenseNumber'], $keysOfLicenseNumber)) {
-        $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumber']]);
+      if ($row['itsfLicenseNumberBeforeMerge'] !== null && array_key_exists($row['itsfLicenseNumberBeforeMerge'], $keysOfLicenseNumber)) {
+        $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumberBeforeMerge']]);
       }
       assert(count($keys) > 0);
       foreach ($keys as $key) {
