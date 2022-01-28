@@ -135,6 +135,10 @@ class RankingController extends AsyncableController
     //TODO What happens if associated hierarchyEntity is not a game?
     /** @var Player $player */
     $player = $this->getEntityManager()->find(Player::class, $playerId);
+    if ($player === null) {
+      return response()->json([]);
+    }
+    $result = ["playerName" => ["firstName" => $player->getFirstName(), "lastName" => $player->getLastName()], "tournaments" => []];
     $qb = $this->getEntityManager()->createQueryBuilder();
     $changes = $qb->from(RankingSystemChange::class, 'rsc')
       ->select('rsc')
@@ -148,6 +152,9 @@ class RankingController extends AsyncableController
     // (SEE Performance impact REMARK for Class Table Inheritance in
     // https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/inheritance-mapping.html#performance-impact)
 
+    if (count($changes) === 0) {
+      return response()->json($result);
+    }
     $changeIds = [];
     $gameIds = [];
     foreach ($changes as $change) {
@@ -183,7 +190,7 @@ class RankingController extends AsyncableController
       ->getQuery()->getResult();
 
     $tournamentIdMap = [];
-    $result = ["playerName" => ["firstName" => $player->getFirstName(), "lastName" => $player->getLastName()], "tournaments" => []];
+    
     /** @var User|null $user */
     $user = $request->user();
     foreach ($changes as $change) {
