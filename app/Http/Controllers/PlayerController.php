@@ -128,6 +128,8 @@ class PlayerController extends BaseController
     $input = $request->input();
     $alreadyExistingPlayers = [];
     $inputPlayerIds = [];
+    /** @var Player[][] $newPlayerMerges */
+    $newPlayerMerges = [];
     foreach ($input as $player) {
       //throw error on duplicate updates
       if (array_key_exists($player['id'], $inputPlayerIds)) {
@@ -162,6 +164,13 @@ class PlayerController extends BaseController
         }
       }
       if (!array_key_exists($p->getId(), $alreadyExistingPlayers)) {
+        if (array_key_exists('itsfLicenseNumber', $player) && $player['itsfLicenseNumber'] !== null && $p->getItsfLicenseNumber() !== null && $player['itsfLicenseNumber'] !== $p->getItsfLicenseNumber()) {
+          // we have a new itsf license number for this player
+          // we want to not lose the old one => create a new player with the old itsfLicenseNumber
+          $newPlayer = clone $p;
+          $this->getEntityManager()->persist($newPlayer);
+          $newPlayerMerges[] = [$newPlayer, $p];
+        }
         $this->setFromSpecification($p, $specification, $player);
       }
     }
@@ -170,6 +179,14 @@ class PlayerController extends BaseController
       throw new PlayerAlreadyExists($alreadyExistingPlayers);
     }
     $this->getEntityManager()->flush();
+
+    if (count($newPlayerMerges) > 0) {
+      foreach ($newPlayerMerges as $players) {
+        $players[0]->setMergedInto($players[1]);
+      }
+
+      $this->getEntityManager()->flush();
+    }
 
     return response()->json(true);
   }
@@ -235,13 +252,13 @@ class PlayerController extends BaseController
     $idRow = $metaData->getSingleIdentifierColumnName();
     $additionalSelect = "null as k";
     if ($subQuery != "") {
-      $additionalSelect = "t.k as k";
+      $additionalSelect = "GROUP_CONCAT(t.k) as k";
     }
     $query = <<<SQL
-SELECT IFNULL(p2.$idRow, p.$idRow) as id, IFNULL(p2.$firstNameRow, p.$firstNameRow) as firstName, 
-       IFNULL(p2.$lastNameRow, p.$lastNameRow) as lastName, IFNULL(p2.$birthdayRow, p.$birthdayRow) as birthday, 
-       IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow) as itsfLicenseNumber, 
-       p.$itsfNumberRow as itsfLicenseNumberBeforeMerge, $additionalSelect
+SELECT IFNULL(p2.$idRow, p.$idRow) as id, ANY_VALUE(IFNULL(p2.$firstNameRow, p.$firstNameRow)) as firstName, 
+       ANY_VALUE(IFNULL(p2.$lastNameRow, p.$lastNameRow)) as lastName, ANY_VALUE(IFNULL(p2.$birthdayRow, p.$birthdayRow)) as birthday, 
+       ANY_VALUE(IFNULL(p2.$itsfNumberRow, p.$itsfNumberRow)) as itsfLicenseNumber, 
+       GROUP_CONCAT(p.$itsfNumberRow) as itsfLicenseNumbersBeforeMerge, $additionalSelect
 FROM $playerTable AS p
 LEFT JOIN $playerTable AS p2
   ON p2.$idRow = p.$mergedIntoId 
@@ -264,6 +281,7 @@ SQL;
       }
       $query .= " p.$itsfNumberRow IN ($licenseNumbersQuery)";
     }
+    $query .= " GROUP BY id";
     $parameters = array_merge($parameters, $licenseNumbers);
     $query = $this->getEntityManager()->getConnection()->prepare($query);
     $query->execute($parameters);
@@ -271,20 +289,29 @@ SQL;
 
     $res = [];
     foreach ($rows as $row) {
-      $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber', 'itsfLicenseNumberBeforeMerge']));
+      $f = array_intersect_key($row, array_flip(['id', 'firstName', 'lastName', 'birthday', 'itsfLicenseNumber']));
       $f['id'] = intval($f['id']);
       $keys = [];
       if ($row['k'] !== null) {
-        $keys[] = $row['k'];
+        $keys = array_merge($keys, explode(",", $row['k']));
       }
-      if ($row['itsfLicenseNumberBeforeMerge'] !== null && array_key_exists($row['itsfLicenseNumberBeforeMerge'], $keysOfLicenseNumber)) {
-        $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumberBeforeMerge']]);
+      if ($row['itsfLicenseNumbersBeforeMerge'] !== null) {
+        $f['itsfLicenseNumbersBeforeMerge'] = explode(",", $row['itsfLicenseNumbersBeforeMerge']);
+        foreach ($f['itsfLicenseNumbersBeforeMerge'] as $licenseNumber) {
+          if (array_key_exists($licenseNumber, $keysOfLicenseNumber)) {
+            $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumbersBeforeMerge']]);
+          }
+        }
+      } else {
+        $f['itsfLicenseNumbersBeforeMerge'] = [];
       }
+      $keys = array_unique($keys);
       assert(count($keys) > 0);
       foreach ($keys as $key) {
         if (!array_key_exists($key, $res)) {
           $res[$key] = [];
         }
+        assert(!array_key_exists($row['id'], $res[$key]));
         $res[$key][$row['id']] = $f;
       }
     }

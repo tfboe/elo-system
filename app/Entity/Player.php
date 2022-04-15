@@ -56,6 +56,15 @@ class Player extends BaseEntity implements PlayerInterface
     $this->mergedPlayers = new ArrayCollection();
   }
 
+  public function __clone()
+  {
+      $this->mergedPlayers = new ArrayCollection();
+      $this->mergedInto = null;
+      $this->id = null;
+      $this->createdAt = null;
+      $this->updatedAt = null;
+  }
+
   /**
    * @return Player[]|ArrayCollection
    */
