@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo 1>&2 "This script was used for the old tfoe backend (that was on the tfbw server). The new backend gets updated directly by using git via ssh!"
+exit 1
+
 if [ "$(git rev-parse --abbrev-ref HEAD)" != "tfboe" ]; then
   echo 1>&2 "Publishing TFBOE is only allowed on tfboe branch!"
   exit 1
