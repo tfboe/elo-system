@@ -130,11 +130,39 @@ class RankingController extends AsyncableController
     return response()->json($result);
   }
 
+  public function tournamentProfileByItsfLicenseNumber(Request $request, string $rankingId, string $itsfLicenseNumber, LoadingServiceInterface $ls): JsonResponse
+  {
+    /** @var Player[] $players */
+    $players = $this->getEntityManager()->getRepository(Player::class)->findBy(['itsfLicenseNumber' => (int) $itsfLicenseNumber]);
+    $player = null;
+    foreach ($players as $p) {
+      $base = $p->getPlayer();
+      if ($player !== null && $base->getId() != $player->getId()) {
+        $player = null;
+        break;
+      } else {
+        $player = $base;
+      }
+    }
+
+    return $this->getTournamentProfile($request, $rankingId, $player, $ls);
+  }
+
   public function tournamentProfile(Request $request, string $rankingId, string $playerId, LoadingServiceInterface $ls): JsonResponse
   {
     //TODO What happens if associated hierarchyEntity is not a game?
     /** @var Player $player */
     $player = $this->getEntityManager()->find(Player::class, $playerId);
+    return $this->getTournamentProfile($request, $rankingId, $player, $ls);
+  }
+
+  public function recalculateRankings(Request $request): JsonResponse {
+    return $this->checkAsync($request, RecalculateRankingSystemsInterface::class);
+  }
+
+  private function getTournamentProfile(Request $request, string $rankingId, ?Player $player, LoadingServiceInterface $ls): JsonResponse
+  {
+    //TODO What happens if associated hierarchyEntity is not a game?
     if ($player === null) {
       return response()->json([]);
     }
@@ -241,10 +269,6 @@ class RankingController extends AsyncableController
     }
 
     return response()->json($result);
-  }
-
-  public function recalculateRankings(Request $request): JsonResponse {
-    return $this->checkAsync($request, RecalculateRankingSystemsInterface::class);
   }
 
   /**

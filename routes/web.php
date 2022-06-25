@@ -43,6 +43,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
       'as' => 'tournamentProfile', 'uses' => 'RankingController@tournamentProfile'
     ]);
 
+    $router->get('tournamentProfileByItsfLicenseNumber/{rankingId}/{itsfLicenseNumber}', [
+      'as' => 'tournamentProfileByItsfLicenseNumber', 'uses' => 'RankingController@tournamentProfileByItsfLicenseNumber'
+    ]);
+
     /**
      * @api {post} /createOrReplaceTournament Create or Replace a Tournament
      * @apiUse AuthenticatedRequest
