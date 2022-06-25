@@ -25,6 +25,7 @@ use App\Entity\Tournament;
 use App\Entity\User;
 use App\Service\AsyncServices\RecalculateRankingSystemsInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -92,8 +93,7 @@ class RankingController extends AsyncableController
       ->setParameter("min_birth_day", $minBirthDay);
     }
     $includeInactive = array_key_exists("include_inactive", $request->input()) && $request->input("include_inactive");
-    $minActivityDate = $maxDate;
-    $minActivityDate->sub(new \DateInterval('P3Y')); // after 3 years a player is inactive
+    $minActivityDate = RankingController::minActivityDate($maxDate);
     $qb->addSelect('rse.lastChange AS lastChange');
     if (!$includeInactive) {
       $qb->andWhere($qb->expr()->gte('rse.lastChange', ':min_activity_date'))
@@ -160,13 +160,59 @@ class RankingController extends AsyncableController
     return $this->checkAsync($request, RecalculateRankingSystemsInterface::class);
   }
 
+  private static function minActivityDate($maxDate) {
+    $minActivityDate = $maxDate;
+    $minActivityDate->sub(new \DateInterval('P3Y'));
+    return $minActivityDate;
+  }
+
   private function getTournamentProfile(Request $request, string $rankingId, ?Player $player, LoadingServiceInterface $ls): JsonResponse
   {
     //TODO What happens if associated hierarchyEntity is not a game?
     if ($player === null) {
       return response()->json([]);
     }
-    $result = ["playerName" => ["firstName" => $player->getFirstName(), "lastName" => $player->getLastName()], "tournaments" => []];
+
+    //get current elo
+    $qb = $this->getEntityManager()->createQueryBuilder();
+    try {
+      $elo = (float) $qb->from(RankingSystemListEntry::class, 'e')
+        ->select('e.points')
+        ->innerJoin('e.rankingSystemList', 'l')
+        ->where($qb->expr()->eq('IDENTITY(l.rankingSystem)', ':rankingId'))
+        ->setParameter('rankingId', $rankingId)
+        ->andWhere($qb->expr()->eq('l.current', '1'))
+        ->andWhere($qb->expr()->eq('e.player', ':player'))
+        ->setParameter('player', $player)
+        ->getQuery()
+        ->getSingleScalarResult();
+    } catch (NoResultException $ex) {
+      $elo = 0;
+    }
+
+    //get active rank
+    if ($elo > 0) {
+      $qb = $this->getEntityManager()->createQueryBuilder();
+      $betterActivePlayers = $qb->from(RankingSystemListEntry::class, 'e')
+        ->select($qb->expr()->count('e.id'))
+        ->innerJoin('e.rankingSystemList', 'l')
+        ->where($qb->expr()->eq('IDENTITY(l.rankingSystem)', ':rankingId'))
+        ->setParameter('rankingId', $rankingId)
+        ->andWhere($qb->expr()->eq('l.current', '1'))
+        ->andWhere($qb->expr()->gt('e.points', ':elo'))
+        ->setParameter('elo', $elo)
+        ->andWhere($qb->expr()->gte('e.lastChange', ':minActivityDate'))
+        ->setParameter('minActivityDate', RankingController::minActivityDate(new \DateTime()))
+        ->getQuery()
+        ->getSingleScalarResult();
+      $rank = $betterActivePlayers + 1;
+    } else {
+      $rank = 0;
+    }
+
+    $result = ["playerName" => ["firstName" => $player->getFirstName(), "lastName" => $player->getLastName()], "tournaments" => [], "elo" => $elo, "activeRank" => $rank];
+
+
     $qb = $this->getEntityManager()->createQueryBuilder();
     $changes = $qb->from(RankingSystemChange::class, 'rsc')
       ->select('rsc')
