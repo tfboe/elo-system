@@ -296,7 +296,7 @@ SQL;
         $keys = array_merge($keys, explode(",", $row['k']));
       }
       if ($row['itsfLicenseNumbersBeforeMerge'] !== null) {
-        $f['itsfLicenseNumbersBeforeMerge'] = explode(",", $row['itsfLicenseNumbersBeforeMerge']);
+        $f['itsfLicenseNumbersBeforeMerge'] = array_map('intval', explode(",", $row['itsfLicenseNumbersBeforeMerge']));
         foreach ($f['itsfLicenseNumbersBeforeMerge'] as $licenseNumber) {
           if (array_key_exists($licenseNumber, $keysOfLicenseNumber)) {
             $keys = array_merge($keys, $keysOfLicenseNumber[$row['itsfLicenseNumbersBeforeMerge']]);
