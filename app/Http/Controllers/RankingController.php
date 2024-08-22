@@ -12,7 +12,7 @@ namespace App\Http\Controllers;
 
 use App\Entity\Competition;
 use App\Entity\Game;
-use App\Entity\Match;
+use App\Entity\MatchClass;
 use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\Ranking;
@@ -247,7 +247,7 @@ class RankingController extends AsyncableController
     //load games completely
     $ls->loadEntities($games, [
       Game::class => [['match', 'playersA', 'playersB']],
-      Match::class => [['phase', 'rankingsA', 'rankingsB']],
+      MatchClass::class => [['phase', 'rankingsA', 'rankingsB']],
       Ranking::class => [['teams']],
       Team::class => [['memberships']],
       TeamMembership::class => [['player']],

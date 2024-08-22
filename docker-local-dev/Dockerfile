@@ -62,11 +62,13 @@ USER root
 
 # lftp is for uploading php projects to a server via ftp using scripts
 # nodejs for installing apidoc
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update \
-  && apt-get install -y php7.4 php-mbstring php-dom php-xml php-xdebug mysql-client php-mysql php-curl php-zip unzip lftp nodejs npm
+  && apt-get install -y php8.2 php8.2-mbstring php8.2-dom php8.2-xml php8.2-xdebug mysql-client php8.2-mysql php8.2-curl php8.2-zip unzip lftp nodejs npm
 
 # configure xdebug
-RUN echo "xdebug.remote_enable = 1\nxdebug.remote_autostart = 1" >> /etc/php/7.4/mods-available/xdebug.ini
+RUN echo "xdebug.mode = debug\nxdebug.start_with_request = yes" >> /etc/php/8.2/mods-available/xdebug.ini
 
 
 # php modules

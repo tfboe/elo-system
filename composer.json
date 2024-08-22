@@ -12,31 +12,36 @@
       "email": "blacktemplar@a1.net"
     }
   ],
+  "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/blacktemplar/jwt-auth-guard"
+      }
+  ],
   "license": "GPL-3.0-or-later",
   "type": "project",
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.2",
     "ext-mbstring": "*",
-    "laravel/lumen-framework": "5.8.*",
-    "vlucas/phpdotenv": "^3.3",
+    "laravel/lumen-framework": "^8.1",
+    "vlucas/phpdotenv": "^5.2",
     "tymon/jwt-auth": "^1.0.0",
     "irazasyed/jwt-auth-guard": "dev-master",
-    "laravel-doctrine/orm": "^1.2.12",
-    "laravel-doctrine/extensions": "^1.0.12",
-    "gedmo/doctrine-extensions": "^2.4.30",
+    "laravel-doctrine/orm": "~1.7",
+    "laravel-doctrine/extensions": "~1.4",
+    "gedmo/doctrine-extensions": "^3.0",
     "tfboe/fm-lib": "dev-elo-system-old",
     "palanik/lumen-cors": "dev-master",
     "beberlei/doctrineextensions": "^1.0",
-    "maxbrokman/safe-queue": "^0.3.0",
     "flipbox/lumen-generator": "^8.2"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
-    "phpunit/phpunit": "~6.0",
+    "phpunit/phpunit": "~9.0",
     "mockery/mockery": "~0.9",
     "barryvdh/laravel-ide-helper": "^2.4",
-    "laravel-doctrine/migrations": "^1.0.0",
-    "phpunit/phpcov": "^4.0",
+    "laravel-doctrine/migrations": "^3.0.0",
+    "phpunit/phpcov": "^8.0",
     "phpmd/phpmd": "^2.6",
     "pdepend/pdepend": "^2.5"
   },

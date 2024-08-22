@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 
-use Exception;
+use Throwable;
 
 /**
  * Class Handler
@@ -22,7 +22,7 @@ class Handler extends \Tfboe\FmLib\Exceptions\Handler
   /**
    * @inheritDoc
    */
-  protected function getExceptionName(Exception $exception): string
+  protected function getExceptionName(Throwable $exception): string
   {
     if ($exception instanceof GameHasMissingModes) {
       return ExceptionNames::GAME_HAS_MISSING_MODES;

@@ -73,8 +73,6 @@ $app->middleware(\App\Http\Middleware\Cors::class);
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-$app->configure('safequeue');
-$app->register(MaxBrokman\SafeQueue\DoctrineQueueProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 /*

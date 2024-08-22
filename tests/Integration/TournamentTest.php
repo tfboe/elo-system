@@ -12,7 +12,7 @@ namespace Tests\Integration;
 
 use App\Entity\Competition;
 use App\Entity\Game;
-use App\Entity\Match;
+use App\Entity\MatchClass;
 use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\QualificationSystem;
@@ -2385,7 +2385,7 @@ class TournamentTest extends AuthenticatedTestCase
       $this->createRanking([$teams[3][2]], 2, 3),
     ]];
 
-    /** @var Match[][][] $matches */
+    /** @var MatchClass[][][] $matches */
     $matches = [];
     $matches[0] = [[
       $this->createMatch([$rankings[0][0][0]], [$rankings[0][0][1]], 1, 7, 5,
@@ -3007,7 +3007,7 @@ class TournamentTest extends AuthenticatedTestCase
         self::assertEquals(count($phaseData['matches']), $phase->getMatches()->count());
         foreach ($phaseData['matches'] as $matchData) {
           self::assertTrue($phase->getMatches()->containsKey($matchData['matchNumber']));
-          /** @var Match $match */
+          /** @var MatchClass $match */
           $match = $phase->getMatches()->get($matchData['matchNumber']);
           $this->checkProperties($matchData, $match, [
             'matchNumber' => null,
@@ -3035,7 +3035,7 @@ class TournamentTest extends AuthenticatedTestCase
           self::assertEquals(count($matchData['games']), $match->getGames()->count());
           foreach ($matchData['games'] as $gameData) {
             self::assertTrue($match->getGames()->containsKey($gameData['gameNumber']));
-            /** @var Match $match */
+            /** @var MatchClass $match */
             $game = $match->getGames()->get($gameData['gameNumber']);
             $this->checkProperties($gameData, $game, [
               'gameNumber' => null,
@@ -3114,14 +3114,14 @@ class TournamentTest extends AuthenticatedTestCase
    * @param bool $played true if played and false if it didn't get played
    * @param \DateTime|null $startTime the start time
    * @param \DateTime|null $endTime the end time
-   * @return Match
+   * @return MatchClass
    */
   private function createMatch(array $rankingsA, array $rankingsB, int $matchNumber, int $resultA = 1, int $resultB = 0,
                                int $result = Result::TEAM_A_WINS, bool $played = true, ?\DateTime $startTime = null,
                                ?\DateTime $endTime = null)
   {
-    /** @var Match $match */
-    $match = entity(Match::class)->create([
+    /** @var MatchClass $match */
+    $match = entity(MatchClass::class)->create([
       'matchNumber' => $matchNumber,
       'resultA' => $resultA,
       'resultB' => $resultB,

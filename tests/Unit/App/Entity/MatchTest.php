@@ -13,19 +13,19 @@ namespace Tests\Unit\App\Entity;
 use Tfboe\FmLib\TestHelpers\UnitTestCase;
 
 /**
- * Class Match
+ * Class MatchClass
  * @package Tests\Unit\App\Entity
  */
 class MatchTest extends UnitTestCase
 {
 //<editor-fold desc="Public Methods">
   /**
-   * @covers \App\Entity\Match::__construct
+   * @covers \App\Entity\MatchClass::__construct
    */
   public function testConstructor()
   {
-    $entity = new \App\Entity\Match();
-    self::assertInstanceOf(\App\Entity\Match::class, $entity);
+    $entity = new \App\Entity\MatchClass();
+    self::assertInstanceOf(\App\Entity\MatchClass::class, $entity);
   }
 //</editor-fold desc="Public Methods">
 }

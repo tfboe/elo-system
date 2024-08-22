@@ -12,7 +12,7 @@ namespace App\Service\AsyncServices;
 use App\Entity\AsyncRequest;
 use App\Entity\Competition;
 use App\Entity\Game;
-use App\Entity\Match;
+use App\Entity\MatchClass;
 use App\Entity\Phase;
 use App\Entity\Player;
 use App\Entity\QualificationSystem;
@@ -720,7 +720,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
     if ($toForgetClasses === null) {
       $toForgetClasses = [Team::class, Phase::class,
         TeamMembership::class, Player::class, QualificationSystem::class, Ranking::class,
-        Match::class, Game::class];
+        MatchClass::class, Game::class];
       foreach ($toForgetClasses as &$class) {
         $class = $this->em->getClassMetadata($class)->getReflectionClass()->getName();
       }
@@ -773,9 +773,9 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
 
   /**
    * Removes the given match from the database
-   * @param Match $match
+   * @param MatchClass $match
    */
-  private function removeMatch(Match $match)
+  private function removeMatch(MatchClass $match)
   {
     foreach ($match->getGames() as $game) {
       $this->removeGame($game);
@@ -1026,14 +1026,14 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
 
   /**
    * Replaces the games of the given match according to the request
-   * @param Match $match the match to modify
+   * @param MatchClass $match the match to modify
    * @param mixed[] $values the request values for the games
    * @throws DuplicateException A game number is occurring twice or a player id is specified twice for the players of
    *                            this game
    *                                     no competition or its competition has no name
    * @throws ReferenceException a player of a team is not in the players lists of this team
    */
-  private function replaceGames(Match $match, array $values)
+  private function replaceGames(MatchClass $match, array $values)
   {
     $gameNumbers = [];
     foreach ($match->getGames()->getKeys() as $key) {
@@ -1077,7 +1077,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
 
   /**
    * Replaces the match rankings of the given match according to the request
-   * @param Match $match the match to modify
+   * @param MatchClass $match the match to modify
    * @param int[] $rankingValues the list of the unique rankings
    * @param string $teamLetter the team letter to modify (A or B)
    * @param bool[] $uRanks the ranks of the other team already parsed
@@ -1086,7 +1086,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
    * @throws ReferenceException A unique rank is in the list which is not a valid unique rank for this phase
    *                                      or no competition or its competition has no name
    */
-  private function replaceMatchRankings(Match $match, array $rankingValues, string $teamLetter, array &$uRanks)
+  private function replaceMatchRankings(MatchClass $match, array $rankingValues, string $teamLetter, array &$uRanks)
   {
     $uniqueRanks = [];
     $method = 'getRankings' . $teamLetter;
@@ -1158,7 +1158,7 @@ class CreateOrReplaceTournament implements CreateOrReplaceTournamentInterface
         $match = $phase->getMatches()->get($matchValues['matchNumber']);
         Tools::setFromSpecification($match, $this->matchSpecification, $matchValues, $this->em);
       } else {
-        $match = new Match();
+        $match = new MatchClass();
         Tools::setFromSpecification($match, $this->matchSpecification, $matchValues, $this->em);
         // request
         $match->setPhase($phase);

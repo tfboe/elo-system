@@ -14,19 +14,19 @@ use Tfboe\FmLib\Entity\Helpers\TournamentHierarchyEntity;
 use Tfboe\FmLib\Entity\MatchInterface;
 
 /**
- * Class Match
+ * Class MatchClass
  * @package App\Entity
  * @ORM\Entity
  * @ORM\Table(name="elo_matches")
  */
-class Match extends TournamentHierarchyEntity implements MatchInterface
+class MatchClass extends TournamentHierarchyEntity implements MatchInterface
 {
-  use \Tfboe\FmLib\Entity\Traits\Match;
+  use \Tfboe\FmLib\Entity\Traits\MatchClass;
 
 //<editor-fold desc="Constructor">
 
   /**
-   * Match constructor.
+   * MatchClass constructor.
    */
   public function __construct()
   {

@@ -5,7 +5,7 @@ return [
   'entityMaps' => [
     'Tfboe\\FmLib\\Entity\\CompetitionInterface' => 'App\\Entity\\Competition',
     'Tfboe\\FmLib\\Entity\\GameInterface' => 'App\\Entity\\Game',
-    'Tfboe\\FmLib\\Entity\\MatchInterface' => 'App\\Entity\\Match',
+    'Tfboe\\FmLib\\Entity\\MatchInterface' => 'App\\Entity\\MatchClass',
     'Tfboe\\FmLib\\Entity\\PhaseInterface' => 'App\\Entity\\Phase',
     'Tfboe\\FmLib\\Entity\\PlayerInterface' => 'App\\Entity\\Player',
     'Tfboe\\FmLib\\Entity\\QualificationSystemInterface' => 'App\\Entity\\QualificationSystem',
