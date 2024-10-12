@@ -7233,12 +7233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tfboe/fm-lib.git",
-                "reference": "11c599aeee07493ca1c36d910717d9e7766ad3ef"
+                "reference": "697c1c24bafd227125b48750f15c76736b5aa2a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/11c599aeee07493ca1c36d910717d9e7766ad3ef",
-                "reference": "11c599aeee07493ca1c36d910717d9e7766ad3ef",
+                "url": "https://api.github.com/repos/tfboe/fm-lib/zipball/697c1c24bafd227125b48750f15c76736b5aa2a8",
+                "reference": "697c1c24bafd227125b48750f15c76736b5aa2a8",
                 "shasum": ""
             },
             "require": {
@@ -7283,7 +7283,7 @@
                 "issues": "https://github.com/tfboe/fm-lib/issues",
                 "source": "https://github.com/tfboe/fm-lib/tree/elo-system-old"
             },
-            "time": "2024-08-22T05:32:38+00:00"
+            "time": "2024-10-12T21:42:50+00:00"
         },
         {
             "name": "tymon/jwt-auth",
@@ -10713,8 +10713,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "irazasyed/jwt-auth-guard": 20,
-        "tfboe/fm-lib": 20,
-        "palanik/lumen-cors": 20
+        "palanik/lumen-cors": 20,
+        "tfboe/fm-lib": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
@@ -10722,6 +10722,6 @@
         "php": ">=8.2",
         "ext-mbstring": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
